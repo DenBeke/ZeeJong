@@ -13,6 +13,6 @@ define('DB_NAME', 'BettingSystem');
 
 
 //General site url (with slash at the end)
-define('SITE_URL', 'http://localhost:8888/');
+define('SITE_URL', 'http://localhost:8888/ZeeJong/');
 
 ?>
