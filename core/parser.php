@@ -108,17 +108,21 @@ function parseMatch($url) {
 	
 	//Find the goals
 	$rawGoals = $html->find('.block_match_goals', 0);
-	$goals = array();
-	foreach ($rawGoals->find('.player') as $player) {
-		if(sizeof($player->find('.minute', 0)) > 0) {
-		    $playerName = $player->find('a', 0)->plaintext;
-		    $time = $player->find('.minute', 0)->plaintext;
-			$goals[intval($time)] = $playerName;
+	if(gettype($rawGoals) != 'NULL') {
+	
+		$goals = array();
+		foreach ($rawGoals->find('.player') as $player) {
+			if(sizeof($player->find('.minute', 0)) > 0) {
+				$playerName = $player->find('a', 0)->plaintext;
+				$time = $player->find('.minute', 0)->plaintext;
+				$goals[intval($time)] = $playerName;
+			}
 		}
-	}
-
-	foreach ($goals as $a => $b) {
-		echo "--- Goal: $b ($a')<br>";
+		
+		foreach ($goals as $a => $b) {
+			echo "--- Goal: $b ($a')<br>";
+		}
+		
 	}
 	
 	
