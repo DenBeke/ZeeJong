@@ -1,6 +1,11 @@
 <html>
 	<head>
 		<title>Install script</title>
+		
+		
+		<link href="style.css" rel="stylesheet" type="text/css">
+		<link href="pure-min.css" rel="stylesheet" type="text/css">
+		
 	</head>
 
 	<body>
@@ -228,15 +233,31 @@ CREATE TABLE IF NOT EXISTS `Tournament` (
 	{
 	?>
 
-	<form method="post">
-		Host: <input type="text" name="host"></br>
-		Port: <input type="text" name="port"></br>
-		Database*: <input type="text" name="database"></br>
-		Username: <input type="text" name="username"></br>
-		Password: <input type="password" name="password"></br>
-		<label>* Is required</label></br>
-		<input type="submit" name="submit" value="submit">
-	</form>
+	<div class="container">
+		
+		<h2>Install Soccer Management System</h2>
+
+		<form method="post" class="pure-form">
+			
+			<fieldset class="pure-group">
+				
+				<input type="text" name="host" class="pure-input-1-2" placeholder="host">
+				<input type="text" name="port" class="pure-input-1-2" placeholder="port">
+				<input type="text" name="database" class="pure-input-1-2" placeholder="database name" required="required">
+				
+			</fieldset>
+				
+			<fieldset class="pure-group">
+				
+				<input type="text" name="username" class="pure-input-1-2" placeholder="username" required="required">
+				<input type="password" name="password" class="pure-input-1-2" placeholder="password" required="required">
+				
+			</fieldset>
+			
+			<input type="submit" name="submit" value="Submit" class="pure-button pure-input-1-2 pure-button-primary">
+		</form>
+	
+	</div>
 
 	<?php
 	}
