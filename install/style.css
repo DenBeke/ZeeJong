@@ -1,0 +1,22 @@
+body {
+	background-color: #f9f9f9;
+}
+
+
+div.container {
+	width: 500px;
+	margin: auto;
+	padding: 20px;
+	background-color: #fff;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+div.container h2 {
+	text-align: center;
+}
+
+div.container .pure-form .pure-input-1-2 {
+	width: 100%;
+	box-sizing: border-box;
+}
