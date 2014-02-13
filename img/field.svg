@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="113 212 800 440" width="800pt" height="440pt" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <metadata> Produced by OmniGraffle 6.0.4 <dc:date>2014-02-12 20:31Z</dc:date></metadata>
+    <defs />
+    <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
+        <title>Canvas 1</title>
+        <rect fill="white" width="1004" height="871" />
+        <g>
+            <title>Layer 1</title>
+            <rect x="117" y="216" width="396" height="432" fill="#229236" />
+            <rect x="117" y="216" width="396" height="432" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" />
+            <rect x="513" y="216" width="396" height="432" fill="#229236" />
+            <rect x="513" y="216" width="396" height="432" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" />
+            <circle cx="513" cy="432" r="54.000086" fill="#239135" />
+            <circle cx="513" cy="432" r="54.000086" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" />
+            <rect x="117" y="360" width="117" height="144" fill="#239135" />
+            <rect x="117" y="360" width="117" height="144" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" />
+            <rect x="792" y="360" width="117" height="144" fill="#239135" />
+            <rect x="792" y="360" width="117" height="144" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" />
+        </g>
+    </g>
+</svg>
