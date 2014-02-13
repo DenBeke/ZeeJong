@@ -166,15 +166,19 @@ CREATE TABLE IF NOT EXISTS `Tournament` (
 		if(!$con) {
 			resultOutput('Could not connect to database: ' . mysqli_connect_error());
 			frontPage();
-			return;
+			return false;
 		}
 
 		global $tables;
 		foreach($tables as $query) {
-			if(!executeQuery($con, $query)) {
-				return;
+			if(!mysqli_query($con, $query)) {
+				resultOutput(mysqli_error($con));
+				frontPage();
+				return false;
 			}
 		}
+
+		return true;
 	}
 
 	function start()
@@ -215,8 +219,9 @@ CREATE TABLE IF NOT EXISTS `Tournament` (
 				$password = trim($_POST['password']);
 			}
 	
-			buildDatabase($host, (int)$port, $database, $username, $password);
-			resultOutput("Created database");
+			if(buildDatabase($host, (int)$port, $database, $username, $password)) {
+				resultOutput("Created database");
+			}
 		} else {
 			frontPage();
 		}
