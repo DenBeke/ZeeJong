@@ -39,10 +39,19 @@ function parse() {
 
 
 function parseCompetition($url) {
+
+	$html = file_get_html($url);
 	
-	//Fetch all tournaments from the given page, and call parseTournement
+	//Find all tournaments
+	foreach($html->find('.season a') as $element) {
+	    $name = $element->plaintext;
+	    echo "<h2>$name</h2>";
+
+	    $tournamentUrl = $element->href;
+	    parseTournament('http://int.soccerway.com' . $tournamentUrl);
+	}
 	
-	
+	$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 }
 
 
@@ -61,10 +70,11 @@ function parseTournament($url) {
 		$scoreUrl = $element->find('.score a', 0)->href;
 		
 		echo '<li>';
+		echo '<h3>';
 		echo $teamA;
 		echo $score;
 		echo $teamB;
-		echo '<br>';
+		echo '</h3>';
 		
 		//Recursive call for parsing the detailed match data
 		parseMatch('http://int.soccerway.com' . $scoreUrl);
@@ -73,8 +83,6 @@ function parseTournament($url) {
 
 		//Still a bug at the end when parsing this page:
 		// http://int.soccerway.com/international/world/world-cup/2010-south-africa/s4770/final-stages/
-
-		break;
 
 	}
 	
