@@ -63,9 +63,9 @@ function parseMatch($url) {
 	$rawGoals = $html->find('.block_match_goals', 0);
 	$goals = array();
 	foreach ($rawGoals->find('.player') as $player) {
-		$playerName = $player->find('a', 0)->plaintext;
-		$time = $player->find('.minute', 0)->plaintext;
-		if($time != '') {
+		if(sizeof($player->find('.minute', 0)) > 0) {
+		    $playerName = $player->find('a', 0)->plaintext;
+		    $time = $player->find('.minute', 0)->plaintext;
 			$goals[intval($time)] = $playerName;
 		}
 	}
