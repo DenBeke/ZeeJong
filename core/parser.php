@@ -10,7 +10,44 @@ Created: February 2014
 require_once( dirname(__FILE__) . '/simple_html_dom.php' );
 
 
-function parse($url) {
+
+
+function parse() {
+	
+	
+	$competitions = array(
+	
+		'wk' => array(
+			'name' => 'World Cup',
+			'url' => 'http://int.soccerway.com/international/world/world-cup/c72/archive/?ICID=PL_3N_06'
+		)
+	
+	);
+	
+	
+	
+	//Loop through competition and parse the competitions
+	foreach ($competitions as $competition) {
+		echo '<em>Parsing: ' . $competition['name'] . '</em><br>';
+		parseCompetition($competition['url']);
+	}
+	
+	
+}
+
+
+
+
+function parseCompetition($url) {
+	
+	//Fetch all tournaments from the given page, and call parseTournement
+	
+	
+}
+
+
+
+function parseTournament($url) {
 	
 	$html = file_get_html($url);
 	
@@ -40,6 +77,8 @@ function parse($url) {
 		break;
 
 	}
+	
+	$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 	
 }
 
