@@ -13,6 +13,6 @@ define('DB_NAME', 'BettingSystem');
 
 
 //General site url (with slash at the end)
-define('SITE_URL', 'http://localhost:8888/ZeeJong/');
+define('SITE_URL', $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
 ?>
