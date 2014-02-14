@@ -61,6 +61,33 @@ class Database {
 	
 	
 	/**
+	Get the country with the given name
+	
+	@param name
+	@return country
+	
+	@exception when no country found with the given name
+	*/
+	public function getCountry($name) {
+		
+	}
+	
+	
+	
+	/**
+	Add the country with the given name to the database
+	
+	@param name
+	@return id of the newly added country or id of existing
+	*/
+	public function addCountry($name) {
+		
+	}
+	
+	
+	
+	
+	/**
 	Get the competition with the given name
 	
 	@param name
