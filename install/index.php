@@ -68,11 +68,11 @@ function handleSubmit()
 	<div class="container">
 	<h2>Install Soccer Management System</h2>
 	<?php
-		if(isset($_POST['submit']) {
+		if(isset($_POST['submit'])) {
 			try {
-				handleSubmit()
+				handleSubmit();
 				echo '<p>Created database</p>';
-			} catch(Exception e) {
+			} catch(Exception $e) {
 				echo '<p>' . $e->getMessage() .  '</p>';
 			}
 		}
