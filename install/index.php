@@ -54,7 +54,7 @@ function handleSubmit()
 }
 
 ?>
-
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Install script</title>
@@ -71,13 +71,15 @@ function handleSubmit()
 		if(isset($_POST['submit'])) {
 			try {
 				handleSubmit();
-				echo '<p>Created database</p>';
+				echo '<p class="notice ok">The database was successfully initialized. Please remove the installation directory for security reasons.</p>';
 			} catch(Exception $e) {
-				echo '<p>' . $e->getMessage() .  '</p>';
+				echo '<p class="notice error">' . $e->getMessage() .  '</p>';
+				include 'form.tpl.php';
 			}
 		}
-
-		include 'form.tpl.php';
+		else {
+			include 'form.tpl.php';
+		}
 	?>
 	</div>
 
