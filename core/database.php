@@ -142,6 +142,9 @@ class Database {
 				//Create new Competition object TODO
 				return new Competition($id, $name);
 				
+				//Close the statement		
+				$statement->close();
+				
 			}
 			
 		}
