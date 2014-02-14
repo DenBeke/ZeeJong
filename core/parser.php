@@ -16,12 +16,22 @@ function parse() {
 	
 	
 	$competitions = array(
-	
+
 		'wk' => array(
 			'name' => 'World Cup',
 			'url' => 'http://int.soccerway.com/international/world/world-cup/c72/archive/?ICID=PL_3N_06'
 		)
-	
+
+		'eu' => array(
+			'name' => 'European Championship',
+			'url' => 'http://int.soccerway.com/international/europe/european-championships/c25/archive/?ICID=PL_3N_05'
+		)
+
+		'olympics' => array(
+			'name' => 'Olympics',
+			'url' => 'http://int.soccerway.com/international/world/olympics/c221/archive/?ICID=PL_3N_04'
+		)
+
 	);
 	
 	
