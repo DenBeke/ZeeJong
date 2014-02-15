@@ -229,11 +229,12 @@ class Database {
 	/**
 	Add a new referee to the database
 	
-	@param name
+	@param first name
+	@param last name
 	@param id of the country
 	@return id of the newly added referee or id of existing
 	*/
-	public function addReferee($name, $countryId) {
+	public function addReferee($firstName, $lastName, $countryId) {
 		
 	}
 	
@@ -242,11 +243,12 @@ class Database {
 	/**
 	Add a new coach to the database
 	
-	@param name
+	@param first name
+	@param last name
 	@param id of the country
 	@return id of the newly added coach or id of existing
 	*/
-	public function addCoach($name, $countryId) {
+	public function addCoach($firstName, $lastName, $countryId) {
 		
 	}
 	
@@ -270,9 +272,11 @@ class Database {
 	
 	NEED TO ADD ALL INFORMATION
 	
+	@param first name
+	@param last name
 	@return id of the newly added player or id of existing
 	*/
-	public function addPlayer($name) {
+	public function addPlayer($firstName, $lastName) {
 		
 	}
 	
@@ -299,10 +303,11 @@ class Database {
 	@param number of goals of team B
 	@param id of referee
 	@param date
+	@param id of the tournament
 	
 	@return id of the newly added match or id of existing
 	*/
-	public function addMatch($teamA, $teamB, $scoreA, $scoreB, $refereeId, $date) {
+	public function addMatch($teamA, $teamB, $scoreA, $scoreB, $refereeId, $date, $tournamentId) {
 		
 	}
 	
