@@ -149,7 +149,7 @@ class Parser {
 
 		//Add the match to the database
 		$date = $html->find('.middle .details dd', 1)->plaintext;
-		$matchId = $this->database->addMatch($teamA->plaintext, $teamB->plaintext, $scoreA, $scoreB, $refereeId, $date);
+		$matchId = $this->database->addMatch($teamA->plaintext, $teamB->plaintext, $scoreA, $scoreB, $refereeId, $date, $tournamentId);
 
 		//Find all players from team A and add them to the database
 		$block = $html->find('.block_match_lineups > div', 0);
@@ -210,7 +210,7 @@ class Parser {
 		$country = $html->find('.content .first dd', 2)->plaintext;
 
 		$countryId = $this->database->addCountry($country);
-		$refereeId = $this->database->addReferee($firstName . ' ' . $lastName, $countryId);
+		$refereeId = $this->database->addReferee($firstName, $lastName, $countryId);
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 
@@ -230,7 +230,7 @@ class Parser {
 		$firstName = $html->find('.content .first dd', 0)->plaintext;
 		$lastName = $html->find('.content .first dd', 1)->plaintext;
 
-		$playerId = $this->database->addPlayer($firstName . ' ' . $lastName);
+		$playerId = $this->database->addPlayer($firstName, $lastName);
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 
@@ -252,7 +252,7 @@ class Parser {
 		$country = $html->find('.content .first dd', 2)->plaintext;
 
 		$countryId = $this->database->addCountry($country);
-		$coachId = $this->database->addCoach($firstName . ' ' . $lastName, $countryId);
+		$coachId = $this->database->addCoach($firstName, $lastName, $countryId);
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 
