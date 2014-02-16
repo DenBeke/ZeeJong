@@ -3,7 +3,8 @@ $tables = array(
 '
 CREATE TABLE IF NOT EXISTS `Coach` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
-`name` varchar(50) NOT NULL,
+`firstname` varchar(50) NOT NULL,
+`lastname` varchar(50) NOT NULL,
 `country` int(11) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `country` (`country`)
@@ -70,7 +71,8 @@ KEY `scoreId` (`scoreId`)
 '
 CREATE TABLE IF NOT EXISTS `Player` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
-`name` varchar(50) NOT NULL,
+`firstname` varchar(50) NOT NULL,
+`lastname` varchar(50) NOT NULL,
 `country` int(11) NOT NULL,
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -100,7 +102,8 @@ KEY `playerId` (`playerId`,`teamId`,`matchId`)
 '
 CREATE TABLE IF NOT EXISTS `Referee` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
-`name` varchar(50) NOT NULL,
+`firstname` varchar(50) NOT NULL,
+`lastname` varchar(50) NOT NULL,
 `countryId` int(11) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `countryId` (`countryId`)
