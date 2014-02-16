@@ -1,6 +1,7 @@
 <?php
 
 require 'tables.php';
+require 'config.php';
 
 function buildDatabase($host, $port, $database, $username, $password)
 {
@@ -26,11 +27,17 @@ function handleSubmit()
 	$password = '';
 
 	if(isset($_POST['host'])) {
-		$database = trim($_POST['host']);
+		$hostPost = trim($_POST['host']);
+		if($hostPost != '') {
+			$host = $hostPost;
+		}
 	}
 
 	if(isset($_POST['port'])) {
-		$port = trim($_POST['port']);
+		$portPost = trim($_POST['port']);
+		if($portPost != '') {
+			$port = $portPost;
+		}
 	}
 
 	if(!isset($_POST['database'])) {
@@ -51,6 +58,27 @@ function handleSubmit()
 	}
 
 	buildDatabase($host, (int)$port, $database, $username, $password);
+
+	// Write config to directory
+	$fh = fopen('../core/config.php', 'w');
+	if($fh === false) {
+		throw new Exception('Database was created but could not create config file');
+	}
+
+	fwrite($fh, "<?php\n");
+	global $config;
+	foreach($config as $key => $value) {
+		fwrite($fh, "DEFINE('$key', $value);\n");
+	}
+
+	fwrite($fh, "DEFINE('DB_HOST', '$host');\n");
+	fwrite($fh, "DEFINE('DB_PORT', $port);\n");
+	fwrite($fh, "DEFINE('DB_USER', '$username');\n");
+	fwrite($fh, "DEFINE('DB_PASS', '$password');\n");
+	fwrite($fh, "DEFINE('DB_NAME', '$database');\n");
+
+	fwrite($fh, '?>');
+	fclose($fh);
 }
 
 ?>
