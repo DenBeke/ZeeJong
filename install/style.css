@@ -20,3 +20,18 @@ div.container .pure-form .pure-input-1-2 {
 	width: 100%;
 	box-sizing: border-box;
 }
+
+p.notice {
+	padding: 1em 1em;
+	border-radius: 3px;
+	color: #fff;
+}
+
+
+p.notice.ok {
+	background-color: #1f8dd6;
+}
+
+p.notice.error {
+	background-color: rgb(202, 60, 60);
+}

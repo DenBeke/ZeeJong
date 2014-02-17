@@ -7,6 +7,7 @@ Created: February 2014
 
 
 require_once(dirname(__FILE__) . '/config.php');
+require_once(dirname(__FILE__) . '/classes/Competition.php');
 
 
 /**
@@ -60,12 +61,151 @@ class Database {
 	
 	
 	/**
+	Get the country with the given name
+	
+	@param name
+	@return country
+	
+	@exception when no country found with the given name
+	*/
+	public function getCountry($name) {
+		
+	}
+	
+	
+	
+	/**
+	Add the country with the given name to the database
+	
+	@param name
+	@return id of the newly added country or id of existing
+	*/
+	public function addCountry($name) {
+		
+	}
+	
+	
+	
+	
+	/**
+	Get the competition with the given name
+	
+	@param name
+	@return competition
+	
+	@exception when no competition found with the given name
+	*/
+	public function getCompetition($name) {
+		
+		//Query
+		$query = "
+			SELECT * FROM Competition
+			WHERE name = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('s', $name)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrup database: multiple competitions with the same name');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no competition with the given name');
+		}
+		else {
+			
+			//Bind return values
+			$statement->bind_result($id, $name);
+			
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Competition object TODO
+				return new Competition($id, $name);
+				
+				//Close the statement		
+				$statement->close();
+				
+			}
+			
+		}
+
+
+		//Close the statement		
+		$statement->close();
+		
+	}
+	
+	
+	
+	/**
 	Add the competition with the given name to the database
 	
 	@param name
-	@return id of the newly added competition
+	@return id of the newly added competition or id of existing
 	*/
 	public function addCompetition($name) {
+		
+		
+		//Check if the competition isn't already in the database
+		try {
+			return $this->getCompetition($name)->getId();
+			 
+		}
+		catch (exception $e) {
+			
+		}
+		
+		
+		//Query
+		$query = "
+			INSERT INTO Competition (name)
+			VALUES (?);
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('s', $name)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		
+		//Keep id of the last inserted row
+		$id = $statement->insert_id; //TODO Check if this works always...
+		
+		//Close the statement		
+		$statement->close();
+		
+		
+		return $id;
 		
 	}
 	
@@ -76,7 +216,7 @@ class Database {
 	
 	@param name
 	@param competion id
-	@return id of the newly added tournament
+	@return id of the newly added tournament or id of existing
 	*/
 	public function addTournament($name, $competitionId) {
 		
@@ -89,11 +229,12 @@ class Database {
 	/**
 	Add a new referee to the database
 	
-	@param name
+	@param first name
+	@param last name
 	@param id of the country
-	@return id of the newly added referee
+	@return id of the newly added referee or id of existing
 	*/
-	public function addReferee($name, $countryId) {
+	public function addReferee($firstName, $lastName, $countryId) {
 		
 	}
 	
@@ -102,11 +243,12 @@ class Database {
 	/**
 	Add a new coach to the database
 	
-	@param name
+	@param first name
+	@param last name
 	@param id of the country
-	@return id of the newly added coach
+	@return id of the newly added coach or id of existing
 	*/
-	public function addCoach($name, $countryId) {
+	public function addCoach($firstName, $lastName, $countryId) {
 		
 	}
 	
@@ -117,7 +259,7 @@ class Database {
 	
 	@param name
 	@param id of the country
-	@return id of the newly added team
+	@return id of the newly added team or id of existing
 	*/
 	public function addTeam($name, $countryId) {
 		
@@ -130,9 +272,11 @@ class Database {
 	
 	NEED TO ADD ALL INFORMATION
 	
-	@return id of the newly added player
+	@param first name
+	@param last name
+	@return id of the newly added player or id of existing
 	*/
-	public function addPlayer($name) {
+	public function addPlayer($firstName, $lastName) {
 		
 	}
 	
@@ -159,10 +303,11 @@ class Database {
 	@param number of goals of team B
 	@param id of referee
 	@param date
+	@param id of the tournament
 	
-	@return id of the newly added match
+	@return id of the newly added match or id of existing
 	*/
-	public function addMatch($teamA, $teamB, $scoreA, $scoreB, $refereeId, $date) {
+	public function addMatch($teamA, $teamB, $scoreA, $scoreB, $refereeId, $date, $tournamentId) {
 		
 	}
 	
