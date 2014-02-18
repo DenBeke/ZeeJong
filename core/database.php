@@ -1850,10 +1850,10 @@ class Database {
 	
 		//Check if the correct number of results are returned from the database
 		if($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple players with the same name and country of origin');
+			throw new exception('Corrupt database: multiple goals with the same player, time and match');
 		}
 		else if($numberOfResults < 1) {
-			throw new exception('Error, there is no player with the given name and country of origin');
+			throw new exception('Error, there is no goal with the given player, time and match');
 		}
 		else {
 			
