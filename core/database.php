@@ -20,8 +20,6 @@ require_once(dirname(__FILE__) . '/classes/Team.php');
 require_once(dirname(__FILE__) . '/classes/Tournament.php');
 
 
-echo '?';
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -98,6 +96,78 @@ class Database {
 	public function addCountry($name) {
 		
 	}
+	
+	
+	
+	
+	/**
+	Get the competition with the given id
+	
+	@param id
+	@return competition
+	
+	@exception when no competition found with the given id
+	*/
+	public function getCompetitionById($id) {
+		
+		//Query
+		$query = "
+			SELECT * FROM Competition
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('s', $id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+	
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrup database: multiple competitions with the same name');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no competition with the given name');
+		}
+		else {
+			
+			//Bind return values
+			$statement->bind_result($id, $name);
+			
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Competition object TODO
+				return new Competition($id, $name);
+				
+				//Close the statement		
+				$statement->close();
+				
+			}
+			
+		}
+	
+	
+		//Close the statement		
+		$statement->close();
+		
+	}
+	
 	
 	
 	
@@ -238,6 +308,78 @@ class Database {
 		$competitionId = intval($competitionId);
 	
 	}
+	
+	
+	
+	
+	/**
+	Get the competition with the given id
+	
+	@param id
+	@return competition
+	
+	@exception when no competition found with the given id
+	*/
+	public function getTournamentById($id) {
+		
+		//Query
+		$query = "
+			SELECT * FROM Competition
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('s', $id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+	
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrup database: multiple competitions with the same name');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no competition with the given name');
+		}
+		else {
+			
+			//Bind return values
+			$statement->bind_result($id, $name);
+			
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Competition object TODO
+				return new Tournament($id);
+				
+				//Close the statement		
+				$statement->close();
+				
+			}
+			
+		}
+	
+	
+		//Close the statement		
+		$statement->close();
+		
+	}
+	
 	
 	
 	
@@ -1062,19 +1204,4 @@ class Database {
 
 }
 	
-	echo 'lol';
-	date_default_timezone_set ( 'Europe/Brussels');
-	$db = new Database();
-	$db->addCoach('Adolf', 'Hitler', '18');
-	try {
-		$db->addTeam('The Jews', '18');
-		$db->addCoaches($db->getCoach('Adolf', 'Hitler', '18')->getId(), $db->getTeam('The Jews', '18')->getId(), date('1939-12-01'));
-		$db->addCoaches(12, 17, date('1939-12-01'));
-		$db->addPlayer('Anne', 'Frank', '18');
-	}
-
-	catch(exception $e) {
-
-		echo $e->getMessage();
-	}
 ?>
