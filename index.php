@@ -9,6 +9,10 @@ require_once(dirname(__FILE__) . '/core/config.php');
 require_once(dirname(__FILE__) . '/core/functions.php');
 
 
+//Create database
+$database = new Database;
+
+
 //Parse the page
 $page = 'home';
 
