@@ -29,7 +29,8 @@ try {
 
 catch(exception $e) {
 	
-	$page = 'error';
+	//$page = 'error';
+	echo $e->getMessage();
 	
 }
 
@@ -53,6 +54,10 @@ elseif(PAGE == 'competition') {
 elseif(PAGE == 'tournament') {
 	include(dirname(__FILE__) . '/theme/competition.php');
 }
+elseif(PAGE == 'match') {
+	include(dirname(__FILE__) . '/theme/match.php');
+}
+
 else {
 	include(dirname(__FILE__) . '/theme/error.php');
 }

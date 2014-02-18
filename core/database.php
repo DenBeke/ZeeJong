@@ -324,7 +324,7 @@ class Database {
 		
 		//Query
 		$query = "
-			SELECT * FROM Competition
+			SELECT * FROM Tournament
 			WHERE id = ?;
 		";
 		
@@ -1168,6 +1168,79 @@ class Database {
 	public function addMatch($teamA, $teamB, $scoreA, $scoreB, $refereeId, $date, $tournamentId) {
 		
 	}
+	
+	
+	
+	
+	/**
+	Get the match with the given id
+	
+	@param id
+	@return match
+	
+	@exception when no competition found with the given id
+	*/
+	public function getMatchById($id) {
+		
+		//Query
+		$query = "
+			SELECT * FROM `Match`
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('s', $id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+	
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrup database: multiple competitions with the same name');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no competition with the given name');
+		}
+		else {
+			
+			//Bind return values
+			$statement->bind_result($id, $teamAId, $teamBId, $tournamentId, $refereeId, $date, $scoreId);
+			
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Competition object TODO
+				return new Match($id);
+				
+				//Close the statement		
+				$statement->close();
+				
+			}
+			
+		}
+	
+	
+		//Close the statement		
+		$statement->close();
+		
+	}
+	
+	
 	
 	
 	

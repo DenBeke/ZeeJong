@@ -33,6 +33,12 @@ class Team {
 		return $this->id;
 	}
 
+
+	public function getName() {
+		
+	}
+
+
 	/**
 	String function
 	@return string

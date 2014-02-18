@@ -28,6 +28,12 @@ function getObject($pageName) {
 			return $database->getTournamentById($tournamentId);
 		}
 	}
+	elseif ($pageName == 'match') {
+		if(isset($_GET['match'])) {
+			$matchId = intval(htmlspecialchars($_GET['match']));
+			return $database->getMatchById($matchId);
+		}
+	}
 }
 
 

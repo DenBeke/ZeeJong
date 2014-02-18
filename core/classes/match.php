@@ -4,6 +4,13 @@ Match Class
 */
 
 
+
+require_once(dirname(__FILE__) . '/Team.php');
+require_once(dirname(__FILE__) . '/Score.php');
+require_once(dirname(__FILE__) . '/Referee.php');
+require_once(dirname(__FILE__) . '/Tournament.php');
+
+
 /**
 @brief Match Class
 
@@ -32,6 +39,47 @@ class Match {
 	public function getId() {
 		return $this->id;
 	}
+	
+	
+	
+	public function getTeamA() {
+		return new Team(1);
+	}
+	
+	
+	public function getTeamB() {
+		return new Team(1);
+	}
+	
+	
+	public function getScore() {
+		return new Score;
+	}
+	
+	
+	public function getReferee() {
+		return new Referee;
+	}
+	
+	
+	public function getTournament() {
+		return new Tournament;
+	}
+	
+	
+	public function getDate() {
+		return 0;
+	}
+	
+	
+	public function getPlayersTeamA() {
+		return array();
+	}
+	
+	public function getPlayersTeamB() {
+		return array();
+	}
+	
 
 	/**
 	String function
