@@ -31,10 +31,11 @@ PRIMARY KEY (`id`)
 ',
 
 '
-CREATE TABLE IF NOT EXISTS `Fault` (
+CREATE TABLE IF NOT EXISTS `Cards` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `playerId` int(11) NOT NULL,
 `matchId` int(11) NOT NULL,
+`color` tinyint(1) NOT NULL,
 `time` datetime NOT NULL,
 PRIMARY KEY (`id`),
 KEY `playerId` (`playerId`,`matchId`)
