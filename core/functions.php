@@ -11,7 +11,7 @@ require_once(dirname(__FILE__) . '/database.php');
 
 function getObject($pageName) {
 	
-	$database = new Database;
+	global $database;
 	
 	if($pageName == 'home') {
 		return NULL;
