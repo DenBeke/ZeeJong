@@ -140,6 +140,14 @@ CREATE TABLE IF NOT EXISTS `Tournament` (
 PRIMARY KEY (`id`),
 KEY `competitionId` (`competitionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+',
+
+'
+CREATE TABLE IF NOT EXISTS `Country` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`name` varchar(50) NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 '
 );
 
