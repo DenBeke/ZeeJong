@@ -1037,8 +1037,9 @@ class Database {
 	@param id of player
 	@param id of match
 	@param id of team
+	@param position number of the player
 	*/
-	public function addPlayerToMatch($playerId, $matchId, $teamId) {
+	public function addPlayerToMatch($playerId, $matchId, $teamId, $number) {
 		
 	}
 	
