@@ -1862,13 +1862,6 @@ class Database {
 		
 	}
 	
-	
-	
-		//Close the statement		
-		$statement->close();
-		
-	}
-	
 	/**
 	Check if a match exists with a given ID
 	
@@ -2266,58 +2259,6 @@ class Database {
 	}		
 
 }
-
-
-	date_default_timezone_set ( 'Europe/Brussels');
-
-	$db = new Database();
-
-	$db->addCoach('Adolf', 'Hitler', '18');
-
-	try {
-
-		$db->addTeam('The Jews', '18');
-		$db->addTeam('The Nazis', '18');		
-		$db->addCoaches($db->getCoach('Adolf', 'Hitler', '18')->getId(), $db->getTeam('The Jews', '18')->getId(), date('1939-12-01'));
-		$db->addCoaches(12, 17, date('1939-12-01'));
-		$db->addPlayer('Anne', 'Frank', '18');
-		$db->addReferee('Jozef', 'Mengele', '18');
-		$db->addReferee('Jozef', 'Mengele', '18');		
-		$db->addCompetition('Vergassen Die Juden!');
-		$db->addCompetition('Vergassen Die Juden!');
-		$db->addCompetition('Burn the fags');
-		$db->addTournament('Blitzkrieg', $db->getCompetition('Vergassen Die Juden!')->getId());	
-		$db->addTournament('Blitzkrieg', 8);
-		$db->addTournament('Blitzkrieg2.0', $db->getCompetition('Vergassen Die Juden!')->getId());
-		$db->addTournament('Blitzkrieg', $db->getCompetition('Burn the fags')->getId());		
-		$db->addTournament('Blitzkrieg3.0', $db->getCompetition('Burn the fags')->getId());
-		$db->addMatch($db->getTeam('The Jews', '18')->getId(), $db->getTeam('The Nazis', '18')->getId(), 0, 0, $db->getReferee('Jozef', 'Mengele', '18')->getId(), date('1942-2-3'), $db->getTournament('Blitzkrieg3.0', 2)->getId());
-		$db->addMatch(12, 37, 0, 0,$db->getReferee('Jozef', 'Mengele', '18')->getId(), date('1942-2-3'), $db->getTournament('Blitzkrieg3.0', 2)->getId());
-		$db->addMatch($db->getTeam('The Jews', '18')->getId(), $db->getTeam('The Nazis', '18')->getId(), 0, 0, 37, date('1942-2-3'), $db->getTournament('Blitzkrieg3.0', 2)->getId());
-		$db->addMatch($db->getTeam('The Jews', '18')->getId(), $db->getTeam('The Nazis', '18')->getId(), 0, 0, $db->getReferee('Jozef', 'Mengele', '18')->getId(), date('1942-2-3'), 22);
-		$db->addGoal($db->getPlayer('Anne', 'Frank', 18)->getId(), date('1942-2-3'), 1);
-		$db->addGoal(12, date('1942-2-3'), 1);
-		$db->addGoal($db->getPlayer('Anne', 'Frank', 18)->getId(), date('1942-2-3'), 18);
-		$db->addPlayerToTeam($db->getPlayer('Anne', 'Frank', 18)->getId(), $db->getTeam('The Jews', '18')->getId());
-		$db->addPlayerToTeam(17, $db->getTeam('The Jews', '18')->getId());
-		$db->addPlayerToTeam($db->getPlayer('Anne', 'Frank', 18)->getId(), 32);
-		$db->addPlayerToMatch($db->getPlayer('Anne', 'Frank', 18)->getId(), 1, $db->getTeam('The Jews', '18')->getId(), 11);
-		$db->addPlayerToMatch($db->getPlayer('Anne', 'Frank', 18)->getId(), 4, $db->getTeam('The Jews', '18')->getId(), 11);
-		$db->addPlayerToMatch(37, 1, $db->getTeam('The Jews', '18')->getId(), 11);
-		$db->addPlayerToMatch($db->getPlayer('Anne', 'Frank', 18)->getId(), 1, 12, 11);									
-		
-		/*$playerId, $time, $matchId*/
-	}
- 
-
-	catch(exception $e) {
-
- 
-
-		echo $e->getMessage();
-
-	}
-
 
 	
 ?>
