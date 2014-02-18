@@ -9,6 +9,7 @@ Created: February 2014
 
 require_once( dirname(__FILE__) . '/simple_html_dom.php' );
 require_once( dirname(__FILE__) . '/database.php' );
+require_once( dirname(__FILE__) . '/classes/Card.php' );
 
 
 /**
@@ -151,27 +152,56 @@ class Parser {
 		$date = $html->find('.middle .details dd', 1)->plaintext;
 		$matchId = $this->database->addMatch($teamA->plaintext, $teamB->plaintext, $scoreA, $scoreB, $refereeId, $date, $tournamentId);
 
-		//Find all players from team A and add them to the database
-		$block = $html->find('.block_match_lineups > div', 0);
-		foreach ($block->find('.player a') as $player) {
-			$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
-			$this->database->addPlayerToMatch($playerId, $matchId, $teamIdA);
+
+		$teams = array(
+			'teamA' => array(
+				'block' => $html->find('.block_match_lineups .left tbody', 0),
+				'id' => $teamIdA
+			),
+
+			'teamB' => array(
+				'block' => $html->find('.block_match_lineups .right tbody', 0),
+				'id' => $teamIdB
+			),
+		);
+
+		//Find all players and add them to the database
+		foreach ($teams as $team) {
+			foreach ($team['block']->find('tr') as $row) {
+
+				$player = $row->find('.player a', 0);
+				if (sizeof($player) > 0) {
+
+					//Add the player to the database
+					$shirtNumber = $row->find('.shirtnumber', 0)->plaintext;
+					$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
+					$this->database->addPlayerToMatch($playerId, $matchId, $team['id'], $shirtNumber);
+
+					//Add the yellow and red cards
+					$bookings = $row->find('.bookings span');
+					foreach ($bookings as $booking) {
+
+						$time = intval($booking->plaintext);
+						$img = $booking->find('img', 0)->getAttribute('src');
+						if ($img == 'http://s1.swimg.net/gsmf/473/img/events/YC.png')
+							$type = Card::yellow;
+						else if ($img == 'http://s1.swimg.net/gsmf/473/img/events/Y2C.png')
+							$type = Card::yellow;
+						else if ($img == 'http://s1.swimg.net/gsmf/473/img/events/RC.png')
+							$type = Card::red;
+						else
+							throw new Exception("Parser found unknown card image: '$img'.");
+
+						$this->database->addFaultCard($playerId, $matchId, $time, $type);
+						return;
+					}
+				}
+			}
+
+			//Also add the coach
+			$coach = $team['block']->find('tr a', -1);
+			$this->parseCoach('http://int.soccerway.com' . $coach->href);
 		}
-
-		//Parse the coach of team A
-		$coach = $block->find('tr a', -1);
-		$this->parseCoach('http://int.soccerway.com' . $coach->href);
-
-		//Find all players from team B and add them to the database
-		$block = $html->find('.block_match_lineups > div', 1);
-		foreach ($block->find('.player a') as $player) {
-			$this->parsePlayer('http://int.soccerway.com' . $player->href);
-			$this->database->addPlayerToMatch($playerId, $matchId, $teamIdB);
-		}
-
-		//Parse the coach of team B
-		$coach = $block->find('tr a', -1);
-		$this->parseCoach('http://int.soccerway.com' . $coach->href);
 
 		//Find the goals
 		$rawGoals = $html->find('.block_match_goals', 0);
@@ -229,8 +259,10 @@ class Parser {
 
 		$firstName = $html->find('.content .first dd', 0)->plaintext;
 		$lastName = $html->find('.content .first dd', 1)->plaintext;
+		$country = $html->find('.content .first dd', 2)->plaintext;
 
-		$playerId = $this->database->addPlayer($firstName, $lastName);
+		$countryId = $this->database->addCountry($country);
+		$playerId = $this->database->addPlayer($firstName, $lastName, $countryId);
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 
