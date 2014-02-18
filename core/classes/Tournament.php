@@ -31,6 +31,26 @@ class Tournament {
 		return $this->id;
 	}
 
+
+	/**
+	Get the name of the tournament
+	@return name
+	*/
+	public function getName() {
+		return $this->name;
+	}
+
+
+	/**
+	Get the matches in the given tournament
+	
+	@return matches
+	*/
+	public function getMatches() {
+		return array();
+	}
+
+
 	/**
 	String function
 	@return string
