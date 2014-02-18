@@ -665,10 +665,10 @@ class Database {
 	
 		//Check if the correct number of results are returned from the database
 		if($numberOfResults > 1) {
-			throw new exception('Corrup database: multiple competitions with the same name');
+			throw new exception('Corrup database: multiple tournaments with the same id');
 		}
 		else if($numberOfResults < 1) {
-			throw new exception('Error, there is no competition with the given name');
+			throw new exception('Error, there is no tournament with the given id');
 		}
 		else {
 			
