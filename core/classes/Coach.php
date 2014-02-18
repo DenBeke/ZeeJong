@@ -14,15 +14,19 @@ The class contains the following information:
 */
 class Coach {
 	private $id;
-	private $name;
+	private $firstName;
+	private $lastName;
 	private $country;
 
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id) {
+	public function __construct($id, $firstName, $lastName, $country) {
 		$this->id = $id;
+		$this->firstName = $firstName;
+		$this->lastName = $lastName;
+		$this->country = $country;
 	}
 
 	/**
@@ -38,9 +42,31 @@ class Coach {
 	@return full name
 	*/
 	public function getName() {
-		// TODO: Get the name from somewhere
+		return $this->firstName . ' ' . $this->lastName;
+	}
 
-		return "";
+	/**
+	Get the first name of the coach
+	@return First name
+	*/
+	public function getFirstName() {
+		return $this->firstName;
+	}
+
+	/**
+	Get the last name of the coach
+	@return Last name
+	*/
+	public function getLastName() {
+		return $this->lastName;
+	}
+
+	/**
+	Get the country of the coach
+	@return The country
+	*/
+	public function getCountry() {
+		return $this->country;
 	}
 
 	/**

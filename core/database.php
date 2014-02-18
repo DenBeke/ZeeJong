@@ -893,7 +893,52 @@ class Database {
 	@exception when no referee found with the given id
 	*/
 	public function getRefereeById($id) {
-		// TODO: Get the object from somewhere
+		//Query
+		$query = "
+			SELECT * FROM Referee
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: multiple players with the same name and country of origin');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no player with the given name and country of origin');
+		}
+
+		//Bind return values
+		$statement->bind_result($id, $firstName, $lastName, $countryId);
+		
+		//Fetch the rows of the return values
+		$statement->fetch();
+
+		//Close the statement
+		$statement->close();
+			
+		//Create new Player object TODO
+		return new Referee($id, $firstName, $lastName, $countryId);
 	}
 	
 	
@@ -1090,7 +1135,52 @@ class Database {
 	@exception when no coach found with the given id
 	*/
 	public function getCoachById($id) {
-		// TODO: Get the object from somewhere
+		//Query
+		$query = "
+			SELECT * FROM Coach
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: multiple players with the same name and country of origin');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no player with the given name and country of origin');
+		}
+
+		//Bind return values
+		$statement->bind_result($id, $firstName, $lastName, $countryId);
+		
+		//Fetch the rows of the return values
+		$statement->fetch();
+
+		//Close the statement
+		$statement->close();
+			
+		//Create new Player object TODO
+		return new Coach($id, $firstName, $lastName, $countryId);
 	}
 
 	/**

@@ -1,30 +1,40 @@
 <?php
+/*
+Referee Class
+*/
 
 
 /**
-@brief Class containing referee data
+@brief Referee Class
 
 The class contains the following information:
-	-id
-	-name
-	-country
+- id
+- name
+- country
 */
-
 class Referee {
-
-
 	private $id;
-	private $name;
+	private $firstName;
+	private $lastName;
 	private $country;
 
 	/**
 	Constructor
-
-	@param id The ID of the referee
+	@param id
 	*/
-	public function __construct($id) {
-
+	public function __construct($id, $firstName, $lastName, $country) {
 		$this->id = $id;
+		$this->firstName = $firstName;
+		$this->lastName = $lastName;
+		$this->country = $country;
+	}
+
+	/**
+	Get the ID of the referee
+	@return id
+	*/
+	public function getId() {
+		return $this->id;
 	}
 
 	/**
@@ -32,30 +42,39 @@ class Referee {
 	@return full name
 	*/
 	public function getName() {
-		// TODO: Get the name from somewhere
-
-		return "";
+		return $this->firstName . ' ' . $this->lastName;
 	}
 
 	/**
-	Returns the id
-
-	@return id
+	Get the first name of the referee
+	@return First name
 	*/
-	public function getId() {
-
-		return $this->id;
+	public function getFirstName() {
+		return $this->firstName;
 	}
 
-    /**
-    String function
+	/**
+	Get the last name of the referee
+	@return Last name
+	*/
+	public function getLastName() {
+		return $this->lastName;
+	}
 
-    @return string
-    */
-    public function __toString() {
-        $output = "ID: $this->id";
-        return $output;
-    }
+	/**
+	Get the country of the referee
+	@return The country
+	*/
+	public function getCountry() {
+		return $this->country;
+	}
+
+	/**
+	String function
+	@return string
+	*/
+	public function __toString() {
+		return "ID: $this->id";
+	}
+
 }
-
-?>
