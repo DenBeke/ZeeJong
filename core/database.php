@@ -1042,6 +1042,22 @@ class Database {
 		
 	}
 	
+	
+	
+	/**
+	Add a new fault to the database
+	This is a yellow card, red card or yellow card after red card.
+	
+	@param id of the player
+	@param id of the match in which the fault occurs
+	@param time in match
+	@param type of the card
+	*/
+	public function addFaultCard($playerId, $matchId, $time, $type) {
+		
+	}
+	
+	
 
 }
 	
