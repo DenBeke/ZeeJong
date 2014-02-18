@@ -6,13 +6,5 @@ Created: February 2014
 
 body {
 	background-color: #ddd;
-}
-
-header {
-	background-color: #fff;
-	border-radius: 10px;
-	width: 500px;
-	margin: auto;
-	padding: 10px;
-	box-shadow: 0 2px 5px #333;
+	padding-top: 60px;
 }
