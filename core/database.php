@@ -123,7 +123,7 @@ class Database {
 		$statement->bind_result($id, $name);
 		
 		//Fetch the rows of the return values
-		$statement->fetch()
+		$statement->fetch();
 
 		//Close the statement		
 		$statement->close();
