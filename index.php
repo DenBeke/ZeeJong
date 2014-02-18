@@ -57,7 +57,15 @@ elseif(PAGE == 'tournament') {
 elseif(PAGE == 'match') {
 	include(dirname(__FILE__) . '/theme/match.php');
 }
-
+elseif(PAGE == 'player') {
+	include(dirname(__FILE__) . '/theme/player.php');
+}
+elseif(PAGE == 'coach') {
+	include(dirname(__FILE__) . '/theme/coach.php');
+}
+elseif(PAGE == 'referee') {
+	include(dirname(__FILE__) . '/theme/referee.php');
+}
 else {
 	include(dirname(__FILE__) . '/theme/error.php');
 }

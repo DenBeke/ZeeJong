@@ -34,6 +34,24 @@ function getObject($pageName) {
 			return $database->getMatchById($matchId);
 		}
 	}
+	elseif ($pageName == 'player') {
+		if(isset($_GET['player'])) {
+			$playerId = intval(htmlspecialchars($_GET['player']));
+			return $database->getPlayerById($playerId);
+		}
+	}
+	elseif ($pageName == 'coach') {
+		if(isset($_GET['coach'])) {
+			$coachId = intval(htmlspecialchars($_GET['coach']));
+			return $database->getCoachById($coachId);
+		}
+	}
+	elseif ($pageName == 'referee') {
+		if(isset($_GET['referee'])) {
+			$refereeId = intval(htmlspecialchars($_GET['referee']));
+			return $database->getRefereeById($refereeId);
+		}
+	}
 }
 
 
