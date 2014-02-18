@@ -10,6 +10,7 @@ require_once(dirname(__FILE__) . '/classes/Bet.php');
 require_once(dirname(__FILE__) . '/classes/Coach.php');
 require_once(dirname(__FILE__) . '/classes/Coaches.php');
 require_once(dirname(__FILE__) . '/classes/Competition.php');
+require_once(dirname(__FILE__) . '/classes/Country.php');
 require_once(dirname(__FILE__) . '/classes/Fault.php');
 require_once(dirname(__FILE__) . '/classes/Goal.php');
 require_once(dirname(__FILE__) . '/classes/match.php');
@@ -84,7 +85,50 @@ class Database {
 	@exception when no country found with the given name
 	*/
 	public function getCountry($name) {
+		//Query
+		$query = "
+			SELECT * FROM Country
+			WHERE name = ?;
+		";
 		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('s', $name)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrup database: multiple countries with the same name');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no country with the given name');
+		}
+
+		//Bind return values
+		$statement->bind_result($id, $name);
+		
+		//Fetch the rows of the return values
+		$statement->fetch()
+
+		//Close the statement		
+		$statement->close();
+			
+		return new Country($id);
 	}
 	
 	
@@ -96,7 +140,41 @@ class Database {
 	@return id of the newly added country or id of existing
 	*/
 	public function addCountry($name) {
+		//Check if the competition isn't already in the database
+		try {
+			return $this->getCountry($name)->getId();
+			 
+		}
+		catch (exception $e) {
+			
+		}
 		
+		
+		//Query
+		$query = "
+			INSERT INTO Country (name)
+			VALUES (?);
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('s', $name)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Close the statement		
+		$statement->close();
+		
+		return $this->getCountry($name)->getId();
 	}
 	
 	
