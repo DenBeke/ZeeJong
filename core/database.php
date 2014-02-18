@@ -922,10 +922,10 @@ class Database {
 	
 		//Check if the correct number of results are returned from the database
 		if($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple players with the same name and country of origin');
+			throw new exception('Corrupt database: multiple referees with the same id');
 		}
 		else if($numberOfResults < 1) {
-			throw new exception('Error, there is no player with the given name and country of origin');
+			throw new exception('Error, there is no referee with the given id');
 		}
 
 		//Bind return values
@@ -1164,10 +1164,10 @@ class Database {
 	
 		//Check if the correct number of results are returned from the database
 		if($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple players with the same name and country of origin');
+			throw new exception('Corrupt database: multiple coaches with the same id');
 		}
 		else if($numberOfResults < 1) {
-			throw new exception('Error, there is no player with the given name and country of origin');
+			throw new exception('Error, there is no coach with the given id');
 		}
 
 		//Bind return values
