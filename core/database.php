@@ -168,7 +168,41 @@ class Database {
 		
 	}
 	
+	/**
+	Get the player with the given id
 	
+	@param id
+	@return player
+	
+	@exception when no player found with the given id
+	*/
+	public function getPlayerById($id) {
+		// TODO: Get the object from somewhere
+	}
+	
+	/**
+	Get the coach with the given id
+	
+	@param id
+	@return coach
+	
+	@exception when no coach found with the given id
+	*/
+	public function getCoachById($id) {
+		// TODO: Get the object from somewhere
+	}
+
+	/**
+	Get the referee with the given id
+	
+	@param id
+	@return referee
+	
+	@exception when no referee found with the given id
+	*/
+	public function getRefereeById($id) {
+		// TODO: Get the object from somewhere
+	}
 	
 	
 	

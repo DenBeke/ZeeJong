@@ -34,6 +34,16 @@ class Player {
 	}
 
 	/**
+	Get the name of the player
+	@return full name
+	*/
+	public function getName() {
+		// TODO: Get the name from somewhere
+
+		return "";
+	}
+
+	/**
 	String function
 	@return string
 	*/

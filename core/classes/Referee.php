@@ -28,6 +28,16 @@ class Referee {
 	}
 
 	/**
+	Get the name of the referee
+	@return full name
+	*/
+	public function getName() {
+		// TODO: Get the name from somewhere
+
+		return "";
+	}
+
+	/**
 	Returns the id
 
 	@return id

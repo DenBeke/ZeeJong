@@ -34,6 +34,16 @@ class Coach {
 	}
 
 	/**
+	Get the name of the coach
+	@return full name
+	*/
+	public function getName() {
+		// TODO: Get the name from somewhere
+
+		return "";
+	}
+
+	/**
 	String function
 	@return string
 	*/
