@@ -92,6 +92,7 @@ KEY `playerId` (`playerId`,`teamId`)
 CREATE TABLE IF NOT EXISTS `PlaysMatchInTeam` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `playerId` int(11) NOT NULL,
+`number` int(11) NOT NULL,
 `teamId` int(11) NOT NULL,
 `matchId` int(11) NOT NULL,
 PRIMARY KEY (`id`),
