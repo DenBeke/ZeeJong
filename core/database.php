@@ -7,6 +7,7 @@ Created: February 2014
 
 require_once(dirname(__FILE__) . '/config.php');
 require_once(dirname(__FILE__) . '/classes/Bet.php');
+require_once(dirname(__FILE__) . '/classes/Card.php');
 require_once(dirname(__FILE__) . '/classes/Coach.php');
 require_once(dirname(__FILE__) . '/classes/Coaches.php');
 require_once(dirname(__FILE__) . '/classes/Competition.php');
@@ -2210,9 +2211,111 @@ class Database {
 	@param time in match
 	@param type of the card
 	*/
-	public function addFaultCard($playerId, $matchId, $time, $type) {
+	public function addFoulCard($playerId, $matchId, $time, $color) {
+
+		//Check if the match isn't already in the database
+		try {
+			return $this->getFoulCard($playerId, $matchId, $time, $color)->getId();
+			 
+		}
+		catch (exception $e) {
+		}
+
+		if(!$this->checkMatchExists($matchId) || !$this->checkPlayerExists($playerId)) {
+
+			return;
+		}
+
+		//Query
+		$query = "
+			INSERT INTO Cards (playerId, matchId, color, time)
+			VALUES (?, ?, ?, ?);
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('iiis', $playerId, $matchId, $color, $time)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		
+		//Keep id of the last inserted row
+		$id = $statement->insert_id; //TODO Check if this always works...
+		
+		//Close the statement		
+		$statement->close();
+		
+		
+		return $id;			
 		
 	}
+
+	public function getFoulCard($playerId, $matchId, $time, $color) {
+
+		//Query
+		$query = "
+			SELECT * FROM `Cards`
+			WHERE playerId = ? AND
+			matchId = ? AND
+			time = ? AND
+			color = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('iisi', $playerId, $matchId, $time, $color)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {		
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: The same foul card occurs multiple times');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no match with the given player, match, time and color');
+		}
+		else {
+
+			//Bind return values
+			$statement->bind_result($id, $playerId, $matchId, $color, $time);
+			
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Player object TODO
+				return new Card($id, $playerId, $matchId, $color, $time);
+				
+				//Close the statement
+				$statement->close();
+				
+			}
+			
+		}
+	}	
 	
 	
 	/**
@@ -2259,6 +2362,7 @@ class Database {
 	}		
 
 }
+
 
 	
 ?>

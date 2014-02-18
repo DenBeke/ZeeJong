@@ -18,6 +18,7 @@ class Card {
 	const yellow = 1;
     const red = 2;
 
+    private $id;
     private $playerId;
     private $matchId;
     private $time;
@@ -30,7 +31,8 @@ class Card {
 	@param time
 	@param type
 	*/
-	public function __construct($playerId, $matchId, $time, $type) {
+	public function __construct($id, $playerId, $matchId, $time, $type) {
+		$this->id = $id;
 		$this->playerId = $playerId;
 		$this->matchId = $matchId;
 		$this->time = $time;
@@ -59,6 +61,14 @@ class Card {
 	*/
 	public function getTime() {
 		return $this->time();
+	}
+
+	/**
+	Get the id
+	@return time
+	*/
+	public function getId() {
+		return $this->id;
 	}
 
 	/**
