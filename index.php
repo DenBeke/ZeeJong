@@ -29,7 +29,7 @@ try {
 
 catch(exception $e) {
 	
-	//$page = 'error';
+	$page = 'error';
 	echo $e->getMessage();
 	
 }
