@@ -603,7 +603,7 @@ class Database {
 	
 		//Check if the correct number of results are returned from the database
 		if($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple referee with the same name and country of origin');
+			throw new exception('Corrupt database: multiple tournaments with the id');
 		}
 		else if($numberOfResults < 1) {
 			
