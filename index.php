@@ -7,27 +7,37 @@ Created: February 2014
 
 require_once(dirname(__FILE__) . '/core/config.php');
 
+
+//Parse the page
+$page = 'home';
+
+if(isset($_GET['page'])) {
+	$page = htmlspecialchars($_GET['page']);
+}
+
+define('PAGE', $page);
+
+
+
+//Include the header template
+include(dirname(__FILE__) . '/theme/header.php');
+
+
+echo '<pre>';
+var_dump($_SERVER);
+echo '</pre>';
+
+
+//Include the correct page template
+if(PAGE == 'home') {
+	include(dirname(__FILE__) . '/theme/home.php');
+}
+else {
+	include(dirname(__FILE__) . '/theme/error.php');
+}
+
+
+//Include the footer template
+include(dirname(__FILE__) . '/theme/footer.php');
+
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Soccer Betting System</title>
-	
-	<!--[if lt IE 9]>
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	
-	<link href="<?php echo SITE_URL ?>style/style.css" rel="stylesheet" type="text/css">
-	<script src="<?php echo SITE_URL ?>js/script.js" type="text/javascript"></script>
-	
-</head>
-<body>
-	
-	<header>
-		<h1>ZeeJong</h1>
-		<h3>Soccer Betting System</h3>
-	</header>
-	
-</body>
-</html>
