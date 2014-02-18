@@ -38,7 +38,7 @@ function get_base_url()
 	return $protocol . $host . $directory;
 }
 
-$config['SITE_URL'] = '\'' . get_base_url . '\'';
+$config['SITE_URL'] = '\'' . get_base_url() . '\'';
 
 ?>
 
