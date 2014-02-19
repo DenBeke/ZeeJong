@@ -2235,7 +2235,7 @@ class Database {
 		else {
 
 			//Bind return values
-			$statement->bind_result($id, $playerId, $teamId, $matchId);
+			$statement->bind_result($id, $playerId, $teamId, $matchId, $number);
 			
 			//Fetch the rows of the return values
 			while ($statement->fetch()) {
