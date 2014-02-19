@@ -121,7 +121,6 @@ class Parser {
 	*/
 	private function parseMatch($url) {
 
-		echo "<em>Match $url</em><br>";
 		$html = file_get_html($url);
 
 		//Add the competition and tournament to the database
@@ -153,6 +152,7 @@ class Parser {
 		$date = $html->find('.middle .details dd', 1)->plaintext;
 		$matchId = $this->database->addMatch($teamIdA, $teamIdB, $scoreA, $scoreB, $refereeId, $date, $tournamentId);
 
+		echo "match: $matchId<br>";
 
 		$teams = array(
 			'teamA' => array(
@@ -321,8 +321,6 @@ class Parser {
 
 };
 
-
-set_time_limit(600);
 
 
 $p = new Parser;
