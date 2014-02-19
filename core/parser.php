@@ -372,6 +372,8 @@ class Parser {
 };
 
 
+set_time_limit(0);
+
 
 $p = new Parser;
 $p->parse();
