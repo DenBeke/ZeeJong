@@ -1905,6 +1905,7 @@ class Database {
 
 		if(!$this->checkTeamExists($teamA) || !$this->checkTeamExists($teamB) || !$this->checkRefereeExists($refereeId) || !$this->checkTournamentExists($tournamentId)) {
 
+			throw new exception('Error creating match, check integrity');
 			return;
 		}
 
@@ -2434,9 +2435,15 @@ class Database {
 		catch (exception $e) {
 		}
 
-		if(!$this->checkMatchExists($matchId) || !$this->checkPlayerExists($playerId)) {
+		if(!$this->checkMatchExists($matchId)) {
 
-			return;
+			throw new exception("Match Id '$matchId' doesn't exist!");
+
+		}
+		elseif(!$this->checkPlayerExists($playerId)) {
+
+			throw new exception("Player Id '$playerId' doesn't exist!");
+
 		}
 
 		//Query

@@ -121,6 +121,7 @@ class Parser {
 	*/
 	private function parseMatch($url) {
 
+		echo "<em>Match $url</em><br>";
 		$html = file_get_html($url);
 
 		//Add the competition and tournament to the database
@@ -150,7 +151,7 @@ class Parser {
 
 		//Add the match to the database
 		$date = $html->find('.middle .details dd', 1)->plaintext;
-		$matchId = $this->database->addMatch($teamA->plaintext, $teamB->plaintext, $scoreA, $scoreB, $refereeId, $date, $tournamentId);
+		$matchId = $this->database->addMatch($teamIdA, $teamIdB, $scoreA, $scoreB, $refereeId, $date, $tournamentId);
 
 
 		$teams = array(
@@ -177,24 +178,32 @@ class Parser {
 					$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
 					$this->database->addPlayerToMatch($playerId, $matchId, $team['id'], $shirtNumber);
 
+					
+					
 					//Add the yellow and red cards
 					$bookings = $row->find('.bookings span');
 					foreach ($bookings as $booking) {
 
+
 						$time = intval($booking->plaintext);
 						$img = $booking->find('img', 0)->getAttribute('src');
-						if ($img == 'http://s1.swimg.net/gsmf/473/img/events/YC.png')
-							$type = Card::yellow;
-						else if ($img == 'http://s1.swimg.net/gsmf/473/img/events/Y2C.png')
-							$type = Card::yellow;
-						else if ($img == 'http://s1.swimg.net/gsmf/473/img/events/RC.png')
+						if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/YC\.png/', $img)) {
+							$type = Card::yellow;	
+						}
+						else if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/Y2C\.png/', $img)) {
+								$type = Card::yellow;
+						}
+						else if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/RC\.png/', $img)) {
 							$type = Card::red;
-						else
-							throw new Exception("Parser found unknown card image: '$img'.");
+						}
+						else {
+							//echo "<em>Parser found unknown card image: $img</em></br>";
+							continue;
+						}
 
-						$this->database->addFaultCard($playerId, $matchId, $time, $type);
-						return;
+						$this->database->addFoulCard($playerId, $matchId, $time, $type);
 					}
+					
 				}
 			}
 
@@ -311,6 +320,13 @@ class Parser {
 	}
 
 };
+
+
+set_time_limit(600);
+
+
+$p = new Parser;
+$p->parse();
 
 
 ?>
