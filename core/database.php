@@ -1952,7 +1952,6 @@ class Database {
 			WHERE teamA = ? AND
 			teamB = ? AND
 			refereeId = ? AND
-			date = ? AND
 			tournamentId = ?;
 		";
 		
@@ -1963,7 +1962,7 @@ class Database {
 		}
 		
 		//Bind parameters
-		if(!$statement->bind_param('iiisi', $teamA, $teamB, $refereeId, $date, $tournamentId)){
+		if(!$statement->bind_param('iiii', $teamA, $teamB, $refereeId, $tournamentId)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
 		
@@ -2158,8 +2157,8 @@ class Database {
 		catch (exception $e) {
 		}
 
-		if(!$this->checkPlaysIn($playerId, $teamId) || !$this->checkMatchExists($matchId)) {
-
+		if(!$this->checkMatchExists($matchId)) {
+			throw new exception("Bad reference: player $playerId, team $teamId, match $matchId");
 			return;
 		}
 
@@ -2271,7 +2270,7 @@ class Database {
 		}
 
 		if(!$this->checkTeamExists($teamId) || !$this->checkPlayerExists($playerId)) {
-
+			throw new exception("Bad reference");
 			return;
 		}
 
