@@ -91,7 +91,17 @@ class Parser {
 		}
 
 		//Download the page
-		$page = file_get_contents($url);
+		$try = 0;
+		$page = FALSE;
+		while ($page == FALSE && $try < 3) {
+		    $page = file_get_contents($url);
+		    $try += 1;
+
+		    if ($page == FALSE) {
+		        usleep(200000);
+		    }
+		}
+
 		if (file_put_contents($filename, $page) == false) {
 			throw new Exception('Failed to create file ' . $filename);
 		}
