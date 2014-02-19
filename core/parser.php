@@ -344,13 +344,29 @@ class Parser {
 
 		$html = $this->loadPage($url);
 
-		$country = $html->find('.first-element .content .fully-padded dd', 2)->plaintext;
+		$properties = $html->find('.first-element .content .fully-padded dt');
+		$values = $html->find('.first-element .content .fully-padded dd');
 
-		$countryId = $this->database->addCountry($country);
+		if (sizeof($properties) != sizeof($values)) {
+			$html->clear();
+			throw new Exception('Table does not have equal amounts of dt and dd tags.');
+		}
 
-		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
+		for($i = 0; $i < count($properties); $i++) {
 
-		return $countryId;
+			if ($properties[$i]->plaintext != 'Country')
+				continue;
+
+			$country = $values[$i]->plaintext;
+			$countryId = $this->database->addCountry($country);
+
+			$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
+
+			return $countryId;
+		}
+
+		$html->clear();
+		throw new Exception('Failed to determine country of team.');
 	}
 
 };
