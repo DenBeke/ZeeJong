@@ -22,6 +22,11 @@ class Parser {
 
 	private $database;
 
+	// Amount of seconds to store cached files.
+	// 0 to always use cache
+	// -1 to never use cache
+	private $ttl = 0;
+
 
 	/**
 	@brief Constructor of the parser object.
@@ -67,13 +72,42 @@ class Parser {
 
 
 	/**
+	Load a page, but take the one from the cache when already loaded.
+
+	@param url of the page
+
+	@return DOM object
+	*/
+	private function loadPage($url) {
+
+		$filename = 'cache/' . md5($url) . '.cache';
+
+		//Try to use the cache
+		if ($this->ttl >= 0 && file_exists($filename)) {
+
+			if ($this->ttl == 0 || time() - filemtime($filename) <= $this->ttl) {
+				return file_get_html($filename);
+			}
+		}
+
+		//Download the page
+		$page = file_get_contents($url);
+		if (file_put_contents($filename, $page) == false) {
+			throw new Exception('Failed to create file ' . $filename);
+		}
+
+		return str_get_html($page);
+	}
+
+
+	/**
 	Parse the competitions in the archive and store the data.
 
 	@param url of the competition
 	*/
 	private function parseCompetition($url) {
 
-		$html = file_get_html($url);
+		$html = $this->loadPage($url);
 
 		//Find all tournaments
 		foreach($html->find('.season a') as $element) {
@@ -99,7 +133,7 @@ class Parser {
 	*/
 	private function parseTournament($url) {
 
-		$html = file_get_html($url);
+		$html = $this->loadPage($url);
 
 		//Find all matches
 		foreach($html->find('.match') as $element) {
@@ -121,7 +155,7 @@ class Parser {
 	*/
 	private function parseMatch($url) {
 
-		$html = file_get_html($url);
+		$html = $this->loadPage($url);
 
 		//Add the competition and tournament to the database
 		$competitionId = $this->database->addCompetition($this->competition);
@@ -178,8 +212,8 @@ class Parser {
 					$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
 					$this->database->addPlayerToMatch($playerId, $matchId, $team['id'], $shirtNumber);
 
-					
-					
+
+
 					//Add the yellow and red cards
 					$bookings = $row->find('.bookings span');
 					foreach ($bookings as $booking) {
@@ -188,10 +222,10 @@ class Parser {
 						$time = intval($booking->plaintext);
 						$img = $booking->find('img', 0)->getAttribute('src');
 						if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/YC\.png/', $img)) {
-							$type = Card::yellow;	
+							$type = Card::yellow;
 						}
 						else if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/Y2C\.png/', $img)) {
-								$type = Card::yellow;
+							$type = Card::yellow;
 						}
 						else if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/RC\.png/', $img)) {
 							$type = Card::red;
@@ -203,7 +237,7 @@ class Parser {
 
 						$this->database->addFoulCard($playerId, $matchId, $time, $type);
 					}
-					
+
 				}
 			}
 
@@ -242,7 +276,7 @@ class Parser {
 	*/
 	private function parseReferee($url) {
 
-		$html = file_get_html($url);
+		$html = $this->loadPage($url);
 
 		$firstName = $html->find('.content .first dd', 0)->plaintext;
 		$lastName = $html->find('.content .first dd', 1)->plaintext;
@@ -264,7 +298,7 @@ class Parser {
 	*/
 	private function parsePlayer($url) {
 
-		$html = file_get_html($url);
+		$html = $this->loadPage($url);
 
 		$firstName = $html->find('.content .first dd', 0)->plaintext;
 		$lastName = $html->find('.content .first dd', 1)->plaintext;
@@ -286,7 +320,7 @@ class Parser {
 	*/
 	private function parseCoach($url) {
 
-		$html = file_get_html($url);
+		$html = $this->loadPage($url);
 
 		$firstName = $html->find('.content .first dd', 0)->plaintext;
 		$lastName = $html->find('.content .first dd', 1)->plaintext;
@@ -308,7 +342,7 @@ class Parser {
 	*/
 	private function findTeamCountry($url) {
 
-		$html = file_get_html($url);
+		$html = $this->loadPage($url);
 
 		$country = $html->find('.first-element .content .fully-padded dd', 2)->plaintext;
 
