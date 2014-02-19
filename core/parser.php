@@ -214,11 +214,20 @@ class Parser {
 		foreach ($teams as $team) {
 			foreach ($team['block']->find('tr') as $row) {
 
+				$number = 0;
+
 				$player = $row->find('.player a', 0);
 				if (sizeof($player) > 0) {
 
+					$number++;
+
 					//Add the player to the database
 					$shirtNumber = $row->find('.shirtnumber', 0)->plaintext;
+					
+					if(intval($shirtNumber) < 1) {
+						$shirtNumber = $number;
+					}
+					
 					$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
 					$this->database->addPlayerToMatch($playerId, $matchId, $team['id'], $shirtNumber);
 
