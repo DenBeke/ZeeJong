@@ -1,5 +1,5 @@
 <?php
-
+require_once(dirname(__FILE__) . '/../config.php');
 
 /**
 @brief Class containing a user
@@ -52,17 +52,128 @@ class User {
 
 	/**
 	Get the ID of the user
+
+	@return the id of the user
 	*/
 	public function getID() {
 		return $this->id;
 	}
+
 	/**
-	Get the screenname of the user
+	Get the username of the user
+
+	@return the username of the user
 	*/
-	public function getScreenName() {
-		$screenName = mysql_query("SELECT screenName FROM secure_login WHERE id = $id"); 
-		return $screenName;
+	public function getUserName() {
+		//Connect to the database
+		$this->link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+		
+		//Check the connection
+		if (mysqli_connect_errno()) {
+			$error = mysqli_connect_error();
+			throw new Exception("Connect failed: $error");
+		}
+		//Query
+		$query = "
+			SELECT username FROM User
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $this->id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: multiple users with same id');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no user with the given id');
+		}
+
+		//Bind return values
+		$statement->bind_result($username);
+		//Fetch the rows of the return values
+		$statement->fetch();
+		//Close the statement		
+		$statement->close();
+		return $username;
 	}
+
+	/**
+	Get the hashed password of the user
+
+	@return the hashed password of the user
+	*/
+	public function getHash() {
+		//Connect to the database
+		$this->link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+		
+		//Check the connection
+		if (mysqli_connect_errno()) {
+			$error = mysqli_connect_error();
+			throw new Exception("Connect failed: $error");
+		}
+		//Query
+		$query = "
+			SELECT password FROM User
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $this->id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: multiple users with same id');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no user with the given id');
+		}
+
+		//Bind return values
+		$statement->bind_result($password);
+		//Fetch the rows of the return values
+		$statement->fetch();
+		//Close the statement		
+		$statement->close();
+		return $password;
+	}
+
+
 }
 
 ?>
