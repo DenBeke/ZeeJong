@@ -374,8 +374,8 @@ class Parser {
 
 		$html = $this->loadPage($url);
 
-		$firstName = $html->find('.content .first dd', 0)->plaintext;
-		$lastName = $html->find('.content .first dd', 1)->plaintext;
+		$firstName = htmlspecialchars($html->find('.content .first dd', 0)->plaintext);
+		$lastName = htmlspecialchars($html->find('.content .first dd', 1)->plaintext);
 		$country = $html->find('.content .first dd', 2)->plaintext;
 
 		$countryId = $this->database->addCountry($country);
