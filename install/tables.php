@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `Competition` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `name` varchar(50) NOT NULL,
 PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
 
 '
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `Cards` (
 `time` datetime NOT NULL,
 PRIMARY KEY (`id`),
 KEY `playerId` (`playerId`,`matchId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
 
 '
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `Goal` (
 `time` datetime NOT NULL,
 PRIMARY KEY (`id`),
 KEY `playerId` (`playerId`,`matchId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
 
 '
@@ -66,7 +66,7 @@ PRIMARY KEY (`id`),
 KEY `teamA` (`teamA`,`teamB`),
 KEY `tournamentId` (`tournamentId`,`refereeId`),
 KEY `scoreId` (`scoreId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
 
 '
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `Player` (
 `lastname` varchar(50) NOT NULL,
 `country` int(11) NOT NULL,
 PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
 
 '
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `PlaysIn` (
 `teamId` int(11) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `playerId` (`playerId`,`teamId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
 
 '
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `PlaysMatchInTeam` (
 `matchId` int(11) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `playerId` (`playerId`,`teamId`,`matchId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
 
 '
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `Referee` (
 `countryId` int(11) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `countryId` (`countryId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
 
 '
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `Score` (
 `teamB` int(11) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `teamA` (`teamA`,`teamB`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
 
 '
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `Team` (
 `country` int(11) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `country` (`country`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
 
 '
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `Tournament` (
 `competitionId` int(11) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `competitionId` (`competitionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
 
 '
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `Country` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `name` varchar(50) NOT NULL,
 PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 '
 );
 
