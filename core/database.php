@@ -22,6 +22,7 @@ require_once(dirname(__FILE__) . '/classes/Referee.php');
 require_once(dirname(__FILE__) . '/classes/Score.php');
 require_once(dirname(__FILE__) . '/classes/Team.php');
 require_once(dirname(__FILE__) . '/classes/Tournament.php');
+require_once(dirname(__FILE__) . '/classes/User.php');
 
 
 error_reporting(E_ALL);
@@ -75,7 +76,87 @@ class Database {
 		
 	}
 	
+	/**
+	Get the user with a given username
 	
+	@param username
+	@return a User object
+	
+	@exception when no user found with the given name
+	*/
+	public function getUser($username) {
+		//Query
+		$query = "
+			SELECT id FROM User
+			WHERE username = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('s', $username)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: multiple users with same username');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no user with the given username');
+		}
+
+		//Bind return values
+		$statement->bind_result($id);
+		
+		//Fetch the rows of the return values
+		$statement->fetch();
+
+		//Close the statement		
+		$statement->close();
+			
+		return new User($id);
+	}
+		
+	/**
+	Register a user with a given username
+	
+	@param username, password,emailaddress
+	@return id of the newly added user
+	*/
+	public function registerUser($username, $salt,$hashedPassword, $emailAddress) {
+		//Query
+		$query = "INSERT INTO User (`username`,`salt`,`password`,`emailAddress`) VALUES (?,?,?,?)";
+
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		//Bind parameters
+		if(!$statement->bind_param('ssss', $username, $salt, $hashedPassword, $emailAddress)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		//Execute statement
+		if (!$statement->execute()) {
+		throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		//Close the statement		
+		$statement->close();
+		return $this->getUser($username)->getId();
+	}
 	
 	/**
 	Get the country with the given name
@@ -1903,7 +1984,7 @@ class Database {
 		catch (exception $e) {
 		}
 
-		if(!$this->checkTeamExists($teamA) || !$this->checkTeamExists($teamB) || !$this->checkRefereeExists($refereeId) || !$this->checkTournamentExists($tournamentId)) {
+		if(!$this->checkTeamExists($teamA) || !$this->checkTeamExists($teamB) || !$this->checkTournamentExists($tournamentId)) {
 
 			throw new exception('Error creating match, check integrity');
 			return;
