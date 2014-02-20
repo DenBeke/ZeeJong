@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `Match` (
 `teamA` int(11) NOT NULL,
 `teamB` int(11) NOT NULL,
 `tournamentId` int(11) NOT NULL,
-`refereeId` int(11) NOT NULL,
+`refereeId` int(11),
 `date` datetime NOT NULL,
 `scoreId` int(11) NOT NULL,
 PRIMARY KEY (`id`),
