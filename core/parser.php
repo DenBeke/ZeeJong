@@ -130,6 +130,7 @@ class Parser {
 			echo "<h2>$tournamentName</h2>";
 
 			$this->parseTournament('http://int.soccerway.com' . $tournamentUrl);
+
 		}
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
@@ -222,10 +223,13 @@ class Parser {
 					$number++;
 
 					//Add the player to the database
-					$shirtNumber = $row->find('.shirtnumber', 0)->plaintext;
+					$shirtNumber = $row->find('.shirtnumber', 0);
 					
-					if(intval($shirtNumber) < 1) {
+					if(!is_object($shirtNumber)) {
 						$shirtNumber = $number;
+					}
+					else {
+						$shirtNumber = intval($shirtNumber->plaintext);
 					}
 					
 					$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
