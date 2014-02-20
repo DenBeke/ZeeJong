@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `Coaches` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `coachId` int(11) NOT NULL,
 `teamId` int(11) NOT NULL,
-`date` date NOT NULL,
+`matchId` int(11) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `coachId` (`coachId`,`teamId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `Cards` (
 `playerId` int(11) NOT NULL,
 `matchId` int(11) NOT NULL,
 `color` tinyint(1) NOT NULL,
-`time` datetime NOT NULL,
+`time` int(3) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `playerId` (`playerId`,`matchId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `Goal` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `playerId` int(11) NOT NULL,
 `matchId` int(11) NOT NULL,
-`time` datetime NOT NULL,
+`time` int(3) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `playerId` (`playerId`,`matchId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `Match` (
 `teamB` int(11) NOT NULL,
 `tournamentId` int(11) NOT NULL,
 `refereeId` int(11),
-`date` datetime NOT NULL,
+`date` int NOT NULL,
 `scoreId` int(11) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `teamA` (`teamA`,`teamB`),
