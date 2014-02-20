@@ -1903,7 +1903,7 @@ class Database {
 		catch (exception $e) {
 		}
 
-		if(!$this->checkTeamExists($teamA) || !$this->checkTeamExists($teamB) || !$this->checkRefereeExists($refereeId) || !$this->checkTournamentExists($tournamentId)) {
+		if(!$this->checkTeamExists($teamA) || !$this->checkTeamExists($teamB) || !$this->checkTournamentExists($tournamentId)) {
 
 			throw new exception('Error creating match, check integrity');
 			return;
