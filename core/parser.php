@@ -182,7 +182,6 @@ class Parser {
 		}
 		else {
 			$refereeId = NULL;
-			echo '<em>No referee find</em>';
 		}
 
 		//Find the final score
