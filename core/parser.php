@@ -102,6 +102,10 @@ class Parser {
 		    }
 		}
 
+		if ($page == FALSE) {
+		    throw new Exception('Failed to load ' . $url);
+		}
+
 		if (file_put_contents($filename, $page) == false) {
 			throw new Exception('Failed to create file ' . $filename);
 		}
