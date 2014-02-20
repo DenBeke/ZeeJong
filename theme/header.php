@@ -49,11 +49,24 @@ Created: February 2014
 					</ul>
 				  </li>
 				</ul>
-				<form class="navbar-form pull-right">
-				  <input class="span2" type="text" placeholder="Email">
-				  <input class="span2" type="password" placeholder="Password">
-				  <button type="submit" class="btn">Sign in</button>
-				</form>
+				<?php
+				require_once(dirname(__FILE__) . '/../core/database.php');	// Require the database file
+				require_once(dirname(__FILE__) . '/../core/classes/User.php');	// We need the user class file
+				session_start();
+				$d = new Database;
+				if(!isset($_SESSION['userID'])||!$d->doesUserExist($_SESSION['userID'])) {
+					echo 
+						'<form class="navbar-form pull-right" id="login" action="core/login.php" method="post">
+						 <input name="username" class="span2" type="text" placeholder="Username" id="username">
+						 <input name="password" class="span2" type="password" placeholder="Password" id="password">
+						 <button type="submit" name="submit" value="login" class="btn">Sign in</button>
+						</form>';
+				} else {
+					$user = new User($_SESSION['userID']);
+					echo "Hi ";
+					echo $user->getUserName();
+				}
+				?>
 			  </div><!--/.nav-collapse -->
 			</div>
 		  </div>
