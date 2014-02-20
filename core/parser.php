@@ -86,43 +86,66 @@ class Parser {
 	*/
 	public function parsePlayersInTeams() {
 
-	    //Load the list of urls
-	    $file_contents = file_get_contents('cache/teams_url_list.cache');
-	    if ($file_contents == FALSE) {
-	        throw new Exception('Failed to open cache/teams_url_list.cache');
-	    }
+		//Load the list of urls
+		$file_contents = file_get_contents('cache/teams_url_list.cache');
+		if ($file_contents == FALSE) {
+			throw new Exception('Failed to open cache/teams_url_list.cache');
+		}
 
-	    //Loop over the urls and find the players
-	    $url_list = explode("\n", $file_contents);
-	    foreach ($url_list as $url) {
+		//Loop over the urls and find the players
+		$url_list = explode("\n", $file_contents);
+		foreach ($url_list as $url) {
 
-	        echo "url: $url<br>";
-	        $html = $this->loadPage($url);
+			$html = $this->loadPage($url);
 
-	        $countryId = $this->findTeamCountry($url);
-	        $teamName = $html->find('#subheading h1', 0)->plaintext;
-	        $teamId = $this->database->addTeam($teamName, $countryId);
+			$countryId = $this->findTeamCountry($url);
+			$teamName = $html->find('#subheading h1', 0)->plaintext;
+			$teamId = $this->database->addTeam($teamName, $countryId);
 
-	        $rows = $html->find('.squad-container tr');
-	        foreach ($rows as $row) {
+			$table = $html->find('.squad-container table', 0);
+			foreach ($table->children() as $table_row) {
 
-	            $player = $row->find('td a', 1);
-	            if (is_object($player)) {
-	                echo $player->plaintext . '<br>';
-	                $playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
-	                $this->database->addPlayerToTeam($playerId, $teamId);
-	            }
+				if ($table_row->tag == 'thead') {
 
-	            $player = $row->find('td a', 3);
-	            if (is_object($player)) {
-	                $playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
-	                $this->database->addPlayerToTeam($playerId, $teamId);
-	            }
-	        }
+					if (trim($table_row->plaintext) == 'Coach') {
 
-	        $html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
-	    }
-    }
+						// Parse the coach ($table_row->next_sibling())
+
+						if ($table_row->next_sibling() == null) {
+							throw new Exception('Head coach was found but not its body?');
+						}
+
+						if ($table_row->next_sibling()->next_sibling() != null) {
+							throw new Exception('Table contains data after coach. Code has to be improved.');
+						}
+
+						break;
+					}
+				}
+
+				if ($table_row->tag == 'tbody') {
+
+					$rows = $table_row->find('tr');
+					foreach ($rows as $row) {
+
+						$player = $row->find('td a', 1);
+						if (is_object($player)) {
+							$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
+							$this->database->addPlayerToTeam($playerId, $teamId);
+						}
+
+						$player = $row->find('td a', 3);
+						if (is_object($player)) {
+							$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
+							$this->database->addPlayerToTeam($playerId, $teamId);
+						}
+					}
+				}
+			}
+
+			$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
+		}
+	}
 
 
 
@@ -149,16 +172,16 @@ class Parser {
 		$try = 0;
 		$page = FALSE;
 		while ($page == FALSE && $try < 3) {
-		    $page = file_get_contents($url);
-		    $try += 1;
+			$page = file_get_contents($url);
+			$try += 1;
 
-		    if ($page == FALSE) {
-		        usleep(200000);
-		    }
+			if ($page == FALSE) {
+				usleep(200000);
+			}
 		}
 
 		if ($page == FALSE) {
-		    throw new Exception('Failed to load ' . $url);
+			throw new Exception('Failed to load ' . $url);
 		}
 
 		if (file_put_contents($filename, $page) == false) {
