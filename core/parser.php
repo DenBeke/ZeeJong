@@ -47,12 +47,12 @@ class Parser {
 				'name' => 'World Cup',
 				'url' => 'http://int.soccerway.com/international/world/world-cup/c72/archive/?ICID=PL_3N_06'
 			),
-
+			
 			'eu' => array(
 				'name' => 'European Championship',
 				'url' => 'http://int.soccerway.com/international/europe/european-championships/c25/archive/?ICID=PL_3N_05'
 			),
-
+			
 			'olympics' => array(
 				'name' => 'Olympics',
 				'url' => 'http://int.soccerway.com/international/world/olympics/c221/archive/?ICID=PL_3N_04'
@@ -173,7 +173,13 @@ class Parser {
 		$tournamentId = $this->database->addTournament($this->tournament, $competitionId);
 
 		//Find the referee
-		$refereeId = $this->parseReferee('http://int.soccerway.com' . $html->find('.referee', 0)->href);
+		if(is_object($html->find('.referee', 0))) {
+			$refereeId = $this->parseReferee('http://int.soccerway.com' . $html->find('.referee', 0)->href);
+		}
+		else {
+			$refereeId = NULL;
+			echo '<em>No referee find</em>';
+		}
 
 		//Find the final score
 		$score = $html->find('#subheading .bidi', 0)->plaintext;
@@ -213,6 +219,11 @@ class Parser {
 
 		//Find all players and add them to the database
 		foreach ($teams as $team) {
+		
+			if(!is_object($team['block'])) {
+				continue;
+			}
+		
 			foreach ($team['block']->find('tr') as $row) {
 
 				$number = 0;
