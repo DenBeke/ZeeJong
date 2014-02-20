@@ -280,7 +280,8 @@ class Parser {
 
 			//Also add the coach
 			$coach = $team['block']->find('tr a', -1);
-			$this->parseCoach('http://int.soccerway.com' . $coach->href);
+			$coachId = $this->parseCoach('http://int.soccerway.com' . $coach->href);
+			$this->database->addCoaches($coachId, $team['id'], $matchId);
 		}
 
 		//Find the goals

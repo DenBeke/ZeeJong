@@ -1275,7 +1275,7 @@ class Database {
 
 	@exception when the team or coach does not exist
 	*/	
-	public function addCoaches($coachId, $teamId, $date) {
+	public function addCoaches($coachId, $teamId, $matchId) {
 
 		try {
 
@@ -1283,7 +1283,7 @@ class Database {
 
 				//Check if the coaches relation isn't already in the database
 				try {
-					return $this->getCoaches($coachId, $teamId, $date)->getId();
+					return $this->getCoaches($coachId, $teamId, $matchId)->getId();
 					 
 				}
 				catch (exception $e) {
@@ -1293,7 +1293,7 @@ class Database {
 				
 				//Query
 				$query = "
-					INSERT INTO Coaches (coachId, teamId, date)
+					INSERT INTO Coaches (coachId, teamId, matchId)
 					VALUES (?, ?, ?);
 				";
 				
@@ -1303,7 +1303,7 @@ class Database {
 				}
 				
 				//Bind parameters
-				if(!$statement->bind_param('sss', $coachId, $teamId, $date)){
+				if(!$statement->bind_param('iii', $coachId, $teamId, $matchId)){
 					throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 				}
 				
@@ -1346,14 +1346,14 @@ class Database {
 	
 	@exception when no coach found with the given name and country
 	*/
-	public function getCoaches($coachId, $teamId, $date) {
+	public function getCoaches($coachId, $teamId, $matchId) {
 		
 		//Query
 		$query = "
 			SELECT * FROM Coaches
 			WHERE coachId = ? AND
 			teamId = ? AND
-			date = ?;
+			matchId = ?;
 		";
 		
 		//Prepare statement
@@ -1362,7 +1362,7 @@ class Database {
 		}
 		
 		//Bind parameters
-		if(!$statement->bind_param('sss', $coachId, $teamId, $date)){
+		if(!$statement->bind_param('sss', $coachId, $teamId, $matchId)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
 		
@@ -1379,10 +1379,10 @@ class Database {
 	
 		//Check if the correct number of results are returned from the database
 		if($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple coaches relations with the same team, coach and date');
+			throw new exception('Corrupt database: multiple coaches relations with the same team, coach and match');
 		}
 		else if($numberOfResults < 1) {
-			throw new exception('Error, there is no coaches relation with the given team, coach and date');
+			throw new exception('Error, there is no coaches relation with the given team, coach and match');
 		}
 		else {
 			
@@ -1393,7 +1393,7 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Coach object TODO
-				return new Coaches($id, $coachId, $teamId, $date);
+				return new Coaches($id, $coachId, $teamId, $matchId);
 				
 				//Close the statement		
 				$statement->close();
