@@ -41,16 +41,29 @@ class Login {
 
 
 	public function login($username, $password) {
+		session_start();
 		$d = new Database;
-		$user = $d->getUser($username);
-		if($this->hashPassword($password,$user->getHash()) == $user->getHash()){
-			echo "User logged in";
+		if($d->doesUsernameExist($username)){
+			$user = $d->getUser($username);
+			if($this->hashPassword($password,$user->getHash()) == $user->getHash()){
+				echo "User logged in";
+				session_regenerate_id();
+				$_SESSION['userID'] = $user->getID();
+				session_write_close();
+				header('Location: ../');
+			}
+			else{
+				echo "Wrong password";
+			}
+		}else{
+			echo "User does not exist";
 		}
-		
 	}
 }
 $l = new Login;
-$l->login('Alexander','passw');
+$username=$_POST['username'];
+$password=$_POST['password']; 
+$l->login($username,$password);
 
 ?>
 

@@ -76,11 +76,103 @@ class Database {
 		
 	}
 	
+
+
+	/**
+	Test whether a specific username exists
+	
+	@param the username to test
+	
+	@return boolean
+	*/
+	public function doesUserNameExist($username) {
+		//Query
+		$query = "
+			SELECT id FROM User
+			WHERE username = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('s', $username)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: multiple users with same username');
+		}
+		else if($numberOfResults < 1) {
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+	/**
+	Test whether a specific user exists
+	
+	@param the username to test
+	
+	@return boolean
+	*/
+	public function doesUserExist($id) {
+		//Query
+		$query = "
+			SELECT username FROM User
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('s', $id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: multiple users with same username');
+		}
+		else if($numberOfResults < 1) {
+			return false;
+		}else{
+			return true;
+		}
+	}
+
 	/**
 	Get the user with a given username
 	
 	@param username
-	@return a User object
+	@return a User object or a user object with id -1 if no user with given username
 	
 	@exception when no user found with the given name
 	*/
@@ -116,7 +208,7 @@ class Database {
 			throw new exception('Corrupt database: multiple users with same username');
 		}
 		else if($numberOfResults < 1) {
-			throw new exception('Error, there is no user with the given username');
+			throw new exception('Error, there is no user with the given id');
 		}
 
 		//Bind return values
