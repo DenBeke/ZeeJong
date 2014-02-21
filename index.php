@@ -66,6 +66,12 @@ elseif(PAGE == 'coach') {
 elseif(PAGE == 'referee') {
 	include(dirname(__FILE__) . '/theme/referee.php');
 }
+elseif(PAGE== 'register') {
+	include(dirname(__FILE__) . '/theme/register.php');
+}
+elseif(PAGE== 'registerSuccess') {
+	include(dirname(__FILE__) . '/theme/registrationSuccess.php');
+}
 else {
 	include(dirname(__FILE__) . '/theme/error.php');
 }
