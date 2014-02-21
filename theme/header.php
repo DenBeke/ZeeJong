@@ -48,18 +48,18 @@ Created: February 2014
 					  <li><a href="#">...</a></li>
 					</ul>
 				  </li>
+				  
+				</ul>
+				
 				<?php
-				require_once(dirname(__FILE__) . '/../core/database.php');	// Require the database file
-				require_once(dirname(__FILE__) . '/../core/classes/User.php');	// We need the user class file
-				session_start();
-				$d = new Database;
 				if(!isset($_SESSION['userID'])||!$d->doesUserExist($_SESSION['userID'])) {
 					require_once(dirname(__FILE__) . '/loginForm.php');
-				} else {
+				}
+				else {
 					require_once(dirname(__FILE__) . '/headerLoggedIn.php');
 				}
 				?>
-				</ul>
+				
 				
 			  </div><!--/.nav-collapse -->
 			</div>

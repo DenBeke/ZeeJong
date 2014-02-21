@@ -55,4 +55,12 @@ function getObject($pageName) {
 }
 
 
+/**
+Hash a password with a given salt
+*/
+function hashPassword($password,$salt) {
+	return hash('sha256', $password . $salt);
+}
+
+
 ?>

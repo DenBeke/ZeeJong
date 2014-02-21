@@ -4,9 +4,14 @@ Index file for Betting System
 
 Created: February 2014
 */
+session_start();
 
+require_once(dirname(__FILE__) . '/core/database.php');	// Require the database file
+require_once(dirname(__FILE__) . '/core/classes/User.php');	// We need the user class file
 require_once(dirname(__FILE__) . '/core/config.php');
 require_once(dirname(__FILE__) . '/core/functions.php');
+
+$d = new Database;
 
 
 //Create database
