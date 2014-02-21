@@ -284,7 +284,7 @@ class Parser {
 		$teamIdB = $this->database->addTeam($teamB->plaintext, $countryIdTeamB);
 
 		//Add the match to the database
-		$date = $html->find('.middle .details dd', 1)->plaintext;
+		$date = strtotime($html->find('.middle .details dd', 1)->plaintext);
 		$matchId = $this->database->addMatch($teamIdA, $teamIdB, $scoreA, $scoreB, $refereeId, $date, $tournamentId);
 
 		echo "match: $matchId<br>";
@@ -337,7 +337,7 @@ class Parser {
 					foreach ($bookings as $booking) {
 
 
-						$time = intval($booking->plaintext);
+						$time = strtotime(intval($booking->plaintext));
 						$img = $booking->find('img', 0)->getAttribute('src');
 						if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/YC\.png/', $img)) {
 							$type = Card::yellow;
@@ -373,7 +373,7 @@ class Parser {
 			foreach ($rawGoals->find('.player') as $player) {
 				if(sizeof($player->find('.minute', 0)) > 0) {
 					$playerName = $player->find('a', 0);
-					$time = $player->find('.minute', 0)->plaintext;
+					$time = strtotime($player->find('.minute', 0)->plaintext);
 					$goals[intval($time)] = $playerName;
 				}
 			}
