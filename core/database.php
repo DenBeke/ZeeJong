@@ -445,7 +445,7 @@ class Database {
 		}
 		
 		//Bind parameters
-		if(!$statement->bind_param('s', $id)){
+		if(!$statement->bind_param('i', $id)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
 		
@@ -1132,7 +1132,6 @@ class Database {
 			 
 		}
 		catch (exception $e) {
-			echo '?';
 		}
 		
 		
@@ -1454,7 +1453,7 @@ class Database {
 		}
 		
 		//Bind parameters
-		if(!$statement->bind_param('sss', $coachId, $teamId, $matchId)){
+		if(!$statement->bind_param('iii', $coachId, $teamId, $matchId)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
 		
@@ -1516,7 +1515,6 @@ class Database {
 		}
 		catch (exception $e) {
 
-			echo '?';
 		}
 		
 		//Query
@@ -1958,7 +1956,7 @@ class Database {
 		}
 		
 		//Bind parameters
-		if(!$statement->bind_param('iis', $playerId, $matchId, $time)){
+		if(!$statement->bind_param('iii', $playerId, $matchId, $time)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
 		
@@ -2006,7 +2004,7 @@ class Database {
 		}
 		
 		//Bind parameters
-		if(!$statement->bind_param('isi', $playerId, $time, $matchId)){
+		if(!$statement->bind_param('iii', $playerId, $time, $matchId)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
 		
@@ -2097,7 +2095,7 @@ class Database {
 		}
 		
 		//Bind parameters
-		if(!$statement->bind_param('iiiisi', $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId)){
+		if(!$statement->bind_param('iiiiii', $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
 		
@@ -2337,8 +2335,8 @@ class Database {
 
 		//Query
 		$query = "
-			INSERT INTO `PlaysMatchInTeam` (playerId, teamId, matchId)
-			VALUES (?, ?, ?);
+			INSERT INTO `PlaysMatchInTeam` (playerId, teamId, matchId, number)
+			VALUES (?, ?, ?, ?);
 		";
 		
 		//Prepare statement
@@ -2347,7 +2345,7 @@ class Database {
 		}
 		
 		//Bind parameters
-		if(!$statement->bind_param('iii', $playerId, $teamId, $matchId)){
+		if(!$statement->bind_param('iiii', $playerId, $teamId, $matchId, $number)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
 		
@@ -2630,7 +2628,7 @@ class Database {
 		}
 		
 		//Bind parameters
-		if(!$statement->bind_param('iiis', $playerId, $matchId, $color, $time)){
+		if(!$statement->bind_param('iiii', $playerId, $matchId, $color, $time)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
 		
@@ -2668,7 +2666,7 @@ class Database {
 		}
 		
 		//Bind parameters
-		if(!$statement->bind_param('iisi', $playerId, $matchId, $time, $color)){
+		if(!$statement->bind_param('iiii', $playerId, $matchId, $time, $color)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
 		
@@ -2754,7 +2752,6 @@ class Database {
 	}		
 
 }
-
 
 	
 ?>
