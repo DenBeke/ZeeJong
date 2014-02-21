@@ -10,3 +10,4 @@ Created: February 2014
 <input name="password" class="span2" type="password" placeholder="Password" id="password">
 <button type="submit" name="submit" value="login" class="btn">Sign in</button>
 </form>
+<li><a href="?page=register">Register</a></li>

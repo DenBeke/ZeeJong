@@ -54,9 +54,14 @@ class Register {
 		$salt = $this->generateSalt();
 		$hashedPassword = $this->hashPassword($password,$salt);
 		$id = $d->registerUser($username, $salt,$hashedPassword, $emailAddress);
+		header('Location: ../?page=registerSuccess');
 	}
 }
 
 $r = new Register;
-$r->registerUser('Alexander','passw','test@test.com');
+$username=$_POST['username'];
+$password=$_POST['password']; 
+$emailAddress=$_POST['email']; 
+$r->registerUser($username,$password,$emailAddress);
+
 ?>
