@@ -172,12 +172,70 @@ class User {
 		$statement->close();
 		return $password;
 	}
+	
+	
+	
+	
+	
+	/**
+	Get the salt of the user
+	
+	@return the salt password of the user
+	*/
+	public function getSalt() {
+		//Connect to the database
+		$this->link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+		
+		//Check the connection
+		if (mysqli_connect_errno()) {
+			$error = mysqli_connect_error();
+			throw new Exception("Connect failed: $error");
+		}
+		//Query
+		$query = "
+			SELECT salt FROM User
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $this->id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: multiple users with same id');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no user with the given id');
+		}
+	
+		//Bind return values
+		$statement->bind_result($password);
+		//Fetch the rows of the return values
+		$statement->fetch();
+		//Close the statement		
+		$statement->close();
+		return $password;
+	}
+	
 
 
 }
 
 ?>
-
-
-
-
