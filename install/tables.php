@@ -148,6 +148,18 @@ CREATE TABLE IF NOT EXISTS `Country` (
 `name` varchar(50) NOT NULL,
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+',
+
+
+'
+CREATE TABLE IF NOT EXISTS `User` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`username` varchar(50) NOT NULL,
+`password` varchar(128) NOT NULL,
+`salt` varchar(128) NOT NULL,
+`emailAddress` varchar(50) NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB ;
 '
 );
 
