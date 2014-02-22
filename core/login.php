@@ -9,7 +9,14 @@ require_once(dirname(__FILE__) . '/functions.php');
 
 
 
+/**
+Try to login with the given username and password
 
+@param username
+@param password
+
+@return true (login succeded) / false (wrong login details)
+*/
 function login($username, $password) {
 	$d = new Database;
 	if($d->doesUsernameExist($username)){
@@ -18,31 +25,16 @@ function login($username, $password) {
 			session_regenerate_id();
 			$_SESSION['userID'] = $user->getID();
 			session_write_close();
-			header('Location: ../');
+			return true;
 		}
 		else{
-			echo "Wrong password";
+			return false;
 		}
 	}
 	else{
-		echo "User does not exist";
+		return false;
 	}
 }
 
 
-try {
-
-
-	$username = $_POST['username'];
-	$password = $_POST['password']; 
-	
-	login($username,$password);
-
-}
-
-catch (exception $exception) {
-	echo "Database Error";
-}
-
 ?>
-
