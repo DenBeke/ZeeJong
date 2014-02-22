@@ -10,6 +10,7 @@ require_once(dirname(__FILE__) . '/core/database.php');	// Require the database 
 require_once(dirname(__FILE__) . '/core/classes/User.php');	// We need the user class file
 require_once(dirname(__FILE__) . '/core/config.php');
 require_once(dirname(__FILE__) . '/core/functions.php');
+require_once(dirname(__FILE__) . '/core/login.php');
 
 $d = new Database;
 
@@ -41,6 +42,34 @@ catch(exception $e) {
 
 
 define('PAGE', $page);
+
+
+
+//Check for login details
+if(PAGE == 'login') {
+	
+	if(!isset($_POST['username']) or !isset($_POST['password'])) {
+		define('LOGIN_MESSAGE', 'Please provide username and password');
+		define('LOGGED_IN', false);
+	}
+	else {
+	
+		$username = htmlspecialchars($_POST['username']);
+		$password = htmlspecialchars($_POST['password']); 
+		
+		if(login($username,$password)) {
+			define('LOGIN_MESSAGE', "Hi, $username!");
+			define('LOGGED_IN', true);
+		}
+		else {
+			define('LOGIN_MESSAGE', 'Wrong username or password');
+			define('LOGGED_IN', false);
+		}
+		
+	}
+	
+}
+
 
 
 
@@ -76,6 +105,9 @@ elseif(PAGE== 'register') {
 }
 elseif(PAGE== 'registerSuccess') {
 	include(dirname(__FILE__) . '/theme/registrationSuccess.php');
+}
+elseif(PAGE== 'login') {
+	include(dirname(__FILE__) . '/theme/login.php');
 }
 else {
 	include(dirname(__FILE__) . '/theme/error.php');

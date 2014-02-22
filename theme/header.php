@@ -35,9 +35,9 @@ Created: February 2014
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			  </button>
-			  <a class="brand" href="#">ZeeJong</a>
+			  <a class="brand" href="<?php echo SITE_URL; ?>">ZeeJong</a>
 			  <div class="nav-collapse collapse">
-				<ul class="nav">
+				<ul class="nav navbar-nav navbar-left">
 				  <li class="active"><a href="#">Upcomming Events</a></li>
 				  <li><a href="#">Players</a></li>
 				  <li class="dropdown">
