@@ -21,6 +21,16 @@ Created: February 2014
 	<script src="<?php echo SITE_URL ?>js/jquery-1.11.0.min.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/script.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/bootstrap.js" type="text/javascript"></script>
+	
+	
+	<?php
+	if(PAGE == 'login' and $login->loggedIn == true) {
+	?>
+	<meta http-equiv="refresh" content="3; url=<?php echo SITE_URL; ?>" />
+	<?php
+	}
+	?>
+	
 
 </head>
 <body>
@@ -52,11 +62,29 @@ Created: February 2014
 				</ul>
 				
 				<?php
-				if(!isset($_SESSION['userID'])||!$d->doesUserExist($_SESSION['userID'])) {
-					require_once(dirname(__FILE__) . '/loginForm.php');
+				if(!$login->loggedIn) {
+					?>
+					
+					<form class="navbar-form pull-right" id="login" action="<?php echo SITE_URL; ?>?page=login" method="post">
+						<input name="username" class="span2" type="text" placeholder="Username" id="username">
+						<input name="password" class="span2" type="password" placeholder="Password" id="password">
+						
+						<button type="submit" name="submit" value="login" class="btn">Sign in</button>
+						
+						<a href="<?php echo SITE_URL; ?>?page=register" class="btn">Register</a>
+					</form>
+					
+					<?php
 				}
 				else {
-					require_once(dirname(__FILE__) . '/headerLoggedIn.php');
+					?>
+					
+					<form class="navbar-form pull-right" id="login">
+						<a href="?page=configPanel" class="btn"><?php echo $login->user->getUserName(); ?></a>
+						<a href="<?php echo SITE_URL; ?>core/logout.php" class="btn">Logout</a>
+					</form>
+					
+					<?php
 				}
 				?>
 				
