@@ -5,16 +5,44 @@ Template part for register page
 Created: February 2014
 */
 ?>
+<h1>Sign up</h1>
 <div class="container">
-	<form class="form-signin" role="form" action="core/register.php" method="post" id="register">
-		<h2 class="form-signin-heading">Register</h2>
-		<input name="username" type="username" class="form-control" placeholder="Username" required autofocus>
-		<input name="email" type="email" class="form-control" placeholder="Email address" required autofocus>
-		<input name="password" type="password" class="form-control" placeholder="Password" required>
-		<label class="checkbox">
-		<button type="submit" name="submit" value="login" class="btn">Register</button>
-	</form>
-</div> <!-- /container -->
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+<div class="well">
+      <form id="signup" class="form-horizontal" method="post" action="core/register.php">
+		<div class="control-group">
+	        <label class="control-label">Username</label>
+			<div class="controls">
+			    <div class="input-prepend">
+				<span class="add-on"><i class="icon-user"></i></span>
+					<input type="text" class="input-xlarge" id="username" name="username" placeholder="Username">
+				</div>
+			</div>
+		</div>
+		<div class="control-group">
+	        <label class="control-label">Email Address</label>
+			<div class="controls">
+			    <div class="input-prepend">
+				<span class="add-on"><i class="icon-envelope"></i></span>
+					<input type="email" class="input-xlarge" id="email" name="email" placeholder="Email Address">
+				</div>
+			</div>
+		</div>
+		<div class="control-group">
+	        <label class="control-label">Password</label>
+			<div class="controls">
+			    <div class="input-prepend">
+				<span class="add-on"><i class="icon-lock"></i></span>
+					<input type="Password" class="input-xlarge" id="password" name="password" placeholder="Password">
+				</div>
+			</div>
+		</div>
+		<div class="control-group">
+		<label class="control-label"></label>
+	      <div class="controls">
+	       <button type="submit" class="btn btn-success" >Register</button>
+
+	      </div>
+	</div>
+	  </form>
+   </div>
+</div>
