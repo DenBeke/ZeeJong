@@ -2591,6 +2591,18 @@ class Database {
 		//Close the statement		
 		$statement->close();
 	}	
+
+
+	/**
+	Clear the PlaysIn table
+	*/
+	public function clearPlaysInTable() {
+
+		if (!$this->link->query("TRUNCATE TABLE PlaysIn")) {
+			throw new exception('Failed to clear the PlaysIn table');
+		}
+	}
+
 	
 	/**
 	Add a new fault to the database

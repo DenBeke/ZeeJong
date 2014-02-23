@@ -88,6 +88,8 @@ class Parser {
 	*/
 	public function parsePlayersInTeams() {
 
+		$this->database->clearPlaysInTable();
+
 		//Load the list of urls
 		$file_contents = file_get_contents('cache/teams_url_list.cache');
 		if ($file_contents == FALSE) {
