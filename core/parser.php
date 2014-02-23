@@ -35,6 +35,8 @@ class Parser {
 	*/
 	public function __construct() {
 		$this->database = new Database();
+
+		date_default_timezone_set('Europe/Brussels');
 	}
 
 
@@ -336,8 +338,7 @@ class Parser {
 					$bookings = $row->find('.bookings span');
 					foreach ($bookings as $booking) {
 
-
-						$time = strtotime(intval($booking->plaintext));
+						$time = intval($booking->plaintext);
 						$img = $booking->find('img', 0)->getAttribute('src');
 						if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/YC\.png/', $img)) {
 							$type = Card::yellow;
@@ -373,7 +374,7 @@ class Parser {
 			foreach ($rawGoals->find('.player') as $player) {
 				if(sizeof($player->find('.minute', 0)) > 0) {
 					$playerName = $player->find('a', 0);
-					$time = strtotime($player->find('.minute', 0)->plaintext);
+					$time = $player->find('.minute', 0)->plaintext;
 					$goals[intval($time)] = $playerName;
 				}
 			}
