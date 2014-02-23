@@ -12,8 +12,6 @@ require_once(dirname(__FILE__) . '/core/config.php');
 require_once(dirname(__FILE__) . '/core/functions.php');
 require_once(dirname(__FILE__) . '/core/login.php');
 
-$d = new Database;
-
 
 //Create database
 $database = new Database;
@@ -45,31 +43,8 @@ define('PAGE', $page);
 
 
 
-//Check for login details
-if(PAGE == 'login') {
-	
-	if(!isset($_POST['username']) or !isset($_POST['password'])) {
-		define('LOGIN_MESSAGE', 'Please provide username and password');
-		define('LOGGED_IN', false);
-	}
-	else {
-	
-		$username = htmlspecialchars($_POST['username']);
-		$password = htmlspecialchars($_POST['password']); 
-		
-		if(login($username,$password)) {
-			define('LOGIN_MESSAGE', "Hi, $username!");
-			define('LOGGED_IN', true);
-		}
-		else {
-			define('LOGIN_MESSAGE', 'Wrong username or password');
-			define('LOGGED_IN', false);
-		}
-		
-	}
-	
-}
-
+//Create login controller
+$login = new Login;
 
 
 
@@ -109,7 +84,7 @@ elseif(PAGE== 'registerSuccess') {
 elseif(PAGE== 'login') {
 	include(dirname(__FILE__) . '/theme/login.php');
 }
-elseif(PAGE== 'configPanel'&&!(!isset($_SESSION['userID'])||!$d->doesUserExist($_SESSION['userID']))) {
+elseif(PAGE== 'configPanel') {
 	include(dirname(__FILE__) . '/theme/configPanel.php');
 }
 else {
