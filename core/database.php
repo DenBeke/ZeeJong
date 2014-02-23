@@ -1680,18 +1680,20 @@ class Database {
 	/**
 	Add a new player to the database
 	
-	NEED TO ADD ALL INFORMATION
-	
 	@param first name
 	@param last name
-	@param countryId
+	@param country id
+	@param date of birth
+	@param height
+	@param weight
+
 	@return id of the newly added player or id of existing
 	*/
-	public function addPlayer($firstName, $lastName, $countryId) {
+	public function addPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight) {
 	
 		//Check if the player isn't already in the database
 		try {
-			return $this->getPlayer($firstName, $lastName, $countryId)->getId();
+			return $this->getPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight)->getId();
 			 
 		}
 		catch (exception $e) {
@@ -1699,8 +1701,8 @@ class Database {
 		
 		//Query
 		$query = "
-			INSERT INTO Player (firstname, lastname, country)
-			VALUES (?, ?, ?);
+			INSERT INTO Player (firstname, lastname, country, dateOfBirth, height, weight)
+			VALUES (?, ?, ?, ?, ?, ?);
 		";
 		
 		//Prepare statement
@@ -1709,7 +1711,7 @@ class Database {
 		}
 		
 		//Bind parameters
-		if(!$statement->bind_param('ssi', $firstName, $lastName, $countryId)){
+		if(!$statement->bind_param('ssiiii', $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
 		
@@ -1733,15 +1735,18 @@ class Database {
 	/**
 	Get the player with the given name and country
 	
-	@param firstName
-	@param lastName
-	@param countryId
+	@param first name
+	@param last name
+	@param country id
+	@param date of birth
+	@param height
+	@param weight
 
 	@return player
 	
-	@exception when no player found with the given name and country
+	@exception when no player found with the given name, country and date of birth
 	*/
-	public function getPlayer($firstName, $lastName, $countryId) {
+	public function getPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight) {
 	
 
 		//Query
@@ -1749,7 +1754,8 @@ class Database {
 			SELECT * FROM Player
 			WHERE firstname = ? AND
 			lastname = ? AND
-			country = ?;
+			country = ? AND
+			dateOfBirth = ?;
 		";
 		
 		//Prepare statement
@@ -1758,7 +1764,7 @@ class Database {
 		}
 		
 		//Bind parameters
-		if(!$statement->bind_param('ssi', $firstName, $lastName, $countryId)){
+		if(!$statement->bind_param('ssii', $firstName, $lastName, $countryId, $dateOfBirth)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
 		
@@ -1775,21 +1781,21 @@ class Database {
 	
 		//Check if the correct number of results are returned from the database
 		if($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple players with the same name and country of origin');
+			throw new exception('Corrupt database: multiple players with the same name, country of origin and date of birth');
 		}
 		else if($numberOfResults < 1) {
-			throw new exception('Error, there is no player with the given name and country of origin');
+			throw new exception('Error, there is no player with the given name, country of origin and date of birth');
 		}
 		else {
 			
 			//Bind return values
-			$statement->bind_result($id, $firstName, $lastName, $countryId);
+			$statement->bind_result($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight);
 			
 			//Fetch the rows of the return values
 			while ($statement->fetch()) {
 				
 				//Create new Player object TODO
-				return new Player($id, $firstName, $lastName, $countryId);
+				return new Player($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight);
 				
 				//Close the statement
 				$statement->close();
