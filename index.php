@@ -109,6 +109,9 @@ elseif(PAGE== 'registerSuccess') {
 elseif(PAGE== 'login') {
 	include(dirname(__FILE__) . '/theme/login.php');
 }
+elseif(PAGE== 'configPanel'&&!(!isset($_SESSION['userID'])||!$d->doesUserExist($_SESSION['userID']))) {
+	include(dirname(__FILE__) . '/theme/configPanel.php');
+}
 else {
 	include(dirname(__FILE__) . '/theme/error.php');
 }
