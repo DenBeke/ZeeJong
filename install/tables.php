@@ -76,8 +76,8 @@ CREATE TABLE IF NOT EXISTS `Player` (
 `lastname` varchar(50) NOT NULL,
 `country` int(11) NOT NULL,
 `dateOfBirth` int NOT NULL,
-`height` int(3) NOT NULL,
-`weight` int(3) NOT NULL,
+`height` int(3),
+`weight` int(3),
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
