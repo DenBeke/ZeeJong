@@ -35,6 +35,8 @@ class Parser {
 	*/
 	public function __construct() {
 		$this->database = new Database();
+
+		date_default_timezone_set('Europe/Brussels');
 	}
 
 
@@ -336,8 +338,7 @@ class Parser {
 					$bookings = $row->find('.bookings span');
 					foreach ($bookings as $booking) {
 
-
-						$time = strtotime(intval($booking->plaintext));
+						$time = intval($booking->plaintext);
 						$img = $booking->find('img', 0)->getAttribute('src');
 						if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/YC\.png/', $img)) {
 							$type = Card::yellow;
@@ -373,7 +374,7 @@ class Parser {
 			foreach ($rawGoals->find('.player') as $player) {
 				if(sizeof($player->find('.minute', 0)) > 0) {
 					$playerName = $player->find('a', 0);
-					$time = strtotime($player->find('.minute', 0)->plaintext);
+					$time = $player->find('.minute', 0)->plaintext;
 					$goals[intval($time)] = $playerName;
 				}
 			}
@@ -417,14 +418,56 @@ class Parser {
 	*/
 	private function parsePlayer($url) {
 
+		$firstName = null;
+		$lastName = null;
+		$country = null;
+		$dateOfBirth = null;
+		$height = null;
+		$weight = null;
+
 		$html = $this->loadPage($url);
 
-		$firstName = $html->find('.content .first dd', 0)->plaintext;
-		$lastName = $html->find('.content .first dd', 1)->plaintext;
-		$country = $html->find('.content .first dd', 2)->plaintext;
+		//Loop over the properties
+		$properties = $html->find('.content .first dt');
+		foreach ($properties as $property) {
+
+			//Find the value of the properties
+			$value = $property->next_sibling();
+			if (is_object($value) == FALSE || $value->tag != 'dd') {
+				throw new Exception('Failed to find the corresponding dd tag of the dt tag.');
+			}
+
+			//Fill the data with what we read
+			switch ($property->plaintext) {
+
+				case 'First name':
+					$firstName = $value->plaintext;
+					break;
+
+				case 'Last name':
+					$lastName = $value->plaintext;
+					break;
+
+				case 'Nationality':
+					$country = $value->plaintext;
+					break;
+
+				case 'Date of birth':
+					$dateOfBirth = strtotime($value->plaintext);
+					break;
+
+				case 'Height':
+					$height = intval($value->plaintext);
+					break;
+
+				case 'Weight':
+					$weight = intval($value->plaintext);
+					break;
+			}
+		}
 
 		$countryId = $this->database->addCountry($country);
-		$playerId = $this->database->addPlayer($firstName, $lastName, $countryId);
+		$playerId = $this->database->addPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight);
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 
