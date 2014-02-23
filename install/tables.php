@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `Player` (
 `firstname` varchar(50) NOT NULL,
 `lastname` varchar(50) NOT NULL,
 `country` int(11) NOT NULL,
-`dateOfBirth` int NOT NULL,
+`dateOfBirth` int,
 `height` int(3),
 `weight` int(3),
 PRIMARY KEY (`id`)
