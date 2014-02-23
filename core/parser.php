@@ -417,14 +417,56 @@ class Parser {
 	*/
 	private function parsePlayer($url) {
 
+		$firstName = null;
+		$lastName = null;
+		$country = null;
+		$dateOfBirth = null;
+		$height = null;
+		$weight = null;
+
 		$html = $this->loadPage($url);
 
-		$firstName = $html->find('.content .first dd', 0)->plaintext;
-		$lastName = $html->find('.content .first dd', 1)->plaintext;
-		$country = $html->find('.content .first dd', 2)->plaintext;
+		//Loop over the properties
+		$properties = $html->find('.content .first dt');
+		foreach ($properties as $property) {
+
+			//Find the value of the properties
+			$value = $property->next_sibling();
+			if (is_object($value) == FALSE || $value->tag != 'dd') {
+				throw new Exception('Failed to find the corresponding dd tag of the dt tag.');
+			}
+
+			//Fill the data with what we read
+			switch ($property->plaintext) {
+
+				case 'First name':
+					$firstName = $value->plaintext;
+					break;
+
+				case 'Last name':
+					$lastName = $value->plaintext;
+					break;
+
+				case 'Nationality':
+					$country = $value->plaintext;
+					break;
+
+				case 'Date of birth':
+					$dateOfBirth = strtotime($value->plaintext);
+					break;
+
+				case 'Height':
+					$height = intval($value->plaintext);
+					break;
+
+				case 'Weight':
+					$weight = intval($value->plaintext);
+					break;
+			}
+		}
 
 		$countryId = $this->database->addCountry($country);
-		$playerId = $this->database->addPlayer($firstName, $lastName, $countryId);
+		$playerId = $this->database->addPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight);
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 

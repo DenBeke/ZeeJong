@@ -17,16 +17,22 @@ class Player {
 	private $firstName;
 	private $lastName;
 	private $country;
+	private $dateOfBirth;
+	private $height;
+	private $weight;
 
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id, $firstName, $lastName, $country) {
+	public function __construct($id, $firstName, $lastName, $country, $dateOfBirth, $height, $weight) {
 		$this->id = $id;
 		$this->firstName = $firstName;
 		$this->lastName = $lastName;
 		$this->country = $country;
+		$this->dateOfBirth = $dateOfBirth;
+		$this->height = $height;
+		$this->weight = $weight;
 	}
 
 	/**
@@ -67,6 +73,30 @@ class Player {
 	*/
 	public function getCountry() {
 		return $this->country;
+	}
+
+	/**
+	Get the date of birth of the player
+	@return The date of birth
+	*/
+	public function getDateOfBirth() {
+		return $this->dateOfBirth;
+	}
+
+	/**
+	Get the height of the player
+	@return The height
+	*/
+	public function getHeight() {
+		return $this->height;
+	}
+
+	/**
+	Get the weight of the player
+	@return The weight
+	*/
+	public function getWeight() {
+		return $this->weight;
 	}
 
 	/**
