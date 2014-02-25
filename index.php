@@ -11,10 +11,20 @@ require_once(dirname(__FILE__) . '/core/classes/User.php');	// We need the user 
 require_once(dirname(__FILE__) . '/core/config.php');
 require_once(dirname(__FILE__) . '/core/functions.php');
 require_once(dirname(__FILE__) . '/core/login.php');
-
+require_once(dirname(__FILE__) . '/core/gluephp/glue.php');
+require_once(dirname(__FILE__) . '/core/controller/Player.php');
 
 //Create database
 $database = new Database;
+
+
+$urls = array(
+	'/ZeeJong/match' => 'PlayerController'
+);
+
+
+$controller = glue::stick($urls);
+
 
 
 //Parse the page
@@ -53,43 +63,7 @@ include(dirname(__FILE__) . '/theme/header.php');
 
 
 
-//Include the correct page template
-if(PAGE == 'home') {
-	include(dirname(__FILE__) . '/theme/home.php');
-}
-elseif(PAGE == 'competition') {
-	include(dirname(__FILE__) . '/theme/competition.php');
-}
-elseif(PAGE == 'tournament') {
-	include(dirname(__FILE__) . '/theme/competition.php');
-}
-elseif(PAGE == 'match') {
-	include(dirname(__FILE__) . '/theme/match.php');
-}
-elseif(PAGE == 'player') {
-	include(dirname(__FILE__) . '/theme/player.php');
-}
-elseif(PAGE == 'coach') {
-	include(dirname(__FILE__) . '/theme/coach.php');
-}
-elseif(PAGE == 'referee') {
-	include(dirname(__FILE__) . '/theme/referee.php');
-}
-elseif(PAGE== 'register') {
-	include(dirname(__FILE__) . '/theme/register.php');
-}
-elseif(PAGE== 'registerSuccess') {
-	include(dirname(__FILE__) . '/theme/registrationSuccess.php');
-}
-elseif(PAGE== 'login') {
-	include(dirname(__FILE__) . '/theme/login.php');
-}
-elseif(PAGE== 'configPanel') {
-	include(dirname(__FILE__) . '/theme/configPanel.php');
-}
-else {
-	include(dirname(__FILE__) . '/theme/error.php');
-}
+$controller->template();
 
 
 //Include the footer template
