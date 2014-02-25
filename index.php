@@ -19,7 +19,7 @@ $database = new Database;
 
 
 $urls = array(
-	'/ZeeJong/match' => 'PlayerController'
+	'/ZeeJong/player' => 'PlayerController'
 );
 
 
