@@ -76,6 +76,10 @@ function handleSubmit()
 	fwrite($fh, "DEFINE('DB_USER', '$username');\n");
 	fwrite($fh, "DEFINE('DB_PASS', '$password');\n");
 	fwrite($fh, "DEFINE('DB_NAME', '$database');\n");
+	fwrite($fh, "DEFINE('THEME_DIR', dirname(__FILE__) . '/../theme');\n");
+
+//DEFINE('THEME_DIR', dirname(__FILE__) . '/../theme');
+
 
 	fwrite($fh, '?>');
 	fclose($fh);

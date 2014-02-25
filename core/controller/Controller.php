@@ -6,7 +6,13 @@ Created: February 2014
 */
 
 
+require_once(dirname(__FILE__) . '/../config.php');
+
+
 	abstract class Controller {
+
+		protected $themeDir = THEME_DIR;
+		protected $data = array();
 
 				
 		/**
@@ -23,6 +29,9 @@ Created: February 2014
 		@param params
 		*/
 		public function GET($args) {
+			if(is_array($args)) {
+				$this->data = $args;
+			}
 		}
 		
 		
@@ -32,6 +41,9 @@ Created: February 2014
 		@param params
 		*/
 		public function POST($args) {
+			if(is_array($args)) {
+				$this->data = $args;
+			}
 		}
 	
 	}
