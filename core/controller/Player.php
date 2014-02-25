@@ -29,8 +29,8 @@ require_once(dirname(__FILE__) . '/../classes/Player.php');
 				extract($this->data);
 			}
 			
-			if(file_exists($this->themeDir . '/match.php')) {
-				include($this->themeDir . '/match.php');
+			if(file_exists($this->themeDir . '/player.php')) {
+				include($this->themeDir . '/player.php');
 			}
 			
 		
