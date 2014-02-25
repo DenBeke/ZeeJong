@@ -340,7 +340,12 @@ class Parser {
 					$bookings = $row->find('.bookings span');
 					foreach ($bookings as $booking) {
 
-						$time = intval($booking->plaintext);
+						$time = 0;
+						$time_parts = explode('+', $booking->plaintext);
+						foreach ($time_parts as $part) {
+							$time += intval($part);
+						}
+
 						$img = $booking->find('img', 0)->getAttribute('src');
 						if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/YC\.png/', $img)) {
 							$type = Card::yellow;
@@ -375,9 +380,15 @@ class Parser {
 			$goals = array();
 			foreach ($rawGoals->find('.player') as $player) {
 				if(sizeof($player->find('.minute', 0)) > 0) {
+
+					$time = 0;
+					$time_parts = explode('+', $player->find('.minute', 0)->plaintext);
+					foreach ($time_parts as $part) {
+						$time += intval($part);
+					}
+
 					$playerName = $player->find('a', 0);
-					$time = $player->find('.minute', 0)->plaintext;
-					$goals[intval($time)] = $playerName;
+					$goals[$time] = $playerName;
 				}
 			}
 
