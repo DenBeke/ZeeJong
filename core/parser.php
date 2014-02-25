@@ -60,6 +60,11 @@ class Parser {
 			'olympics' => array(
 				'name' => 'Olympics',
 				'url' => 'http://int.soccerway.com/international/world/olympics/c221/archive/?ICID=PL_3N_04'
+			),
+
+			'champions' => array(
+				'name' => 'UEFA Champions League',
+				'url' => 'http://int.soccerway.com/international/europe/uefa-champions-league/c10/archive/?ICID=PL_3N_04'
 			)
 
 		);
