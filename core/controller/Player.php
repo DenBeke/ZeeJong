@@ -24,8 +24,15 @@ require_once(dirname(__FILE__) . '/../classes/Player.php');
 		@exception theme file does not exist
 		*/
 		public function template() {
-		
-			echo $this->template;
+			
+			if(is_array($this->data)) {
+				extract($this->data);
+			}
+			
+			if(file_exists($this->themeDir . '/match.php')) {
+				include($this->themeDir . '/match.php');
+			}
+			
 		
 		}
 		
@@ -36,7 +43,6 @@ require_once(dirname(__FILE__) . '/../classes/Player.php');
 		@param params
 		*/
 		public function GET($args) {
-			
 		}
 	
 	
