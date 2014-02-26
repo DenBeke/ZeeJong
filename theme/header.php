@@ -17,13 +17,22 @@ Created: February 2014
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+
 	<link href="<?php echo SITE_URL ?>style/style.css" rel="stylesheet" type="text/css">
 	<link href="<?php echo SITE_URL ?>style/bootstrap.css" rel="stylesheet" type="text/css">
 	<link href="<?php echo SITE_URL ?>style/bootstrap-theme.css" rel="stylesheet" type="text/css">
-	<link href="<?php echo SITE_URL ?>style/bootstrap-responsive.css" rel="stylesheet" type="text/css">
 	<script src="<?php echo SITE_URL ?>js/jquery-1.11.0.min.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/script.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/bootstrap.js" type="text/javascript"></script>
+	
+	
 	
 	
 	<?php
@@ -125,5 +134,4 @@ Created: February 2014
 	</header>
 	
 	
-	<div class="container">
 	
