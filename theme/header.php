@@ -82,13 +82,13 @@ Created: February 2014
 				    </ul>
 		         
 				       <?php
-				       if(!$login->loggedIn) {
+				       if(!loggedIn()) {
 				       	?>
 				       	
 				      
 				       	
 				       	
-				       	<form class="navbar-form navbar-right" role="form" id="login" action="<?php echo SITE_URL; ?>?page=login" method="post">
+				       	<form class="navbar-form navbar-right" role="form" id="login" action="<?php echo SITE_URL; ?>login" method="post">
 				       	
 				       		 <div class="form-group">
 				       	
@@ -116,7 +116,7 @@ Created: February 2014
 				       	?>
 				       	
 				       	<form class="navbar-form pull-right" id="login">
-				       		<a href="?page=configPanel" class="btn"><?php echo $login->user->getUserName(); ?></a>
+				       		<a href="?page=configPanel" class="btn"><?php echo user()->getUserName(); ?></a>
 				       		<a href="<?php echo SITE_URL; ?>core/logout.php" class="btn">Logout</a>
 				       	</form>
 				       	
