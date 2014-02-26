@@ -12,10 +12,10 @@ require_once(dirname(__FILE__) . '/Controller.php');
 require_once(dirname(__FILE__) . '/../classes/Player.php');
 
 
-	class Player extends Controller {
+	class Register extends Controller {
 	
 	
-		private $template = 'player.php';
+		private $template = 'register.php';
 	
 	
 		/**

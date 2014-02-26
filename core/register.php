@@ -24,7 +24,7 @@ function registerUser($username, $password, $emailAddress) {
 	$salt = generateSalt();
 	$hashedPassword = hashPassword($password,$salt);
 	$id = $db->registerUser($username, $salt,$hashedPassword, $emailAddress);
-	header('Location: ../?page=registerSuccess');
+	header('Location: ../registerSuccess');
 }
 
 if(!isset($_POST['username']) || !isset($_POST['password']) || !isset($_POST['email'])) {

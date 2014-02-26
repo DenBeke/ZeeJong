@@ -5,10 +5,12 @@ Template part for register page
 Created: February 2014
 */
 ?>
+
+
 <h1>Sign up</h1>
-<div class="container">
+
 <div class="well">
-      <form id="signup" class="form-horizontal" method="post" action="core/register.php">
+      <form id="signup" class="form-horizontal" method="post" action="<?php echo SITE_URL ?>core/register.php">
 		<div class="control-group">
 	        <label class="control-label">Username</label>
 			<div class="controls">
@@ -44,5 +46,5 @@ Created: February 2014
 	      </div>
 	</div>
 	  </form>
-   </div>
 </div>
+
