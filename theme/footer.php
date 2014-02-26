@@ -6,7 +6,7 @@ Created: February 2014
 */
 ?>
 
-	</div>
+	
 
 	<div id="footer">
 	  <div class="container">
