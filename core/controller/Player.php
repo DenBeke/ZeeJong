@@ -6,13 +6,13 @@ Created February 2014
 */
 
 
+namespace Controller {
+
 require_once(dirname(__FILE__) . '/Controller.php');
 require_once(dirname(__FILE__) . '/../classes/Player.php');
 
 
-
-
-	class PlayerController extends Controller {
+	class Player extends Controller {
 	
 	
 		private $template = 'Player.php';
@@ -48,6 +48,6 @@ require_once(dirname(__FILE__) . '/../classes/Player.php');
 	
 	}
 
-
+}
 
 ?>
