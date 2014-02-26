@@ -11,24 +11,24 @@ Created: February 2014
 
 
 	<?php
-	if($login->loggedIn) {
+	if($this->loggedIn) {
 		?>
 		<div class="alert alert-success">
-			<strong><?php echo $login->loginMessage; ?></strong>
+			<strong><?php echo $this->loginMessage; ?></strong>
 			You are successfully logged in!
 		</div>
 		<?php
 	}
 	else {
 	?>
-	<div class="alert alert-error">
+	<div class="alert alert-danger">
 		<strong>Error</strong> 
-		<?php echo $login->loginMessage; ?>
+		<?php echo $this->loginMessage; ?>
 	</div>
 	
 
 	<div class="well">
-	   <form id="signup" class="form-horizontal" method="post" action="<?php echo SITE_URL; ?>?page=login">
+	   <form id="signup" class="form-horizontal" method="post" action="<?php echo SITE_URL; ?>login">
 			<div class="control-group">
 		        <label class="control-label">Username</label>
 				<div class="controls">

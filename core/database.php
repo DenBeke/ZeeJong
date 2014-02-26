@@ -114,7 +114,7 @@ class Database {
 	
 		//Check if the correct number of results are returned from the database
 		if($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple users with same username');
+			throw new exception('Corrupt database: multiple users with same username' . " '$username'");
 		}
 		else if($numberOfResults < 1) {
 			return false;

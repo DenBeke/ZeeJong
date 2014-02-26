@@ -10,7 +10,7 @@ require_once(dirname(__FILE__) . '/core/config.php');
 require_once(dirname(__FILE__) . '/core/database.php');	// Require the database file
 require_once(dirname(__FILE__) . '/core/classes/User.php');	// We need the user class file
 require_once(dirname(__FILE__) . '/core/functions.php');
-require_once(dirname(__FILE__) . '/core/login.php');
+require_once(dirname(__FILE__) . '/core/controller/login.php');
 require_once(dirname(__FILE__) . '/core/gluephp/glue.php');
 require_once(dirname(__FILE__) . '/core/controller/Player.php');
 require_once(dirname(__FILE__) . '/core/controller/Home.php');
@@ -23,7 +23,8 @@ $database = new Database;
 $urls = array(
 	'/ZeeJong/player' => 'Controller\Player',
 	'/ZeeJong/register' => 'Controller\Register',
-	'/ZeeJong/' => 'Controller\Home'
+	'/ZeeJong/' => 'Controller\Home',
+	'/ZeeJong/login' => 'Controller\Login'
 );
 
 
@@ -55,10 +56,6 @@ catch(exception $e) {
 
 define('PAGE', $page);
 
-
-
-//Create login controller
-$login = new Login;
 
 
 
