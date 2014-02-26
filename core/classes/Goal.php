@@ -31,6 +31,20 @@ class Goal {
 		return $this->id;
 	}
 
+
+
+	public function getTime() {
+	}
+	
+	
+	public function getMatch() {
+	}
+	
+	public function getPlayer() {
+	}
+
+
+
 	/**
 	String function
 	@return string

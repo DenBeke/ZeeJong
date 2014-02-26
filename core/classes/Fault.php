@@ -30,6 +30,12 @@ class Fault {
 	public function getId() {
 		return $this->id;
 	}
+	
+	
+	public function getTime() {
+		
+	}
+	
 
 	/**
 	String function

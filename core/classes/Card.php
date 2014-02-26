@@ -36,18 +36,18 @@ class Card {
 	}
 
 	/**
-	Get the ID of the player
+	Get the player
 	@return player id
 	*/
-	public function getPlayerId() {
+	public function getPlayer() {
 		return $this->playerId();
 	}
 
 	/**
-	Get the ID of the match
+	Get the match
 	@return match id
 	*/
-	public function getMatchId() {
+	public function getMatch() {
 		return $this->matchId();
 	}
 

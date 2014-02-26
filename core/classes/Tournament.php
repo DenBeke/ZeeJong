@@ -42,11 +42,12 @@ class Tournament {
 
 
 	/**
-	Get the matches in the given tournament
+	Get the latest matches in the given tournament
 	
+	@param number of latest matches (0 for all matches)
 	@return matches
 	*/
-	public function getMatches() {
+	public function getMatches($number) {
 		return array();
 	}
 

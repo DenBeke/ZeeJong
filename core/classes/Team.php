@@ -39,6 +39,21 @@ class Team {
 	}
 
 
+
+	public function getCountry() {
+	
+	}
+	
+	
+	public function getPlayers() {
+	}
+	
+	
+	public function getCoach() {
+	}
+
+
+
 	/**
 	String function
 	@return string
