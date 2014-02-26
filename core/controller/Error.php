@@ -1,6 +1,6 @@
 <?php
 /*
-Home Controller
+Error Controller
 
 Created February 2014
 */
@@ -11,11 +11,11 @@ namespace Controller {
 require_once(dirname(__FILE__) . '/Controller.php');
 
 
-	class Home extends Controller {
+	class Error extends Controller {
 	
 	
-		private $template = 'home.php';
-		public $page = 'home';
+		private $template = 'error.php';
+		public $page = 'error';
 	
 	
 		/**
