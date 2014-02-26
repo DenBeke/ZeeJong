@@ -13,13 +13,17 @@ require_once(dirname(__FILE__) . '/core/functions.php');
 require_once(dirname(__FILE__) . '/core/login.php');
 require_once(dirname(__FILE__) . '/core/gluephp/glue.php');
 require_once(dirname(__FILE__) . '/core/controller/Player.php');
+require_once(dirname(__FILE__) . '/core/controller/Home.php');
+require_once(dirname(__FILE__) . '/core/controller/Register.php');
 
 //Create database
 $database = new Database;
 
 
 $urls = array(
-	'/ZeeJong/player' => 'Controller\Player'
+	'/ZeeJong/player' => 'Controller\Player',
+	'/ZeeJong/register' => 'Controller\Register',
+	'/ZeeJong/' => 'Controller\Home'
 );
 
 
