@@ -16,16 +16,29 @@ require_once(dirname(__FILE__) . '/core/controller/login.php');
 require_once(dirname(__FILE__) . '/core/controller/Player.php');
 require_once(dirname(__FILE__) . '/core/controller/Home.php');
 require_once(dirname(__FILE__) . '/core/controller/Register.php');
+require_once(dirname(__FILE__) . '/core/controller/Coach.php');
+require_once(dirname(__FILE__) . '/core/controller/Competition.php');
+require_once(dirname(__FILE__) . '/core/controller/Tournament.php');
+require_once(dirname(__FILE__) . '/core/controller/Match.php');
+require_once(dirname(__FILE__) . '/core/controller/Referee.php');
+require_once(dirname(__FILE__) . '/core/controller/Error.php');
 
 //Create database
 $database = new Database;
 
 
 $urls = array(
+	'error' => 'Controller\Error',
+	'/ZeeJong/error' => 'Controller\Error',
 	'/ZeeJong/player' => 'Controller\Player',
 	'/ZeeJong/register' => 'Controller\Register',
 	'/ZeeJong/' => 'Controller\Home',
-	'/ZeeJong/login' => 'Controller\Login'
+	'/ZeeJong/login' => 'Controller\Login',
+	'/ZeeJong/coach' => 'Controller\Coach',
+	'/ZeeJong/competition' => 'Controller\Competition',
+	'/ZeeJong/match' => 'Controller\Match',
+	'/ZeeJong/referee' => 'Controller\Referee',
+	'/ZeeJong/tournament' => 'Controller\Tournament'
 );
 
 

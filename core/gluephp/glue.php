@@ -70,6 +70,24 @@
                 }
             }
             if (!$found) {
+              
+                foreach ($urls as $regex => $class) {
+                	if($regex == 'error') {
+                		if (class_exists($class)) {
+                		    $obj = new $class;
+                		    if (method_exists($obj, $method)) {
+                		        $obj->$method($matches);
+                		        return $obj;
+                		    } else {
+                		        throw new BadMethodCallException("Method, $method, not supported.");
+                		    }
+                		} else {
+                		    throw new Exception("Class, $class, not found.");
+                		}
+                		break;
+                	}
+                }
+                
                 throw new Exception("URL, $path, not found.");
             }
         }

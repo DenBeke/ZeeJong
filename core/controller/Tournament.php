@@ -1,6 +1,6 @@
 <?php
 /*
-Home Controller
+Tournament Controller
 
 Created February 2014
 */
@@ -11,11 +11,11 @@ namespace Controller {
 require_once(dirname(__FILE__) . '/Controller.php');
 
 
-	class Home extends Controller {
+	class Tournament extends Controller {
 	
 	
-		private $template = 'home.php';
-		public $page = 'home';
+		private $template = 'tournament.php';
+		public $page = 'tournament';
 	
 	
 		/**
