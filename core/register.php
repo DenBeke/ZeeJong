@@ -64,15 +64,18 @@ class Register {
 }
 
 if (!isset($_POST['username']) || !isset($_POST['password']) || !isset($_POST['password2']) || !isset($_POST['email'])) {
-	exit();
+	
 }
+else {
 
-$username = $_POST['username'];
-$password = $_POST['password'];
-$password2 = $_POST['password2'];
-
-$emailAddress = $_POST['email'];
-
-
-$register->registerUser($username, $password, $password2, $emailAddress);
+	$username = $_POST['username'];
+	$password = $_POST['password'];
+	$password2 = $_POST['password2'];
+	
+	$emailAddress = $_POST['email'];
+	
+	
+	$register->registerUser($username, $password, $password2, $emailAddress);
+	
+}
 ?>

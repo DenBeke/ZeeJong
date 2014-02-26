@@ -10,6 +10,9 @@ Created: February 2014
 
 	<div id="footer">
 	  <div class="container">
+	  	
+	  	<hr />
+	  
 		<p class="muted credit">&copy;2014 ZeeJong Betting System</p>
 	  </div>
 	</div>

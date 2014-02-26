@@ -15,6 +15,7 @@ require_once(dirname(__FILE__) . '/../config.php');
 
 		protected $themeDir = THEME_DIR;
 		protected $data = array();
+		public $page;
 
 				
 		/**
@@ -47,6 +48,11 @@ require_once(dirname(__FILE__) . '/../config.php');
 				$this->data = $args;
 			}
 		}
+	
+	
+	
+		
+	
 	
 	}
 

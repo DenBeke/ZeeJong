@@ -34,33 +34,6 @@ $controller = glue::stick($urls);
 
 
 
-//Parse the page
-$page = 'home';
-
-if(isset($_GET['page'])) {
-	$page = htmlspecialchars($_GET['page']);
-}
-
-
-try {
-
-	$object = getObject($page);
-	
-}
-
-catch(exception $e) {
-	
-	$page = 'error';
-	echo $e->getMessage();
-	
-}
-
-
-define('PAGE', $page);
-
-
-
-
 //Create register controller
 $register = new Register;
 
