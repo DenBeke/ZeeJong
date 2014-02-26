@@ -92,6 +92,22 @@ class Player {
 	public function getWeight() {
 		return $this->weight;
 	}
+	
+	
+	
+	public function getTotalNumberOfGoals() {
+	}
+	
+	public function getTotalNumberOfMatches() {
+	}
+	
+	public function getTotalNumberOfCards() {
+	}
+	
+	public function getTotalNumberOfWonMatches() {
+	}
+	
+	
 
 	/**
 	String function

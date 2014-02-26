@@ -45,6 +45,16 @@ class Score {
 		return $this->id;
 	}		
 
+
+
+	public function getScoreA() {
+	}
+
+
+	public function getScoreB() {
+	}
+
+
     /**
     String function
 
