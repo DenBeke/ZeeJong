@@ -11,7 +11,7 @@
 	<h1>Sign up</h1>
 
 	<div class="well">
-		<form id="signup" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>core/register.php">
+		<form id="signup" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>register">
 			<div class="form-group">
 				<label class="control-label col-sm-2">Username</label>
 				<div class="controls col-sm-10">
@@ -62,7 +62,7 @@
 	
 	<div class="alert alert-error">
 		<?php
-		echo $register -> getMessage();
+		echo $this -> registerMessage;
 		?>
 	</div>
 </div>
