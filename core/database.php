@@ -407,7 +407,7 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Competition object TODO
-				return new Competition($id, $name);
+				return new Competition($id);
 				
 				//Close the statement		
 				$statement->close();
@@ -535,7 +535,7 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Competition object TODO
-				return new Competition($id, $name);
+				return new Competition($id);
 				
 				//Close the statement		
 				$statement->close();
@@ -720,7 +720,7 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Competition object TODO
-				return new Tournament($id, $name);
+				return new Tournament($id);
 				
 				//Close the statement		
 				$statement->close();
@@ -978,7 +978,7 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Coach object TODO
-				return new Referee($id, $firstName, $lastName, $countryId);
+				return new Referee($id);
 				
 				//Close the statement		
 				$statement->close();
@@ -1111,7 +1111,7 @@ class Database {
 		$statement->close();
 			
 		//Create new Player object TODO
-		return new Referee($id, $firstName, $lastName, $countryId);
+		return new Referee($id);
 	}
 	
 	
@@ -1226,7 +1226,7 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Coach object TODO
-				return new Coach($id, $firstName, $lastName, $countryId);
+				return new Coach($id);
 				
 				//Close the statement		
 				$statement->close();
@@ -1352,7 +1352,7 @@ class Database {
 		$statement->close();
 			
 		//Create new Player object TODO
-		return new Coach($id, $firstName, $lastName, $countryId);
+		return new Coach($id);
 	}
 
 	/**
@@ -1484,7 +1484,7 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Coach object TODO
-				return new Coaches($id, $coachId, $teamId, $matchId);
+				return new Coaches($id);
 				
 				//Close the statement		
 				$statement->close();
@@ -1605,7 +1605,7 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Coach object TODO
-				return new Team($id, $name, $countryId);
+				return new Team($id);
 				
 				//Close the statement		
 				$statement->close();
@@ -1795,7 +1795,7 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Player object TODO
-				return new Player($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight);
+				return new Player($id);
 				
 				//Close the statement
 				$statement->close();
@@ -1923,7 +1923,7 @@ class Database {
 		$statement->close();
 			
 		//Create new Player object TODO
-		return new Player($id, $firstName, $lastName, $countryId);
+		return new Player($id);
 	}
 	
 	
@@ -2041,7 +2041,7 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Player object TODO
-				return new Goal($id, $playerId, $time, $matchId);
+				return new Goal($id);
 				
 				//Close the statement
 				$statement->close();
@@ -2170,7 +2170,7 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Player object TODO
-				return new Match($teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId);
+				return new Match($id);
 				
 				//Close the statement
 				$statement->close();
@@ -2530,7 +2530,7 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Player object TODO
-				return new PlaysIn($id, $playerId, $teamId);
+				return new PlaysIn($id);
 				
 				//Close the statement
 				$statement->close();
@@ -2715,7 +2715,7 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Player object TODO
-				return new Card($id, $playerId, $matchId, $color, $time);
+				return new Card($id);
 				
 				//Close the statement
 				$statement->close();

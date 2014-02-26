@@ -31,12 +31,8 @@ class Card {
 	@param time
 	@param type
 	*/
-	public function __construct($id, $playerId, $matchId, $time, $type) {
+	public function __construct($id) {
 		$this->id = $id;
-		$this->playerId = $playerId;
-		$this->matchId = $matchId;
-		$this->time = $time;
-		$this->type = $type;
 	}
 
 	/**

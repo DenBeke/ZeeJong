@@ -62,11 +62,25 @@ class Parser {
 				'url' => 'http://int.soccerway.com/international/world/olympics/c221/archive/?ICID=PL_3N_04'
 			),
 
-			'champions' => array(
+			'uefa-champions' => array(
 				'name' => 'UEFA Champions League',
 				'url' => 'http://int.soccerway.com/international/europe/uefa-champions-league/c10/archive/?ICID=PL_3N_04'
-			)
+			),
 
+			'uefa-eu' => array(
+				'name' => 'UEFA Europa League',
+				'url' => 'http://int.soccerway.com/international/europe/uefa-cup/c18/archive/?ICID=PL_3N_04'
+			),
+
+			'be-pro' => array(
+				'name' => 'Belgium Pro League',
+				'url' => 'http://int.soccerway.com/national/belgium/pro-league/c24/archive/?ICID=PL_3N_07'
+			),
+
+			'bundesliga' => array(
+				'name' => 'Bundesliga',
+				'url' => 'http://int.soccerway.com/national/germany/bundesliga/c9/archive/?ICID=PL_3N_07'
+			)
 		);
 
 		//Loop through competition and parse the competitions

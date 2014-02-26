@@ -22,11 +22,8 @@ class Referee {
 	Constructor
 	@param id
 	*/
-	public function __construct($id, $firstName, $lastName, $country) {
+	public function __construct($id) {
 		$this->id = $id;
-		$this->firstName = $firstName;
-		$this->lastName = $lastName;
-		$this->country = $country;
 	}
 
 	/**
