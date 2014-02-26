@@ -55,7 +55,7 @@ Created: February 2014
 				</div>
 		
 		
-				<div class="navbar-collapse collapse in" style="height: auto;">
+				<div class="navbar-collapse collapse" style="height: auto;">
 				    <ul class="nav navbar-nav">
 				      <li class="active"><a href="#">Upcoming Events</a></li>
 				      <li><a href="#about">Players</a></li>

@@ -5,8 +5,10 @@ Abstract controller class
 Created: February 2014
 */
 
+namespace Controller {
 
 require_once(dirname(__FILE__) . '/../config.php');
+
 
 
 	abstract class Controller {
@@ -49,7 +51,7 @@ require_once(dirname(__FILE__) . '/../config.php');
 	}
 
 
-
+}
 
 
 ?>
