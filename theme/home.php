@@ -9,7 +9,7 @@ Created: February 2014
 <div class="jumbotron">
       <div class="container">
         <h1>ZeeJong</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+        <p>ZeeJong is the ultimate betting website! With over 1000 players in the database, 500 matches and 10 competitions, ZeeJong covers most of the matches in the world of soccer!</p>
         <p><a class="btn btn-primary btn-lg" role="button" href="<?php echo SITE_URL ?>register">Register now »</a></p>
       </div>
 </div>
@@ -20,17 +20,111 @@ Created: February 2014
       <div class="row">
         <div class="col-md-4">
           <h2>Upcoming Events</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          
+          <table class="table table-striped">
+          
+          	<tr>
+          		<th colspan="2">Country</th>
+          		<th>Date</th>
+          	</tr>
+          
+	          <tr>
+	          	<td>Belgium</td>
+	          	<td>Scotland</td>
+	          	<td>13 February</td>
+	          </tr>
+	          
+	          <tr>
+	          	<td>France</td>
+	          	<td>Germany</td>
+	          	<td>14 March</td>
+	          </tr>
+	          
+	          <tr>
+	          	<td>Anderlecht</td>
+	          	<td>AA Gent</td>
+	          	<td>23 March</td>
+	          </tr>
+	          
+	          <tr>
+	          	<td>Club Brugge</td>
+	          	<td>Standard Liège</td>
+	          	<td>23 April</td>
+	          </tr>
+	          
+          </table>
+          
           <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
         </div>
         <div class="col-md-4">
           <h2>Players</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+         
+         
+         <table class="table table-striped">
+         
+         	<tr>
+         		<th colspan="2">Name</th>
+         		<th>Goals</th>
+         	</tr>
+         
+             <tr>
+             	<td>Luis</td>
+             	<td>Suarez</td>
+             	<td>23</td>
+             </tr>
+             
+             <tr>
+             	<td>Cristiano</td>
+             	<td>Ronaldo</td>
+             	<td>22</td>
+             </tr>
+             
+             <tr>
+             	<td>Zlatan</td>
+             	<td>Ibrahimovic</td>
+             	<td>22</td>
+             </tr>
+             
+             <tr>
+             	<td>Alfreð</td>
+             	<td>Finnbogason</td>
+             	<td>21</td>
+             </tr>
+             
+         </table>
+         
+         
           <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
        </div>
         <div class="col-md-4">
           <h2>Leagues</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          
+          
+          <table class="table table-striped">
+          
+          	<tr>
+          		<th colspan="2">Leagues</th>
+          	</tr>
+          
+              <tr>
+              	<td>Olympics</td>
+              </tr>
+              
+              <tr>
+              	<td>Bundesliga</td>
+              </tr>
+              
+              <tr>
+              	<td>World Cup</td>
+              </tr>
+              
+              <tr>
+              	<td>European Championchip</td>
+              </tr>
+              
+          </table>
+          
+          
           <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
         </div>
       </div>

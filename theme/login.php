@@ -13,6 +13,8 @@ Created: February 2014
 	<?php
 	if($this->loggedIn) {
 		?>
+		<h2></h2>
+		
 		<div class="alert alert-success">
 			<strong><?php echo $this->loginMessage; ?></strong>
 			You are successfully logged in!
