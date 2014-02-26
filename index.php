@@ -6,13 +6,14 @@ Created: February 2014
 */
 session_start();
 
+
 require_once(dirname(__FILE__) . '/core/config.php');
 require_once(dirname(__FILE__) . '/core/database.php');	// Require the database file
 require_once(dirname(__FILE__) . '/core/classes/User.php');	// We need the user class file
 require_once(dirname(__FILE__) . '/core/functions.php');
-require_once(dirname(__FILE__) . '/core/login.php');
 require_once(dirname(__FILE__) . '/core/register.php');
 require_once(dirname(__FILE__) . '/core/gluephp/glue.php');
+require_once(dirname(__FILE__) . '/core/controller/login.php');
 require_once(dirname(__FILE__) . '/core/controller/Player.php');
 require_once(dirname(__FILE__) . '/core/controller/Home.php');
 require_once(dirname(__FILE__) . '/core/controller/Register.php');
@@ -24,7 +25,8 @@ $database = new Database;
 $urls = array(
 	'/ZeeJong/player' => 'Controller\Player',
 	'/ZeeJong/register' => 'Controller\Register',
-	'/ZeeJong/' => 'Controller\Home'
+	'/ZeeJong/' => 'Controller\Home',
+	'/ZeeJong/login' => 'Controller\Login'
 );
 
 
@@ -58,12 +60,9 @@ define('PAGE', $page);
 
 
 
-//Create login controller
-$login = new Login;
 
 //Create register controller
 $register = new Register;
-
 
 
 //Include the header template
