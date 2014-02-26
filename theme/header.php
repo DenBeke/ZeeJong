@@ -35,8 +35,8 @@ Created: February 2014
 	
 	
 	
-	<?php
-	if(PAGE == 'login' and $login->loggedIn == true) {
+	<?php	
+	if($controller->page == 'login' and loggedIn() == true) {
 	?>
 	<meta http-equiv="refresh" content="3; url=<?php echo SITE_URL; ?>" />
 	<?php
@@ -105,7 +105,7 @@ Created: February 2014
 				       		
 				       		<button type="submit" name="submit" value="login" class="btn btn-default">Sign in</button>
 				       		
-				       		<a href="<?php echo SITE_URL; ?>?page=register" class="btn btn-default">Register</a>       		
+				       		<a href="<?php echo SITE_URL; ?>register" class="btn btn-default">Register</a>       		
 				       		
 				       		
 				       	</form>
@@ -116,8 +116,8 @@ Created: February 2014
 				       	?>
 				       	
 				       	<form class="navbar-form pull-right" id="login">
-				       		<a href="?page=configPanel" class="btn"><?php echo user()->getUserName(); ?></a>
-				       		<a href="<?php echo SITE_URL; ?>core/logout.php" class="btn">Logout</a>
+				       		<a href="?page=configPanel" class="btn btn-default"><?php echo user()->getUserName(); ?></a>
+				       		<a href="<?php echo SITE_URL; ?>core/logout.php" class="btn btn-default">Logout</a>
 				       	</form>
 				       	
 				       	<?php

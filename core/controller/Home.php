@@ -15,6 +15,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 	
 	
 		private $template = 'home.php';
+		public $page = 'home';
 	
 	
 		/**

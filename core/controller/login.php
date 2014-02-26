@@ -15,10 +15,12 @@ namespace Controller {
 	class Login extends Controller {
 	
 	
+		public $page = 'login';
 		public $loggedIn;
 		public $loginMessage;
 		public $user;
 		private $template = 'login.php';
+		
 		
 		
 		/**

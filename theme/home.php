@@ -35,9 +35,5 @@ Created: February 2014
         </div>
       </div>
 
-      <hr>
-
-      <footer>
-        <p>© Company 2014</p>
-      </footer>
-    </div>
+      
+</div>
