@@ -38,7 +38,16 @@ function get_base_url()
 	return $protocol . $host . $directory;
 }
 
+function get_install_dir()
+{
+	$path = $_SERVER['PHP_SELF'];
+	$path_parts = pathinfo($path);
+	$directory = $path_parts['dirname'];
+	return $directory;
+}
+
 $config['SITE_URL'] = '\'' . substr(get_base_url(), 0, strlen(get_base_url()) - strlen('install') ) . '\'';
+$config['INSTALL_DIR'] = '\'' . substr(get_install_dir(), 0, strlen(get_install_dir()) - strlen('install')) . '\'';
 
 ?>
 
