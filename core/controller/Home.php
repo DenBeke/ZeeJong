@@ -9,7 +9,6 @@ Created February 2014
 namespace Controller {
 
 require_once(dirname(__FILE__) . '/Controller.php');
-require_once(dirname(__FILE__) . '/../classes/Player.php');
 
 
 	class Home extends Controller {

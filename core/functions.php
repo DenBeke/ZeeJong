@@ -63,4 +63,40 @@ function hashPassword($password,$salt) {
 }
 
 
+
+
+/**
+Check if logged in
+*/
+function loggedIn() {
+	//Check for active session
+	global $database;
+	
+	if( isset($_SESSION['userID']) and $database->doesUserExist($_SESSION['userID'])) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+
+
+function user() {
+
+	//Check for active session
+	global $database;
+	
+	if( isset($_SESSION['userID']) and $database->doesUserExist($_SESSION['userID'])) {
+		$user = new User($_SESSION['userID']);
+		return $user;
+	}
+	else {
+		throw new exception('User is not logged in, or the user does not exist');
+	}
+
+}
+
+
+
 ?>
