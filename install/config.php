@@ -49,6 +49,8 @@ function get_install_dir()
 $config['SITE_URL'] = '\'' . substr(get_base_url(), 0, strlen(get_base_url()) - strlen('install') ) . '\'';
 $config['INSTALL_DIR'] = '\'' . substr(get_install_dir(), 0, strlen(get_install_dir()) - strlen('install')) . '\'';
 
+$config['THEME_DIR'] = 'dirname(__FILE__) . \'/../theme\'';
+
 ?>
 
 
