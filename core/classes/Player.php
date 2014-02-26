@@ -25,14 +25,8 @@ class Player {
 	Constructor
 	@param id
 	*/
-	public function __construct($id, $firstName, $lastName, $country, $dateOfBirth, $height, $weight) {
+	public function __construct($id) {
 		$this->id = $id;
-		$this->firstName = $firstName;
-		$this->lastName = $lastName;
-		$this->country = $country;
-		$this->dateOfBirth = $dateOfBirth;
-		$this->height = $height;
-		$this->weight = $weight;
 	}
 
 	/**
