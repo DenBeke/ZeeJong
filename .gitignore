@@ -1,2 +1,7 @@
 *~
 .DS_Store
+core/config.php
+.git/*
+.project
+.settings/*
+core/config.example.php
