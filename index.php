@@ -28,17 +28,17 @@ $database = new Database;
 
 
 $urls = array(
-	'error' => 'Controller\Error',
-	'/ZeeJong/error' => 'Controller\Error',
-	'/ZeeJong/player' => 'Controller\Player',
-	'/ZeeJong/register' => 'Controller\Register',
-	'/ZeeJong/' => 'Controller\Home',
-	'/ZeeJong/login' => 'Controller\Login',
-	'/ZeeJong/coach' => 'Controller\Coach',
-	'/ZeeJong/competition' => 'Controller\Competition',
-	'/ZeeJong/match' => 'Controller\Match',
-	'/ZeeJong/referee' => 'Controller\Referee',
-	'/ZeeJong/tournament' => 'Controller\Tournament'
+	INSTALL_DIR . 'error' => 'Controller\Error',
+	INSTALL_DIR . 'error' => 'Controller\Error',
+	INSTALL_DIR . 'player' => 'Controller\Player',
+	INSTALL_DIR . 'register' => 'Controller\Register',
+	INSTALL_DIR  => 'Controller\Home',
+	INSTALL_DIR . 'login' => 'Controller\Login',
+	INSTALL_DIR . 'coach' => 'Controller\Coach',
+	INSTALL_DIR . 'competition' => 'Controller\Competition',
+	INSTALL_DIR . 'match' => 'Controller\Match',
+	INSTALL_DIR . 'referee' => 'Controller\Referee',
+	INSTALL_DIR . 'tournament' => 'Controller\Tournament'
 );
 
 
