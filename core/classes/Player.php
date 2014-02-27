@@ -20,13 +20,21 @@ class Player {
 	private $dateOfBirth;
 	private $height;
 	private $weight;
+	private $db;
 
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id) {
+	public function __construct($id, $firstName, $lastName, $country, $dateOfBirth, $height, $weight, &$db) {
 		$this->id = $id;
+		$this->firstName = $firstName;
+		$this->lastName = $lastName;
+		$this->country = $country;
+		$this->dateOfBirth = $dateOfBirth;
+		$this->height = $height;
+		$this->weight = $weight;
+		$this->db = &$db;		
 	}
 
 	/**
@@ -96,15 +104,22 @@ class Player {
 	
 	
 	public function getTotalNumberOfGoals() {
+
+		return $this->db->getTotalNumberOfGoals($this->id);		
 	}
 	
 	public function getTotalNumberOfMatches() {
+		
+		return $this->db->getTotalNumberOfMatches($this->id);		
 	}
 	
 	public function getTotalNumberOfCards() {
+	
+		return $this->db->getTotalNumberOfCards($this->id);
 	}
 	
 	public function getTotalNumberOfWonMatches() {
+	// TODO
 	}
 	
 	

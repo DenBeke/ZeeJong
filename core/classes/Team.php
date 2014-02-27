@@ -16,13 +16,17 @@ class Team {
 	private $id;
 	private $name;
 	private $country;
+	private $db;
 
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id) {
+	public function __construct($id, $name, $country, &$db) {
 		$this->id = $id;
+		$this->name = $name;
+		$this->country = $country;
+		$this->db = &$db;
 	}
 
 	/**
@@ -35,13 +39,13 @@ class Team {
 
 
 	public function getName() {
-		
+		return $this->name;		
 	}
 
 
 
 	public function getCountry() {
-	
+		return $this->country;
 	}
 	
 	
@@ -50,6 +54,7 @@ class Team {
 	
 	
 	public function getCoach() {
+		return $this->db->getCoachForTeam($this->id);
 	}
 
 
