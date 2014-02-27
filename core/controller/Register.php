@@ -97,6 +97,12 @@ namespace Controller {
 				return false;
 			}
 
+			// Test if email address is valid
+			if (!filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
+				$this -> registerMessage = '<div class="alert alert-danger"><strong>Your emailaddress is invalid.</strong></div>';
+				return false;
+			}
+
 			$salt = $this -> generateSalt();
 			$hashedPassword = hashPassword($password, $salt);
 			$id = $database -> registerUser($username, $salt, $hashedPassword, $emailAddress);
