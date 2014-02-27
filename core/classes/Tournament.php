@@ -14,13 +14,18 @@ The class contains the following information:
 class Tournament {
 	private $id;
 	private $name;
+	private $competitionId;
+	private $db;
 
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id) {
+	public function __construct($id, $name, $competitionId, &$db) {
 		$this->id = $id;
+		$this->name = $name;
+		$this->competitionId = $competitionId;
+		$this->db = &$db;
 	}
 
 	/**

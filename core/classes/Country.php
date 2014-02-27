@@ -11,8 +11,9 @@ class Country {
 	Constructor
 	@param id
 	*/
-	public function __construct($id) {
+	public function __construct($id, $name) {
 		$this->id = $id;
+		$this->name = $name;
 	}
 
 	/**
@@ -28,9 +29,8 @@ class Country {
 	@return The name
 	*/
 	public function getName() {
-		// TODO: Get name from somewhere
 
-		return "";
+		return $this->name;
 	}
 
 	/**
