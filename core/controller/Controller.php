@@ -15,6 +15,7 @@ require_once(dirname(__FILE__) . '/../config.php');
 
 		protected $themeDir = THEME_DIR;
 		protected $data = array();
+		protected $theme;
 		public $page;
 
 				
@@ -29,7 +30,7 @@ require_once(dirname(__FILE__) . '/../config.php');
 			}
 			
 			if(file_exists($this->themeDir . '/' . $this->template)) {
-				include($this->themeDir . '/' . $this->template);
+				include($this->themeDir . '/' . $this->theme);
 			}	
 		}
 		
