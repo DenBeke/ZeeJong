@@ -18,7 +18,7 @@ namespace Controller {
 
 		public $page = 'register';
 		public $user;
-		private $registerMessage;
+		public $registerMessage;
 
 
 		/**
