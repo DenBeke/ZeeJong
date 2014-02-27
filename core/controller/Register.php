@@ -91,6 +91,7 @@ namespace Controller {
 			$hashedPassword = hashPassword($password, $salt);
 			$id = $database -> registerUser($username, $salt, $hashedPassword, $emailAddress);
 			$this -> registerMessage = '<div class="alert alert-success">Congratulations, account was successfully created.</strong></div>';
+			return true;
 		}
 
 	}
