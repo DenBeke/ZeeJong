@@ -45,13 +45,13 @@ namespace Controller {
 			if (!isset($_POST['username']) || !isset($_POST['password']) || !isset($_POST['password2']) || !isset($_POST['email'])) {
 				return;
 			}
-			
+
 			$username = $_POST['username'];
 			$password = $_POST['password'];
 			$password2 = $_POST['password2'];
-			
+
 			$emailAddress = $_POST['email'];
-			
+
 			$this -> register($username, $password, $password2, $emailAddress);
 		}
 
@@ -79,9 +79,21 @@ namespace Controller {
 				return false;
 			}
 
+			// Test if username is too short
+			if (strlen($username) <= 3) {
+				$this -> registerMessage = '<div class="alert alert-danger"><strong>Your username must be longer than 3 characters.</strong></div>';
+				return false;
+			}
+
 			// Test if passwords are the same
 			if ($password != $password2) {
 				$this -> registerMessage = '<div class="alert alert-danger"><strong>Passwords do not match.</strong></div>';
+				return false;
+			}
+
+			// Test if password is too short
+			if (strlen($password) <= 3) {
+				$this -> registerMessage = '<div class="alert alert-danger"><strong>Your password must be longer than 3 characters.</strong></div>';
 				return false;
 			}
 
