@@ -6,6 +6,9 @@ Created: February 2014
 */
 ?>
 
+
+<?php if(!loggedIn()) { ?>
+
 <div class="jumbotron">
       <div class="container">
         <h1>ZeeJong</h1>
@@ -14,6 +17,8 @@ Created: February 2014
       </div>
 </div>
     
+    
+<?php } ?>
     
 <div class="container">
       <!-- Example row of columns -->
