@@ -17,7 +17,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 	
 		public function __construct() {
 			$this->theme = 'tournament.php';
-		
+		}
 		
 		/**
 		Call GET methode with parameters
