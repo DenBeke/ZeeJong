@@ -59,10 +59,8 @@
 			</div>
 		</form>
 	</div>
-	
-	<div class="alert alert-error">
-		<?php
-		echo $this -> registerMessage;
-		?>
-	</div>
+
+	<?php
+	echo $this -> registerMessage;
+	?>
 </div>
