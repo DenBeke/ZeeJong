@@ -199,7 +199,7 @@ class Parser {
 			$try += 1;
 
 			if ($page == FALSE) {
-				usleep(200000);
+				usleep(10000000);
 			}
 		}
 
