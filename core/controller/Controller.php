@@ -29,7 +29,7 @@ require_once(dirname(__FILE__) . '/../config.php');
 				extract($this->data);
 			}
 			
-			if(file_exists($this->themeDir . '/' . $this->template)) {
+			if(file_exists($this->themeDir . '/' . $this->theme)) {
 				include($this->themeDir . '/' . $this->theme);
 			}	
 		}
