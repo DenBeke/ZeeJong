@@ -43,7 +43,7 @@ namespace Controller {
 		 */
 		public function __construct() {
 			if (!isset($_POST['username']) || !isset($_POST['password']) || !isset($_POST['password2']) || !isset($_POST['email'])) {
-				exit();
+
 			} else {
 
 				$username = $_POST['username'];
