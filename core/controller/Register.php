@@ -43,18 +43,16 @@ namespace Controller {
 		 */
 		public function __construct() {
 			if (!isset($_POST['username']) || !isset($_POST['password']) || !isset($_POST['password2']) || !isset($_POST['email'])) {
-
-			} else {
-
-				$username = $_POST['username'];
-				$password = $_POST['password'];
-				$password2 = $_POST['password2'];
-
-				$emailAddress = $_POST['email'];
-
-				$this -> register($username, $password, $password2, $emailAddress);
-
+				return;
 			}
+			
+			$username = $_POST['username'];
+			$password = $_POST['password'];
+			$password2 = $_POST['password2'];
+			
+			$emailAddress = $_POST['email'];
+			
+			$this -> register($username, $password, $password2, $emailAddress);
 		}
 
 		/**
