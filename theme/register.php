@@ -10,6 +10,10 @@
 
 	<h1>Sign up</h1>
 
+	<?php
+	echo $this -> registerMessage;
+	?>
+
 	<div class="well">
 		<form id="signup" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>register">
 			<div class="form-group">
@@ -60,7 +64,4 @@
 		</form>
 	</div>
 
-	<?php
-	echo $this -> registerMessage;
-	?>
 </div>
