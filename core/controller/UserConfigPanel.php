@@ -22,7 +22,6 @@ namespace Controller {
 		private $oldPass;
 		private $newEmail;
 		private $newPassword;
-		private $newPassword;
 
 		/**
 		 Render the template part of the view
