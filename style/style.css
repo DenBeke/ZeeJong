@@ -8,3 +8,9 @@ body {
   padding-top: 50px;
   padding-bottom: 20px;
 }
+
+
+.rss-footer {
+	font-style: italic;
+	font-size: 0.9em;
+}
