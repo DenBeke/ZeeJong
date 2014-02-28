@@ -16,23 +16,19 @@ class Score {
 
 
 	private $id;
-	private $matchDate;
 	private $teamA;
 	private $teamB;
-	private $matchId;
 
 	/**
 	Constructor
 
 	@param id The ID of the score
 	*/
-	public function __construct($id) {
+	public function __construct($id, $teamA, $teamB) {
 
 		$this->id = $id;
-		/*$this->matchDate = $matchDate;
 		$this->teamA = $teamA;
 		$this->teamB = $teamB;
-		$this->matchId = $matchId;*/
 	}
 
 	/**
@@ -48,10 +44,14 @@ class Score {
 
 
 	public function getScoreA() {
+
+		return $this->teamA;
 	}
 
 
 	public function getScoreB() {
+	
+		return $this->teamB;
 	}
 
 

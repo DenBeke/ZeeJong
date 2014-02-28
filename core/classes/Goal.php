@@ -13,14 +13,19 @@ The class contains the following information:
 */
 class Goal {
 	private $id;
+	private $playerId;
+	private $matchId;
 	private $time;
 
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id) {
+	public function __construct($id, $playerId, $matchId, $time) {
 		$this->id = $id;
+		$this->playerId = $playerId;
+		$this->matchId = $matchId;
+		$this->time = $time;
 	}
 
 	/**
@@ -34,13 +39,16 @@ class Goal {
 
 
 	public function getTime() {
+		return $this->time;
 	}
 	
 	
 	public function getMatch() {
+		return $this->matchId;
 	}
 	
 	public function getPlayer() {
+		return $this->playerId;
 	}
 
 
