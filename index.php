@@ -6,6 +6,9 @@ Created: February 2014
 */
 session_start();
 
+//Set default time zone
+date_default_timezone_set('Europe/Brussels');
+
 
 require_once(dirname(__FILE__) . '/core/config.php');
 require_once(dirname(__FILE__) . '/core/database.php');	// Require the database file
