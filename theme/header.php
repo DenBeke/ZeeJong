@@ -116,7 +116,7 @@ Created: February 2014
 				       	?>
 				       	
 				       	<form class="navbar-form pull-right" id="login">
-				       		<a href="?page=configPanel" class="btn btn-default"><?php echo user()->getUserName(); ?></a>
+				       		<a href="<?php echo SITE_URL; ?>configPanel" class="btn btn-default"><?php echo user()->getUserName(); ?></a>
 				       		<a href="<?php echo SITE_URL; ?>core/logout.php" class="btn btn-default">Logout</a>
 				       	</form>
 				       	
