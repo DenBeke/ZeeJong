@@ -19,34 +19,12 @@ namespace Controller {
 		public $loggedIn;
 		public $loginMessage;
 		public $user;
-		private $template = 'login.php';
-		
-		
-		
-		/**
-		Render the template part of the view
-		
-		@exception theme file does not exist
-		*/
-		public function template() {
-			
-			if(is_array($this->data)) {
-				extract($this->data);
-			}
-			
-			if(file_exists($this->themeDir . '/' . $this->template)) {
-				include($this->themeDir . '/' . $this->template);
-			}
-			
-		
-		}
-	
-	
+
 	
 		public function __construct() {
-		
+			$this->theme = 'login.php';
+
 			$this->checkLogin();
-		
 		}
 	
 	
