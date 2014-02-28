@@ -18,30 +18,15 @@ namespace Controller {
 
 		public $page = 'register';
 		public $user;
-		private $registerMessage;
-		private $template = 'register.php';
+		public $registerMessage;
 
-		/**
-		 Render the template part of the view
-
-		 @exception theme file does not exist
-		 */
-		public function template() {
-
-			if (is_array($this -> data)) {
-				extract($this -> data);
-			}
-
-			if (file_exists($this -> themeDir . '/' . $this -> template)) {
-				include ($this -> themeDir . '/' . $this -> template);
-			}
-
-		}
 
 		/**
 		 * Constructor
 		 */
 		public function __construct() {
+			$this->theme = 'register.php';
+
 			if (!isset($_POST['username']) || !isset($_POST['password']) || !isset($_POST['password2']) || !isset($_POST['email'])) {
 				return;
 			}
