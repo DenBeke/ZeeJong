@@ -21,8 +21,10 @@ class PlaysIn {
 	Constructor
 	@param id
 	*/
-	public function __construct($id) {
+	public function __construct($id, $playerId, $teamId) {
 		$this->id = $id;
+		$this->playerId = $playerId;
+		$this->teamId = $teamId;
 	}
 
 	/**
@@ -31,6 +33,14 @@ class PlaysIn {
 	*/
 	public function getId() {
 		return $this->id;
+	}
+
+	public function getPlayer() {
+		return $this->playerId;
+	}
+
+	public function getTeam() {
+		return $this->teamId;
 	}
 
 	/**
