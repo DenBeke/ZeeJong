@@ -44,7 +44,7 @@ namespace Controller {
 			if (!isset($_SESSION['userID'])) {
 				return;
 			}
-			if (!isset($_POST['oldPass']) && !isset($_POST['newEmail']) && !isset($_POST['newPass']) && !isset($_POST['newPass2'])) {
+			if (!isset($_POST['oldPass']) && !isset($_POST['newEmail']) && !isset($_POST['newPassword']) && !isset($_POST['newPassword2'])) {
 				return;
 			}
 
@@ -75,8 +75,8 @@ namespace Controller {
 			}
 			$oldPass = $_POST['oldPass'];
 			// Verify old password
-			if (!hashPassword($oldPass, $this -> user -> getSalt()) == $this -> user -> getHash()) {
-				$this -> configMessage = '	<div class="alert alert-danger"><strong>Your old password is incorrect.</strong></div>';
+			if (!(hashPassword($oldPass, $this -> user -> getSalt()) == $this -> user -> getHash())) {
+				$this -> configMessage = '	<div class="alert alert-danger"><strong>Your current password is incorrect.</strong></div>';
 				return false;
 			}
 
@@ -92,9 +92,9 @@ namespace Controller {
 					$this -> user -> setEmail($newEmail);
 				}
 			}
-			if (isset($_POST['newPass']) && isset($_POST['newPass2'])) {
-				$newPassword = $_POST['newPass'];
-				$newPassword = $_POST['newPass2'];
+			if (isset($_POST['newPassword']) && isset($_POST['newPassword2'])) {
+				$newPassword = $_POST['newPassword'];
+				$newPassword2 = $_POST['newPassword2'];
 				if ($newPassword != $newPassword2) {
 					// Test if new passwords are same
 					$this -> configMessage = '<div class="alert alert-danger"><strong>New passwords do not match.</strong></div>';
@@ -112,7 +112,8 @@ namespace Controller {
 						$this -> user -> setSalt($newSalt);
 					}
 				}
-			}$this -> configMessage = '<div class="alert alert-success">New settings were successfully saved.</strong></div>';
+			}
+			$this -> configMessage = '<div class="alert alert-success">New settings were successfully saved.</strong></div>';
 			return true;
 		}
 
