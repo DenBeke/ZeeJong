@@ -8,11 +8,15 @@
 <div class="container">
 
 	<h1>Change your account settings</h1>
-	<p>Leave fields open if you don't want them to be changed.</p>
-	<p>Fields marked (*) are required. </p>
+	<p>
+		Leave fields open if you don't want them to be changed.
+	</p>
+	<p>
+		Fields marked (*) are required.
+	</p>
 	<?php
-if(!loggedIn()){
-// User is not logged in
+	if(!loggedIn()){
+	// User is not logged in
 
 	?>
 	<div class="alert alert-danger">
@@ -20,6 +24,7 @@ if(!loggedIn()){
 	</div>
 	<?php
 	}else{
+	echo $this -> configMessage;
 	// Display 'change settings' form
 	?>
 
