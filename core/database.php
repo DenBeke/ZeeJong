@@ -264,6 +264,112 @@ class Database {
 	}
 
 	/**
+	 Set the emailaddress of a user with a certain ID
+
+	 @param id,emailaddress
+	 */
+	public function setUserMail($id, $emailAddress) {
+		
+		//Query
+		$query = "UPDATE User 
+				  SET emailAddress = ?
+				  WHERE id = ?";
+		
+		// Test if user exists
+		if(!$this->doesUserExist($id)){
+			throw new excpetion('User with given ID does not exists');
+		}
+		
+
+		//Prepare statement
+		if (!$statement = $this -> link -> prepare($query)) {
+			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
+		}
+		//Bind parameters
+		if (!$statement -> bind_param('is', $id, $emailAddress)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Close the statement
+		$statement -> close();
+		
+	}
+	
+	/**
+	 Set the salt of a user with a certain ID
+
+	 @param id,salt
+	 */
+	public function setUserSalt($id, $salt) {
+		
+		//Query
+		$query = "UPDATE User 
+				  SET salt = ?
+				  WHERE id = ?";
+		
+		// Test if user exists
+		if(!$this->doesUserExist($id)){
+			throw new excpetion('User with given ID does not exists');
+		}
+		
+
+		//Prepare statement
+		if (!$statement = $this -> link -> prepare($query)) {
+			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
+		}
+		//Bind parameters
+		if (!$statement -> bind_param('is', $id, $salt)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Close the statement
+		$statement -> close();
+		
+	}
+	
+	/**
+	 Set the hashed password of a user with a certain ID
+
+	 @param id,hash
+	 */
+	public function setUserHash($id, $hash) {
+		
+		//Query
+		$query = "UPDATE User 
+				  SET password = ?
+				  WHERE id = ?";
+		
+		// Test if user exists
+		if(!$this->doesUserExist($id)){
+			throw new excpetion('User with given ID does not exists');
+		}
+		
+
+		//Prepare statement
+		if (!$statement = $this -> link -> prepare($query)) {
+			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
+		}
+		//Bind parameters
+		if (!$statement -> bind_param('is', $id, $hash)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Close the statement
+		$statement -> close();
+		
+	}
+
+
+	/**
 	 Test whether a specific username exists
 
 	 @param the username to test
