@@ -1,29 +1,30 @@
 <?php
-require_once(dirname(__FILE__) . '/../config.php');
+require_once (dirname(__FILE__) . '/../database.php');
 
 /**
-@brief Class containing a user
+ @brief Class containing a user
 
-The class contains the following information:
-	-id (key)
-	-screenName (key)
-	-firstName
-	-lastName
-	-phoneNr
-	-streetName
-	-houseNr
-	-city
-	-country
-	-birthDate
-	-gender
-	-balans
-	-joinDate
-	-emailAddress
-	-password (hashed)
-	-avatar
-*/
+ The class contains the following information:
+ -id (key)
+ -screenName (key)
+ -firstName
+ -lastName
+ -phoneNr
+ -streetName
+ -houseNr
+ -city
+ -country
+ -birthDate
+ -gender
+ -balans
+ -joinDate
+ -emailAddress
+ -password (hashed)
+ -avatar
+ */
 
 class User {
+	private $d;
 	private $id;
 	private $screenName;
 	private $firstName;
@@ -42,200 +43,65 @@ class User {
 	private $avatar;
 
 	/**
-	Constructor
+	 Constructor
 
-	@param id The ID of the user
-	*/
+	 @param id The ID of the user
+	 */
 	public function __construct($id) {
-		$this->id = $id;
+		$this -> id = $id;
+		$this -> d = new Database;
 	}
 
 	/**
-	Get the ID of the user
+	 Get the ID of the user
 
-	@return the id of the user
-	*/
+	 @return the id of the user
+	 */
 	public function getID() {
-		return $this->id;
+		return $this -> id;
 	}
 
 	/**
-	Get the username of the user
+	 Get the username of the user
 
-	@return the username of the user
-	*/
+	 @return the username of the user
+	 */
 	public function getUserName() {
-		//Connect to the database
-		$this->link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-		
-		//Check the connection
-		if (mysqli_connect_errno()) {
-			$error = mysqli_connect_error();
-			throw new Exception("Connect failed: $error");
-		}
-		//Query
-		$query = "
-			SELECT username FROM User
-			WHERE id = ?;
-		";
-		
-		//Prepare statement
-		if(!$statement = $this->link->prepare($query)) {
-			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
-		}
-		
-		//Bind parameters
-		if(!$statement->bind_param('i', $this->id)){
-			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Execute statement
-		if (!$statement->execute()) {
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Store the result in the buffer
-		$statement->store_result();
-		
-		$numberOfResults = $statement->num_rows;
-	
-		//Check if the correct number of results are returned from the database
-		if($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple users with same id');
-		}
-		else if($numberOfResults < 1) {
-			throw new exception('Error, there is no user with the given id');
-		}
-
-		//Bind return values
-		$statement->bind_result($username);
-		//Fetch the rows of the return values
-		$statement->fetch();
-		//Close the statement		
-		$statement->close();
-		return $username;
+		return $this -> d -> getUserName($this -> id);
 	}
 
 	/**
-	Get the hashed password of the user
+	 Get the hashed password of the user
 
-	@return the hashed password of the user
-	*/
+	 @return the hashed password of the user
+	 */
 	public function getHash() {
-		//Connect to the database
-		$this->link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-		
-		//Check the connection
-		if (mysqli_connect_errno()) {
-			$error = mysqli_connect_error();
-			throw new Exception("Connect failed: $error");
-		}
-		//Query
-		$query = "
-			SELECT password FROM User
-			WHERE id = ?;
-		";
-		
-		//Prepare statement
-		if(!$statement = $this->link->prepare($query)) {
-			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
-		}
-		
-		//Bind parameters
-		if(!$statement->bind_param('i', $this->id)){
-			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Execute statement
-		if (!$statement->execute()) {
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Store the result in the buffer
-		$statement->store_result();
-		
-		$numberOfResults = $statement->num_rows;
-	
-		//Check if the correct number of results are returned from the database
-		if($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple users with same id');
-		}
-		else if($numberOfResults < 1) {
-			throw new exception('Error, there is no user with the given id');
-		}
-
-		//Bind return values
-		$statement->bind_result($password);
-		//Fetch the rows of the return values
-		$statement->fetch();
-		//Close the statement		
-		$statement->close();
-		return $password;
+		return $this -> d -> getUserPasswordHash($this -> id);
 	}
-	
-	
-	
-	
-	
+
 	/**
-	Get the salt of the user
-	
-	@return the salt password of the user
-	*/
-	public function getSalt() {
-		//Connect to the database
-		$this->link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-		
-		//Check the connection
-		if (mysqli_connect_errno()) {
-			$error = mysqli_connect_error();
-			throw new Exception("Connect failed: $error");
-		}
-		//Query
-		$query = "
-			SELECT salt FROM User
-			WHERE id = ?;
-		";
-		
-		//Prepare statement
-		if(!$statement = $this->link->prepare($query)) {
-			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
-		}
-		
-		//Bind parameters
-		if(!$statement->bind_param('i', $this->id)){
-			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Execute statement
-		if (!$statement->execute()) {
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Store the result in the buffer
-		$statement->store_result();
-		
-		$numberOfResults = $statement->num_rows;
-	
-		//Check if the correct number of results are returned from the database
-		if($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple users with same id');
-		}
-		else if($numberOfResults < 1) {
-			throw new exception('Error, there is no user with the given id');
-		}
-	
-		//Bind return values
-		$statement->bind_result($password);
-		//Fetch the rows of the return values
-		$statement->fetch();
-		//Close the statement		
-		$statement->close();
-		return $password;
-	}
-	
+	 Get the salt of the user
 
+	 @return the salt password of the user
+	 */
+	public function getSalt() {
+		return $this -> d -> getUserPasswordSalt($this -> id);
+	}
+
+	/**
+	 Get the email address of the user
+
+	 @return the emailaddress
+	 */
+
+	/**
+	 Change the emailaddress of the user
+
+	 @param the new email address
+	 */
+	public function setEmail($newMail) {
+
+	}
 
 }
-
 ?>
