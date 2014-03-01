@@ -93,6 +93,9 @@ class User {
 
 	 @return the emailaddress
 	 */
+	public function getMail() {
+		return $this -> d -> getUserMail($this -> id);
+	}
 
 	/**
 	 Change the emailaddress of the user
@@ -100,7 +103,25 @@ class User {
 	 @param the new email address
 	 */
 	public function setEmail($newMail) {
+		return $this -> d -> setUserMail($this -> id, $newMail);
+	}
 
+	/**
+	 Change the hashed password of the user
+
+	 @param the new hashed password
+	 */
+	public function setHash($newHash) {
+		return $this -> d -> setUserHash($this -> id, $newHash);
+	}
+
+	/**
+	 Change the password salt of the user
+
+	 @param the new salt
+	 */
+	public function setSalt($newSalt) {
+		return $this -> d -> setUserSalt($this -> id, $newSalt);
 	}
 
 }
