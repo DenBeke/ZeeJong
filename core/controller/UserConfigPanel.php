@@ -19,11 +19,7 @@ namespace Controller {
 		public $page = 'configPanel';
 		private $template = 'UserConfigPanel.php';
 		public $configMessage;
-		private $oldPass;
-		private $newEmail;
-		private $newPassword;
-		private $newPassword;
-
+		private $user;
 		/**
 		 Render the template part of the view
 
@@ -45,15 +41,49 @@ namespace Controller {
 		 * Constructor
 		 */
 		public function __construct() {
-			if (!isset($_POST['oldPass']) || !isset($_POST['newEmail']) || !isset($_POST['newPass']) || !isset($_POST['newPass2'])) {
+			// Variables have to be set
+			if (!isset($_POST['oldPass']) || !isset($_POST['newEmail']) || !isset($_POST['newPass']) || !isset($_POST['newPass2']) || !isset($_SESSION['userID'])) {
+				return;
+			}
+			$d = new \Database;
+			// The user with the specific ID must exist
+			if (!$d -> doesUserExist($_SESSION['userID'])) {
 				return;
 			}
 			$oldPass = $_POST['oldPass'];
 			$newEmail = $_POST['newEmail'];
 			$newPassword = $_POST['newPass'];
 			$newPassword = $_POST['newPass2'];
+			$user = new User($_SESSION('userID'));
 
-			$this -> register($username, $password, $password2, $emailAddress);
+			$this -> changeSettings($oldPass, $newEmail, $newPassword, $newPassword2);
+		}
+
+		/**
+		 * Generate a salt
+		 */
+		private function generateSalt() {
+			return uniqid(rand(0, 1000000));
+		}
+
+		/**
+		 * Change the settings
+		 */
+		private function changeSettings($oldPass, $newEmail, $newPassword, $newPassword2) {
+			// Verify old password
+			if (!hashPassword($oldPass, $user -> getSalt()) == $user -> getHash()) {
+				$this -> configMessage = '	<div class="alert alert-danger"><strong>Your old password is incorrect.</strong></div>';
+				return false;
+			}
+			if (strlen($newEmail) > 0) {
+				// Test if the new mail address is valid
+				if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
+					$this -> configMessage = '<div class="alert alert-danger"><strong>Your new emailaddress is invalid.</strong></div>';
+					return false;
+				}
+				// Change the emailaddress
+
+			}
 		}
 
 	}
