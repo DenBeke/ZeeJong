@@ -29,6 +29,8 @@ class Parser {
 	// -1 to never use cache
 	private $ttl = 0;
 
+	private $competitions;
+
 
 	/**
 	@brief Constructor of the parser object.
@@ -37,59 +39,86 @@ class Parser {
 		$this->database = new Database();
 
 		date_default_timezone_set('Europe/Brussels');
+
+		$this->competitions = array(
+
+				'wk' => array(
+					'name' => 'World Cup',
+					'archiveUrl' => 'http://int.soccerway.com/international/world/world-cup/c72/archive/?ICID=PL_3N_06',
+					'url' => 'http://int.soccerway.com/international/world/world-cup/2014-brazil/group-stage/r16351/?ICID=PL_3N_01'
+				),
+
+				'eu' => array(
+					'name' => 'European Championship',
+					'archiveUrl' => 'http://int.soccerway.com/international/europe/european-championships/c25/archive/?ICID=PL_3N_05',
+					'url' => 'http://int.soccerway.com/international/europe/european-championships/2012-poland-ukraine/s4943/final-stages/?ICID=TN_02_03_03'
+				),
+
+				'olympics' => array(
+					'name' => 'Olympics',
+					'archiveUrl' => 'http://int.soccerway.com/international/world/olympics/c221/archive/?ICID=PL_3N_04',
+					'url' => 'http://int.soccerway.com/international/world/olympics/2012-london/s6606/final-stages/?ICID=TN_02_03_02'
+				),
+
+				'uefa-champions' => array(
+					'name' => 'UEFA Champions League',
+					'archiveUrl' => 'http://int.soccerway.com/international/europe/uefa-champions-league/c10/archive/?ICID=PL_3N_04',
+					'url' => 'http://int.soccerway.com/international/europe/uefa-champions-league/20132014/s8381/final-stages/?ICID=SN_03_08'
+				),
+
+				'uefa-eu' => array(
+					'name' => 'UEFA Europa League',
+					'archiveUrl' => 'http://int.soccerway.com/international/europe/uefa-cup/c18/archive/?ICID=PL_3N_04',
+					'url' => 'http://int.soccerway.com/international/europe/uefa-cup/20132014/s8295/final-stages/?ICID=TN_02_02_02'
+				),
+
+				'be-pro' => array(
+					'name' => 'Belgium Pro League',
+					'archiveUrl' => 'http://int.soccerway.com/national/belgium/pro-league/c24/archive/?ICID=PL_3N_07',
+					'url' => 'http://int.soccerway.com/national/belgium/pro-league/20132014/regular-season/r21451/?ICID=HP_POP_11'
+				),
+
+				'bundesliga' => array(
+					'name' => 'Bundesliga',
+					'archiveUrl' => 'http://int.soccerway.com/national/germany/bundesliga/c9/archive/?ICID=PL_3N_07',
+					'url' => 'http://int.soccerway.com/national/germany/bundesliga/20132014/regular-season/r21344/?ICID=SN_01_02'
+				)
+			);
+	}
+
+
+	/**
+	Parse the competitions to fill in new data.
+	*/
+	public function parse($ttl = 1800) {
+
+		$this->ttl = $ttl;
+
+		//Loop through competition and parse the competitions
+		foreach ($this->competitions as $competition) {
+
+			$this->competition = $competition['name'];
+
+			echo '<em>Parsing: ' . $competition['name'] . '</em><br>';
+			$this->parseNewMatches($competition['url']);
+		}
 	}
 
 
 	/**
 	Parse the archive and store the data.
 	*/
-	public function parse() {
+	public function parseArchive($ttl = 0) {
 
-		$competitions = array(
-
-			'wk' => array(
-				'name' => 'World Cup',
-				'url' => 'http://int.soccerway.com/international/world/world-cup/c72/archive/?ICID=PL_3N_06'
-			),
-
-			'eu' => array(
-				'name' => 'European Championship',
-				'url' => 'http://int.soccerway.com/international/europe/european-championships/c25/archive/?ICID=PL_3N_05'
-			),
-
-			'olympics' => array(
-				'name' => 'Olympics',
-				'url' => 'http://int.soccerway.com/international/world/olympics/c221/archive/?ICID=PL_3N_04'
-			),
-
-			'uefa-champions' => array(
-				'name' => 'UEFA Champions League',
-				'url' => 'http://int.soccerway.com/international/europe/uefa-champions-league/c10/archive/?ICID=PL_3N_04'
-			),
-
-			'uefa-eu' => array(
-				'name' => 'UEFA Europa League',
-				'url' => 'http://int.soccerway.com/international/europe/uefa-cup/c18/archive/?ICID=PL_3N_04'
-			),
-
-			'be-pro' => array(
-				'name' => 'Belgium Pro League',
-				'url' => 'http://int.soccerway.com/national/belgium/pro-league/c24/archive/?ICID=PL_3N_07'
-			),
-
-			'bundesliga' => array(
-				'name' => 'Bundesliga',
-				'url' => 'http://int.soccerway.com/national/germany/bundesliga/c9/archive/?ICID=PL_3N_07'
-			)
-		);
+		$this->ttl = $ttl;
 
 		//Loop through competition and parse the competitions
-		foreach ($competitions as $competition) {
+		foreach ($this->competitions as $competition) {
 
 			$this->competition = $competition['name'];
 
 			echo '<em>Parsing: ' . $competition['name'] . '</em><br>';
-			$this->parseCompetition($competition['url']);
+			$this->parseCompetitionInArchive($competition['archiveUrl']);
 		}
 
 		//Save the team urls
@@ -194,7 +223,7 @@ class Parser {
 		//Download the page
 		$try = 0;
 		$page = FALSE;
-		while ($page == FALSE && $try < 3) {
+		while ($page == FALSE && $try < 4) {
 			$page = file_get_contents($url);
 			$try += 1;
 
@@ -220,7 +249,7 @@ class Parser {
 
 	@param url of the competition
 	*/
-	private function parseCompetition($url) {
+	private function parseCompetitionInArchive($url) {
 
 		$html = $this->loadPage($url);
 
@@ -234,7 +263,7 @@ class Parser {
 
 			echo "<h2>$tournamentName</h2>";
 
-			$this->parseTournament('http://int.soccerway.com' . $tournamentUrl);
+			$this->parseTournamentInArchive('http://int.soccerway.com' . $tournamentUrl);
 
 		}
 
@@ -247,7 +276,7 @@ class Parser {
 
 	@param url of the tournament
 	*/
-	private function parseTournament($url) {
+	private function parseTournamentInArchive($url) {
 
 		$html = $this->loadPage($url);
 
@@ -414,6 +443,75 @@ class Parser {
 			foreach ($goals as $time => $player) {
 				$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
 				$this->database->addGoal($playerId, $time, $matchId);
+			}
+		}
+
+		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
+	}
+
+
+	/**
+	Parse new matches.
+
+	@param url of the competition
+	*/
+	private function parseNewMatches($url) {
+
+		$html = $this->loadPage($url);
+
+		//Find the tournament
+		$this->tournament = $html->find('.level-1 .expanded a', 0)->plaintext;
+		$tournamentId = $this->database->addTournament($this->tournament, $this->competition);
+
+		//Loop over all matches
+		$rows = $html->find('.matches tr');
+		foreach ($rows as $row) {
+
+			//Some results are not matches and should be skipped
+			$date = $row->find('.date', 0);
+			if ((is_object($date)) && ($date->tag == 'td')) {
+
+				//Convert the date in something that strtotime understands
+				$date = $date->plaintext;
+				$date = explode('/', $date);
+				$date[2] = '20' . $date[2];
+				$date = implode('-', $date);
+
+				//Read the information about the match
+				$teamA = $row->find('.team-a', 0)->plaintext;
+				$teamB = $row->find('.team-b', 0)->plaintext;
+				$scoreOrTime = $row->find('.score-time', 0)->plaintext;
+
+				//Find out if the match has been played already or not
+				$colonPos = strpos($scoreOrTime, ' : ');
+				$minusPos = strpos($scoreOrTime, ' - ');
+				if ($colonPos == $minusPos) {
+					throw new Exception('Failed to parse time or score of match');
+				}
+
+				if ($colonPos != false) {
+					$this->database->addMatch($teamA, $teamB, null, null, null, $date, $tournamentId);
+				}
+				else {
+
+					try {
+						$matchId = $this->database->getMatch($teamA, $teamB, null, null, null, $date, $tournamentId);
+
+						//If no exception gets thrown then the match was already in the database
+						$this->database->removeMatch($matchId);
+					}
+					catch (Exception $e) {
+
+						//Only ignore the exception about the match not being found
+						if ($e->getMessage() != 'Error, there is no match with the given teams, referee, date and tournament') {
+							throw $e;
+						}
+					}
+
+					//Add the match
+					$matchUrl = $row->find('.score-time a', 0)->href;
+					$this->parseMatch('http://int.soccerway.com' . $matchUrl);
+				}
 			}
 		}
 

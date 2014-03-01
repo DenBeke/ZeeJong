@@ -2238,6 +2238,40 @@ class Database {
 		$statement -> close();
 	}
 
+
+	/**
+	 Remove a match with the given id
+
+	 @param id
+	*/
+	public function removeMatch($id) {
+
+		//Query
+		$query = "
+			REMOVE FROM `Match` WHERE id = ?;
+		";
+
+		//Prepare statement
+		if (!$statement = $this -> link -> prepare($query)) {
+
+			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
+		}
+
+		//Bind parameters
+		if (!$statement -> bind_param('i', $id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Close the statement
+		$statement -> close();
+	}
+
+
 	/**
 	 Get the match with the given id
 
