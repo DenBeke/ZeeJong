@@ -271,13 +271,15 @@ class Database {
 	public function setUserMail($id, $emailAddress) {
 		
 		//Query
-		$query = "UPDATE User 
-				  SET emailAddress = ?
-				  WHERE id = ?";
+		$query = "
+			UPDATE User
+			SET emailAddress = ?
+			WHERE id = ?;
+		";
 		
 		// Test if user exists
 		if(!$this->doesUserExist($id)){
-			throw new excpetion('User with given ID does not exists');
+			throw new exception('User with given ID does not exists');
 		}
 		
 
@@ -286,7 +288,7 @@ class Database {
 			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
 		}
 		//Bind parameters
-		if (!$statement -> bind_param('is', $id, $emailAddress)) {
+		if (!$statement -> bind_param('si', $emailAddress,$id)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
 		//Execute statement
@@ -306,13 +308,15 @@ class Database {
 	public function setUserSalt($id, $salt) {
 		
 		//Query
-		$query = "UPDATE User 
-				  SET salt = ?
-				  WHERE id = ?";
+		$query = "
+			UPDATE User
+			SET salt = ?
+			WHERE id = ?;
+		";
 		
 		// Test if user exists
 		if(!$this->doesUserExist($id)){
-			throw new excpetion('User with given ID does not exists');
+			throw new exception('User with given ID does not exists');
 		}
 		
 
@@ -321,7 +325,7 @@ class Database {
 			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
 		}
 		//Bind parameters
-		if (!$statement -> bind_param('is', $id, $salt)) {
+		if (!$statement -> bind_param('si',$salt, $id)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
 		//Execute statement
@@ -341,13 +345,15 @@ class Database {
 	public function setUserHash($id, $hash) {
 		
 		//Query
-		$query = "UPDATE User 
-				  SET password = ?
-				  WHERE id = ?";
+		$query = "
+			UPDATE User
+			SET password = ?
+			WHERE id = ?;
+		";
 		
 		// Test if user exists
 		if(!$this->doesUserExist($id)){
-			throw new excpetion('User with given ID does not exists');
+			throw new exception('User with given ID does not exists');
 		}
 		
 
@@ -356,7 +362,7 @@ class Database {
 			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
 		}
 		//Bind parameters
-		if (!$statement -> bind_param('is', $id, $hash)) {
+		if (!$statement -> bind_param('si',$hash, $id)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
 		//Execute statement
