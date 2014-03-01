@@ -6,6 +6,9 @@ Created: February 2014
 */
 session_start();
 
+//Set default time zone
+date_default_timezone_set('Europe/Brussels');
+
 
 require_once(dirname(__FILE__) . '/core/config.php');
 require_once(dirname(__FILE__) . '/core/database.php');	// Require the database file
@@ -22,6 +25,7 @@ require_once(dirname(__FILE__) . '/core/controller/Tournament.php');
 require_once(dirname(__FILE__) . '/core/controller/Match.php');
 require_once(dirname(__FILE__) . '/core/controller/Referee.php');
 require_once(dirname(__FILE__) . '/core/controller/Error.php');
+require_once(dirname(__FILE__) . '/core/controller/News.php');
 require_once(dirname(__FILE__) . '/core/controller/UserConfigPanel.php');
 
 //Create database
@@ -29,8 +33,6 @@ $database = new Database;
 
 
 $urls = array(
-	INSTALL_DIR . 'error' => 'Controller\Error',
-	INSTALL_DIR . 'error' => 'Controller\Error',
 	INSTALL_DIR . 'player' => 'Controller\Player',
 	INSTALL_DIR . 'register' => 'Controller\Register',
 	INSTALL_DIR  => 'Controller\Home',
@@ -40,6 +42,7 @@ $urls = array(
 	INSTALL_DIR . 'match' => 'Controller\Match',
 	INSTALL_DIR . 'referee' => 'Controller\Referee',
 	INSTALL_DIR . 'tournament' => 'Controller\Tournament',
+	INSTALL_DIR . 'news' => 'Controller\News',
 	INSTALL_DIR . 'configPanel' => 'Controller\UserConfigPanel'
 );
 
