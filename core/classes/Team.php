@@ -50,6 +50,7 @@ class Team {
 	
 	
 	public function getPlayers() {
+		return $this->db->getPlayersInTeam($this->id);
 	}
 	
 	

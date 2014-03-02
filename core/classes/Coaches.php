@@ -23,17 +23,37 @@ class Coaches {
 	Constructor
 	@param id
 	*/
-	public function __construct($id) {
+	public function __construct($id, $teamId, $coachId, $date) {
 		$this->id = $id;
+		$this->teamId = $teamId;
+		$this->coachId = $coachId;
+		$this->date = $date;
 	}
 
 	/**
-	Get the ID of the coach
+	Get the ID of the coaches relation
 	@return id
 	*/
 	public function getId() {
 		return $this->id;
 	}
+
+	/**
+	Get the ID of the coach
+	@return coachId
+	*/
+	public function getCoach() {
+		return $this->coachId;
+	}
+
+	/**
+	Get the ID of the team
+	@return teamId
+	*/
+	public function getTeam() {
+		return $this->teamId;
+	}
+
 
 	/**
 	String function
