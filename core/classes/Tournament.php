@@ -47,13 +47,22 @@ class Tournament {
 
 
 	/**
+	Get The competition in which this tournament is held
+	@return Competition
+	*/
+	public function getCompetition() {
+		return $this->db->getCompetitionById($this->competitionId);
+	}
+
+
+	/**
 	Get the latest matches in the given tournament
 	
 	@param number of latest matches (0 for all matches)
 	@return matches
 	*/
 	public function getMatches($number) {
-		return array();
+		return $this->db->getMatchesInTournament($this->id);
 	}
 
 

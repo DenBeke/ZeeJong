@@ -3146,10 +3146,11 @@ class Database {
 		else {
 
 			//Bind return values
-			$statement->bind_result($id);
-			
-			return $this->getCoachById($id);
-			
+			$statement->bind_result($id, $coachId, $teamId, $matchId);
+
+			while ($statement->fetch()) {
+				return $this->getCoachById($coachId);
+			}
 		}
 	}
 
@@ -3191,23 +3192,143 @@ class Database {
 			throw new exception('Error, there are no Tournaments in this competition');
 		}	
 		else {
-
-			//FINISH THIS
 			//Bind return values
-			$statement->bind_result($id, $name);
+			$statement->bind_result($id, $name, $competitionId);
 			
+			$tournaments = array();
+
 			//Fetch the rows of the return values
 			while ($statement->fetch()) {
 				
-				//Create new Competition object TODO
-				return new Competition($id, $name, $this);
-				
-				//Close the statement		
-				$statement->close();
+				//Create new Tournament object and add it to the array
+				array_push($tournaments, new Tournament($id, $name, $competitionId, $this));
 				
 			}
+		
+				//Close the statement		
+				$statement->close();
+
+			return $tournaments;
 		}
 	}		
+
+	/**
+	Returns all matches of the tournament
+	
+	@return matches
+	*/
+	public function getMatchesInTournament($tournamentId) {
+	
+		//Query
+		$query = "
+			SELECT * FROM `Match`
+			WHERE tournamentId = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $tournamentId)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+		
+		if($numberOfResults < 1) {
+			throw new exception('Error, there are no Matches in this Tournament');
+		}	
+		else {
+			//Bind return values
+			$statement->bind_result($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId);
+			
+			$matches = array();
+
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Tournament object and add it to the array
+				array_push($matches, new Match($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId, $this));
+				
+			}
+		
+			//Close the statement		
+			$statement->close();
+
+			return $matches;
+		}
+	}
+
+
+	/**
+	Returns all players of a given team
+	
+	@return players
+	*/
+	public function getPlayersInTeam($teamId) {
+	
+		//Query
+		$query = "
+			SELECT playerId FROM `PlaysMatchInTeam`
+			WHERE teamId = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $teamId)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+		
+		if($numberOfResults < 1) {
+			throw new exception('Error, there are no Players in this Team');
+		}	
+		else {
+			//Bind return values
+			$statement->bind_result($playerId);
+			
+			$players = array();
+
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Tournament object and add it to the array
+				array_push($players, $this->getPlayerById($playerId));
+				
+			}
+		
+			//Close the statement		
+			$statement->close();
+
+			return $players;
+		}
+	}
+
 
 }
 
@@ -3222,16 +3343,21 @@ class Database {
 	$db->addTeam('fuck', 1);
 	$db->addTeam('balls', 1);	
 	$db->addTournament('DeathBattleTournamentVersion', 1);
-	$db->addPlayer('Maarten', 'Stekelenburg', 1, 401493600, 194, 84);	
-	$db->addMatch(1, 2, 3, 0, 1, 0, 1);	
+	$db->addTournament('DeathBattleTournamentVersion2', 1);	
+	$db->addPlayer('Maarten', 'Stekelenburg', 1, 401493600, 194, 84);
+	$db->addPlayer('Funkizeit', 'Mit BRUNO', 1, 401493600, 194, 84);		
+	$db->addMatch(1, 2, 3, 0, 1, 0, 1);
+	$db->addMatch(1, 2, 3, 0, 2, 10, 1);		
 	$db->addGoal(1, 0, 1);
 	$db->addGoal(1, 1, 1);
 	$db->addGoal(1, 2, 1);
 	$db->addFoulCard(1, 1, 0, 2);
 	$db->addFoulCard(1, 1, 1, 2);	
 	$db->addPlayerToMatch(1, 1, 1, 11);
+	$db->addPlayerToMatch(2, 1, 1, 12);
 	$db->addPlayerToTeam(1, 1);
 	$db->addCoach("Timo", "Beke", 1);
+	$db->addCoaches(1, 1, 1);
 	echo "<b>Done! </b><br>";		
 
 	echo "<br> <u><b>Card tests: </b></u><br>";
@@ -3277,7 +3403,9 @@ class Database {
 	echo "<b>Basic Getters: </b><br>";	
 	echo $db->getCompetition('DeathBattle')->getId(), "<br>";
 	echo $db->getCompetitionById(1)->getName(), "<br>";
-
+	echo "<b>Query tests: </b><br>";
+	echo $db->getTournamentsInCompetition(1)[0]->getName(), "<br>";
+	echo $db->getTournamentsInCompetition(1)[1]->getName(), "<br>";
 
 
 	echo "<br> <u><b>Goal tests: </b></u><br>";
@@ -3375,5 +3503,36 @@ class Database {
 	echo "Score: ",$db->getMatchById(1)->getScore(), "<br>";	
 	echo "teamA Score: ",$db->getMatchById(1)->getScore()->getScoreA(), "<br>";
 	echo "teamB Score: ",$db->getMatchById(1)->getScore()->getScoreB(), "<br>";	
+
+
+
+	echo "<br> <u><b>Team tests: </b></u><br>";
+	echo "<b>Basic Getters: </b><br>";	
+	echo "Name: ",$db->getTeam("fuck", 1)->getName(), "<br>";	
+	echo "Coach: ",$db->getTeam("fuck", 1)->getCoach()->getName(), "<br>";	
+	echo "Country: ",$db->getTeam("fuck", 1)->getCountry(), "<br>";
+
+	echo "<b>Basic Getters by ID: </b><br>";	
+	echo "Name: ",$db->getTeamById(1)->getName(), "<br>";	
+	echo "Coach: ",$db->getTeamById(1)->getCoach()->getName(), "<br>";	
+	echo "Country: ",$db->getTeamById(1)->getCountry(), "<br>";
+
+	echo "<b>Query Tests: </b><br>";
+	echo "Player 1: ", $db->getTeamById(1)->getPlayers()[0]->getName(), "<br>";
+	echo "Player 2: ", $db->getTeamById(1)->getPlayers()[1]->getName(), "<br>";
+
+
+
+	echo "<br> <u><b>Tournament tests: </b></u><br>";
+	echo "<b>Basic Getters: </b><br>";	
+	echo "Name: ",$db->getTournament("DeathBattleTournamentVersion", 1)->getName(), "<br>";	
+	echo "Competition: ",$db->getTournament("DeathBattleTournamentVersion", 1)->getCompetition()->getName(), "<br>";	
+	
+	echo "<b>Basic Getters by ID: </b><br>";	
+	echo "Name: ",$db->getTournamentById(1)->getName(), "<br>";	
+	echo "Competition: ",$db->getTournamentById(1)->getCompetition()->getName(), "<br>";
+	echo "<b>Query test by ID: </b><br>";		
+	echo "Match 1: ", $db->getTournamentById(1)->getMatches(0)[0]->getId(), "<br>";
+	echo "Match 2: ", $db->getTournamentById(1)->getMatches(0)[1]->getId(), "<br>";
 
 ?>

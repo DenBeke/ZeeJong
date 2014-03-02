@@ -40,8 +40,7 @@ class Competition {
 	@return name
 	*/
 	public function getName() {
-		//TODO Fetch name from database. (need to add function in Database.php)
-		//return $this->db->getTournamentName($this->id);
+
 		return $this->name;
 	}
 	
