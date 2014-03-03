@@ -118,8 +118,8 @@ KEY `countryId` (`countryId`)
 '
 CREATE TABLE IF NOT EXISTS `Score` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
-`teamA` int(11) NOT NULL,
-`teamB` int(11) NOT NULL,
+`teamA` int(11),
+`teamB` int(11),
 PRIMARY KEY (`id`),
 KEY `teamA` (`teamA`,`teamB`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

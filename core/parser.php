@@ -459,9 +459,11 @@ class Parser {
 
 		$html = $this->loadPage($url);
 
+		$competitionId = $this->database->addCompetition($this->competition);
+
 		//Find the tournament
 		$this->tournament = $html->find('.level-1 .expanded a', 0)->plaintext;
-		$tournamentId = $this->database->addTournament($this->tournament, $this->competition);
+		$tournamentId = $this->database->addTournament($this->tournament, $competitionId);
 
 		//Loop over all matches
 		$rows = $html->find('.matches tr');
@@ -478,9 +480,17 @@ class Parser {
 				$date = implode('-', $date);
 
 				//Read the information about the match
-				$teamA = $row->find('.team-a', 0)->plaintext;
-				$teamB = $row->find('.team-b', 0)->plaintext;
+				$teamA = $row->find('.team-a a', 0);
+				$teamB = $row->find('.team-b a', 0);
 				$scoreOrTime = $row->find('.score-time', 0)->plaintext;
+
+				//Get the countries from these teams
+				$countryIdTeamA = $this->findTeamCountry('http://int.soccerway.com' . $teamA->href);
+				$countryIdTeamB = $this->findTeamCountry('http://int.soccerway.com' . $teamB->href);
+
+				//Add the teams to the database
+				$teamIdA = $this->database->addTeam($teamA->plaintext, $countryIdTeamA);
+				$teamIdB = $this->database->addTeam($teamB->plaintext, $countryIdTeamB);
 
 				//Find out if the match has been played already or not
 				$colonPos = strpos($scoreOrTime, ' : ');
@@ -490,12 +500,12 @@ class Parser {
 				}
 
 				if ($colonPos != false) {
-					$this->database->addMatch($teamA, $teamB, null, null, null, $date, $tournamentId);
+					$this->database->addMatch($teamIdA, $teamIdB, null, null, null, $date, $tournamentId);
 				}
 				else {
 
 					try {
-						$matchId = $this->database->getMatch($teamA, $teamB, null, null, null, $date, $tournamentId);
+						$matchId = $this->database->getMatch($teamIdA, $teamIdB, null, null, null, $date, $tournamentId);
 
 						//If no exception gets thrown then the match was already in the database
 						$this->database->removeMatch($matchId);
