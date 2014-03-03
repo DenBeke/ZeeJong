@@ -18,7 +18,8 @@ namespace Controller {
 
 		public $page = 'configPanel';
 		private $template = 'UserConfigPanel.php';
-		public $configMessage;
+		public $configSuccessMessage;
+		public $configErrorMessage;
 		private $user;
 		/**
 		 Render the template part of the view
@@ -70,13 +71,13 @@ namespace Controller {
 		 */
 		private function changeSettings() {
 			if (!isset($_POST['oldPass'])) {
-				$this -> configMessage = '	<div class="alert alert-danger"><strong>You must give your current password.</strong></div>';
+				$this -> configErrorMessage = $this -> configErrorMessage . "You must give your current password." . "\r\n";
 				return false;
 			}
 			$oldPass = $_POST['oldPass'];
 			// Verify old password
 			if (!(hashPassword($oldPass, $this -> user -> getSalt()) == $this -> user -> getHash())) {
-				$this -> configMessage = '	<div class="alert alert-danger"><strong>Your current password is incorrect.</strong></div>';
+				$this -> configErrorMessage = $this -> configErrorMessage . "Your current password is incorrect." . "\r\n";
 				return false;
 			}
 
@@ -85,11 +86,12 @@ namespace Controller {
 				if (strlen($newEmail) > 0) {
 					// Test if the new mail address is valid
 					if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
-						$this -> configMessage = '<div class="alert alert-danger"><strong>Your new emailaddress is invalid.</strong></div>';
-						return false;
+						$this -> configErrorMessage = $this -> configErrorMessage . "Your new emailaddress is invalid." . "\r\n";
+					} else {
+						// Change the emailaddress
+						$this -> user -> setEmail($newEmail);
+						$this -> configSuccessMessage = $this -> configSuccessMessage . "New emailaddress was successfully set." . "\r\n";
 					}
-					// Change the emailaddress
-					$this -> user -> setEmail($newEmail);
 				}
 			}
 			if (isset($_POST['newPassword']) && isset($_POST['newPassword2'])) {
@@ -97,12 +99,11 @@ namespace Controller {
 				$newPassword2 = $_POST['newPassword2'];
 				if ($newPassword != $newPassword2) {
 					// Test if new passwords are same
-					$this -> configMessage = '<div class="alert alert-danger"><strong>New passwords do not match.</strong></div>';
+					$this -> configErrorMessage = $this -> configErrorMessage . "New passwords do not match." . "\r\n";
 				} else {
 					if (strlen($newPassword) > 0 && strlen($newPassword) < 3) {
 						// New password was set but too short
-						$this -> configMessage = '<div class="alert alert-danger"><strong>New password has to be at least 3 characters long.</strong></div>';
-						return false;
+						$this -> configErrorMessage = $this -> configErrorMessage . "New password has to be at least 3 characters long." . "\r\n";
 					}
 					if (strlen($newPassword) >= 3) {
 						// New password can be set
@@ -110,10 +111,10 @@ namespace Controller {
 						$newHashedPassword = hashPassword($newPassword, $newSalt);
 						$this -> user -> setHash($newHashedPassword);
 						$this -> user -> setSalt($newSalt);
+						$this -> configSuccessMessage = $this -> configSuccessMessage . "New password was successfully set." . "\r\n";
 					}
 				}
 			}
-			$this -> configMessage = '<div class="alert alert-success">New settings were successfully saved.</strong></div>';
 			return true;
 		}
 
