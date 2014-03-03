@@ -16,16 +16,18 @@ class Goal {
 	private $playerId;
 	private $matchId;
 	private $time;
+	private $db;
 
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id, $playerId, $matchId, $time) {
+	public function __construct($id, $playerId, $matchId, $time, &$db) {
 		$this->id = $id;
 		$this->playerId = $playerId;
 		$this->matchId = $matchId;
 		$this->time = $time;
+		$this->db = $db;
 	}
 
 	/**
@@ -41,13 +43,20 @@ class Goal {
 	public function getTime() {
 		return $this->time;
 	}
-	
-	
+
 	public function getMatch() {
-		return $this->matchId;
+		return $this->db->getMatchById($this->matchId);
 	}
 	
+	public function getMatchId() {
+		return $this->matchId;
+	}
+
 	public function getPlayer() {
+		return $this->db->getPlayerById($this->playerId);
+	}
+	
+	public function getPlayerId() {
 		return $this->playerId;
 	}
 

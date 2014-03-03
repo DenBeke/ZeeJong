@@ -15,17 +15,17 @@ The class contains the following information:
 class Team {
 	private $id;
 	private $name;
-	private $country;
+	private $countryId;
 	private $db;
 
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id, $name, $country, &$db) {
+	public function __construct($id, $name, $countryId, &$db) {
 		$this->id = $id;
 		$this->name = $name;
-		$this->country = $country;
+		$this->countryId = $countryId;
 		$this->db = &$db;
 	}
 
@@ -42,10 +42,13 @@ class Team {
 		return $this->name;		
 	}
 
-
-
 	public function getCountry() {
-		return $this->country;
+		return $this->db->getCountryById($this->countryId);
+	}
+
+
+	public function getCountryId() {
+		return $this->countryId;
 	}
 	
 	

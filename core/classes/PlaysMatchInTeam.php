@@ -20,17 +20,19 @@ class PlaysMatchInTeam {
 	private $teamId;
 	private $matchId;
 	private $number;
+	private $db;
 
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id, $playerId, $teamId, $matchId, $number) {
+	public function __construct($id, $playerId, $teamId, $matchId, $number, &$db) {
 		$this->id = $id;
 		$this->playerId = $playerId;
 		$this->teamId = $teamId;
 		$this->matchId = $matchId;
 		$this->number = $number;
+		$this->db = &$db;
 	}
 
 	/**
@@ -42,26 +44,53 @@ class PlaysMatchInTeam {
 	}
 
 	/**
+	Get the player of the playsmatchinteam relation
+	@return player
+	*/
+	public function getPlayer() {
+		return $this->db->getPlayerById($this->playerId);
+	}
+
+
+	/**
 	Get the player ID of the playsmatchinteam relation
 	@return id
 	*/
-	public function getPlayer() {
+	public function getPlayerId() {
 		return $this->playerId;
 	}
 
 	/**
-	Get the team ID of the playsmatchinteam relation
-	@return id
+	Get the team of the playsmatchinteam relation
+	@return team
 	*/
 	public function getTeam() {
-		return $this->teamId;
+		return $this->db->getTeamById($this->teamId);
 	}
+
 
 	/**
 	Get the team ID of the playsmatchinteam relation
 	@return id
 	*/
+	public function getTeamId() {
+		return $this->teamId;
+	}
+
+	/**
+	Get the match of the playsmatchinteam relation
+	@return match
+	*/
 	public function getMatch() {
+		return $this->db->getMatchById($this->matchId);
+	}
+
+
+	/**
+	Get the match ID of the playsmatchinteam relation
+	@return id
+	*/
+	public function getMatchId() {
 		return $this->matchId;
 	}
 

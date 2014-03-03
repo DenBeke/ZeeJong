@@ -59,9 +59,19 @@ class Match {
 		return $this->db->getTeamById($this->teamA);
 	}
 	
-	
+
+	public function getTeamAId() {
+		return $this->teamA;
+	}
+
+
 	public function getTeamB() {
 		return $this->db->getTeamById($this->teamB);
+	}
+	
+
+	public function getTeamBId() {
+		return $this->teamB;
 	}
 	
 	
@@ -69,14 +79,29 @@ class Match {
 		return $this->db->getScoreById($this->scoreId);		
 	}
 	
+
+	public function getScoreId() {
+		return $this->scoreId;		
+	}
+
 	
 	public function getReferee() {
 		return $this->db->getRefereeById($this->refereeId);
 	}
 	
 	
+	public function getRefereeId() {
+		return $this->refereeId;
+	}
+
+
 	public function getTournament() {
 		return $this->db->getTournamentById($this->tournamentId);
+	}
+
+
+	public function getTournamentId() {
+		return $this->tournamentId;
 	}
 	
 	
