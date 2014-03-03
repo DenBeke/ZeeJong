@@ -103,7 +103,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -148,7 +148,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -193,7 +193,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -238,7 +238,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -291,7 +291,7 @@ class Database {
 		
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 		//Bind parameters
 		if (!$statement -> bind_param('si', $emailAddress,$id)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
@@ -325,7 +325,7 @@ class Database {
 		
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 		//Bind parameters
 		if (!$statement -> bind_param('si',$salt, $id)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
@@ -358,7 +358,7 @@ class Database {
 		
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 		//Bind parameters
 		if (!$statement -> bind_param('si',$hash, $id)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
@@ -387,7 +387,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $username)) {
@@ -429,7 +429,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $id)) {
@@ -472,7 +472,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $username)) {
@@ -516,7 +516,7 @@ class Database {
 		$query = "INSERT INTO User (`username`,`salt`,`password`,`emailAddress`) VALUES (?,?,?,?)";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 		//Bind parameters
 		if (!$statement -> bind_param('ssss', $username, $salt, $hashedPassword, $emailAddress)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
@@ -545,7 +545,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $name)) {
@@ -600,7 +600,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $name)) {
@@ -632,7 +632,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $id)) {
@@ -691,7 +691,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -739,7 +739,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $name)) {
@@ -803,7 +803,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $name)) {
@@ -855,7 +855,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('si', $name, $competitionId)) {
@@ -895,7 +895,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('si', $name, $competitionId)) {
@@ -956,7 +956,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1007,7 +1007,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $id)) {
@@ -1073,7 +1073,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
@@ -1116,7 +1116,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
@@ -1177,7 +1177,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1227,7 +1227,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1286,7 +1286,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
@@ -1327,7 +1327,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
@@ -1385,7 +1385,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1432,7 +1432,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1498,10 +1498,7 @@ class Database {
 					VALUES (?, ?, ?);
 				";
 
-				//Prepare statement
-				if (!$statement = $this -> link -> prepare($query)) {
-					throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-				}
+						$statement = $this->getStatement($query);
 
 				//Bind parameters
 				if (!$statement -> bind_param('iii', $coachId, $teamId, $matchId)) {
@@ -1552,7 +1549,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $coachId, $teamId, $matchId)) {
@@ -1618,7 +1615,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('si', $name, $countryId)) {
@@ -1658,7 +1655,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('si', $name, $countryId)) {
@@ -1716,7 +1713,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1775,7 +1772,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssiiii', $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight)) {
@@ -1822,7 +1819,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssii', $firstName, $lastName, $countryId, $dateOfBirth)) {
@@ -1881,7 +1878,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1928,7 +1925,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1990,7 +1987,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $playerId, $matchId, $time)) {
@@ -2031,7 +2028,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $playerId, $time, $matchId)) {
@@ -2110,7 +2107,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iiiiii', $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId)) {
@@ -2140,11 +2137,7 @@ class Database {
 			tournamentId = ?;
 		";
 
-		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iiii', $teamA, $teamB, $refereeId, $tournamentId)) {
@@ -2197,11 +2190,7 @@ class Database {
 			REMOVE FROM `Match` WHERE id = ?;
 		";
 
-		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -2233,7 +2222,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $id)) {
@@ -2292,7 +2281,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -2354,7 +2343,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iiii', $playerId, $teamId, $matchId, $number)) {
@@ -2384,7 +2373,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $playerId, $teamId, $matchId)) {
@@ -2453,7 +2442,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ii', $playerId, $teamId)) {
@@ -2484,11 +2473,7 @@ class Database {
 			teamId = ?;
 		";
 
-		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ii', $playerId, $teamId)) {
@@ -2537,11 +2522,7 @@ class Database {
 			teamId = ?;
 		";
 
-		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ii', $playerId, $teamId)) {
@@ -2620,7 +2601,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iiii', $playerId, $matchId, $color, $time)) {
@@ -2655,7 +2636,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iiii', $playerId, $matchId, $time, $color)) {
@@ -2712,7 +2693,7 @@ class Database {
 		";
 
 		//Prepare statement
-		$statement = $this->getStatement($query);
+								$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ii', $teamA, $teamB)) {
