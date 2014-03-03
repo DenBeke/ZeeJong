@@ -24,9 +24,30 @@
 	</div>
 	<?php
 	}else{
-	echo $this -> configMessage;
+	if(strlen($this->configErrorMessage)>0){
+	// there were errors, let's display them
+	?>
+	<div class="alert alert-danger">
+		<strong> <?php
+		echo nl2br($this -> configErrorMessage);
+		?></strong>
+	</div>
+
+	<?php
+	}
+	if(strlen($this->configSuccessMessage)>0){
+	// at least one thing succeeded, let's display what
+	?>
+	<div class="alert alert-success">
+		<strong> <?php
+		echo nl2br($this -> configSuccessMessage);
+		?></strong>
+	</div>
+	<?php
+	}
 	// Display 'change settings' form
 	?>
+
 
 	<div class="well">
 		<form id="changeSettings" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>configPanel">
