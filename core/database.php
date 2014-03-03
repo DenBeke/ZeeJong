@@ -58,6 +58,8 @@ class Database {
 			throw new Exception("Connect failed: $error");
 		}
 
+		$statements = array();
+
 	}
 
 	/**
@@ -67,8 +69,25 @@ class Database {
 	 */
 	public function __destruct() {
 
-		$this -> link -> close();
+		foreach($this->statements as $statement) {
+			$statement->close();
+		}
 
+		$this->link->close();
+
+	}
+
+	private function getStatement($query) {
+		$query = trim($query);
+		
+		if(!isset($this->statements[$query])) {
+			if(!($this->statements[$query] = $this->link->prepare($query))) {
+				unset($this->statements[$query]);
+				throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
+			}
+		}
+
+		return $this->statements[$query];
 	}
 
 	/**
@@ -84,9 +103,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -114,8 +131,7 @@ class Database {
 		$statement -> bind_result($username);
 		//Fetch the rows of the return values
 		$statement -> fetch();
-		//Close the statement
-		$statement -> close();
+		
 		return $username;
 	}
 
@@ -132,9 +148,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -162,8 +176,7 @@ class Database {
 		$statement -> bind_result($password);
 		//Fetch the rows of the return values
 		$statement -> fetch();
-		//Close the statement
-		$statement -> close();
+		
 		return $password;
 	}
 
@@ -180,9 +193,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -210,8 +221,7 @@ class Database {
 		$statement -> bind_result($password);
 		//Fetch the rows of the return values
 		$statement -> fetch();
-		//Close the statement
-		$statement -> close();
+		
 		return $password;
 	}
 
@@ -228,9 +238,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -258,8 +266,7 @@ class Database {
 		$statement -> bind_result($email);
 		//Fetch the rows of the return values
 		$statement -> fetch();
-		//Close the statement
-		$statement -> close();
+		
 		return $email;
 	}
 
@@ -284,9 +291,7 @@ class Database {
 		
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 		//Bind parameters
 		if (!$statement -> bind_param('si', $emailAddress,$id)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
@@ -295,8 +300,7 @@ class Database {
 		if (!$statement -> execute()) {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
-		//Close the statement
-		$statement -> close();
+
 		
 	}
 	
@@ -321,9 +325,7 @@ class Database {
 		
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 		//Bind parameters
 		if (!$statement -> bind_param('si',$salt, $id)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
@@ -331,9 +333,7 @@ class Database {
 		//Execute statement
 		if (!$statement -> execute()) {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-		//Close the statement
-		$statement -> close();
+		}		
 		
 	}
 	
@@ -358,9 +358,7 @@ class Database {
 		
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 		//Bind parameters
 		if (!$statement -> bind_param('si',$hash, $id)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
@@ -369,8 +367,7 @@ class Database {
 		if (!$statement -> execute()) {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
-		//Close the statement
-		$statement -> close();
+	
 		
 	}
 
@@ -390,9 +387,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $username)) {
@@ -434,9 +429,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $id)) {
@@ -479,9 +472,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $username)) {
@@ -509,10 +500,7 @@ class Database {
 		$statement -> bind_result($id);
 
 		//Fetch the rows of the return values
-		$statement -> fetch();
-
-		//Close the statement
-		$statement -> close();
+		$statement -> fetch();	
 
 		return new User($id);
 	}
@@ -528,9 +516,7 @@ class Database {
 		$query = "INSERT INTO User (`username`,`salt`,`password`,`emailAddress`) VALUES (?,?,?,?)";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 		//Bind parameters
 		if (!$statement -> bind_param('ssss', $username, $salt, $hashedPassword, $emailAddress)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
@@ -539,8 +525,7 @@ class Database {
 		if (!$statement -> execute()) {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
-		//Close the statement
-		$statement -> close();
+		
 		return $this -> getUser($username) -> getId();
 	}
 
@@ -560,9 +545,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $name)) {
@@ -590,10 +573,7 @@ class Database {
 		$statement -> bind_result($id, $name);
 
 		//Fetch the rows of the return values
-		$statement -> fetch();
-
-		//Close the statement
-		$statement -> close();
+		$statement -> fetch();		
 
 		return new Country($id);
 	}
@@ -620,9 +600,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $name)) {
@@ -632,10 +610,7 @@ class Database {
 		//Execute statement
 		if (!$statement -> execute()) {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Close the statement
-		$statement -> close();
+		}	
 
 		return $this -> getCountry($name) -> getId();
 	}
@@ -657,9 +632,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $id)) {
@@ -692,15 +665,11 @@ class Database {
 				//Create new Competition object TODO
 				return new Competition($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
 		}
-
-		//Close the statement
-		$statement -> close();
 
 	}
 
@@ -722,9 +691,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -745,16 +712,13 @@ class Database {
 		if ($numberOfResults > 1) {
 			throw new exception('Corrup database: multiple competitions with the same name');
 		} else if ($numberOfResults < 1) {
-			$statement -> close();
+			
 			return false;
 		} else {
-			$statement -> close();
+			
 			return true;
 
 		}
-
-		//Close the statement
-		$statement -> close();
 
 	}
 
@@ -775,9 +739,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $name)) {
@@ -810,15 +772,11 @@ class Database {
 				//Create new Competition object TODO
 				return new Competition($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
 		}
-
-		//Close the statement
-		$statement -> close();
 
 	}
 
@@ -845,9 +803,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $name)) {
@@ -862,9 +818,7 @@ class Database {
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
 		//TODO Check if this works always...
-
-		//Close the statement
-		$statement -> close();
+		
 
 		return $id;
 
@@ -901,9 +855,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('si', $name, $competitionId)) {
@@ -918,9 +870,7 @@ class Database {
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
 		//TODO Check if this works always...
-
-		//Close the statement
-		$statement -> close();
+		
 
 		return $id;
 
@@ -945,9 +895,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('si', $name, $competitionId)) {
@@ -980,15 +928,12 @@ class Database {
 				//Create new Competition object TODO
 				return new Tournament($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
 		}
-
-		//Close the statement
-		$statement -> close();
+		
 
 	}
 
@@ -1011,9 +956,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1035,19 +978,15 @@ class Database {
 			throw new exception('Corrupt database: multiple tournaments with the id');
 		} else if ($numberOfResults < 1) {
 
-			//Close the statement
-			$statement -> close();
+
 			return false;
 		} else {
 
-			//Close the statement
-			$statement -> close();
+
 			return true;
 
 		}
 
-		//Close the statement
-		$statement -> close();
 
 	}
 
@@ -1068,9 +1007,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $id)) {
@@ -1103,15 +1040,12 @@ class Database {
 				//Create new Competition object TODO
 				return new Tournament($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
 		}
 
-		//Close the statement
-		$statement -> close();
 
 	}
 
@@ -1139,9 +1073,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
@@ -1156,9 +1088,7 @@ class Database {
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
 		//TODO Check if this always works...
-
-		//Close the statement
-		$statement -> close();
+		
 
 		return $id;
 
@@ -1186,9 +1116,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
@@ -1221,15 +1149,12 @@ class Database {
 				//Create new Coach object TODO
 				return new Referee($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
 		}
-
-		//Close the statement
-		$statement -> close();
+		
 
 	}
 
@@ -1252,9 +1177,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1276,19 +1199,15 @@ class Database {
 			throw new exception('Corrupt database: multiple referee with the same name and country of origin');
 		} else if ($numberOfResults < 1) {
 
-			//Close the statement
-			$statement -> close();
+
 			return false;
 		} else {
 
-			//Close the statement
-			$statement -> close();
+
 			return true;
 
 		}
-
-		//Close the statement
-		$statement -> close();
+		
 
 	}
 
@@ -1308,9 +1227,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1339,9 +1256,7 @@ class Database {
 
 		//Fetch the rows of the return values
 		$statement -> fetch();
-
-		//Close the statement
-		$statement -> close();
+	
 
 		//Create new Player object TODO
 		return new Referee($id);
@@ -1371,9 +1286,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
@@ -1387,10 +1300,7 @@ class Database {
 
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-		//Close the statement
-		$statement -> close();
+		//TODO Check if this always works...		
 
 		return $id;
 	}
@@ -1417,9 +1327,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
@@ -1452,15 +1360,12 @@ class Database {
 				//Create new Coach object TODO
 				return new Coach($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
 		}
-
-		//Close the statement
-		$statement -> close();
+		
 
 	}
 
@@ -1480,9 +1385,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1504,17 +1407,13 @@ class Database {
 			throw new exception('Corrupt database: multiple coaches with the same id.');
 		} else if ($numberOfResults < 1) {
 
-			//Close the statement
-			$statement -> close();
+
 			return false;
 		} else {
 
-			//Close the statement
-			$statement -> close();
+
 			return true;
-		}
-		//Close the statement
-		$statement -> close();
+		}		
 	}
 
 	/**
@@ -1533,9 +1432,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1564,9 +1461,7 @@ class Database {
 
 		//Fetch the rows of the return values
 		$statement -> fetch();
-
-		//Close the statement
-		$statement -> close();
+		
 
 		//Create new Player object TODO
 		return new Coach($id);
@@ -1622,8 +1517,7 @@ class Database {
 				$id = $statement -> insert_id;
 				//TODO Check if this always works...
 
-				//Close the statement
-				$statement -> close();
+
 
 				return $id;
 			} else {
@@ -1658,9 +1552,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $coachId, $teamId, $matchId)) {
@@ -1693,15 +1585,12 @@ class Database {
 				//Create new Coach object TODO
 				return new Coaches($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
 		}
-
-		//Close the statement
-		$statement -> close();
+		
 
 	}
 
@@ -1729,9 +1618,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('si', $name, $countryId)) {
@@ -1746,9 +1633,7 @@ class Database {
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
 		//TODO Check if this always works...
-
-		//Close the statement
-		$statement -> close();
+		
 
 		return $id;
 	}
@@ -1773,9 +1658,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('si', $name, $countryId)) {
@@ -1808,15 +1691,12 @@ class Database {
 				//Create new Coach object TODO
 				return new Team($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
 		}
-
-		//Close the statement
-		$statement -> close();
+		
 
 	}
 
@@ -1836,9 +1716,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1860,17 +1738,13 @@ class Database {
 			throw new exception('Corrupt database: multiple teams with the same id');
 		} else if ($numberOfResults < 1) {
 
-			//Close the statement
-			$statement -> close();
+
 			return false;
 		} else {
 
-			//Close the statement
-			$statement -> close();
+
 			return true;
 		}
-		//Close the statement
-		$statement -> close();
 	}
 
 	/**
@@ -1901,9 +1775,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssiiii', $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight)) {
@@ -1919,8 +1791,6 @@ class Database {
 		$id = $statement -> insert_id;
 		//TODO Check if this always works...
 
-		//Close the statement
-		$statement -> close();
 
 		return $id;
 
@@ -1952,9 +1822,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssii', $firstName, $lastName, $countryId, $dateOfBirth)) {
@@ -1987,15 +1855,11 @@ class Database {
 				//Create new Player object TODO
 				return new Player($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
-		}
-
-		//Close the statement
-		$statement -> close();
+		}		
 
 	}
 
@@ -2017,9 +1881,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -2040,16 +1902,13 @@ class Database {
 		if ($numberOfResults > 1) {
 			throw new exception('Corrup database: multiple players with the same id');
 		} else if ($numberOfResults < 1) {
-			$statement -> close();
+			
 			return false;
 		} else {
-			$statement -> close();
+			
 			return true;
 
-		}
-
-		//Close the statement
-		$statement -> close();
+		}		
 
 	}
 
@@ -2069,9 +1928,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -2099,10 +1956,7 @@ class Database {
 		$statement -> bind_result($id, $firstName, $lastName, $countryId);
 
 		//Fetch the rows of the return values
-		$statement -> fetch();
-
-		//Close the statement
-		$statement -> close();
+		$statement -> fetch();		
 
 		//Create new Player object TODO
 		return new Player($id);
@@ -2136,9 +1990,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $playerId, $matchId, $time)) {
@@ -2152,10 +2004,7 @@ class Database {
 
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-		//Close the statement
-		$statement -> close();
+		//TODO Check if this always works...		
 
 		return $id;
 	}
@@ -2182,9 +2031,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $playerId, $time, $matchId)) {
@@ -2217,15 +2064,11 @@ class Database {
 				//Create new Player object TODO
 				return new Goal($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
-		}
-
-		//Close the statement
-		$statement -> close();
+		}		
 
 	}
 
@@ -2267,9 +2110,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iiiiii', $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId)) {
@@ -2283,10 +2124,7 @@ class Database {
 
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-		//Close the statement
-		$statement -> close();
+		//TODO Check if this always works...		
 
 		return $id;
 	}
@@ -2339,15 +2177,11 @@ class Database {
 				//Create new Player object TODO
 				return new Match($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
-		}
-
-		//Close the statement
-		$statement -> close();
+		}		
 	}
 
 
@@ -2378,9 +2212,7 @@ class Database {
 		if (!$statement -> execute()) {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
-
-		//Close the statement
-		$statement -> close();
+		
 	}
 
 
@@ -2401,9 +2233,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $id)) {
@@ -2436,15 +2266,11 @@ class Database {
 				//Create new Competition object TODO
 				return new Match($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
-		}
-
-		//Close the statement
-		$statement -> close();
+		}		
 
 	}
 
@@ -2466,9 +2292,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -2489,16 +2313,13 @@ class Database {
 		if ($numberOfResults > 1) {
 			throw new exception('Corrup database: multiple matches with the same id');
 		} else if ($numberOfResults < 1) {
-			$statement -> close();
+			
 			return false;
 		} else {
-			$statement -> close();
+			
 			return true;
 
-		}
-
-		//Close the statement
-		$statement -> close();
+		}		
 
 	}
 
@@ -2533,9 +2354,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iiii', $playerId, $teamId, $matchId, $number)) {
@@ -2549,10 +2368,7 @@ class Database {
 
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-		//Close the statement
-		$statement -> close();
+		//TODO Check if this always works...		
 
 		return $id;
 	}
@@ -2568,9 +2384,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $playerId, $teamId, $matchId)) {
@@ -2603,8 +2417,7 @@ class Database {
 				//Create new Player object TODO
 				return new PlaysMatchInTeam($id, $playerId, $teamId, $matchId, $number);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
@@ -2640,9 +2453,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ii', $playerId, $teamId)) {
@@ -2658,8 +2469,8 @@ class Database {
 		$id = $statement -> insert_id;
 		//TODO Check if this always works...
 
-		//Close the statement
-		$statement -> close();
+		
+		
 
 		return $id;
 	}
@@ -2710,8 +2521,7 @@ class Database {
 				//Create new Player object TODO
 				return new PlaysIn($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
@@ -2752,18 +2562,17 @@ class Database {
 		if ($numberOfResults > 1) {
 			throw new exception('Corrupt database: The same player plays in the same team multiple times');
 		} else if ($numberOfResults < 1) {
-			$statement -> close();
+			
 			return false;
 		} else {
 
-			//Close the statement
-			$statement -> close();
+
 			return true;
 
 		}
 
-		//Close the statement
-		$statement -> close();
+		
+		
 	}
 
 	/**
@@ -2811,9 +2620,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iiii', $playerId, $matchId, $color, $time)) {
@@ -2829,8 +2636,8 @@ class Database {
 		$id = $statement -> insert_id;
 		//TODO Check if this always works...
 
-		//Close the statement
-		$statement -> close();
+		
+		
 
 		return $id;
 
@@ -2848,9 +2655,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iiii', $playerId, $matchId, $time, $color)) {
@@ -2883,8 +2688,7 @@ class Database {
 				//Create new Player object TODO
 				return new Card($id);
 
-				//Close the statement
-				$statement -> close();
+
 
 			}
 
@@ -2908,9 +2712,7 @@ class Database {
 		";
 
 		//Prepare statement
-		if (!$statement = $this -> link -> prepare($query)) {
-			throw new exception('Prepare failed: (' . $this -> link -> errno . ') ' . $this -> link -> error);
-		}
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ii', $teamA, $teamB)) {
@@ -2926,8 +2728,8 @@ class Database {
 		$id = $statement -> insert_id;
 		//TODO Check if this always works...
 
-		//Close the statement
-		$statement -> close();
+		
+		
 
 		return $id;
 
