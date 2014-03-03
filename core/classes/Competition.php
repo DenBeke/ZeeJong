@@ -2,6 +2,7 @@
 /*
 Competition Class
 */
+require_once(dirname(__FILE__) . '/Tournament.php');
 
 
 /**
@@ -53,7 +54,7 @@ class Competition {
 	*/
 	public function getTournaments() {
 
-		$this->db->getTournamentsInCompetition($this->id);
+		return $this->db->getTournamentsInCompetition($this->id);
 	}
 	
 

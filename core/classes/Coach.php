@@ -18,15 +18,17 @@ class Coach {
 	private $lastName;
 	private $country;
 
+
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id, $firstName, $lastName, $country) {
+	public function __construct($id, $firstName, $lastName, $country, &$db) {
 		$this->id = $id;
 		$this->firstName = $firstName;
 		$this->lastName = $lastName;
 		$this->country = $country;
+		$this->db = &$db;
 	}
 
 	/**
@@ -66,6 +68,14 @@ class Coach {
 	@return The country
 	*/
 	public function getCountry() {
+		return $this->db->getCountryById($this->country);
+	}
+
+	/**
+	Get the country of the coach
+	@return The country id
+	*/
+	public function getCountryId() {
 		return $this->country;
 	}
 
