@@ -42,6 +42,12 @@ namespace Controller {
 					$nav[$controller->match->getTournament()->getName()] = SITE_URL . 'tournament/' . $controller->match->getTournament()->getId();
 					$nav[$controller->match->getTeamA()->getName() . ' - ' .  $controller->match->getTeamB()->getName()] = SITE_URL . 'match/' . $controller->match->getId();
 					break;
+					
+					
+				case 'Controller\Player':
+					$nav[$controller->player->getName()] = SITE_URL . 'player/' . $controller->player->getId();
+					break;
+					
 			
 			}
 		
