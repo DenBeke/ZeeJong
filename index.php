@@ -34,7 +34,7 @@ $database = new Database;
 
 $urls = array(
 	'error' => 'Controller\Error',
-	INSTALL_DIR . 'player/(\d)+' => 'Controller\Player',
+	INSTALL_DIR . 'player/(\d+)' => 'Controller\Player',
 	INSTALL_DIR . 'register' => 'Controller\Register',
 	INSTALL_DIR  => 'Controller\Home',
 	INSTALL_DIR . 'login' => 'Controller\Login',
