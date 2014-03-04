@@ -15,14 +15,18 @@ The class contains the following information:
 class Team {
 	private $id;
 	private $name;
-	private $country;
+	private $countryId;
+	private $db;
 
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id) {
+	public function __construct($id, $name, $countryId, &$db) {
 		$this->id = $id;
+		$this->name = $name;
+		$this->countryId = $countryId;
+		$this->db = &$db;
 	}
 
 	/**
@@ -35,21 +39,26 @@ class Team {
 
 
 	public function getName() {
-		
+		return $this->name;		
+	}
+
+	public function getCountry() {
+		return $this->db->getCountryById($this->countryId);
 	}
 
 
-
-	public function getCountry() {
-	
+	public function getCountryId() {
+		return $this->countryId;
 	}
 	
 	
 	public function getPlayers() {
+		return $this->db->getPlayersInTeam($this->id);
 	}
 	
 	
 	public function getCoach() {
+		return $this->db->getCoachForTeam($this->id);
 	}
 
 

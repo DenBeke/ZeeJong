@@ -16,14 +16,19 @@ class Referee {
 	private $id;
 	private $firstName;
 	private $lastName;
-	private $country;
+	private $countryId;
+	private $db;
 
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id) {
+	public function __construct($id, $firstName, $lastName, $countryId, &$db) {
 		$this->id = $id;
+		$this->firstName = $firstName;
+		$this->lastName = $lastName;
+		$this->countryId = $countryId;
+		$this->db = &$db;
 	}
 
 	/**
@@ -63,7 +68,16 @@ class Referee {
 	@return The country
 	*/
 	public function getCountry() {
-		return $this->country;
+		return $this->db->getCountryById($this->countryId);
+	}
+
+
+	/**
+	Get the id of the country of the referee
+	@return The country id
+	*/
+	public function getCountryId() {
+		return $this->countryId;
 	}
 
 	/**
