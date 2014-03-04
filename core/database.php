@@ -1746,9 +1746,7 @@ class Database {
 		";
 		
 		//Prepare statement
-		if(!$statement = $this->link->prepare($query)) {
-			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
-		}
+		$statement = $this->getStatement($query);
 		
 		//Bind parameters
 		if(!$statement->bind_param('i', $id)){
@@ -2187,9 +2185,7 @@ class Database {
 		";
 		
 		//Prepare statement
-		if(!$statement = $this->link->prepare($query)) {
-			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
-		}
+		$statement = $this->getStatement($query);
 		
 		//Bind parameters
 		if(!$statement->bind_param('i', $id)){
