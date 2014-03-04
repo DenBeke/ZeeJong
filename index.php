@@ -39,10 +39,10 @@ $urls = array(
 	INSTALL_DIR  => 'Controller\Home',
 	INSTALL_DIR . 'login' => 'Controller\Login',
 	INSTALL_DIR . 'coach' => 'Controller\Coach',
-	INSTALL_DIR . 'competition/(\d)+' => 'Controller\Competition',
+	INSTALL_DIR . 'competition/(\d+)' => 'Controller\Competition',
 	INSTALL_DIR . 'match' => 'Controller\Match',
 	INSTALL_DIR . 'referee' => 'Controller\Referee',
-	INSTALL_DIR . 'tournament' => 'Controller\Tournament',
+	INSTALL_DIR . 'tournament/(\d+)' => 'Controller\Tournament',
 	INSTALL_DIR . 'news' => 'Controller\News',
 	INSTALL_DIR . 'configPanel' => 'Controller\UserConfigPanel'
 );
