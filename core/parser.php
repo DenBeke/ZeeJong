@@ -479,6 +479,8 @@ class Parser {
 				$date[2] = '20' . $date[2];
 				$date = implode('-', $date);
 
+				$date = strtotime($date);
+
 				//Read the information about the match
 				$teamA = $row->find('.team-a a', 0);
 				$teamB = $row->find('.team-b a', 0);
