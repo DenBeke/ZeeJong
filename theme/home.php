@@ -106,26 +106,19 @@ Created: February 2014
           
           
           <table class="table table-striped">
+	          
+	        <tr>
+	          	<th>Leagues</th>
+	        </tr>  
+	          
+	        <?php foreach($database->getAllCompetitions() as $competition) { ?>
+		    <tr>
+		    		<td><a href="<?php echo SITE_URL . 'competition/' . $competition->getId(); ?>"><?php echo $competition->getName(); ?></a></td>
+		    	</tr>
+          	<?php } ?>
           
-          	<tr>
-          		<th colspan="2">Leagues</th>
-          	</tr>
           
-              <tr>
-              	<td>Olympics</td>
-              </tr>
-              
-              <tr>
-              	<td>Bundesliga</td>
-              </tr>
-              
-              <tr>
-              	<td>World Cup</td>
-              </tr>
-              
-              <tr>
-              	<td>European Championchip</td>
-              </tr>
+
               
           </table>
           
