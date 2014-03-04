@@ -14,6 +14,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 	class Competition extends Controller {
 	
 		public $page = 'competition';
+		public $competition;
 	
 	
 		public function __construct() {
@@ -27,6 +28,12 @@ require_once(dirname(__FILE__) . '/Controller.php');
 		@param params
 		*/
 		public function GET($args) {
+			if(!isset($args[1])) {
+				throw new \exception('Competition ID not given');
+			}
+			
+			global $database;
+			$this->competition = $database->getCompetitionById(intval($args[1]));
 		}
 	
 	
