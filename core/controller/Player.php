@@ -29,7 +29,7 @@ require_once(dirname(__FILE__) . '/Error.php');
 		*/
 		public function GET($args) {
 			if(!isset($args[1])) {
-				throw new \exception('error');
+				throw new \exception('No player id given');
 				return;
 			}
 			
