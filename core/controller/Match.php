@@ -14,6 +14,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 	class Match extends Controller {
 	
 		public $page = 'match';
+		public $match;
 	
 		public function __construct() {
 			$this->theme = 'match.php';
@@ -26,6 +27,14 @@ require_once(dirname(__FILE__) . '/Controller.php');
 		@param params
 		*/
 		public function GET($args) {
+			if(!isset($args[1])) {
+				throw new \exception('No match id given');
+				return;
+			}
+			
+			global $database;
+			$this->match = $database->getMatchById($args[1]);
+			
 		}
 	
 	
