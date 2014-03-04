@@ -1,9 +1,9 @@
 <?php
 /*
-Template part for header
+ Template part for header
 
-Created: February 2014
-*/
+ Created: February 2014
+ */
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +44,6 @@ Created: February 2014
 		
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		      <div class="container">
-		
 				<div class="navbar-header">
 				     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 				       <span class="sr-only">Toggle navigation</span>
@@ -53,6 +52,7 @@ Created: February 2014
 				       <span class="icon-bar"></span>
 				     </button>
 				     <a class="navbar-brand" href="<?php echo SITE_URL; ?>">ZeeJong</a>
+				     <img src="img/football.png" alt="Football" height="50" width="50"> 
 				</div>
 		
 		
@@ -66,7 +66,7 @@ Created: February 2014
 					        
 					        
 					      <?php foreach($database->getAllCompetitions() as $competition) { ?>
-						      <li><a href="<?php echo SITE_URL . 'competition/' . $competition->getId(); ?>"><?php echo $competition->getName(); ?></a></li>
+						      <li><a href="<?php echo SITE_URL . 'competition/' . $competition -> getId(); ?>"><?php echo $competition -> getName(); ?></a></li>
 						  <?php } ?>
 
 				        </ul>
@@ -103,17 +103,17 @@ Created: February 2014
 				       	</form>
 				       	
 				       	<?php
-				       }
-				       else {
+						}
+						else {
 				       	?>
 				       	
 				       	<form class="navbar-form pull-right" id="login">
-				       		<a href="<?php echo SITE_URL; ?>configPanel" class="btn btn-default"><?php echo user()->getUserName(); ?></a>
+				       		<a href="<?php echo SITE_URL; ?>configPanel" class="btn btn-default"><?php echo user() -> getUserName(); ?></a>
 				       		<a href="<?php echo SITE_URL; ?>core/logout.php" class="btn btn-default">Logout</a>
 				       	</form>
 				       	
 				       	<?php
-				       }
+						}
 				       ?>
 		 		</div>
 		
