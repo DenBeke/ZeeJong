@@ -14,3 +14,8 @@ body {
 	font-style: italic;
 	font-size: 0.9em;
 }
+
+
+table a {
+	color: rgb(51, 51, 51);
+}

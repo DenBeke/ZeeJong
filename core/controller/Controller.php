@@ -25,6 +25,9 @@ require_once(dirname(__FILE__) . '/../config.php');
 		@exception theme file does not exist
 		*/
 		public function template() {
+			
+			global $database;
+			
 			if(is_array($this->data)) {
 				extract($this->data);
 			}
