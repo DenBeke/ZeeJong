@@ -57,9 +57,6 @@ class Database {
 			$error = mysqli_connect_error();
 			throw new Exception("Connect failed: $error");
 		}
-
-		$this->statements;
-
 	}
 
 	/**
