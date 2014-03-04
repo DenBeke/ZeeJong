@@ -34,6 +34,7 @@ ini_set('display_errors', 1);
 class Database {
 
 	private $link;
+	private $statements = array();
 
 	/**
 	 @brief Constructor of the database object.
@@ -57,7 +58,7 @@ class Database {
 			throw new Exception("Connect failed: $error");
 		}
 
-		$statements = array();
+		$this->statements;
 
 	}
 
