@@ -24,7 +24,7 @@
 	<script src="<?php echo SITE_URL ?>js/script.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/bootstrap.js" type="text/javascript"></script>
 	
-	
+
 	
 	
 	<?php	
@@ -38,10 +38,8 @@
 
 </head>
 <body>
-
 	<header>
-		
-		
+	
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		      <div class="container">
 				<div class="navbar-header">
@@ -52,7 +50,6 @@
 				       <span class="icon-bar"></span>
 				     </button>
 				     <a class="navbar-brand" href="<?php echo SITE_URL; ?>">ZeeJong</a>
-				     <img src="img/football.png" alt="Football" height="50" width="50"> 
 				</div>
 		
 		
