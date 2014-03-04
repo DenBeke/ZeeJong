@@ -58,7 +58,7 @@ class Team {
 	
 	
 	public function getPlayersForMatch($matchId) {
-		return $this->db->getPlaysMatchInTeam($this->id, $matchId);
+		return $this->db->getTeamInMatch($this->id, $matchId);
 	}
 	
 	
