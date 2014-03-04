@@ -10,9 +10,12 @@ namespace Controller {
 
 require_once(dirname(__FILE__) . '/Controller.php');
 require_once(dirname(__FILE__) . '/../classes/Player.php');
+require_once(dirname(__FILE__) . '/Error.php');
 
 
 	class Player extends Controller {
+
+		public $player;
 
 		public function __construct() {
 			$this->theme = 'player.php';
@@ -25,6 +28,15 @@ require_once(dirname(__FILE__) . '/../classes/Player.php');
 		@param params
 		*/
 		public function GET($args) {
+			if(!isset($args[1])) {
+				throw new \exception('error');
+				return;
+			}
+			
+			global $database;
+			$this->player = $database->getPlayerById($args[1]);
+			
+			
 		}
 	
 	
