@@ -2553,6 +2553,58 @@ class Database {
 			}
 		}
 	}
+	
+	
+	
+	public function getTeamInMatch($teamId, $matchId) {
+	
+			//Query
+			$query = "
+				SELECT * FROM `PlaysMatchInTeam`
+				WHERE teamId = ? AND
+				matchId = ?;
+			";
+	
+			//Prepare statement
+			$statement = $this->getStatement($query);
+	
+			//Bind parameters
+			if (!$statement -> bind_param('ii', $teamId, $matchId)) {
+				throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+			}
+	
+			//Execute statement
+			if (!$statement -> execute()) {
+				throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+			}
+	
+			//Store the result in the buffer
+			$statement -> store_result();
+	
+	
+			//Bind return values
+			$statement->bind_result($id, $playerId, $number, $teamId, $matchId);
+	
+	
+			$out = array();
+	
+			//Fetch the rows of the return values
+			while ($statement -> fetch()) {
+	
+				//Create new Player object
+				$out[] = $this->getPlayerById($playerId);
+				
+				
+			}
+			
+			
+			return $out;
+			
+		}
+	
+	
+	
+	
 
 	/**
 	 Add a player to a given team
