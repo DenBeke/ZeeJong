@@ -111,11 +111,11 @@ class Match {
 	
 	
 	public function getPlayersTeamA() {
-		return $this->getTeamA()->getPlayers();
+		return $this->getTeamA()->getPlayersForMatch($this->id);
 	}
 	
 	public function getPlayersTeamB() {
-		return $this->getTeamB()->getPlayers();
+		return $this->getTeamB()->getPlayersForMatch($this->id);
 	}
 	
 

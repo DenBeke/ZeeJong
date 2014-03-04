@@ -57,6 +57,11 @@ class Team {
 	}
 	
 	
+	public function getPlayersForMatch($matchId) {
+		return $this->db->getPlaysMatchInTeam($this->id, $matchId);
+	}
+	
+	
 	public function getCoach() {
 		return $this->db->getCoachForTeam($this->id);
 	}

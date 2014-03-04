@@ -462,7 +462,7 @@ class Parser {
 		$competitionId = $this->database->addCompetition($this->competition);
 
 		//Find the tournament
-		$this->tournament = $html->find('.level-1 .expanded a', 0)->plaintext;
+		$this->tournament = $html->find('.level-1 a', 0)->plaintext;
 		$tournamentId = $this->database->addTournament($this->tournament, $competitionId);
 
 		//Loop over all matches
