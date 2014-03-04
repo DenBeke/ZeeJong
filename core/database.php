@@ -57,6 +57,9 @@ class Database {
 			$error = mysqli_connect_error();
 			throw new Exception("Connect failed: $error");
 		}
+
+		$this->statements;
+
 	}
 
 	/**
@@ -2504,12 +2507,13 @@ class Database {
 		return $id;
 	}
 
-	public function getPlaysMatchInTeam($teamId, $matchId) {
+	public function getPlaysMatchInTeam($playerId, $teamId, $matchId, $number) {
 
 		//Query
 		$query = "
 			SELECT * FROM `PlaysMatchInTeam`
-			WHERE teamId = ? AND
+			WHERE playerId = ? AND
+			teamId = ? AND
 			matchId = ?;
 		";
 
@@ -2517,7 +2521,7 @@ class Database {
 		$statement = $this->getStatement($query);
 
 		//Bind parameters
-		if (!$statement -> bind_param('ii', $teamId, $matchId)) {
+		if (!$statement -> bind_param('iii', $playerId, $teamId, $matchId)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
 
@@ -2529,25 +2533,27 @@ class Database {
 		//Store the result in the buffer
 		$statement -> store_result();
 
+		$numberOfResults = $statement -> num_rows;
 
-		//Bind return values
-		$statement->bind_result($id, $playerId, $number, $teamId, $matchId);
+		//Check if the correct number of results are returned from the database
+		if ($numberOfResults > 1) {
+			throw new exception('Corrupt database: The same player plays in the same team multiple times');
+		} else if ($numberOfResults < 1) {
+			throw new exception('Error, there is no match with the given player, team, number and match');
+		} else {
 
+			//Bind return values
+			$statement->bind_result($id, $playerId, $number, $teamId, $matchId);
 
-		$out = array();
+			//Fetch the rows of the return values
+			while ($statement -> fetch()) {
 
-		//Fetch the rows of the return values
-		while ($statement -> fetch()) {
-
-			//Create new Player object
-			$out[] = $this->getPlayerById($playerId);
-			
-			
+				//Create new Player object
+				return new PlaysMatchInTeam($id, $playerId, $teamId, $matchId, $number, $this);
+				
+				
+			}
 		}
-		
-		
-		return $out;
-		
 	}
 
 	/**
@@ -3244,8 +3250,7 @@ class Database {
 		//Query
 		$query = "
 			SELECT playerId FROM `PlaysMatchInTeam`
-			WHERE teamId = ?
-			GROUP BY playerId;
+			WHERE teamId = ?;
 		";
 		
 		//Prepare statement
