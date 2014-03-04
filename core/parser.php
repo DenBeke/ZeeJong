@@ -491,8 +491,8 @@ class Parser {
 				$countryIdTeamB = $this->findTeamCountry('http://int.soccerway.com' . $teamB->href);
 
 				//Add the teams to the database
-				$teamIdA = $this->database->addTeam($teamA->plaintext, $countryIdTeamA);
-				$teamIdB = $this->database->addTeam($teamB->plaintext, $countryIdTeamB);
+				$teamIdA = $this->database->addTeam(trim($teamA->plaintext), $countryIdTeamA);
+				$teamIdB = $this->database->addTeam(trim($teamB->plaintext), $countryIdTeamB);
 
 				//Find out if the match has been played already or not
 				$colonPos = strpos($scoreOrTime, ' : ');
