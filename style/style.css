@@ -19,3 +19,7 @@ body {
 table a {
 	color: rgb(51, 51, 51);
 }
+
+.breadcrumb {
+	margin-top: 20px;
+}

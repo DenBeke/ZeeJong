@@ -123,4 +123,16 @@
 	</header>
 	
 	
+	<?php if(sizeof($navigator->getNavigator($controller)) > 1) { ?>
 	
+	<div class="container">
+	
+		<ol class="breadcrumb">
+			<?php foreach ($navigator->getNavigator($controller) as $title => $url) { ?>
+				<li><a href="<?php echo $url; ?>"><?php echo $title; ?></a></li>
+			<?php } ?>
+		</ol>
+	
+	</div>
+	
+	<?php } ?>
