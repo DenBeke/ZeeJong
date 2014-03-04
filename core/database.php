@@ -3,26 +3,25 @@
  Database controll
 
  Created: February 2014
- */
+*/
 
-require_once (dirname(__FILE__) . '/config.php');
-require_once (dirname(__FILE__) . '/classes/Bet.php');
-require_once (dirname(__FILE__) . '/classes/Card.php');
-require_once (dirname(__FILE__) . '/classes/Coach.php');
-require_once (dirname(__FILE__) . '/classes/Coaches.php');
-require_once (dirname(__FILE__) . '/classes/Competition.php');
-require_once (dirname(__FILE__) . '/classes/Country.php');
-require_once (dirname(__FILE__) . '/classes/Fault.php');
-require_once (dirname(__FILE__) . '/classes/Goal.php');
-require_once (dirname(__FILE__) . '/classes/match.php');
-require_once (dirname(__FILE__) . '/classes/Player.php');
-require_once (dirname(__FILE__) . '/classes/PlaysIn.php');
-require_once (dirname(__FILE__) . '/classes/PlaysMatchInTeam.php');
-require_once (dirname(__FILE__) . '/classes/Referee.php');
-require_once (dirname(__FILE__) . '/classes/Score.php');
-require_once (dirname(__FILE__) . '/classes/Team.php');
-require_once (dirname(__FILE__) . '/classes/Tournament.php');
-require_once (dirname(__FILE__) . '/classes/User.php');
+require_once(dirname(__FILE__) . '/config.php');
+require_once(dirname(__FILE__) . '/classes/Bet.php');
+require_once(dirname(__FILE__) . '/classes/Card.php');
+require_once(dirname(__FILE__) . '/classes/Coach.php');
+require_once(dirname(__FILE__) . '/classes/Coaches.php');
+require_once(dirname(__FILE__) . '/classes/Competition.php');
+require_once(dirname(__FILE__) . '/classes/Country.php');
+require_once(dirname(__FILE__) . '/classes/Goal.php');
+require_once(dirname(__FILE__) . '/classes/Match.php');
+require_once(dirname(__FILE__) . '/classes/Player.php');
+require_once(dirname(__FILE__) . '/classes/PlaysIn.php');
+require_once(dirname(__FILE__) . '/classes/PlaysMatchInTeam.php');
+require_once(dirname(__FILE__) . '/classes/Referee.php');
+require_once(dirname(__FILE__) . '/classes/Score.php');
+require_once(dirname(__FILE__) . '/classes/Team.php');
+require_once(dirname(__FILE__) . '/classes/Tournament.php');
+require_once(dirname(__FILE__) . '/classes/User.php');
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -545,7 +544,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $name)) {
@@ -573,9 +572,62 @@ class Database {
 		$statement -> bind_result($id, $name);
 
 		//Fetch the rows of the return values
-		$statement -> fetch();		
 
-		return new Country($id);
+		$statement->fetch();
+		
+		return new Country($id, $name);
+
+	}
+	
+	/**
+	Get the country with the given id
+	
+	@param id
+	@return country
+	
+	@exception when no country found with the given name
+	*/
+	public function getCountryById($countryId) {
+		//Query
+		$query = "
+			SELECT * FROM Country
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		$statement = $this->getStatement($query);
+
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $countryId)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrup database: multiple countries with the same name');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no country with the given name');
+		}
+
+		//Bind return values
+		$statement->bind_result($id, $name);
+		
+		//Fetch the rows of the return values
+		$statement->fetch();
+
+		return new Country($id, $name);
 	}
 
 	/**
@@ -660,13 +712,10 @@ class Database {
 			$statement -> bind_result($id, $name);
 
 			//Fetch the rows of the return values
-			while ($statement -> fetch()) {
-
-				//Create new Competition object TODO
-				return new Competition($id);
-
-
-
+			while ($statement->fetch()) {
+				
+				//Create new Competition object
+				return new Competition($id, $name, $this);
 			}
 
 		}
@@ -691,7 +740,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -739,7 +788,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $name)) {
@@ -769,11 +818,8 @@ class Database {
 			//Fetch the rows of the return values
 			while ($statement -> fetch()) {
 
-				//Create new Competition object TODO
-				return new Competition($id);
-
-
-
+				//Create new Competition object
+				return new Competition($id, $name, $this);
 			}
 
 		}
@@ -895,7 +941,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('si', $name, $competitionId)) {
@@ -925,11 +971,8 @@ class Database {
 			//Fetch the rows of the return values
 			while ($statement -> fetch()) {
 
-				//Create new Competition object TODO
-				return new Tournament($id);
-
-
-
+				//Create new Competition object
+				return new Tournament($id, $name, $competitionId, $this);
 			}
 
 		}
@@ -1032,15 +1075,13 @@ class Database {
 		} else {
 
 			//Bind return values
-			$statement -> bind_result($id, $name);
-
+			$statement->bind_result($id, $name, $competitionId);
+			
 			//Fetch the rows of the return values
 			while ($statement -> fetch()) {
 
-				//Create new Competition object TODO
-				return new Tournament($id);
-
-
+				//Create new Competition object
+				return new Tournament($id, $name, $competitionId, $this);
 
 			}
 
@@ -1116,7 +1157,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
@@ -1146,16 +1187,13 @@ class Database {
 			//Fetch the rows of the return values
 			while ($statement -> fetch()) {
 
-				//Create new Coach object TODO
-				return new Referee($id);
-
-
-
+				//Create new Referee object
+				return new Referee($id, $firstName, $lastName, $countryId, $this);
+				
 			}
-
+			
 		}
 		
-
 	}
 
 	/**
@@ -1259,7 +1297,7 @@ class Database {
 	
 
 		//Create new Player object TODO
-		return new Referee($id);
+		return new Referee($id, $firstName, $lastName, $countryId, $this);
 	}
 
 	/**
@@ -1357,10 +1395,8 @@ class Database {
 			//Fetch the rows of the return values
 			while ($statement -> fetch()) {
 
-				//Create new Coach object TODO
-				return new Coach($id);
-
-
+				//Create new Coach object
+				return new Coach($id, $firstName, $lastName, $countryId, $this);
 
 			}
 
@@ -1432,12 +1468,12 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
-		if (!$statement -> bind_param('i', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
+			if (!$statement -> bind_param('i', $id)) {
+				throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+			}
 
 		//Execute statement
 		if (!$statement -> execute()) {
@@ -1464,7 +1500,7 @@ class Database {
 		
 
 		//Create new Player object TODO
-		return new Coach($id);
+		return new Coach($id, $firstName, $lastName, $countryId, $this);
 	}
 
 	/**
@@ -1498,7 +1534,7 @@ class Database {
 					VALUES (?, ?, ?);
 				";
 
-						$statement = $this->getStatement($query);
+				$statement = $this->getStatement($query);
 
 				//Bind parameters
 				if (!$statement -> bind_param('iii', $coachId, $teamId, $matchId)) {
@@ -1549,7 +1585,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $coachId, $teamId, $matchId)) {
@@ -1574,16 +1610,14 @@ class Database {
 		} else {
 
 			//Bind return values
-			$statement -> bind_result($id, $firstName, $lastName, $countryId);
+			$statement->bind_result($id, $coachId, $teamId, $matchId);
 
 			//Fetch the rows of the return values
 			while ($statement -> fetch()) {
 
-				//Create new Coach object TODO
-				return new Coaches($id);
+				//Create new Coaches object
 
-
-
+				return new Coaches($id, $coachId, $teamId, $matchId);
 			}
 
 		}
@@ -1615,7 +1649,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('si', $name, $countryId)) {
@@ -1655,7 +1689,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('si', $name, $countryId)) {
@@ -1686,12 +1720,75 @@ class Database {
 			while ($statement -> fetch()) {
 
 				//Create new Coach object TODO
-				return new Team($id);
-
-
-
+				return new Team($id, $name, $countryId, $this);
+				
 			}
+			
+		}
+		
+	}
 
+	/**
+	Get the team with the given id
+	
+	@param id
+
+	@return team
+	
+	@exception when no team found with the given name and country
+	*/
+	public function getTeamById($id) {
+		
+		//Query
+		$query = "
+			SELECT * FROM Team
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: multiple teams with the same id');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no team with the given id');
+		}
+		else {
+			
+			//Bind return values
+			$statement->bind_result($id, $name, $countryId);
+			
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Coach object TODO
+				return new Team($id, $name, $countryId, $this);
+				
+				//Close the statement		
+				$statement->close();
+				
+			}
+			
 		}
 		
 
@@ -1772,7 +1869,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssiiii', $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight)) {
@@ -1849,11 +1946,12 @@ class Database {
 			//Fetch the rows of the return values
 			while ($statement -> fetch()) {
 
-				//Create new Player object TODO
-				return new Player($id);
-
-
-
+				//Create new Player object
+				return new Player($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $this);
+				
+				//Close the statement
+				$statement->close();
+				
 			}
 
 		}		
@@ -1878,7 +1976,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1897,7 +1995,7 @@ class Database {
 
 		//Check if the correct number of results are returned from the database
 		if ($numberOfResults > 1) {
-			throw new exception('Corrup database: multiple players with the same id');
+			throw new exception('Corrupt database: multiple players with the same id');
 		} else if ($numberOfResults < 1) {
 			
 			return false;
@@ -1925,7 +2023,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -1950,13 +2048,13 @@ class Database {
 		}
 
 		//Bind return values
-		$statement -> bind_result($id, $firstName, $lastName, $countryId);
-
+		$statement->bind_result($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight);
+		
 		//Fetch the rows of the return values
 		$statement -> fetch();		
 
 		//Create new Player object TODO
-		return new Player($id);
+		return new Player($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $this);
 	}
 
 	/**
@@ -1987,7 +2085,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $playerId, $matchId, $time)) {
@@ -2028,7 +2126,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $playerId, $time, $matchId)) {
@@ -2058,11 +2156,74 @@ class Database {
 			//Fetch the rows of the return values
 			while ($statement -> fetch()) {
 
-				//Create new Player object TODO
-				return new Goal($id);
+				//Create new Goal object
+				return new Goal($id, $playerId, $matchId, $time, $this);
+				
+				//Close the statement
+				$statement->close();
+				
+			}
+			
+		}
+		
+	}
 
+	/**
+	Get the goal with the id
+	
+	@param id
 
+	@return goal
+	
+	@exception when no goal found with the given id
+	*/
+	public function getGoalById($id) {
+	
 
+		//Query
+		$query = "
+			SELECT * FROM `Goal`
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: multiple goals with the same id');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no goal with the given id');
+		}
+		else {
+			
+			//Bind return values
+			$statement->bind_result($id, $playerId, $matchId, $time);
+			
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Goal object
+				return new Goal($id, $playerId, $matchId, $time, $this);
 			}
 
 		}		
@@ -2165,13 +2326,10 @@ class Database {
 			$statement -> bind_result($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId);
 
 			//Fetch the rows of the return values
-			while ($statement -> fetch()) {
-
-				//Create new Player object TODO
-				return new Match($id);
-
-
-
+			while ($statement->fetch()) {
+				
+				//Create new Match object TODO
+				return new Match($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId, $this);
 			}
 
 		}		
@@ -2247,16 +2405,13 @@ class Database {
 		} else {
 
 			//Bind return values
-			$statement -> bind_result($id, $teamAId, $teamBId, $tournamentId, $refereeId, $date, $scoreId);
-
+			$statement->bind_result($id, $teamAId, $teamBId, $tournamentId, $refereeId, $date, $scoreId);
+			
 			//Fetch the rows of the return values
-			while ($statement -> fetch()) {
-
-				//Create new Competition object TODO
-				return new Match($id);
-
-
-
+			while ($statement->fetch()) {
+				
+				//Create new Match object TODO
+				return new Match($id, $teamAId, $teamBId, $tournamentId, $refereeId, $date, $scoreId, $this);
 			}
 
 		}		
@@ -2281,7 +2436,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -2343,7 +2498,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iiii', $playerId, $teamId, $matchId, $number)) {
@@ -2373,7 +2528,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $playerId, $teamId, $matchId)) {
@@ -2398,18 +2553,16 @@ class Database {
 		} else {
 
 			//Bind return values
-			$statement -> bind_result($id, $playerId, $teamId, $matchId, $number);
+			$statement->bind_result($id, $playerId, $number, $teamId, $matchId);
 
 			//Fetch the rows of the return values
 			while ($statement -> fetch()) {
 
-				//Create new Player object TODO
-				return new PlaysMatchInTeam($id, $playerId, $teamId, $matchId, $number);
-
-
-
+				//Create new Player object
+				return new PlaysMatchInTeam($id, $playerId, $teamId, $matchId, $number, $this);
+				
+				
 			}
-
 		}
 	}
 
@@ -2442,7 +2595,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ii', $playerId, $teamId)) {
@@ -2503,11 +2656,8 @@ class Database {
 			//Fetch the rows of the return values
 			while ($statement -> fetch()) {
 
-				//Create new Player object TODO
-				return new PlaysIn($id);
-
-
-
+				//Create new PlaysIn object
+				return new PlaysIn($id, $playerId, $teamId, $this);
 			}
 
 		}
@@ -2636,7 +2786,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iiii', $playerId, $matchId, $time, $color)) {
@@ -2666,15 +2816,63 @@ class Database {
 			//Fetch the rows of the return values
 			while ($statement -> fetch()) {
 
-				//Create new Player object TODO
-				return new Card($id);
-
-
-
+				//Create new Card object
+				return new Card($id, $playerId, $matchId, $color, $time, $this);
 			}
 
 		}
-	}
+	}	
+	
+	public function getFoulCardById($id) {
+
+		//Query
+		$query = "
+			SELECT * FROM `Cards`
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		$statement = $this->getStatement($query);
+
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {		
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: There are multiple foul cards with the same id');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no card with the given id');
+		}
+		else {
+
+			//Bind return values
+			$statement->bind_result($id, $playerId, $matchId, $color, $time);
+			
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Card object
+				return new Card($id, $playerId, $matchId, $color, $time, $this);
+				
+			}
+			
+		}
+	}		
 
 	/**
 	 Add a new score to the database
@@ -2693,7 +2891,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ii', $teamA, $teamB)) {
@@ -2710,10 +2908,358 @@ class Database {
 		//TODO Check if this always works...
 
 		
-		
-
 		return $id;
 
+	}
+
+	public function getScoreById($id) {
+
+		//Query
+		$query = "
+			SELECT * FROM `Score`
+			WHERE id = ?;
+		";
+		
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {		
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: There are multiple score with the same id');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no score with the given id');
+		}
+		else {
+
+			//Bind return values
+			$statement->bind_result($id, $teamA, $teamB);
+			
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Player object TODO
+				return new Score($id, $teamA, $teamB);
+
+			}
+			
+		}
+	}	
+
+	public function getTotalNumberOfGoals($playerId) {
+
+		//Query
+		$query = "
+			SELECT * FROM `Goal`
+			WHERE playerId = ?;
+		";
+		
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $playerId)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		return $statement->num_rows;		
+	}
+
+	public function getTotalNumberOfMatches($playerId) {
+
+
+		//Query
+		$query = "
+			SELECT * FROM `PlaysMatchInTeam`
+			WHERE playerId = ?;
+		";
+		
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $playerId)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		return $statement->num_rows;		
+	}
+
+	public function getTotalNumberOfCards($playerId) {
+	
+		//Query
+		$query = "
+			SELECT * FROM `Cards`
+			WHERE playerId = ?;
+		";
+		
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $playerId)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		return $statement->num_rows;
+	}
+
+	public function getCoachForTeam($teamId) {
+	
+		//Query
+		$query = "
+			SELECT * FROM `Coaches`
+			WHERE teamId = ?;
+		";
+		
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $teamId)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+	
+		//Check if the correct number of results are returned from the database
+		if($numberOfResults > 1) {
+			throw new exception('Corrupt database: There are multiple coaches coaching the same team');
+		}
+		else if($numberOfResults < 1) {
+			throw new exception('Error, there is no coach coaching this team');
+		}
+		else {
+
+			//Bind return values
+			$statement->bind_result($id, $coachId, $teamId, $matchId);
+
+			while ($statement->fetch()) {
+				return $this->getCoachById($coachId);
+			}
+		}
+	}
+
+	/**
+	Returns all tournaments of the competition
+	
+	@return tournaments
+	*/
+	public function getTournamentsInCompetition($competitionId) {
+	
+		//Query
+		$query = "
+			SELECT * FROM `Tournament`
+			WHERE competitionId = ?;
+		";
+		
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $competitionId)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+		
+		if($numberOfResults < 1) {
+			throw new exception('Error, there are no Tournaments in this competition');
+		}	
+		else {
+			//Bind return values
+			$statement->bind_result($id, $name, $competitionId);
+			
+			$tournaments = array();
+
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Tournament object and add it to the array
+				array_push($tournaments, new Tournament($id, $name, $competitionId, $this));
+			}
+
+			return $tournaments;
+		}
+	}		
+
+	/**
+	Returns all matches of the tournament
+	
+	@return matches
+	*/
+	public function getMatchesInTournament($tournamentId) {
+	
+		//Query
+		$query = "
+			SELECT * FROM `Match`
+			WHERE tournamentId = ?;
+		";
+		
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $tournamentId)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+		
+		if($numberOfResults < 1) {
+			throw new exception('Error, there are no Matches in this Tournament');
+		}	
+		else {
+			//Bind return values
+			$statement->bind_result($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId);
+			
+			$matches = array();
+
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Tournament object and add it to the array
+				array_push($matches, new Match($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId, $this));
+				
+			}
+
+			return $matches;
+		}
+	}
+
+
+	/**
+	Returns all players of a given team
+	
+	@return players
+	*/
+	public function getPlayersInTeam($teamId) {
+	
+		//Query
+		$query = "
+			SELECT playerId FROM `PlaysMatchInTeam`
+			WHERE teamId = ?;
+		";
+		
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $teamId)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+		
+		if($numberOfResults < 1) {
+			throw new exception('Error, there are no Players in this Team');
+		}	
+		else {
+			//Bind return values
+			$statement->bind_result($playerId);
+			
+			$players = array();
+
+			//Fetch the rows of the return values
+			while ($statement->fetch()) {
+				
+				//Create new Tournament object and add it to the array
+				array_push($players, $this->getPlayerById($playerId));
+				
+			}
+
+			return $players;
+		}
+	}
+
+	/**
+	Returns amount of matches won by player
+	
+	@return amount of matches
+	*/
+	public function getTotalMatchesWonByPlayer($playerId) {
+	
+		//TODO
+		return array();
 	}
 
 }

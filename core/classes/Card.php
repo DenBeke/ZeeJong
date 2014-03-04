@@ -22,7 +22,8 @@ class Card {
     private $playerId;
     private $matchId;
     private $time;
-    private $type;
+    private $color;
+    private $db;
 
 	/**
 	Constructor
@@ -31,24 +32,46 @@ class Card {
 	@param time
 	@param type
 	*/
-	public function __construct($id) {
+	public function __construct($id, $playerId, $matchId, $color, $time, &$db) {
 		$this->id = $id;
+		$this->playerId = $playerId;
+		$this->matchId = $matchId;
+		$this->time = $time;
+		$this->color = $color;
+		$this->db = &$db;
+	}
+
+	/**
+	Get the player
+	@return player
+	*/
+	public function getPlayer() {
+		return $this->db->getPlayerById($this->playerId);
 	}
 
 	/**
 	Get the player
 	@return player id
 	*/
-	public function getPlayer() {
-		return $this->playerId();
+	public function getPlayerId() {
+		return $this->playerId;
 	}
+
+	/**
+	Get the match
+	@return match
+	*/
+	public function getMatch() {
+		return $this->db->getMatchById($this->matchId);
+	}
+
 
 	/**
 	Get the match
 	@return match id
 	*/
-	public function getMatch() {
-		return $this->matchId();
+	public function getMatchId() {
+		return $this->matchId;
 	}
 
 	/**
@@ -56,7 +79,7 @@ class Card {
 	@return time
 	*/
 	public function getTime() {
-		return $this->time();
+		return $this->time;
 	}
 
 	/**
@@ -72,7 +95,15 @@ class Card {
 	@return type
 	*/
 	public function getType() {
-		return $this->type();
+		return $this->color;
+	}
+
+	/**
+	Get the type of the card
+	@return type
+	*/
+	public function getColor() {
+		return $this->color;
 	}
 
 }

@@ -2,6 +2,7 @@
 /*
 Competition Class
 */
+require_once(dirname(__FILE__) . '/Tournament.php');
 
 
 /**
@@ -14,13 +15,16 @@ The class contains the following information:
 class Competition {
 	private $id;
 	private $name;
+	private $db;
 
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id) {
+	public function __construct($id, $name, &$db) {
 		$this->id = $id;
+		$this->name = $name;
+		$this->db = &$db;
 	}
 
 	/**
@@ -37,7 +41,8 @@ class Competition {
 	@return name
 	*/
 	public function getName() {
-		//TODO Fetch name from database. (need to add function in Database.php)
+
+		return $this->name;
 	}
 	
 	
@@ -48,8 +53,8 @@ class Competition {
 	@return tournaments
 	*/
 	public function getTournaments() {
-		//TODO
-		return array();
+
+		return $this->db->getTournamentsInCompetition($this->id);
 	}
 	
 
