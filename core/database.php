@@ -58,8 +58,6 @@ class Database {
 			throw new Exception("Connect failed: $error");
 		}
 
-		$this->statements;
-
 	}
 
 	/**
