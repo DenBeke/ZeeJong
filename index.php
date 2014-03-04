@@ -27,6 +27,7 @@ require_once(dirname(__FILE__) . '/core/controller/Referee.php');
 require_once(dirname(__FILE__) . '/core/controller/Error.php');
 require_once(dirname(__FILE__) . '/core/controller/News.php');
 require_once(dirname(__FILE__) . '/core/controller/UserConfigPanel.php');
+require_once(dirname(__FILE__) . '/core/controller/Navigator.php');
 
 //Create database
 $database = new Database;
@@ -49,6 +50,7 @@ $urls = array(
 
 
 $controller = glue::stick($urls);
+$navigator = new Controller\Navigator;
 
 
 
