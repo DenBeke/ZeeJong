@@ -1782,8 +1782,6 @@ class Database {
 				//Create new Coach object TODO
 				return new Team($id, $name, $countryId, $this);
 				
-				//Close the statement		
-				$statement->close();
 				
 			}
 			
@@ -1946,9 +1944,7 @@ class Database {
 
 				//Create new Player object
 				return new Player($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $this);
-				
-				//Close the statement
-				$statement->close();
+		
 				
 			}
 
@@ -2156,9 +2152,6 @@ class Database {
 
 				//Create new Goal object
 				return new Goal($id, $playerId, $matchId, $time, $this);
-				
-				//Close the statement
-				$statement->close();
 				
 			}
 			
