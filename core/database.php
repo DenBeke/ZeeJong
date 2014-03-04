@@ -3186,6 +3186,58 @@ class Database {
 			return $matches;
 		}
 	}
+	
+	
+	
+	
+	
+	/**
+	Returns all competitions
+	
+	@return competitions
+	*/
+	public function getAllCompetitions() {
+	
+		//Query
+		$query = "
+			SELECT * FROM `Competition`
+		";
+		
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		
+				
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+	
+		
+		//Bind return values
+		$statement->bind_result($id, $name);
+		
+		$competitions = array();
+	
+		//Fetch the rows of the return values
+		while ($statement->fetch()) {
+			
+			//Create new Tournament object and add it to the array
+			array_push($competitions, new Competition($id, $name, $this));
+			
+		}
+	
+		return $competitions;
+		
+	}
+
+	
+	
+	
+	
 
 
 	/**

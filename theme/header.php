@@ -63,12 +63,12 @@ Created: February 2014
 				      <li class="dropdown">
 				        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Leagues <b class="caret"></b></a>
 				        <ul class="dropdown-menu">
-				          <li><a href="#">World Cup</a></li>
-				          <li><a href="#">Olympics</a></li>
-				          <li><a href="#">European Championship</a></li>
-				          <li class="divider"></li>
-				          <li><a href="#">Champions League</a></li>
-				          <li><a href="#">Bundesliga</a></li>
+					        
+					        
+					      <?php foreach($database->getAllCompetitions() as $competition) { ?>
+						      <li><a href="<?php echo SITE_URL . 'competition/' . $competition->getId(); ?>"><?php echo $competition->getName(); ?></a></li>
+						  <?php } ?>
+
 				        </ul>
 				      </li>
 				    </ul>
