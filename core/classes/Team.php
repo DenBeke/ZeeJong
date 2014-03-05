@@ -68,7 +68,11 @@ class Team {
 	
 	
 	public function getCoachForMatch($matchId) {
-		return $this->db->getCoachForTeamAndMatch($this->id, $matchId);
+		try {
+			return $this->db->getCoachForTeamAndMatch($this->id, $matchId);
+		} catch (exception $e) {
+			return false;
+		}
 	}
 
 
