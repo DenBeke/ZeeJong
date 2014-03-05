@@ -53,7 +53,6 @@ class Competition {
 	@return tournaments
 	*/
 	public function getTournaments() {
-
 		return $this->db->getTournamentsInCompetition($this->id);
 	}
 	

@@ -82,6 +82,7 @@ class Database {
 		$statement = $this->getStatement2($selector->sql());
 		$statement->setFetchMode(PDO::FETCH_ASSOC);
 
+		print_r($selector->values());
 		$statement->execute($selector->values());
 
 		$results = [];
@@ -3220,50 +3221,14 @@ class Database {
 	@return tournaments
 	*/
 	public function getTournamentsInCompetition($competitionId) {
-	
-		//Query
-		$query = "
-			SELECT * FROM `Tournament`
-			WHERE competitionId = ?;
-		";
-		
-		//Prepare statement
-		$statement = $this->getStatement($query);
-		
-		//Bind parameters
-		if(!$statement->bind_param('i', $competitionId)){
-			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Execute statement
-		if (!$statement->execute()) {
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Store the result in the buffer
-		$statement->store_result();
+		$sel = new \Selector('Tournament');
+		$sel->filter([['competitionId', '=', $competitionId]]);
 		
 
-		$numberOfResults = $statement->num_rows;
+		$result = $this->select($sel);
 		
-		if($numberOfResults < 1) {
-			throw new exception('Error, there are no Tournaments in this competition');
-		}	
-		else {
-			//Bind return values
-			$statement->bind_result($id, $name, $competitionId);
-			
-			$tournaments = array();
 
-			//Fetch the rows of the return values
-			while ($statement->fetch()) {
-				
-				//Create new Tournament object and add it to the array
-				array_push($tournaments, new Tournament($id, $name, $competitionId, $this));
-			}
-
-			return $tournaments;
-		}
+		return $this->resultToTournaments($result);
 	}		
 
 	/**
@@ -3327,6 +3292,16 @@ class Database {
 		}
 
 		return $competitions;
+	}
+
+	private function resultToTournaments($result) {
+		$tournaments = array();
+
+		foreach($result as $tournament) {
+			array_push($tournaments, new Tournament($tournament['id'], $tournament['name'], $tournament['competitionId'], $this->link));
+		}
+
+		return $tournaments;
 	}
 	
 	/**
