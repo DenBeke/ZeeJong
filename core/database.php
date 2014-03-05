@@ -3049,7 +3049,6 @@ class Database {
 				//Create new Tournament object and add it to the array
 				$player = $this->getPlayerById($playerId);
 				$player->number = $number;
-				exit();
 				array_push($players, $player);
 				
 			}
@@ -3067,8 +3066,49 @@ class Database {
 	*/
 	public function getTotalMatchesWonByPlayer($playerId) {
 	
-		//TODO
-		return array();
+
+		//Query
+		$query = "
+			SELECT COUNT(*) FROM `PlaysMatchInTeam`
+			JOIN `Match` ON `Match`.id = matchId
+			JOIN `Score` ON `Score`.id = scoreId
+			WHERE playerId = ? AND 
+			((teamId = `Match`.teamA AND `Score`.teamA > `Score`.teamB) OR 
+			 (teamID = `Match`.teamB AND `Score`.teamB > `Score`.teamA))
+		";
+		
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $playerId)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();
+		
+
+		$numberOfResults = $statement->num_rows;
+		
+		if($numberOfResults != 1) {
+			throw new exception('Could not count the matches the player has won');
+		}	
+
+		$statement->bind_result($amount);
+			
+		while ($statement->fetch()) {
+				
+			return $amount;
+				
+		}
+
+		throw new exception('Error while counting the matches the player has won');
 	}
 
 }
