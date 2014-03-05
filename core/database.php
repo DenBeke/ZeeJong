@@ -2592,7 +2592,9 @@ class Database {
 			while ($statement -> fetch()) {
 	
 				//Create new Player object
-				$out[] = $this->getPlayerById($playerId);
+				$player = $this->getPlayerById($playerId);
+				$player->number = $number;
+				$out[] = $player;
 				
 				
 			}
@@ -3087,6 +3089,56 @@ class Database {
 		return $statement->num_rows;
 	}
 
+
+
+	public function getCoachForTeamAndMatch($teamId, $matchId) {
+		
+			//Query
+			$query = "
+				SELECT * FROM `Coaches`
+				WHERE teamId = ?
+				AND matchId = ?;
+			";
+			
+			//Prepare statement
+			$statement = $this->getStatement($query);
+			
+			//Bind parameters
+			if(!$statement->bind_param('ii', $teamId, $matchId)){
+				throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+			}
+			
+			//Execute statement
+			if (!$statement->execute()) {
+				throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+			}
+			
+			//Store the result in the buffer
+			$statement->store_result();
+			
+	
+			$numberOfResults = $statement->num_rows;
+		
+			//Check if the correct number of results are returned from the database
+			if($numberOfResults > 1) {
+				throw new exception('Corrupt database: There are multiple coaches coaching the same team');
+			}
+			else if($numberOfResults < 1) {
+				throw new exception('Error, there is no coach coaching this team');
+			}
+			else {
+	
+				//Bind return values
+				$statement->bind_result($id, $coachId, $teamId, $matchId);
+	
+				while ($statement->fetch()) {
+					return $this->getCoachById($coachId);
+				}
+			}
+		}
+
+
+
 	public function getCoachForTeam($teamId) {
 	
 		//Query
@@ -3295,11 +3347,12 @@ class Database {
 	
 	@return players
 	*/
+	/*
 	public function getPlayersInTeam($teamId) {
 	
 		//Query
 		$query = "
-			SELECT playerId FROM `PlaysMatchInTeam`
+			SELECT playerId, number FROM `PlaysMatchInTeam`
 			WHERE teamId = ?;
 		";
 		
@@ -3327,7 +3380,7 @@ class Database {
 		}	
 		else {
 			//Bind return values
-			$statement->bind_result($playerId);
+			$statement->bind_result($playerId, $number);
 			
 			$players = array();
 
@@ -3335,13 +3388,18 @@ class Database {
 			while ($statement->fetch()) {
 				
 				//Create new Tournament object and add it to the array
-				array_push($players, $this->getPlayerById($playerId));
+				$player = $this->getPlayerById($playerId);
+				$player->number = $number;
+				exit();
+				array_push($players, $player);
 				
 			}
 
 			return $players;
 		}
 	}
+	*/
+	
 
 	/**
 	Returns amount of matches won by player

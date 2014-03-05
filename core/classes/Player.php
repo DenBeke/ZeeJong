@@ -21,6 +21,8 @@ class Player {
 	private $height;
 	private $weight;
 	private $db;
+	
+	public $number;
 
 	/**
 	Constructor
