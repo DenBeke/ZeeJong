@@ -1767,56 +1767,16 @@ class Database {
 	@exception when no team found with the given name and country
 	*/
 	public function getTeamById($id) {
-		
-		//Query
-		$query = "
-			SELECT * FROM Team
-			WHERE id = ?;
-		";
-		
-		//Prepare statement
-		$statement = $this->getStatement($query);
-		
-		//Bind parameters
-		if(!$statement->bind_param('i', $id)){
-			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Execute statement
-		if (!$statement->execute()) {
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Store the result in the buffer
-		$statement->store_result();
-		
+		$sel = new \Selector('Team');
+		$sel->filter([['id', '=', $id]]);
 
-		$numberOfResults = $statement->num_rows;
-	
-		//Check if the correct number of results are returned from the database
-		if($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple teams with the same id');
+		$result = $this->select($sel);
+		$teams = $this->resultToTeams($result);
+		if(count($teams) != 1) {
+			throw new exception('Could not find team with id ' . $id);
 		}
-		else if($numberOfResults < 1) {
-			throw new exception('Error, there is no team with the given id');
-		}
-		else {
-			
-			//Bind return values
-			$statement->bind_result($id, $name, $countryId);
-			
-			//Fetch the rows of the return values
-			while ($statement->fetch()) {
-				
-				//Create new Coach object TODO
-				return new Team($id, $name, $countryId, $this);
-				
-				
-			}
-			
-		}
-		
 
+		return $teams[0];
 	}
 
 	/**
@@ -3264,13 +3224,23 @@ class Database {
 		return $tournaments;
 	}
 
+	private function resultToTeams($result) {
+		$teams = array();
+
+		foreach($result as $team) {
+			array_push($teams, new Team($team['id'], $team['name'], $team['country'], $this->link));
+		}
+
+		return $teams;
+	}
+
 	private function resultToMatches($result) {
 		$matches = array();
 
 		foreach($result as $match) {
 			array_push($matches, new Match($match['id'], $match['teamA'], $match['teamB'],
 						$match['tournamentId'], $match['refereeId'], $match['date'], $match['scoreId'],
-						$this->link));
+						$this));
 		}
 
 
