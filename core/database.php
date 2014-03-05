@@ -869,43 +869,13 @@ class Database {
 	 @return true if coach exists
 	 */
 	public function checkCoachExists($id) {
+		$sel = new \Selector('Coach');
+		$sel->filter([['id', '=', $id]]);
 
-		//Query
-		$query = "
-			SELECT * FROM Coach
-			WHERE id = ?;
-		";
+		$result = $this->select($sel);
+		$coaches = $this->resultToCoaches($result);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('i', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple coaches with the same id.');
-		} else if ($numberOfResults < 1) {
-
-
-			return false;
-		} else {
-
-
-			return true;
-		}		
+		return count($coaches) == 1;
 	}
 
 	/**
@@ -917,46 +887,14 @@ class Database {
 	 @exception when no coach found with the given id
 	 */
 	public function getCoachById($id) {
-		//Query
-		$query = "
-			SELECT * FROM Coach
-			WHERE id = ?;
-		";
+		$sel = new \Selector('Coach');
+		$sel->filter([['id', '=', $id]]);
 
-		//Prepare statement
-		$statement = $this->getStatement($query);
+		$result = $this->select($sel);
+		$coaches = $this->resultToCoaches($result);
+		requireEqCount($coaches, 1);
 
-		//Bind parameters
-			if (!$statement -> bind_param('i', $id)) {
-				throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-			}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple coaches with the same id');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no coach with the given id');
-		}
-
-		//Bind return values
-		$statement -> bind_result($id, $firstName, $lastName, $countryId);
-
-		//Fetch the rows of the return values
-		$statement -> fetch();
-		
-
-		//Create new Player object TODO
-		return new Coach($id, $firstName, $lastName, $countryId, $this);
+		return $coaches[0];
 	}
 
 	/**
@@ -1020,65 +958,27 @@ class Database {
 	}
 
 	/**
-	 Get the coach with the given name and country
+	 Get the coacheses with the given id, team, match
 
-	 @param firstName
-	 @param lastName
-	 @param countryId
+	 @param coachId
+	 @param teamId
+	 @param matchId
 
-	 @return coach
+	 @return Coaches
 
-	 @exception when no coach found with the given name and country
+	 @exception when no coacheses found with the given id, team, match
 	 */
 	public function getCoaches($coachId, $teamId, $matchId) {
+		$sel = new \Selector('Coaches');
+		$sel->filter([['coachId', '=', $coachId]]);
+		$sel->filter([['teamId', '=', $teamId]]);
+		$sel->filter([['matchId', '=', $matchId]]);
 
-		//Query
-		$query = "
-			SELECT * FROM Coaches
-			WHERE coachId = ? AND
-			teamId = ? AND
-			matchId = ?;
-		";
+		$result = $this->select($sel);
+		$coacheses = $this->resultToCoacheses($result);
+		requireEqCount($coacheses, 1);
 
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('iii', $coachId, $teamId, $matchId)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple coaches relations with the same team, coach and match');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no coaches relation with the given team, coach and match');
-		} else {
-
-			//Bind return values
-			$statement->bind_result($id, $coachId, $teamId, $matchId);
-
-			//Fetch the rows of the return values
-			while ($statement -> fetch()) {
-
-				//Create new Coaches object
-
-				return new Coaches($id, $coachId, $teamId, $matchId);
-			}
-
-		}
-		
-
+		return $coacheses[0];
 	}
 
 	/**
@@ -1136,52 +1036,15 @@ class Database {
 	 @exception when no team found with the given name and country
 	 */
 	public function getTeam($name, $countryId) {
+		$sel = new \Selector('Team');
+		$sel->filter([['name', '=', $name]]);
+		$sel->filter([['country', '=', $countryId]]);
 
-		//Query
-		$query = "
-			SELECT * FROM Team
-			WHERE name = ? AND
-			country = ?;
-		";
+		$result = $this->select($sel);
+		$teams = $this->resultToTeams($result);
+		requireEqCount($teams, 1);
 
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('si', $name, $countryId)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple teams with the same name and country of origin');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no team with the given name and country of origin');
-		} else {
-
-			//Bind return values
-			$statement -> bind_result($id, $name, $countryId);
-
-			//Fetch the rows of the return values
-			while ($statement -> fetch()) {
-
-				//Create new Coach object TODO
-				return new Team($id, $name, $countryId, $this);
-				
-			}
-			
-		}
-		
+		return $teams[0];
 	}
 
 	/**
@@ -1199,9 +1062,7 @@ class Database {
 
 		$result = $this->select($sel);
 		$teams = $this->resultToTeams($result);
-		if(count($teams) != 1) {
-			throw new exception('Could not find team with id ' . $id);
-		}
+		requireEqCount($teams, 1);
 
 		return $teams[0];
 	}
@@ -1214,43 +1075,12 @@ class Database {
 	 @return true if team exists
 	 */
 	public function checkTeamExists($id) {
+		$sel = new \Selector('Team');
+		$sel->filter([['id', '=', $id]]);
 
-		//Query
-		$query = "
-			SELECT * FROM Team
-			WHERE id = ?;
-		";
+		$result = $this->select($sel);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('i', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple teams with the same id');
-		} else if ($numberOfResults < 1) {
-
-
-			return false;
-		} else {
-
-
-			return true;
-		}
+		return count($result) == 1;
 	}
 
 	/**
@@ -1317,55 +1147,19 @@ class Database {
 	 @exception when no player found with the given name, country and date of birth
 	 */
 	public function getPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight) {
+		$sel = new \Selector('Player');
+		$sel->filter([['firstname', '=', $firstName]]);
+		$sel->filter([['lastname', '=', $lastName]]);
+		$sel->filter([['country', '=', $countryId]]);
+		$sel->filter([['dateOfBirth', '=', $dateOfBirth]]);
+		$sel->filter([['height', '=', $height]]);
+		$sel->filter([['weight', '=', $weight]]);
 
-		//Query
-		$query = "
-			SELECT * FROM Player
-			WHERE firstname = ? AND
-			lastname = ? AND
-			country = ? AND
-			dateOfBirth = ?;
-		";
+		$result = $this->select($sel);
+		$players = $this->resultToPlayers($result);
+		requireEqCount($players, 1);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('ssii', $firstName, $lastName, $countryId, $dateOfBirth)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple players with the same name, country of origin and date of birth');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no player with the given name, country of origin and date of birth');
-		} else {
-
-			//Bind return values
-			$statement -> bind_result($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight);
-
-			//Fetch the rows of the return values
-			while ($statement -> fetch()) {
-
-				//Create new Player object
-				return new Player($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $this);
-		
-				
-			}
-
-		}		
-
+		return $players[0];
 	}
 
 	/**
@@ -2526,6 +2320,17 @@ class Database {
 
 
 		return $coaches;
+	}
+
+	private function resultToCoacheses($result) {
+		$coacheses = array();
+
+		foreach($result as $coaches) {
+			array_push($coacheses, new Coaches($coaches['id'], $coaches['teamId'], $coaches['coachId']));
+		}
+
+
+		return $coacheses;
 	}
 
 	private function resultToPlayers($result) {
