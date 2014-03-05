@@ -48,6 +48,10 @@ namespace Controller {
 					$nav[$controller->player->getName()] = SITE_URL . 'player/' . $controller->player->getId();
 					break;
 					
+				case 'Controller\Referee':
+					$nav[$controller->referee->getName()] = SITE_URL . 'referee/' . $controller->referee->getId();
+					break;
+					
 			
 			}
 		
