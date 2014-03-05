@@ -469,43 +469,12 @@ class Database {
 	 @exception When there are multiple competitions with the same ID
 	 */
 	public function checkCompetitionExists($id) {
+		$sel = new \Selector('Competition');
+		$sel->filter([['id', '=', $id]]);
 
-		//Query
-		$query = "
-			SELECT * FROM Competition
-			WHERE id = ?;
-		";
+		$result = $this->select($sel);
 
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('i', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrup database: multiple competitions with the same name');
-		} else if ($numberOfResults < 1) {
-			
-			return false;
-		} else {
-			
-			return true;
-
-		}
-
+		return count($result) == 1;
 	}
 
 	/**
@@ -517,50 +486,13 @@ class Database {
 	 @exception when no competition found with the given name
 	 */
 	public function getCompetition($name) {
+		$sel = new \Selector('Competition');
+		$sel->filter([['name', '=', $name]]);
 
-		//Query
-		$query = "
-			SELECT * FROM Competition
-			WHERE name = ?;
-		";
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
 
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('s', $name)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrup database: multiple competitions with the same name');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no competition with the given name');
-		} else {
-
-			//Bind return values
-			$statement -> bind_result($id, $name);
-
-			//Fetch the rows of the return values
-			while ($statement -> fetch()) {
-
-				//Create new Competition object
-				return new Competition($id, $name, $this);
-			}
-
-		}
-
+		return $this->resultToCompetitions($result)[0];
 	}
 
 	/**
@@ -669,52 +601,14 @@ class Database {
 	 @exception when no tournament found with the given name and competition ID
 	 */
 	public function getTournament($name, $competitionId) {
+		$sel = new \Selector('Tournament');
+		$sel->filter([['name', '=', $name]]);
+		$sel->filter([['competitionId', '=', $competitionId]]);
 
-		//Query
-		$query = "
-			SELECT * FROM Tournament
-			WHERE name = ? AND
-			competitionId = ?;
-		";
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
 
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('si', $name, $competitionId)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrup database: multiple tournaments with the same name');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no tournament with the given name');
-		} else {
-
-			//Bind return values
-			$statement -> bind_result($id, $name, $competitionId);
-
-			//Fetch the rows of the return values
-			while ($statement -> fetch()) {
-
-				//Create new Competition object
-				return new Tournament($id, $name, $competitionId, $this);
-			}
-
-		}
-		
-
+		return $this->resultToTournaments($result)[0];
 	}
 
 	/**
@@ -728,46 +622,13 @@ class Database {
 	 @exception When there is more than 1 tournament with that id
 	 */
 	public function checkTournamentExists($id) {
+		$sel = new \Selector('Tournament');
+		$sel->filter([['id', '=', $id]]);
 
-		//Query
-		$query = "
-			SELECT * FROM `Tournament`
-			WHERE id = ?;
-		";
+		$result = $this->select($sel);
+		requireMaxCount($result, 1);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('i', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple tournaments with the id');
-		} else if ($numberOfResults < 1) {
-
-
-			return false;
-		} else {
-
-
-			return true;
-
-		}
-
-
+		return count($result) == 1;
 	}
 
 	/**
@@ -784,9 +645,7 @@ class Database {
 
 		$result = $this->select($sel);
 		$tournaments = $this->resultToTournaments($result);
-		if(count($tournaments) != 1) {
-			throw new exception('Could not find tournament with id ' . $id);
-		}
+		requireEqCount($tournaments, 1);
 
 		return $tournaments[0];
 	}
@@ -848,53 +707,16 @@ class Database {
 	 @exception when no referee found with the given name and country
 	 */
 	public function getReferee($firstName, $lastName, $countryId) {
+		$sel = new \Selector('Referee');
+		$sel->filter([['firstname', '=', $firstName]]);
+		$sel->filter([['lastname', '=', $lastname]]);
+		$sel->filter([['countryId', '=', $countryId]]);
 
-		//Query
-		$query = "
-			SELECT * FROM Referee
-			WHERE firstname = ? AND
-			lastName = ? AND
-			countryId = ?;
-		";
+		$result = $this->select($sel);
+		$referees = $this->resultToReferees($result);
+		requireEqCount($referees, 1);
 
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple referee with the same name and country of origin');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no referee with the given name and country of origin');
-		} else {
-
-			//Bind return values
-			$statement -> bind_result($id, $firstName, $lastName, $countryId);
-
-			//Fetch the rows of the return values
-			while ($statement -> fetch()) {
-
-				//Create new Referee object
-				return new Referee($id, $firstName, $lastName, $countryId, $this);
-				
-			}
-			
-		}
-		
+		return $referees[0];
 	}
 
 	/**
@@ -1027,54 +849,16 @@ class Database {
 	 @exception when no coach found with the given name and country
 	 */
 	public function getCoach($firstName, $lastName, $countryId) {
+		$sel = new \Selector('Coach');
+		$sel->filter([['firstname', '=', $firstName]]);
+		$sel->filter([['lastname', '=', $lastname]]);
+		$sel->filter([['country', '=', $countryId]]);
 
-		//Query
-		$query = "
-			SELECT * FROM Coach
-			WHERE firstname = ? AND
-			lastName = ? AND
-			country = ?;
-		";
+		$result = $this->select($sel);
+		$coaches = $this->resultToCoaches($result);
+		requireEqCount($coaches, 1);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple coaches with the same name and country of origin');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no coach with the given name and country of origin');
-		} else {
-
-			//Bind return values
-			$statement -> bind_result($id, $firstName, $lastName, $countryId);
-
-			//Fetch the rows of the return values
-			while ($statement -> fetch()) {
-
-				//Create new Coach object
-				return new Coach($id, $firstName, $lastName, $countryId, $this);
-
-			}
-
-		}
-		
-
+		return $coaches[0];
 	}
 
 	/**
