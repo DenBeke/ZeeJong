@@ -22,7 +22,13 @@ class Selector {
 			if(!is_array($column[2])) {
 				$column[2] = [$column[2]];
 			}
+
+			foreach($column[2] as &$value) {
+				array_push($this->values, $value);
+			}
 		}
+
+
 
 		array_push($this->filters, $f);
 
@@ -96,7 +102,6 @@ class Selector {
 
 			foreach($filter as &$column) {
 				foreach($column[2] as &$orValue) {
-					array_push($this->values, $orValue);
 					$sql .= ' ' . $column[0] . $column[1] . '?';
 
 					if(end($column[2]) !== $orValue) {
