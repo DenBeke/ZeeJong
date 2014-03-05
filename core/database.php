@@ -35,6 +35,7 @@ class Database {
 
 	private $link;
 	private $statements = array();
+	private $statements2 = array();
 
 	/**
 	 @brief Constructor of the database object.
@@ -48,6 +49,7 @@ class Database {
 	 @param database name
 	 */
 	public function __construct($db_host = DB_HOST, $db_user = DB_USER, $db_password = DB_PASS, $db_database = DB_NAME) {
+		$this->con = new PDO("mysql:host=$db_host;dbname=$db_database", $db_user, $db_password);
 
 		//Connect to the database
 		$this -> link = new mysqli($db_host, $db_user, $db_password, $db_database);
@@ -73,6 +75,26 @@ class Database {
 
 		$this->link->close();
 
+	}
+
+	public function select($selector) {
+		//echo "<pre>" . $selector->sql() .  "</pre>";
+		$statement = $this->getStatement2($selector->sql());
+		$statement->setFetchMode(PDO::FETCH_ASSOC);
+
+	}
+
+	private function getStatement2($query) {
+		$query = trim($query);
+		
+		if(!isset($this->statements2[$query])) {
+			if(!($this->statements2[$query] = $this->con->prepare($query))) {
+				unset($this->statements2[$query]);
+				throw new exception('Prepare failed: (' . $this->con->errno . ') ' . $this->con->error);
+			}
+		}
+
+		return $this->statements2[$query];
 	}
 
 	private function getStatement($query) {
