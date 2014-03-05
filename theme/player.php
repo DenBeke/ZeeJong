@@ -38,6 +38,11 @@ Created: February 2014
 	    <span class="badge"><?php echo $this->player->getTotalNumberOfMatches(); ?></span>
 	    Matches Played
 	  </li>
+
+	  <li class="list-group-item">
+	    <span class="badge"><?php echo $this->player->getTotalNumberOfWonMatches(); ?></span>
+	    Matches Won
+	  </li>	  
 	</ul>
 
 </div>
