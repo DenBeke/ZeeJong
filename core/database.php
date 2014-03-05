@@ -2749,12 +2749,26 @@ class Database {
 	}
 
 	/**
-	 Clear the PlaysIn table
+	 Clear part of the PlaysIn table, so that it can be refilled with more recent information
 	 */
-	public function clearPlaysInTable() {
+	public function removePlayersFromTeam($teamId) {
 
-		if (!$this -> link -> query("TRUNCATE TABLE PlaysIn")) {
-			throw new exception('Failed to clear the PlaysIn table');
+		//Query
+		$query = "
+			DELETE FROM `PlaysIn`
+			WHERE teamId = ?;
+		";
+
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if (!$statement -> bind_param('i', $teamId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
 	}
 
