@@ -14,6 +14,11 @@ class Selector {
 	private $filters = [];
 
 	public function __construct($table) {
+		$table = trim($table);
+		if(strtolower($table) === 'match') {
+			$table = '`' . $table . '`';
+		}
+
 		$this->table = $table;
 	}
 
