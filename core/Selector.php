@@ -7,6 +7,7 @@ class Selector {
 	private $limit = [];
 	private $table = '';
 	private $select = ['*'];
+	private $values = [];
 
 	private $joins = [];
 
@@ -95,7 +96,8 @@ class Selector {
 
 			foreach($filter as &$column) {
 				foreach($column[2] as &$orValue) {
-					$sql .= ' `' . $column[0] . '`' . $column[1] . '\'' . $orValue . '\'';
+					array_push($this->values, $orValue);
+					$sql .= ' ' . $column[0] . $column[1] . '?';
 
 					if(end($column[2]) !== $orValue) {
 						$sql .= ' OR';
@@ -138,6 +140,10 @@ class Selector {
 		}
 
 		return $sql;
+	}
+
+	public function values() {
+		return $this->values;
 	}
 }
 

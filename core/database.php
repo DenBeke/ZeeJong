@@ -78,10 +78,18 @@ class Database {
 	}
 
 	public function select($selector) {
-		//echo "<pre>" . $selector->sql() .  "</pre>";
+		echo "<pre>" . $selector->sql() .  "</pre>";
 		$statement = $this->getStatement2($selector->sql());
 		$statement->setFetchMode(PDO::FETCH_ASSOC);
 
+		$statement->execute($selector->values());
+
+		$results = [];
+		while($result = $statement->fetch()) {
+			array_push($results, $result);
+		}
+
+		return $results;
 	}
 
 	private function getStatement2($query) {
@@ -3311,9 +3319,15 @@ class Database {
 		}
 	}
 	
-	
-	
-	
+	private function resultToCompetitions($result) {
+		$competitions = array();
+
+		foreach($result as $competition) {
+			array_push($competitions, new Competition($competition['id'], $competition['name'], $this->link));
+		}
+
+		return $competitions;
+	}
 	
 	/**
 	Returns all competitions
@@ -3321,41 +3335,12 @@ class Database {
 	@return competitions
 	*/
 	public function getAllCompetitions() {
-	
-		//Query
-		$query = "
-			SELECT * FROM `Competition`
-		";
+		$sel = new \Selector('Competition');
+
+		$result = $this->select($sel);
 		
-		//Prepare statement
-		$statement = $this->getStatement($query);
-		
-				
-		//Execute statement
-		if (!$statement->execute()) {
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Store the result in the buffer
-		$statement->store_result();
-		
-	
-		
-		//Bind return values
-		$statement->bind_result($id, $name);
-		
-		$competitions = array();
-	
-		//Fetch the rows of the return values
-		while ($statement->fetch()) {
-			
-			//Create new Tournament object and add it to the array
-			array_push($competitions, new Competition($id, $name, $this));
-			
-		}
-	
-		return $competitions;
-		
+
+		return $this->resultToCompetitions($result);
 	}
 
 	
