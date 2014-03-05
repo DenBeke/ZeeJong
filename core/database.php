@@ -1563,6 +1563,30 @@ class Database {
 	}
 
 	/**
+	 Clear part of the PlaysIn table, so that it can be refilled with more recent information
+	 */
+	public function removePlayersFromTeam($teamId) {
+
+		//Query
+		$query = "
+			DELETE FROM `PlaysIn`
+			WHERE teamId = ?;
+		";
+
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if (!$statement -> bind_param('i', $teamId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
+
+	/**
 	 Add a new fault to the database
 	 This is a yellow card, red card or yellow card after red card.
 
@@ -1680,8 +1704,9 @@ class Database {
 
 		
 		return $id;
-
 	}
+
+	
 
 	public function getScoreById($id) {
 		$sel = new \Selector('Score');

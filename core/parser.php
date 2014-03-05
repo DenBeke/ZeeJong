@@ -102,6 +102,9 @@ class Parser {
 			echo '<em>Parsing: ' . $competition['name'] . '</em><br>';
 			$this->parseNewMatches($competition['url']);
 		}
+
+		//Refresh the PlaysIn table
+		$this->parsePlayersInTeams();
 	}
 
 
@@ -121,31 +124,18 @@ class Parser {
 			$this->parseCompetitionInArchive($competition['archiveUrl']);
 		}
 
-		//Save the team urls
-		$url_list = implode("\n", array_values($this->teams));
-		if (file_put_contents('cache/teams_url_list.cache', $url_list) == false) {
-			throw new Exception('Failed to create file cache/teams_url_list.cache');
-		}
+		//Refresh the PlaysIn table
+		$this->parsePlayersInTeams();
 	}
 
 
 	/**
 	Find out which players are currently playing for which team.
-
-	This function will make use of a list of teams that was created by the parse function.
 	*/
-	public function parsePlayersInTeams() {
-
-		$this->database->clearPlaysInTable();
-
-		//Load the list of urls
-		$file_contents = file_get_contents('cache/teams_url_list.cache');
-		if ($file_contents == FALSE) {
-			throw new Exception('Failed to open cache/teams_url_list.cache');
-		}
+	private function parsePlayersInTeams() {
 
 		//Loop over the urls and find the players
-		$url_list = explode("\n", $file_contents);
+		$url_list = array_values($this->teams);
 		foreach ($url_list as $url) {
 
 			$html = $this->loadPage($url);
@@ -154,6 +144,10 @@ class Parser {
 			$teamName = $html->find('#subheading h1', 0)->plaintext;
 			$teamId = $this->database->addTeam($teamName, $countryId);
 
+			//Remove all players from this team
+			$this->database->removePlayersFromTeam($teamId);
+
+			//Add the current players to the team
 			$table = $html->find('.squad-container table', 0);
 			foreach ($table->children() as $table_row) {
 
