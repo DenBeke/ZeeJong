@@ -90,7 +90,7 @@ class Parser {
 	/**
 	Parse the competitions to fill in new data.
 	*/
-	public function parse($ttl = 1800) {
+	public function parse($ttl = -1) {
 
 		$this->ttl = $ttl;
 
@@ -223,7 +223,7 @@ class Parser {
 		//Download the page
 		$try = 0;
 		$page = FALSE;
-		while ($page == FALSE && $try < 4) {
+		while ($page == FALSE && $try < 10) {
 			$page = file_get_contents($url);
 			$try += 1;
 
@@ -466,7 +466,7 @@ class Parser {
 		$tournamentId = $this->database->addTournament($this->tournament, $competitionId);
 
 		//Loop over all matches
-		$rows = $html->find('.matches tr');
+		$rows = $html->find('.table-container .matches tr');
 		foreach ($rows as $row) {
 
 			//Some results are not matches and should be skipped
@@ -490,9 +490,13 @@ class Parser {
 				$countryIdTeamA = $this->findTeamCountry('http://int.soccerway.com' . $teamA->href);
 				$countryIdTeamB = $this->findTeamCountry('http://int.soccerway.com' . $teamB->href);
 
+				//The names of the teams are truncated, find the full names
+				$teamA = $this->findFullTeamName('http://int.soccerway.com' . $teamA->href);
+				$teamB = $this->findFullTeamName('http://int.soccerway.com' . $teamB->href);
+
 				//Add the teams to the database
-				$teamIdA = $this->database->addTeam(trim($teamA->plaintext), $countryIdTeamA);
-				$teamIdB = $this->database->addTeam(trim($teamB->plaintext), $countryIdTeamB);
+				$teamIdA = $this->database->addTeam($teamA, $countryIdTeamA);
+				$teamIdB = $this->database->addTeam($teamB, $countryIdTeamB);
 
 				//Find out if the match has been played already or not
 				$colonPos = strpos($scoreOrTime, ' : ');
@@ -636,6 +640,23 @@ class Parser {
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 
 		return $coachId;
+	}
+
+
+	/**
+	Look for the full name of the team
+
+	@return name of the team
+	*/
+	private function findFullTeamName($url) {
+
+		$html = $this->loadPage($url);
+
+		$name = $html->find('#subheading h1', 0)->plaintext;
+
+		$html->clear();
+
+		return $name;
 	}
 
 
