@@ -12,43 +12,166 @@ Created: February 2014
 	<h2 id="title-match"><?php echo $this->match->getTeamA()->getName() ?> - <?php echo $this->match->getTeamB()->getName() ?></h2>
 	
 	
-	<h3><?php echo $this->match->getTeamA()->getName() ?></h3>
-	
-	<ul class="team-a">
-	
-		<?php
-		foreach($this->match->getPlayersTeamA() as $player) { 
-		?>
-	
-		<li>
-			<a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a>
-		</li>
-	
-		<?php
-		} //end foreach
-		?>
-	
-	</ul>
 	
 	
+	<!--<div id="field">
+		
+			<table>
+			  <tbody><tr>
+			    <td rowspan="4"><div class="player">1</div></td>
+			    <td><div class="player">5</div></td>
+			    <td><div class="player">8</div></td>
+			    <td><div class="player">11</div></td>
+			  </tr>
+			  <tr>
+			    <td><div class="player">4</div></td>
+			    <td rowspan="2"><div class="player">8</div></td>
+			    <td rowspan="2"><div class="player">9</div></td>
+			  </tr>
+			  <tr>
+			    <td><div class="player">3</div></td>
+			  </tr>
+			  <tr>
+			    <td><div class="player">2</div></td>
+			    <td><div class="player">6</div></td>
+			    <td><div class="player">7</div></td>
+			  </tr>
+			</tbody></table>
+		
+	</div>-->
 	
 	
-	<h3><?php echo $this->match->getTeamB()->getName() ?></h3>
 	
-	<ul class="team-a">
+	<!-- Information panel -->
+	<div class="col-md-4">
 	
-		<?php
-		foreach($this->match->getPlayersTeamB() as $player) { 
-		?>
+		<div class="panel panel-default">
+		
+		
+			<div class="panel-heading">
+		
+				<h3 class="panel-title">Information</h3>
+				
+				
+			</div>
+			
+			
+			
+			<div class="panel-body">
+				
+				<ul class="list-group">
+				
+				
+					<li class="list-group-item">
+						Competition: <?php echo $this->match->getTournament()->getCompetition()->getName(); ?>
+					</li>
+				
+					<li class="list-group-item">Date: <?php echo date('d-m-Y', $this->match->getDate()); ?></li>
+					
+					<li class="list-group-item">
+				    	<span class="badge">14</span>
+				    	Cards
+				  	</li>
+				  	
+				  	<li class="list-group-item">
+				  		Referee: <a href="<?php echo SITE_URL . 'referee/' . $this->match->getReferee()->getId(); ?>"><?php echo $this->match->getReferee()->getName(); ?></a>
+				  	</li>
+				</ul>
+				
+				
+			</div>
+		
+		</div>
+		
+	</div>
 	
-		<li>
-			<a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a>
-		</li>
 	
-		<?php
-		} //end foreach
-		?>
 	
-	</ul>
+	
+	
+	<!-- Team A -->
+	<div class="col-md-4">
+		<div class="panel panel-default">
+		
+		
+			<div class="panel-heading">
+		
+				<h3 class="panel-title"><?php echo $this->match->getTeamA()->getName() ?></h3>
+				
+				
+			</div>
+			
+			
+			
+			<div class="panel-body">
+				
+				<ul class="team-a">
+				
+					<?php
+					foreach($this->match->getPlayersTeamA() as $player) { 
+					?>
+				
+					<li>
+						<a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a>
+					</li>
+				
+					<?php
+					} //end foreach
+					?>
+				
+				</ul>
+				
+				
+			</div>
+		
+		</div>
+		
+	</div>
+	
+	
+	
+	
+	
+	<!-- Team B -->
+	<div class="col-md-4">
+	
+		<div class="panel panel-default">
+		
+		
+			<div class="panel-heading">
+		
+				<h3 class="panel-title"><?php echo $this->match->getTeamB()->getName() ?></h3>
+				
+				
+			</div>
+			
+			
+			
+			<div class="panel-body">
+				
+				<ul class="team-b">
+				
+					<?php
+					foreach($this->match->getPlayersTeamB() as $player) { 
+					?>
+				
+					<li>
+						<a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a>
+					</li>
+				
+					<?php
+					} //end foreach
+					?>
+				
+				</ul>
+				
+				
+			</div>
+		
+		</div>
+		
+	</div>
+	
+	
 
 </div>

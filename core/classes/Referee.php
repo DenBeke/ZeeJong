@@ -79,6 +79,17 @@ class Referee {
 	public function getCountryId() {
 		return $this->countryId;
 	}
+	
+	
+	
+	public function getTotalMatches() {
+	}
+	
+	
+	public function getTotalCards() {
+		
+	}
+	
 
 	/**
 	String function

@@ -23,3 +23,59 @@ table a {
 .breadcrumb {
 	margin-top: 20px;
 }
+
+
+
+
+
+/* Field *
+*********/
+
+/*#field {
+	background-image: url('../img/field.svg');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	width: 100%;
+	height: 700px;
+}
+
+
+
+table {
+	height: 600px;
+	padding-left: 50px;
+}
+
+
+table td {
+	text-align: center;
+	vertical-align: middle;
+	width: 100px;
+}
+
+
+table .player {
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	background-color: #fff;
+	border-radius: 5px;
+	box-shadow: 0px 3px 10px #333;
+}
+
+table tr:nth-child(2) td:nth-child(2) .player,
+table tr:nth-child(2) td:nth-child(3) .player {
+	margin-left: 40px;
+}
+
+table tr:nth-child(1) td:nth-child(3),
+table tr:nth-child(1) td:nth-child(4) {
+	vertical-align: bottom;
+}
+
+table tr:nth-child(4) td:nth-child(2),
+table tr:nth-child(4) td:nth-child(3) {
+	vertical-align: top;
+}*/
