@@ -43,7 +43,7 @@ Created: February 2014
 	
 	
 	<!-- Information panel -->
-	<div class="col-md-12">
+	<div class="col-md-4">
 	
 		<div class="panel panel-default">
 		
@@ -90,7 +90,7 @@ Created: February 2014
 	
 	
 	<!-- Team A -->
-	<div class="col-md-6">
+	<div class="col-md-4">
 		<div class="panel panel-default">
 		
 		
@@ -111,7 +111,7 @@ Created: February 2014
 				    <tbody>
 					    <tr>
 					    	<th>#</th>
-					    	<th colspan="2">Name</th>
+					    	<th>Name</th>
 					    </tr>
 					    
 					    
@@ -121,8 +121,7 @@ Created: February 2014
 					    
 					     <tr>
 					     	<td><?php echo $player->number; ?></td>
-					     	<td><?php echo $player->getFirstName(); ?></td>
-					     	<td><?php echo $player->getLastName(); ?></td>
+					     	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
 					     </tr>
 					     
 					     <?php
@@ -138,7 +137,9 @@ Created: February 2014
 			
 			
 			<div class="panel-footer">
-				Coach: <?php echo $this->match->getTeamA()->getCoachForMatch($this->match->getId())->getName(); ?>
+				Coach: <a href="<?php echo SITE_URL . 'coach/' . $this->match->getTeamA()->getCoachForMatch($this->match->getId())->getId(); ?>">
+					<?php echo $this->match->getTeamA()->getCoachForMatch($this->match->getId())->getName(); ?>
+				</a>
 			</div>
 			
 		
@@ -151,7 +152,7 @@ Created: February 2014
 	
 	
 	<!-- Team B -->
-	<div class="col-md-6">
+	<div class="col-md-4">
 	
 		<div class="panel panel-default">
 		
@@ -172,7 +173,7 @@ Created: February 2014
 				    <tbody>
 					    <tr>
 					    	<th>#</th>
-					    	<th colspan="2">Name</th>
+					    	<th>Name</th>
 					    </tr>
 					    
 					    
@@ -182,8 +183,7 @@ Created: February 2014
 					    
 					     <tr>
 					     	<td><?php echo $player->number; ?></td>
-					     	<td><?php echo $player->getFirstName(); ?></td>
-					     	<td><?php echo $player->getLastName(); ?></td>
+					     	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
 					     </tr>
 					     
 					     <?php
@@ -199,7 +199,9 @@ Created: February 2014
 			
 			
 			<div class="panel-footer">
-				Coach: <?php echo $this->match->getTeamB()->getCoachForMatch($this->match->getId())->getName(); ?>
+				Coach: <a href="<?php echo SITE_URL . 'coach/' . $this->match->getTeamB()->getCoachForMatch($this->match->getId())->getId(); ?>">
+					<?php echo $this->match->getTeamB()->getCoachForMatch($this->match->getId())->getName(); ?>
+				</a>
 			</div>
 			
 		
