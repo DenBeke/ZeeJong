@@ -79,6 +79,24 @@ class Coach {
 		return $this->country;
 	}
 
+
+
+	public function getTotalMatches() {
+		
+	}
+	
+	
+	public function getTotalMatchesWon() {
+		
+	}
+	
+	
+	public function getAllCoachedTeams() {
+	
+	}
+
+
+
 	/**
 	String function
 	@return string
