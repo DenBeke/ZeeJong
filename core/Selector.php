@@ -83,7 +83,15 @@ class Selector {
 		$sql = 'SELECT ';
 
 		if($this->count) {
-			$sql .= 'COUNT(*)';
+			$sql .= 'COUNT(';
+			foreach($this->select as $column) {
+				$sql .=  $column;
+
+				if(end($this->select) !== $column) {
+					$sql .= ',';
+				}
+			}
+			$sql .= ')';
 		} else {
 			foreach($this->select as $column) {
 				$sql .=  $column;

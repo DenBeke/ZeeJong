@@ -568,46 +568,17 @@ class Database {
 	 @exception when no country found with the given name
 	 */
 	public function getCountry($name) {
-		//Query
-		$query = "
-			SELECT * FROM Country
-			WHERE name = ?;
-		";
+		$sel = new \Selector('Country');
+		$sel->filter([['name', '=', $name]]);
 
-		//Prepare statement
-		$statement = $this->getStatement($query);
+		$result = $this->select($sel);
+		$countries = $this->resultToCountries($result);
 
-		//Bind parameters
-		if (!$statement -> bind_param('s', $name)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		if(count($countries) != 1) {
+			throw new exception('Could not find country with name ' . $name);
 		}
 
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrup database: multiple countries with the same name');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no country with the given name');
-		}
-
-		//Bind return values
-		$statement -> bind_result($id, $name);
-
-		//Fetch the rows of the return values
-
-		$statement->fetch();
-		
-		return new Country($id, $name);
-
+		return $countries[0];
 	}
 	
 	/**
@@ -619,46 +590,17 @@ class Database {
 	@exception when no country found with the given name
 	*/
 	public function getCountryById($countryId) {
-		//Query
-		$query = "
-			SELECT * FROM Country
-			WHERE id = ?;
-		";
-		
-		//Prepare statement
-		$statement = $this->getStatement($query);
+		$sel = new \Selector('Country');
+		$sel->filter([['id', '=', $countryId]]);
 
-		
-		//Bind parameters
-		if(!$statement->bind_param('i', $countryId)){
-			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Execute statement
-		if (!$statement->execute()) {
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Store the result in the buffer
-		$statement->store_result();
-		
-		$numberOfResults = $statement->num_rows;
-	
-		//Check if the correct number of results are returned from the database
-		if($numberOfResults > 1) {
-			throw new exception('Corrup database: multiple countries with the same name');
-		}
-		else if($numberOfResults < 1) {
-			throw new exception('Error, there is no country with the given name');
+		$result = $this->select($sel);
+		$countries = $this->resultToCountries($result);
+
+		if(count($countries) != 1) {
+			throw new exception('Could not find country with id ' . $id);
 		}
 
-		//Bind return values
-		$statement->bind_result($id, $name);
-		
-		//Fetch the rows of the return values
-		$statement->fetch();
-
-		return new Country($id, $name);
+		return $countries[0];
 	}
 
 	/**
@@ -707,50 +649,17 @@ class Database {
 	 @exception when no competition found with the given id
 	 */
 	public function getCompetitionById($id) {
+		$sel = new \Selector('Competition');
+		$sel->filter([['id', '=', $id]]);
 
-		//Query
-		$query = "
-			SELECT * FROM Competition
-			WHERE id = ?;
-		";
+		$result = $this->select($sel);
+		$competitions = $this->resultToCompetitions($result);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('s', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		if(count($competitions) != 1) {
+			throw new exception('Could not find competition with id ' . $id);
 		}
 
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrup database: multiple competitions with the same id');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no competition with the given id');
-		} else {
-
-			//Bind return values
-			$statement -> bind_result($id, $name);
-
-			//Fetch the rows of the return values
-			while ($statement->fetch()) {
-				
-				//Create new Competition object
-				return new Competition($id, $name, $this);
-			}
-
-		}
-
+		return $competitions[0];
 	}
 
 	/**
@@ -2813,110 +2722,42 @@ class Database {
 	}
 
 	public function getScoreById($id) {
+		$sel = new \Selector('Score');
+		$sel->filter([['id', '=', $id]]);
 
-		//Query
-		$query = "
-			SELECT * FROM `Score`
-			WHERE id = ?;
-		";
-		
-		//Prepare statement
-		$statement = $this->getStatement($query);
-		
-		//Bind parameters
-		if(!$statement->bind_param('i', $id)){
-			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Execute statement
-		if (!$statement->execute()) {		
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		$result = $this->select($sel);
+		$scores = $this->resultToScores($result);
+		if(count($scores) != 1) {
+			throw new exception('Could not find score with id ' . $id);
 		}
 
-		//Store the result in the buffer
-		$statement->store_result();
-		
-
-		$numberOfResults = $statement->num_rows;
-	
-		//Check if the correct number of results are returned from the database
-		if($numberOfResults > 1) {
-			throw new exception('Corrupt database: There are multiple score with the same id');
-		}
-		else if($numberOfResults < 1) {
-			throw new exception('Error, there is no score with the given id');
-		}
-		else {
-
-			//Bind return values
-			$statement->bind_result($id, $teamA, $teamB);
-			
-			//Fetch the rows of the return values
-			while ($statement->fetch()) {
-				
-				//Create new Player object TODO
-				return new Score($id, $teamA, $teamB);
-
-			}
-			
-		}
+		return $scores[0];
 	}	
 
 	public function getTotalNumberOfGoals($playerId) {
+		$sel = new \Selector('Goal');
+		$sel->filter([['playerId', '=', $playerId]]);
+		$sel->count();
 
-		//Query
-		$query = "
-			SELECT * FROM `Goal`
-			WHERE playerId = ?;
-		";
-		
-		//Prepare statement
-		$statement = $this->getStatement($query);
-		
-		//Bind parameters
-		if(!$statement->bind_param('i', $playerId)){
-			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Could not count total goals for player ' . $playerId);
 		}
-		
-		//Execute statement
-		if (!$statement->execute()) {
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Store the result in the buffer
-		$statement->store_result();
-		
 
-		return $statement->num_rows;		
+		return $result[0]['COUNT(*)'];
 	}
 
 	public function getTotalNumberOfMatches($playerId) {
+		$sel = new \Selector('PlaysMatchInTeam');
+		$sel->filter([['playerId', '=', $playerId]]);
+		$sel->count();
 
-
-		//Query
-		$query = "
-			SELECT * FROM `PlaysMatchInTeam`
-			WHERE playerId = ?;
-		";
-		
-		//Prepare statement
-		$statement = $this->getStatement($query);
-		
-		//Bind parameters
-		if(!$statement->bind_param('i', $playerId)){
-			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Could not count total matches for player ' . $playerId);
 		}
-		
-		//Execute statement
-		if (!$statement->execute()) {
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Store the result in the buffer
-		$statement->store_result();
-		
 
-		return $statement->num_rows;		
+		return $result[0]['COUNT(*)'];		
 	}
 
 	public function getTotalNumberOfCards($playerId) {
@@ -3116,6 +2957,28 @@ class Database {
 
 
 		return $players;
+	}
+
+	private function resultToScores($result) {
+		$scores = array();
+
+		foreach($result as $score) {
+			array_push($scores, new Score($score['id'], $score['teamA'], $score['teamB']));
+		}
+
+
+		return $scores;
+	}
+
+	private function resultToCountries($result) {
+		$countries = array();
+
+		foreach($result as $country) {
+			array_push($countries, new Country($country['id'], $country['name']));
+		}
+
+
+		return $countries;
 	}
 	
 	/**
