@@ -126,43 +126,13 @@ class Database {
 	 @return the username of the user
 	 */
 	public function getUserName($id) {
-		//Query
-		$query = "
-			SELECT username FROM User
-			WHERE id = ?;
-		";
+		$sel = new \Selector('User');
+		$sel->filter([['id', '=', $id]]);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('i', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple users with same id');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no user with the given id');
-		}
-
-		//Bind return values
-		$statement -> bind_result($username);
-		//Fetch the rows of the return values
-		$statement -> fetch();
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
 		
-		return $username;
+		return $result[0]['username'];
 	}
 
 	/**
@@ -171,43 +141,13 @@ class Database {
 	 @return the hashed password of the user
 	 */
 	public function getUserPasswordHash($id) {
-		//Query
-		$query = "
-			SELECT password FROM User
-			WHERE id = ?;
-		";
+		$sel = new \Selector('User');
+		$sel->filter([['id', '=', $id]]);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('i', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple users with same id');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no user with the given id');
-		}
-
-		//Bind return values
-		$statement -> bind_result($password);
-		//Fetch the rows of the return values
-		$statement -> fetch();
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
 		
-		return $password;
+		return $result[0]['password'];
 	}
 
 	/**
@@ -216,43 +156,13 @@ class Database {
 	 @return the salt password of the user
 	 */
 	public function getUserPasswordSalt($id) {
-		//Query
-		$query = "
-			SELECT salt FROM User
-			WHERE id = ?;
-		";
+		$sel = new \Selector('User');
+		$sel->filter([['id', '=', $id]]);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('i', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple users with same id');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no user with the given id');
-		}
-
-		//Bind return values
-		$statement -> bind_result($password);
-		//Fetch the rows of the return values
-		$statement -> fetch();
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
 		
-		return $password;
+		return $result[0]['salt'];
 	}
 
 	/**
@@ -261,43 +171,13 @@ class Database {
 	 @return the salt password of the user
 	 */
 	public function getUserMail($id) {
-		//Query
-		$query = "
-			SELECT emailAddress FROM User
-			WHERE id = ?;
-		";
+		$sel = new \Selector('User');
+		$sel->filter([['id', '=', $id]]);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('i', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple users with same id');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no user with the given id');
-		}
-
-		//Bind return values
-		$statement -> bind_result($email);
-		//Fetch the rows of the return values
-		$statement -> fetch();
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
 		
-		return $email;
+		return $result[0]['emailAddress'];
 	}
 
 	/**
@@ -410,38 +290,12 @@ class Database {
 	 @return boolean
 	 */
 	public function doesUserNameExist($username) {
-		//Query
-		$query = "
-			SELECT id FROM User
-			WHERE username = ?;
-		";
+		$sel = new \Selector('User');
+		$sel->filter([['username', '=', $username]]);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('s', $username)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple users with same username' . " '$username'");
-		} else if ($numberOfResults < 1) {
-			return false;
-		} else {
-			return true;
-		}
+		$result = $this->select($sel);
+		
+		return count($result) == 1;
 	}
 
 	/**
@@ -452,87 +306,30 @@ class Database {
 	 @return boolean
 	 */
 	public function doesUserExist($id) {
-		//Query
-		$query = "
-			SELECT username FROM User
-			WHERE id = ?;
-		";
+		$sel = new \Selector('User');
+		$sel->filter([['id', '=', $id]]);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('s', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple users with same username');
-		} else if ($numberOfResults < 1) {
-			return false;
-		} else {
-			return true;
-		}
+		$result = $this->select($sel);
+		
+		return count($result) == 1;
 	}
 
 	/**
 	 Get the user with a given username
 
 	 @param username
-	 @return a User object or a user object with id -1 if no user with given username
+	 @return a User object
 
 	 @exception when no user found with the given name
 	 */
 	public function getUser($username) {
-		//Query
-		$query = "
-			SELECT id FROM User
-			WHERE username = ?;
-		";
+		$sel = new \Selector('User');
+		$sel->filter([['username', '=', $username]]);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
 
-		//Bind parameters
-		if (!$statement -> bind_param('s', $username)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple users with same username');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no user with the given id');
-		}
-
-		//Bind return values
-		$statement -> bind_result($id);
-
-		//Fetch the rows of the return values
-		$statement -> fetch();	
-
-		return new User($id);
+		return $this->resultToUsers($result)[0];
 	}
 
 	/**
@@ -2979,6 +2776,17 @@ class Database {
 
 
 		return $countries;
+	}
+
+	private function resultToUsers($result) {
+		$users = array();
+
+		foreach($result as $user) {
+			array_push($users, new User($user['id']));
+		}
+
+
+		return $users;
 	}
 	
 	/**

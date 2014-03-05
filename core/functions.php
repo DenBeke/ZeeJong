@@ -94,8 +94,25 @@ function user() {
 	else {
 		throw new exception('User is not logged in, or the user does not exist');
 	}
-
 }
+
+function requireMinCount($array, $min) {
+	if(count($array) < $min) {
+		throw new exception('Array does not have the required minimum length of ' . $min);
+	}
+}
+
+function requireMaxCount($array, $max) {
+	if(count($array) > $max) {
+		throw new exception('Array length is bigger than the maximum ' . $max);
+	}
+}
+
+function requireEqCount($array, $eq) {
+	if(count($array) != $eq) {
+		throw new exception('Array length is not ' . $eq);
+	}
+} 
 
 
 
