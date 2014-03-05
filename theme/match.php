@@ -123,7 +123,6 @@ Created: February 2014
 					    <?php
 					    foreach($this->match->getPlayersTeamA() as $player) { 
 					    ?>
-					    
 					     <tr>
 					     	<td><?php echo $player->number; ?></td>
 					     	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
