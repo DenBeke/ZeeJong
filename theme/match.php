@@ -43,7 +43,7 @@ Created: February 2014
 	
 	
 	<!-- Information panel -->
-	<div class="col-md-4">
+	<div class="col-md-12">
 	
 		<div class="panel panel-default">
 		
@@ -90,7 +90,7 @@ Created: February 2014
 	
 	
 	<!-- Team A -->
-	<div class="col-md-4">
+	<div class="col-md-6">
 		<div class="panel panel-default">
 		
 		
@@ -104,25 +104,43 @@ Created: February 2014
 			
 			
 			<div class="panel-body">
-				
-				<ul class="team-a">
-				
-					<?php
-					foreach($this->match->getPlayersTeamA() as $player) { 
-					?>
-				
-					<li>
-						<a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a>
-					</li>
-				
-					<?php
-					} //end foreach
-					?>
-				
-				</ul>
-				
+			
+			
+				<table class="table table-striped">
+				         
+				    <tbody>
+					    <tr>
+					    	<th>#</th>
+					    	<th colspan="2">Name</th>
+					    </tr>
+					    
+					    
+					    <?php
+					    foreach($this->match->getPlayersTeamA() as $player) { 
+					    ?>
+					    
+					     <tr>
+					     	<td><?php echo $player->number; ?></td>
+					     	<td><?php echo $player->getFirstName(); ?></td>
+					     	<td><?php echo $player->getLastName(); ?></td>
+					     </tr>
+					     
+					     <?php
+					     } //end foreach
+					     ?>
+				             
+					</tbody>
+				</table>
+			
 				
 			</div>
+			
+			
+			
+			<div class="panel-footer">
+				Coach: <?php echo $this->match->getTeamA()->getCoachForMatch($this->match->getId())->getName(); ?>
+			</div>
+			
 		
 		</div>
 		
@@ -133,7 +151,7 @@ Created: February 2014
 	
 	
 	<!-- Team B -->
-	<div class="col-md-4">
+	<div class="col-md-6">
 	
 		<div class="panel panel-default">
 		
@@ -149,24 +167,41 @@ Created: February 2014
 			
 			<div class="panel-body">
 				
-				<ul class="team-b">
-				
-					<?php
-					foreach($this->match->getPlayersTeamB() as $player) { 
-					?>
-				
-					<li>
-						<a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a>
-					</li>
-				
-					<?php
-					} //end foreach
-					?>
-				
-				</ul>
+				<table class="table table-striped">
+				         
+				    <tbody>
+					    <tr>
+					    	<th>#</th>
+					    	<th colspan="2">Name</th>
+					    </tr>
+					    
+					    
+					    <?php
+					    foreach($this->match->getPlayersTeamB() as $player) { 
+					    ?>
+					    
+					     <tr>
+					     	<td><?php echo $player->number; ?></td>
+					     	<td><?php echo $player->getFirstName(); ?></td>
+					     	<td><?php echo $player->getLastName(); ?></td>
+					     </tr>
+					     
+					     <?php
+					     } //end foreach
+					     ?>
+				             
+					</tbody>
+				</table>
 				
 				
 			</div>
+			
+			
+			
+			<div class="panel-footer">
+				Coach: <?php echo $this->match->getTeamB()->getCoachForMatch($this->match->getId())->getName(); ?>
+			</div>
+			
 		
 		</div>
 		
