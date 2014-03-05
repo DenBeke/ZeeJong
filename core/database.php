@@ -82,7 +82,6 @@ class Database {
 		$statement = $this->getStatement2($selector->sql());
 		$statement->setFetchMode(PDO::FETCH_ASSOC);
 
-		print_r($selector->values());
 		$statement->execute($selector->values());
 
 		$results = [];
@@ -3236,52 +3235,13 @@ class Database {
 	
 	@return matches
 	*/
-	public function getMatchesInTournament($tournamentId) {
-	
-		//Query
-		$query = "
-			SELECT * FROM `Match`
-			WHERE tournamentId = ?;
-		";
-		
-		//Prepare statement
-		$statement = $this->getStatement($query);
-		
-		//Bind parameters
-		if(!$statement->bind_param('i', $tournamentId)){
-			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Execute statement
-		if (!$statement->execute()) {
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-		
-		//Store the result in the buffer
-		$statement->store_result();
-		
+	public function getMatchesInTournament($tournamentId) {	
+		$sel = new \Selector('Match');
+		$sel->filter([['tournamentId', '=', $tournamentId]]);
 
-		$numberOfResults = $statement->num_rows;
-		
-		if($numberOfResults < 1) {
-			throw new exception('Error, there are no Matches in this Tournament');
-		}	
-		else {
-			//Bind return values
-			$statement->bind_result($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId);
-			
-			$matches = array();
+		$result = $this->select($sel);
 
-			//Fetch the rows of the return values
-			while ($statement->fetch()) {
-				
-				//Create new Tournament object and add it to the array
-				array_push($matches, new Match($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId, $this));
-				
-			}
-
-			return $matches;
-		}
+		return $this->resultToMatches($result);
 	}
 	
 	private function resultToCompetitions($result) {
@@ -3302,6 +3262,20 @@ class Database {
 		}
 
 		return $tournaments;
+	}
+
+	private function resultToMatches($result) {
+		$matches = array();
+
+		foreach($result as $match) {
+			array_push($matches, new Match($match['id'], $match['teamA'], $match['teamB'],
+						$match['tournamentId'], $match['refereeId'], $match['date'], $match['scoreId'],
+						$this->link));
+		}
+
+
+
+		return $matches;
 	}
 	
 	/**
