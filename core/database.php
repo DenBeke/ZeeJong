@@ -2287,50 +2287,16 @@ class Database {
 	 @exception when no competition found with the given id
 	 */
 	public function getMatchById($id) {
+		$sel = new \Selector('Match');
+		$sel->filter([['id', '=', $id]]);
 
-		//Query
-		$query = "
-			SELECT * FROM `Match`
-			WHERE id = ?;
-		";
-
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('s', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		$result = $this->select($sel);
+		$matches = $this->resultToMatches($result);
+		if(count($matches) != 1) {
+			throw new exception('Could not find match with id ' . $id);
 		}
 
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrup database: multiple matches with the same id');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no match with the given id');
-		} else {
-
-			//Bind return values
-			$statement->bind_result($id, $teamAId, $teamBId, $tournamentId, $refereeId, $date, $scoreId);
-			
-			//Fetch the rows of the return values
-			while ($statement->fetch()) {
-				
-				//Create new Match object TODO
-				return new Match($id, $teamAId, $teamBId, $tournamentId, $refereeId, $date, $scoreId, $this);
-			}
-
-		}		
-
+		return $matches[0];
 	}
 
 	/**
@@ -2484,51 +2450,16 @@ class Database {
 	
 	
 	public function getTeamInMatch($teamId, $matchId) {
-	
-			//Query
-			$query = "
-				SELECT * FROM `PlaysMatchInTeam`
-				WHERE teamId = ? AND
-				matchId = ?;
-			";
-	
-			//Prepare statement
-			$statement = $this->getStatement($query);
-	
-			//Bind parameters
-			if (!$statement -> bind_param('ii', $teamId, $matchId)) {
-				throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-			}
-	
-			//Execute statement
-			if (!$statement -> execute()) {
-				throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-			}
-	
-			//Store the result in the buffer
-			$statement -> store_result();
-	
-	
-			//Bind return values
-			$statement->bind_result($id, $playerId, $number, $teamId, $matchId);
-	
-	
-			$out = array();
-	
-			//Fetch the rows of the return values
-			while ($statement -> fetch()) {
-	
-				//Create new Player object
-				$player = $this->getPlayerById($playerId);
-				$player->number = $number;
-				$out[] = $player;
-				
-				
-			}
-			
-			
-			return $out;
-			
+			$sel = new \Selector('PlaysMatchInTeam');
+			$sel->filter([['teamId', '=', $teamId]]);
+			$sel->filter([['matchId', '=', $matchId]]);
+			$sel->join('Player', 'playerId', 'id');
+			$sel->select('Player.*');
+
+			$result = $this->select($sel);
+			$players = $this->resultToPlayers($result);
+
+			return $players;		
 		}
 	
 	
