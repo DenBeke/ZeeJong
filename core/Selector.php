@@ -96,6 +96,11 @@ class Selector {
 		
 		$sql .= ' FROM ' . $this->table;
 
+		if(count($this->joins) > 0) {
+			$sql .= ' INNER JOIN ' . $this->joins[0][0] . ' ON ';
+			$sql .= $this->table . '.' . $this->joins[0][1] . '=';
+			$sql .= $this->joins[0][0] . '.' . $this->joins[0][2];
+		}
 
 		if(count($this->filters) > 0) {
 			$sql .= ' WHERE';
@@ -124,12 +129,6 @@ class Selector {
 			if(end($this->filters) !== $filter) {
 				$sql .= ' AND';
 			}
-		}
-
-		if(count($this->joins) > 0) {
-			$sql .= ' INNER JOIN ' . $this->joins[0][0] . ' ON ';
-			$sql .= $this->table . '.' . $this->joins[0][1] . '=';
-			$sql .= $this->joins[0][0] . '.' . $this->joins[0][2];
 		}
 
 		if(count($this->orderByColumns) > 0) {

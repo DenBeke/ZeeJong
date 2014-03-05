@@ -78,7 +78,9 @@ class Database {
 	}
 
 	public function select($selector) {
-		echo "<pre>" . $selector->sql() .  "</pre>";
+		//echo "<pre>";
+		//print_r($selector->sql());
+		//echo "</pre>";
 		$statement = $this->getStatement2($selector->sql());
 		$statement->setFetchMode(PDO::FETCH_ASSOC);
 
@@ -1071,52 +1073,16 @@ class Database {
 	 @exception when no competition found with the given id
 	 */
 	public function getTournamentById($id) {
+		$sel = new \Selector('Tournament');
+		$sel->filter([['id', '=', $id]]);
 
-		//Query
-		$query = "
-			SELECT * FROM Tournament
-			WHERE id = ?;
-		";
-
-		//Prepare statement
-								$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('s', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		$result = $this->select($sel);
+		$tournaments = $this->resultToTournaments($result);
+		if(count($tournaments) != 1) {
+			throw new exception('Could not find tournament with id ' . $id);
 		}
 
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrup database: multiple tournaments with the same id');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no tournament with the given id');
-		} else {
-
-			//Bind return values
-			$statement->bind_result($id, $name, $competitionId);
-			
-			//Fetch the rows of the return values
-			while ($statement -> fetch()) {
-
-				//Create new Competition object
-				return new Tournament($id, $name, $competitionId, $this);
-
-			}
-
-		}
-
-
+		return $tournaments[0];
 	}
 
 	/**
@@ -1287,46 +1253,17 @@ class Database {
 	 @exception when no referee found with the given id
 	 */
 	public function getRefereeById($id) {
-		//Query
-		$query = "
-			SELECT * FROM Referee
-			WHERE id = ?;
-		";
+		$sel = new \Selector('Referee');
+		$sel->filter([['id', '=', $id]]);
 
-		//Prepare statement
-								$statement = $this->getStatement($query);
+		$result = $this->select($sel);
+		$referees = $this->resultToReferees($result);
 
-		//Bind parameters
-		if (!$statement -> bind_param('i', $id)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		if(count($referees) != 1) {
+			throw new exception('Could not find referee with id ' . $id);
 		}
 
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Store the result in the buffer
-		$statement -> store_result();
-
-		$numberOfResults = $statement -> num_rows;
-
-		//Check if the correct number of results are returned from the database
-		if ($numberOfResults > 1) {
-			throw new exception('Corrupt database: multiple referees with the same id');
-		} else if ($numberOfResults < 1) {
-			throw new exception('Error, there is no referee with the given id');
-		}
-
-		//Bind return values
-		$statement -> bind_result($id, $firstName, $lastName, $countryId);
-
-		//Fetch the rows of the return values
-		$statement -> fetch();
-	
-
-		//Create new Player object TODO
-		return new Referee($id, $firstName, $lastName, $countryId, $this);
+		return $referees[0];
 	}
 
 	/**
@@ -3081,50 +3018,20 @@ class Database {
 
 
 
-	public function getCoachForTeamAndMatch($teamId, $matchId) {
-		
-			//Query
-			$query = "
-				SELECT * FROM `Coaches`
-				WHERE teamId = ?
-				AND matchId = ?;
-			";
-			
-			//Prepare statement
-			$statement = $this->getStatement($query);
-			
-			//Bind parameters
-			if(!$statement->bind_param('ii', $teamId, $matchId)){
-				throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+	public function getCoachForTeamAndMatch($teamId, $matchId) {		
+			$sel = new \Selector('Coaches');
+			$sel->filter([['teamId', '=', $teamId]]);
+			$sel->filter([['matchId', '=', $matchId]]);
+			$sel->join('Coach', 'coachId', 'id');
+			$sel->select(['Coach.*']);
+
+			$result = $this->select($sel);
+			$coaches = $this->resultToCoaches($result);
+			if(count($coaches) != 1) {
+				throw new exception('Could not find coach for team ' . $teamId . ' and match ' . $matchId);
 			}
-			
-			//Execute statement
-			if (!$statement->execute()) {
-				throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-			}
-			
-			//Store the result in the buffer
-			$statement->store_result();
-			
-	
-			$numberOfResults = $statement->num_rows;
-		
-			//Check if the correct number of results are returned from the database
-			if($numberOfResults > 1) {
-				throw new exception('Corrupt database: There are multiple coaches coaching the same team');
-			}
-			else if($numberOfResults < 1) {
-				throw new exception('Error, there is no coach coaching this team');
-			}
-			else {
-	
-				//Bind return values
-				$statement->bind_result($id, $coachId, $teamId, $matchId);
-	
-				while ($statement->fetch()) {
-					return $this->getCoachById($coachId);
-				}
-			}
+
+			return $coaches[0];			
 		}
 
 
@@ -3208,7 +3115,7 @@ class Database {
 		$competitions = array();
 
 		foreach($result as $competition) {
-			array_push($competitions, new Competition($competition['id'], $competition['name'], $this->link));
+			array_push($competitions, new Competition($competition['id'], $competition['name'], $this));
 		}
 
 		return $competitions;
@@ -3218,7 +3125,7 @@ class Database {
 		$tournaments = array();
 
 		foreach($result as $tournament) {
-			array_push($tournaments, new Tournament($tournament['id'], $tournament['name'], $tournament['competitionId'], $this->link));
+			array_push($tournaments, new Tournament($tournament['id'], $tournament['name'], $tournament['competitionId'], $this));
 		}
 
 		return $tournaments;
@@ -3228,10 +3135,20 @@ class Database {
 		$teams = array();
 
 		foreach($result as $team) {
-			array_push($teams, new Team($team['id'], $team['name'], $team['country'], $this->link));
+			array_push($teams, new Team($team['id'], $team['name'], $team['country'], $this));
 		}
 
 		return $teams;
+	}
+
+	private function resultToReferees($result) {
+		$referees = array();
+
+		foreach($result as $referee) {
+			array_push($referees, new Referee($referee['id'], $referee['firstname'], $referee['lastname'], $referee['countryId'], $this));
+		}
+
+		return $referees;
 	}
 
 	private function resultToMatches($result) {
@@ -3244,8 +3161,30 @@ class Database {
 		}
 
 
-
 		return $matches;
+	}
+
+	private function resultToCoaches($result) {
+		$coaches = array();
+
+		foreach($result as $coach) {
+			array_push($coaches, new Coach($coach['id'], $coach['firstname'], $coach['lastname'], $coach['country'], $this));
+		}
+
+
+		return $coaches;
+	}
+
+	private function resultToPlayers($result) {
+		$players = array();
+
+		foreach($result as $player) {
+			array_push($players, new Player($player['id'], $player['firstname'], $player['lastname'], $player['country'],
+											$player['dateOfBirth'], $player['height'], $player['weight'], $this));
+		}
+
+
+		return $players;
 	}
 	
 	/**

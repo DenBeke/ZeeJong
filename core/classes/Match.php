@@ -86,7 +86,11 @@ class Match {
 
 	
 	public function getReferee() {
-		return $this->db->getRefereeById($this->refereeId);
+		try {
+			return $this->db->getRefereeById($this->refereeId);
+		}	catch (exception $e) {
+			return false;
+		}
 	}
 	
 	

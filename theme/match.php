@@ -74,7 +74,12 @@ Created: February 2014
 				  	</li>
 				  	
 				  	<li class="list-group-item">
-				  		Referee: <a href="<?php echo SITE_URL . 'referee/' . $this->match->getReferee()->getId(); ?>"><?php echo $this->match->getReferee()->getName(); ?></a>
+						Referee:
+						<?php if($referee = $this->match->getReferee()) { ?>
+							<a href="<?php echo SITE_URL . 'referee/' . $this->match->getReferee()->getId(); ?>"><?php echo $this->match->getReferee()->getName(); ?></a>
+						<?php } else { ?>
+							Not found
+						<?php } ?>
 				  	</li>
 				</ul>
 				
@@ -137,9 +142,12 @@ Created: February 2014
 			
 			
 			<div class="panel-footer">
-				Coach: <a href="<?php echo SITE_URL . 'coach/' . $this->match->getTeamA()->getCoachForMatch($this->match->getId())->getId(); ?>">
-					<?php echo $this->match->getTeamA()->getCoachForMatch($this->match->getId())->getName(); ?>
-				</a>
+					Coach:
+					<?php if($coach = $this->match->getTeamA()->getCoachForMatch($this->match->getId())) { ?>
+						<a href="<?php echo SITE_URL . 'coach/' . $coach->getId(); ?>"><?php echo $coach->getName(); ?></a>
+					<?php } else { ?>
+						Not found
+					<?php } ?>
 			</div>
 			
 		
@@ -199,9 +207,12 @@ Created: February 2014
 			
 			
 			<div class="panel-footer">
-				Coach: <a href="<?php echo SITE_URL . 'coach/' . $this->match->getTeamB()->getCoachForMatch($this->match->getId())->getId(); ?>">
-					<?php echo $this->match->getTeamB()->getCoachForMatch($this->match->getId())->getName(); ?>
-				</a>
+					Coach:
+					<?php if($coach = $this->match->getTeamB()->getCoachForMatch($this->match->getId())) { ?>
+						<a href="<?php echo SITE_URL . 'coach/' . $coach->getId(); ?>"><?php echo $coach->getName(); ?></a>
+					<?php } else { ?>
+						Not found
+					<?php } ?>
 			</div>
 			
 		
