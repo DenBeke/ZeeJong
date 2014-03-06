@@ -98,7 +98,7 @@ class Database {
 
 	private function getStatement2($query) {
 		$query = trim($query);
-		
+
 		if(!isset($this->statements2[$query])) {
 			if(!($this->statements2[$query] = $this->con->prepare($query))) {
 				unset($this->statements2[$query]);
@@ -111,7 +111,7 @@ class Database {
 
 	private function getStatement($query) {
 		$query = trim($query);
-		
+
 		if(!isset($this->statements[$query])) {
 			if(!($this->statements[$query] = $this->link->prepare($query))) {
 				unset($this->statements[$query]);
@@ -133,7 +133,7 @@ class Database {
 
 		$result = $this->select($sel);
 		requireEqCount($result, 1);
-		
+
 		return $result[0]['username'];
 	}
 
@@ -148,7 +148,7 @@ class Database {
 
 		$result = $this->select($sel);
 		requireEqCount($result, 1);
-		
+
 		return $result[0]['password'];
 	}
 
@@ -163,7 +163,7 @@ class Database {
 
 		$result = $this->select($sel);
 		requireEqCount($result, 1);
-		
+
 		return $result[0]['salt'];
 	}
 
@@ -178,7 +178,7 @@ class Database {
 
 		$result = $this->select($sel);
 		requireEqCount($result, 1);
-		
+
 		return $result[0]['emailAddress'];
 	}
 
@@ -188,19 +188,19 @@ class Database {
 	 @param id,emailaddress
 	 */
 	public function setUserMail($id, $emailAddress) {
-		
+
 		//Query
 		$query = "
 			UPDATE User
 			SET emailAddress = ?
 			WHERE id = ?;
 		";
-		
+
 		// Test if user exists
 		if(!$this->doesUserExist($id)){
 			throw new exception('User with given ID does not exists');
 		}
-		
+
 
 		//Prepare statement
 		$statement = $this->getStatement($query);
@@ -213,28 +213,28 @@ class Database {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
 
-		
+
 	}
-	
+
 	/**
 	 Set the salt of a user with a certain ID
 
 	 @param id,salt
 	 */
 	public function setUserSalt($id, $salt) {
-		
+
 		//Query
 		$query = "
 			UPDATE User
 			SET salt = ?
 			WHERE id = ?;
 		";
-		
+
 		// Test if user exists
 		if(!$this->doesUserExist($id)){
 			throw new exception('User with given ID does not exists');
 		}
-		
+
 
 		//Prepare statement
 		$statement = $this->getStatement($query);
@@ -245,29 +245,29 @@ class Database {
 		//Execute statement
 		if (!$statement -> execute()) {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}		
-		
+		}
+
 	}
-	
+
 	/**
 	 Set the hashed password of a user with a certain ID
 
 	 @param id,hash
 	 */
 	public function setUserHash($id, $hash) {
-		
+
 		//Query
 		$query = "
 			UPDATE User
 			SET password = ?
 			WHERE id = ?;
 		";
-		
+
 		// Test if user exists
 		if(!$this->doesUserExist($id)){
 			throw new exception('User with given ID does not exists');
 		}
-		
+
 
 		//Prepare statement
 		$statement = $this->getStatement($query);
@@ -279,8 +279,8 @@ class Database {
 		if (!$statement -> execute()) {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
-	
-		
+
+
 	}
 
 
@@ -296,7 +296,7 @@ class Database {
 		$sel->filter([['username', '=', $username]]);
 
 		$result = $this->select($sel);
-		
+
 		return count($result) == 1;
 	}
 
@@ -312,7 +312,7 @@ class Database {
 		$sel->filter([['id', '=', $id]]);
 
 		$result = $this->select($sel);
-		
+
 		return count($result) == 1;
 	}
 
@@ -354,7 +354,7 @@ class Database {
 		if (!$statement -> execute()) {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
-		
+
 		return $this -> getUser($username) -> getId();
 	}
 
@@ -379,13 +379,13 @@ class Database {
 
 		return $countries[0];
 	}
-	
+
 	/**
 	Get the country with the given id
-	
+
 	@param id
 	@return country
-	
+
 	@exception when no country found with the given name
 	*/
 	public function getCountryById($countryId) {
@@ -434,7 +434,7 @@ class Database {
 		//Execute statement
 		if (!$statement -> execute()) {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}	
+		}
 
 		return $this -> getCountry($name) -> getId();
 	}
@@ -535,7 +535,7 @@ class Database {
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
 		//TODO Check if this works always...
-		
+
 
 		return $id;
 
@@ -587,7 +587,7 @@ class Database {
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
 		//TODO Check if this works always...
-		
+
 
 		return $id;
 
@@ -691,7 +691,7 @@ class Database {
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
 		//TODO Check if this always works...
-		
+
 
 		return $id;
 
@@ -770,7 +770,7 @@ class Database {
 			return true;
 
 		}
-		
+
 
 	}
 
@@ -834,7 +834,7 @@ class Database {
 
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
-		//TODO Check if this always works...		
+		//TODO Check if this always works...
 
 		return $id;
 	}
@@ -1022,7 +1022,7 @@ class Database {
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
 		//TODO Check if this always works...
-		
+
 
 		return $id;
 	}
@@ -1051,11 +1051,11 @@ class Database {
 
 	/**
 	Get the team with the given id
-	
+
 	@param id
 
 	@return team
-	
+
 	@exception when no team found with the given name and country
 	*/
 	public function getTeamById($id) {
@@ -1244,7 +1244,7 @@ class Database {
 
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
-		//TODO Check if this always works...		
+		//TODO Check if this always works...
 
 		return $id;
 	}
@@ -1275,11 +1275,11 @@ class Database {
 
 	/**
 	Get the goal with the id
-	
+
 	@param id
 
 	@return goal
-	
+
 	@exception when no goal found with the given id
 	*/
 	public function getGoalById($id) {
@@ -1345,7 +1345,7 @@ class Database {
 
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
-		//TODO Check if this always works...		
+		//TODO Check if this always works...
 
 		return $id;
 	}
@@ -1389,7 +1389,7 @@ class Database {
 		if (!$statement -> execute()) {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
-		
+
 	}
 
 
@@ -1475,7 +1475,7 @@ class Database {
 
 		//Keep id of the last inserted row
 		$id = $statement -> insert_id;
-		//TODO Check if this always works...		
+		//TODO Check if this always works...
 
 		return $id;
 	}
@@ -1493,60 +1493,60 @@ class Database {
 
 		return $playsMatchInTeams[0];
 	}
-	
-	
-	
+
+
+
 	public function getTeamInMatch($teamId, $matchId) {
-	
+
 		//Query
 		$query = "
 			SELECT * FROM `PlaysMatchInTeam`
 			WHERE teamId = ? AND
 			matchId = ?;
 		";
-	
+
 		//Prepare statement
 		$statement = $this->getStatement($query);
-	
+
 		//Bind parameters
 		if (!$statement -> bind_param('ii', $teamId, $matchId)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
-	
+
 		//Execute statement
 		if (!$statement -> execute()) {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
-	
+
 		//Store the result in the buffer
 		$statement -> store_result();
-	
-	
+
+
 		//Bind return values
 		$statement->bind_result($id, $playerId, $number, $teamId, $matchId);
-	
-	
+
+
 		$out = array();
-	
+
 		//Fetch the rows of the return values
 		while ($statement -> fetch()) {
-	
+
 			//Create new Player object
 			$player = $this->getPlayerById($playerId);
 			$player->number = $number;
 			$out[] = $player;
-			
-			
+
+
 		}
-		
-		
+
+
 		return $out;
-		
+
 	}
-	
-	
-	
-	
+
+
+
+
 
 	/**
 	 Add a player to a given team
@@ -1593,8 +1593,8 @@ class Database {
 		$id = $statement -> insert_id;
 		//TODO Check if this always works...
 
-		
-		
+
+
 
 		return $id;
 	}
@@ -1674,8 +1674,8 @@ class Database {
 		$id = $statement -> insert_id;
 		//TODO Check if this always works...
 
-		
-		
+
+
 
 		return $id;
 
@@ -1691,10 +1691,10 @@ class Database {
 		$result = $this->select($sel);
 		$cards = $this->resultToCards($result);
 		requireEqCount($cards, 1);
-		
+
 		return $cards[0];
-	}	
-	
+	}
+
 	public function getFoulCardById($id) {
 		$sel = new \Selector('Cards');
 		$sel->filter([['id', '=', $id]]);
@@ -1702,9 +1702,9 @@ class Database {
 		$result = $this->select($sel);
 		$cards = $this->resultToCards($result);
 		requireEqCount($cards, 1);
-		
+
 		return $cards[0];
-	}		
+	}
 
 	/**
 	 Add a new score to the database
@@ -1746,7 +1746,7 @@ class Database {
 		$id = $statement -> insert_id;
 		//TODO Check if this always works...
 
-		
+
 		return $id;
 	}
 
@@ -1799,7 +1799,7 @@ class Database {
 			throw new exception('Could not count total matches for player ' . $playerId);
 		}
 
-		return $result[0]['COUNT(*)'];		
+		return $result[0]['COUNT(*)'];
 	}
 
 	public function getTotalNumberOfCards($playerId) {
@@ -1810,12 +1810,12 @@ class Database {
 		$result = $this->select($sel);
 		requireEqCount($result, 1);
 
-		return $result[0]['COUNT(*)'];	
+		return $result[0]['COUNT(*)'];
 	}
 
 
 
-	public function getCoachForTeamAndMatch($teamId, $matchId) {		
+	public function getCoachForTeamAndMatch($teamId, $matchId) {
 			$sel = new \Selector('Coaches');
 			$sel->filter([['teamId', '=', $teamId]]);
 			$sel->filter([['matchId', '=', $matchId]]);
@@ -1828,7 +1828,7 @@ class Database {
 				throw new exception('Could not find coach for team ' . $teamId . ' and match ' . $matchId);
 			}
 
-			return $coaches[0];			
+			return $coaches[0];
 		}
 
 
@@ -1836,26 +1836,26 @@ class Database {
 
 	/**
 	Returns all tournaments of the competition
-	
+
 	@return tournaments
 	*/
 	public function getTournamentsInCompetition($competitionId) {
 		$sel = new \Selector('Tournament');
 		$sel->filter([['competitionId', '=', $competitionId]]);
-		
+
 
 		$result = $this->select($sel);
-		
+
 
 		return $this->resultToTournaments($result);
-	}		
+	}
 
 	/**
 	Returns all matches of the tournament
-	
+
 	@return matches
 	*/
-	public function getMatchesInTournament($tournamentId) {	
+	public function getMatchesInTournament($tournamentId) {
 		$sel = new \Selector('Match');
 		$sel->filter([['tournamentId', '=', $tournamentId]]);
 
@@ -1863,7 +1863,7 @@ class Database {
 
 		return $this->resultToMatches($result);
 	}
-	
+
 	private function resultToCompetitions($result) {
 		$competitions = array();
 
@@ -2019,24 +2019,24 @@ class Database {
 
 		return $users;
 	}
-	
+
 	/**
 	Returns all competitions
-	
+
 	@return competitions
 	*/
 	public function getAllCompetitions() {
 		$sel = new \Selector('Competition');
 
 		$result = $this->select($sel);
-		
+
 
 		return $this->resultToCompetitions($result);
-	}	
+	}
 
 	/**
 	Returns amount of matches won by player
-	
+
 	@return amount of matches
 	*/
 	public function getTotalMatchesWonByPlayer($playerId) {
@@ -2049,36 +2049,36 @@ class Database {
 			((teamId = `Match`.teamA AND `Score`.teamA > `Score`.teamB) OR
 			 (teamID = `Match`.teamB AND `Score`.teamB > `Score`.teamA))
 		";
-		
+
 		//Prepare statement
 		$statement = $this->getStatement($query);
-		
+
 		//Bind parameters
 		if(!$statement->bind_param('i', $playerId)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
-		
+
 		//Execute statement
 		if (!$statement->execute()) {
 			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
 		}
-		
+
 		//Store the result in the buffer
 		$statement->store_result();
-		
+
 
 		$numberOfResults = $statement->num_rows;
-		
+
 		if($numberOfResults != 1) {
 			throw new exception('Could not count the matches the player has won');
-		}	
+		}
 
 		$statement->bind_result($amount);
-			
+
 		while ($statement->fetch()) {
-				
+
 			return $amount;
-				
+
 		}
 
 		throw new exception('Error while counting the matches the player has won');
