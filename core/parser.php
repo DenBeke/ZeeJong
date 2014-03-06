@@ -505,17 +505,12 @@ class Parser {
 				else {
 
 					try {
-						$matchId = $this->database->getMatch($teamIdA, $teamIdB, null, null, null, $date, $tournamentId);
+						$matchId = $this->database->getMatch($teamIdA, $teamIdB, null, $date, $tournamentId);
 
 						//If no exception gets thrown then the match was already in the database
 						$this->database->removeMatch($matchId);
 					}
 					catch (Exception $e) {
-
-						//Only ignore the exception about the match not being found
-						if ($e->getMessage() != 'Error, there is no match with the given teams, referee, date and tournament') {
-							throw $e;
-						}
 					}
 
 					//Add the match
