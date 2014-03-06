@@ -203,7 +203,7 @@ class Database {
 		
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 		//Bind parameters
 		if (!$statement -> bind_param('si', $emailAddress,$id)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
@@ -237,7 +237,7 @@ class Database {
 		
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 		//Bind parameters
 		if (!$statement -> bind_param('si',$salt, $id)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
@@ -270,7 +270,7 @@ class Database {
 		
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 		//Bind parameters
 		if (!$statement -> bind_param('si',$hash, $id)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
@@ -345,7 +345,7 @@ class Database {
 		$query = "INSERT INTO User (`username`,`salt`,`password`,`emailAddress`) VALUES (?,?,?,?)";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 		//Bind parameters
 		if (!$statement -> bind_param('ssss', $username, $salt, $hashedPassword, $emailAddress)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
@@ -424,7 +424,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $name)) {
@@ -520,7 +520,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('s', $name)) {
@@ -572,7 +572,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('si', $name, $competitionId)) {
@@ -676,7 +676,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
@@ -740,7 +740,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('i', $id)) {
@@ -820,7 +820,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
@@ -1331,7 +1331,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iiiiii', $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId)) {
@@ -1623,7 +1623,7 @@ class Database {
 		";
 
 		//Prepare statement
-								$statement = $this->getStatement($query);
+		$statement = $this->getStatement($query);
 
 		//Bind parameters
 		if (!$statement -> bind_param('iiii', $playerId, $matchId, $color, $time)) {
@@ -1948,7 +1948,7 @@ class Database {
 
 		foreach($result as $pmit) {
 			array_push($playsMatchInTeams, new PlaysMatchInTeam($pmit['id'],
-						$pmit['playerId'], $pmit['teamId'], $pmit['matchId'], 
+						$pmit['playerId'], $pmit['teamId'], $pmit['matchId'],
 						$pmit['number'], $this));
 		}
 
@@ -1992,8 +1992,8 @@ class Database {
 			SELECT COUNT(*) FROM `PlaysMatchInTeam`
 			JOIN `Match` ON `Match`.id = matchId
 			JOIN `Score` ON `Score`.id = scoreId
-			WHERE playerId = ? AND 
-			((teamId = `Match`.teamA AND `Score`.teamA > `Score`.teamB) OR 
+			WHERE playerId = ? AND
+			((teamId = `Match`.teamA AND `Score`.teamA > `Score`.teamB) OR
 			 (teamID = `Match`.teamB AND `Score`.teamB > `Score`.teamA))
 		";
 		
