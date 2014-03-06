@@ -1502,8 +1502,9 @@ class Database {
 		$query = "
 			SELECT * FROM `PlaysMatchInTeam`
 			WHERE teamId = ? AND
-			matchId = ?;
-		";
+			matchId = ?
+			GROUP By playerId;
+		"; //TODO FIX THE DUPLICATES IN THE OTHER FUNCTIONS!!!
 	
 		//Prepare statement
 		$statement = $this->getStatement($query);
