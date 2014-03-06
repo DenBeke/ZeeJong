@@ -41,7 +41,7 @@ class Parser {
 		date_default_timezone_set('Europe/Brussels');
 
 		$this->competitions = array(
-/*
+
 				'wk' => array(
 					'name' => 'World Cup',
 					'archiveUrl' => 'http://int.soccerway.com/international/world/world-cup/c72/archive/?ICID=PL_3N_06',
@@ -77,7 +77,7 @@ class Parser {
 					'archiveUrl' => 'http://int.soccerway.com/national/belgium/pro-league/c24/archive/?ICID=PL_3N_07',
 					'url' => 'http://int.soccerway.com/national/belgium/pro-league/20132014/regular-season/r21451/?ICID=HP_POP_11'
 				),
-*/
+
 				'bundesliga' => array(
 					'name' => 'Bundesliga',
 					'archiveUrl' => 'http://int.soccerway.com/national/germany/bundesliga/c9/archive/?ICID=PL_3N_07',
