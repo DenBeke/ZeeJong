@@ -61,11 +61,10 @@ CREATE TABLE IF NOT EXISTS `Match` (
 `tournamentId` int(11) NOT NULL,
 `refereeId` int(11),
 `date` int NOT NULL,
-`scoreId` int(11) NOT NULL,
+`scoreId` int(11),
 PRIMARY KEY (`id`),
 KEY `teamA` (`teamA`,`teamB`),
-KEY `tournamentId` (`tournamentId`,`refereeId`),
-KEY `scoreId` (`scoreId`)
+KEY `tournamentId` (`tournamentId`,`refereeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
 

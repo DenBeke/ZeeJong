@@ -41,7 +41,7 @@ class Parser {
 		date_default_timezone_set('Europe/Brussels');
 
 		$this->competitions = array(
-
+/*
 				'wk' => array(
 					'name' => 'World Cup',
 					'archiveUrl' => 'http://int.soccerway.com/international/world/world-cup/c72/archive/?ICID=PL_3N_06',
@@ -77,7 +77,7 @@ class Parser {
 					'archiveUrl' => 'http://int.soccerway.com/national/belgium/pro-league/c24/archive/?ICID=PL_3N_07',
 					'url' => 'http://int.soccerway.com/national/belgium/pro-league/20132014/regular-season/r21451/?ICID=HP_POP_11'
 				),
-
+*/
 				'bundesliga' => array(
 					'name' => 'Bundesliga',
 					'archiveUrl' => 'http://int.soccerway.com/national/germany/bundesliga/c9/archive/?ICID=PL_3N_07',
@@ -90,7 +90,7 @@ class Parser {
 	/**
 	Parse the competitions to fill in new data.
 	*/
-	public function parse($ttl = -1) {
+	public function parse($ttl = 1000) {
 
 		$this->ttl = $ttl;
 
@@ -133,6 +133,9 @@ class Parser {
 	Find out which players are currently playing for which team.
 	*/
 	private function parsePlayersInTeams() {
+
+		if (sizeof($this->teams) == 0)
+			return;
 
 		//Loop over the urls and find the players
 		$url_list = array_values($this->teams);

@@ -711,7 +711,7 @@ class Database {
 	public function getReferee($firstName, $lastName, $countryId) {
 		$sel = new \Selector('Referee');
 		$sel->filter([['firstname', '=', $firstName]]);
-		$sel->filter([['lastname', '=', $lastname]]);
+		$sel->filter([['lastname', '=', $lastName]]);
 		$sel->filter([['countryId', '=', $countryId]]);
 
 		$result = $this->select($sel);
@@ -853,7 +853,7 @@ class Database {
 	public function getCoach($firstName, $lastName, $countryId) {
 		$sel = new \Selector('Coach');
 		$sel->filter([['firstname', '=', $firstName]]);
-		$sel->filter([['lastname', '=', $lastname]]);
+		$sel->filter([['lastname', '=', $lastName]]);
 		$sel->filter([['country', '=', $countryId]]);
 
 		$result = $this->select($sel);
@@ -1322,7 +1322,9 @@ class Database {
 		}
 
 		//Create a score for this match and save the id of this score
-		$scoreId = $this -> addScore($scoreA, $scoreB);
+		$scoreId = null;
+		if (($scoreA != null) and ($scoreB != null))
+			$scoreId = $this -> addScore($scoreA, $scoreB);
 
 		//Query
 		$query = "
@@ -1561,7 +1563,7 @@ class Database {
 
 		//Check if the match isn't already in the database
 		try {
-			return $this -> getPlaysIn($playerId, $teamId) -> getId();
+			return $this -> getPlaysInId($playerId, $teamId);
 
 		} catch (exception $e) {
 		}
@@ -1599,6 +1601,26 @@ class Database {
 
 		return $id;
 	}
+
+
+	/**
+	 Return the id of a PlaysIn row, or throw an exception
+
+	 @param id of player
+	 @param id of team
+	 */
+	public function getPlaysInId($playerId, $teamId) {
+
+		$sel = new \Selector('PlaysIn');
+		$sel->filter([['playerId', '=', $playerId]]);
+		$sel->filter([['teamId', '=', $teamId]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['id'];
+	}
+
 
 	/**
 	 Clear part of the PlaysIn table, so that it can be refilled with more recent information
@@ -1944,7 +1966,7 @@ class Database {
 		$coacheses = array();
 
 		foreach($result as $coaches) {
-			array_push($coacheses, new Coaches($coaches['id'], $coaches['teamId'], $coaches['coachId']));
+			array_push($coacheses, new Coaches($coaches['id'], $coaches['teamId'], $coaches['coachId'], $coaches['date']));
 		}
 
 
@@ -1990,7 +2012,7 @@ class Database {
 
 		foreach($result as $card) {
 			array_push($cards, new Card($card['id'], $card['playerId'], $card['matchId'], $card['color'],
-										$card['time']));
+										$card['time'], $this));
 		}
 
 
