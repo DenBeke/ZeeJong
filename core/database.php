@@ -1681,6 +1681,13 @@ class Database {
 	 */
 	public function addScore($teamA, $teamB) {
 
+		//Check if the score isn't already in the database
+		try {
+			return $this -> getScore($teamA, $teamB) -> getId();
+
+		} catch (exception $e) {
+		}
+
 		//Query
 		$query = "
 			INSERT INTO Score (teamA, teamB)
@@ -1708,7 +1715,18 @@ class Database {
 		return $id;
 	}
 
-	
+	public function getScore($teamA, $teamB) {
+		$sel = new \Selector('Score');
+		$sel->filter([['teamA', '=', $teamA]]);
+		$sel->filter([['teamB', '=', $teamB]]);
+
+		$result = $this->select($sel);
+		$scores = $this->resultToScores($result);
+
+		requireEqCount($scores, 1);
+
+		return $scores[0];
+	}
 
 	public function getScoreById($id) {
 		$sel = new \Selector('Score');
@@ -1721,7 +1739,7 @@ class Database {
 		}
 
 		return $scores[0];
-	}	
+	}
 
 	public function getTotalNumberOfGoals($playerId) {
 		$sel = new \Selector('Goal');
