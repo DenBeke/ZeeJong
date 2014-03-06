@@ -1480,7 +1480,7 @@ class Database {
 		return $id;
 	}
 
-	public function getPlaysMatchInTeam($playerId, $teamId, $matchId, $number) {
+	public function getPlaysMatchInTeam($playerId, $matchId, $teamId, $number) {
 		$sel = new \Selector('PlaysMatchInTeam');
 		$sel->filter([['playerId', '=', $playerId]]);
 		$sel->filter([['number', '=', $number]]);
