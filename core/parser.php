@@ -483,6 +483,10 @@ class Parser {
 				$teamB = $row->find('.team-b a', 0);
 				$scoreOrTime = $row->find('.score-time', 0)->plaintext;
 
+				//Store the teams
+				$this->teams[$teamA->plaintext] = 'http://int.soccerway.com' . $teamA->href;
+				$this->teams[$teamB->plaintext] = 'http://int.soccerway.com' . $teamB->href;
+
 				//Get the countries from these teams
 				$countryIdTeamA = $this->findTeamCountry('http://int.soccerway.com' . $teamA->href);
 				$countryIdTeamB = $this->findTeamCountry('http://int.soccerway.com' . $teamB->href);
