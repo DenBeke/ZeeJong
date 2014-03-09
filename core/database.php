@@ -1094,10 +1094,12 @@ class Database {
 	 @param date of birth
 	 @param height
 	 @param weight
+	 @param position
+	 @param image url
 
 	 @return id of the newly added player or id of existing
 	 */
-	public function addPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight) {
+	public function addPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position, $imageUrl) {
 
 		//Check if the player isn't already in the database
 		try {
@@ -1108,15 +1110,15 @@ class Database {
 
 		//Query
 		$query = "
-			INSERT INTO Player (firstname, lastname, country, dateOfBirth, height, weight)
-			VALUES (?, ?, ?, ?, ?, ?);
+			INSERT INTO Player (firstname, lastname, country, dateOfBirth, height, weight, position, imageUrl)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 		";
 
 		//Prepare statement
 		$statement = $this->getStatement($query);
 
 		//Bind parameters
-		if (!$statement -> bind_param('ssiiii', $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight)) {
+		if (!$statement -> bind_param('ssiiiiss', $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position, $imageUrl)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
 
@@ -1978,7 +1980,8 @@ class Database {
 
 		foreach($result as $player) {
 			array_push($players, new Player($player['id'], $player['firstname'], $player['lastname'], $player['country'],
-											$player['dateOfBirth'], $player['height'], $player['weight'], $this));
+											$player['dateOfBirth'], $player['height'], $player['weight'], $player['position'],
+											$player['imageUrl'], $this));
 		}
 
 
