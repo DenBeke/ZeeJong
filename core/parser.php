@@ -500,8 +500,8 @@ class Parser {
 				$teamIdB = $this->database->addTeam($teamB, $countryIdTeamB);
 
 				//Find out if the match has been played already or not
-				$colonPos = strpos($scoreOrTime, ' : ');
-				$minusPos = strpos($scoreOrTime, ' - ');
+				$colonPos = strpos(trim($scoreOrTime), ' : ');
+				$minusPos = strpos(trim($scoreOrTime), ' - ');
 				if ($colonPos == $minusPos) {
 					throw new Exception('Failed to parse time or score of match');
 				}
@@ -566,8 +566,10 @@ class Parser {
 		$dateOfBirth = null;
 		$height = null;
 		$weight = null;
+		$position = null;
 
 		$html = $this->loadPage($url);
+		$imageUrl = $html->find('.content .yui-u img', 0)->src;
 
 		//Loop over the properties
 		$properties = $html->find('.content .first dt');
@@ -605,11 +607,15 @@ class Parser {
 				case 'Weight':
 					$weight = intval($value->plaintext);
 					break;
+
+				case 'Position':
+					$position = $value->plaintext;
+					break;
 			}
 		}
 
 		$countryId = $this->database->addCountry($country);
-		$playerId = $this->database->addPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight);
+		$playerId = $this->database->addPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position, $imageUrl);
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 

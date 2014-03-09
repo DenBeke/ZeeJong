@@ -13,6 +13,7 @@ The class contains the following information:
 - country
 */
 class Player {
+
 	private $id;
 	private $firstName;
 	private $lastName;
@@ -20,6 +21,8 @@ class Player {
 	private $dateOfBirth;
 	private $height;
 	private $weight;
+	private $position;
+	private $imageUrl;
 	private $db;
 	
 	public $number;
@@ -28,7 +31,7 @@ class Player {
 	Constructor
 	@param id
 	*/
-	public function __construct($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, &$db) {
+	public function __construct($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position, $imageUrl, &$db) {
 		$this->id = $id;
 		$this->firstName = $firstName;
 		$this->lastName = $lastName;
@@ -36,6 +39,8 @@ class Player {
 		$this->dateOfBirth = $dateOfBirth;
 		$this->height = $height;
 		$this->weight = $weight;
+		$this->position = $position;
+		$this->imageUrl = $imageUrl;
 		$this->db = &$db;		
 	}
 
