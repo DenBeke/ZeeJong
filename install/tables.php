@@ -23,7 +23,7 @@ KEY `coachId` (`coachId`,`teamId`)
 ',
 
 '
-CREATE TABLE IF NOT EXISTS `betForMatch` (
+CREATE TABLE IF NOT EXISTS `Bet` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `matchId` int(11) NOT NULL,
 `teamId` int(11) NOT NULL,
