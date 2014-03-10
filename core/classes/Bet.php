@@ -5,36 +5,26 @@
 @brief Class containing a bet
 
 The class contains the following information:
-	-id
-	-match date
-	-team A
-	-team B
-	-the id of the corresponding match
+	-id 
+ 	-matchId
+ 	-teamId
+ 	-time
+ 	-userId
 */
 
 class Bet {
-
-
+	private $db;
 	private $id;
-	private $betDate;
-	private $teamA;
-	private $teamB;
-	private $matchId;
-	private $amount;
-	private $userId;
 
 	/**
 	Constructor
 
 	@param id The ID of the bet
 	*/
-	public function __construct($id) {
-
+	public function __construct($id, &$db) {
+		$this->db = &$db;
 		$this->id = $id;
-		/*$this->betDate = $matchDate;
-		$this->teamA = $teamA;
-		$this->teamB = $teamB;
-		$this->matchId = $matchId;*/
+
 	}
 
 	/**
@@ -43,7 +33,6 @@ class Bet {
 	@return id
 	*/
 	public function getId() {
-
 		return $this->id;
 	}
 

@@ -123,6 +123,69 @@ class Database {
 	}
 
 	/**
+	 Get the matchId from a bet
+
+	 @return the matchId
+	 */
+	public function getMatchFromBet($id) {
+		$sel = new \Selector('Bet');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['matchId'];
+	}
+	
+	
+	/**
+	 Get the teamId from a bet
+
+	 @return the teamId
+	 */
+	public function getTeamFromBet($id) {
+		$sel = new \Selector('Bet');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['teamId'];
+	}
+	
+	/**
+	 Get the userId from a bet
+
+	 @return the userId
+	 */
+	public function getUserFromBet($id) {
+		$sel = new \Selector('Bet');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['userId'];
+	}
+	
+
+	/**
+	 Get the amount of money from a bet
+
+	 @return the userId
+	 */
+	public function getMoneyFromBet($id) {
+		$sel = new \Selector('Bet');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['amount'];
+	}
+
+
+	/**
 	 Get the username of the user
 
 	 @return the username of the user
