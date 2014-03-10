@@ -69,21 +69,7 @@
 				        </ul>
 				        
 				      </li>
-				       <li class="dropdown">
-				        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bets <b class="caret"></b></a>
-				        <ul class="dropdown-menu">
-							<li><a href="<?php echo SITE_URL; ?>">All Bets</a></li>
-							<?php
-							if(loggedIn()){
-								?>
-								
-								<li><a href="<?php echo SITE_URL; ?>">Your Bets</a></li>
-								<?php
-								}
-							?>
-				        </ul>
-				        
-				      </li>
+					<li><a href="<?php echo SITE_URL; ?>bets">Bets</a></li>
 				    </ul>
 		         
 				       <?php
