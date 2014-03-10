@@ -23,6 +23,17 @@ KEY `coachId` (`coachId`,`teamId`)
 ',
 
 '
+CREATE TABLE IF NOT EXISTS `betForMatch` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`matchId` int(11) NOT NULL,
+`teamId` int(11) NOT NULL,
+`time` int(3) NOT NULL,
+`userId` int(11) NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+',
+
+'
 CREATE TABLE IF NOT EXISTS `Competition` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `name` varchar(50) NOT NULL,
