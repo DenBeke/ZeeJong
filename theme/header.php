@@ -67,6 +67,22 @@
 						  <?php } ?>
 
 				        </ul>
+				        
+				      </li>
+				       <li class="dropdown">
+				        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bets <b class="caret"></b></a>
+				        <ul class="dropdown-menu">
+							<li><a href="<?php echo SITE_URL; ?>">All Bets</a></li>
+							<?php
+							if(loggedIn()){
+								?>
+								
+								<li><a href="<?php echo SITE_URL; ?>">Your Bets</a></li>
+								<?php
+								}
+							?>
+				        </ul>
+				        
 				      </li>
 				    </ul>
 		         
@@ -103,6 +119,9 @@
 						}
 						else {
 				       	?>
+				       	
+				       	
+				       	
 				       	
 				       	<form class="navbar-form pull-right" id="login">
 				       		<a href="<?php echo SITE_URL; ?>configPanel" class="btn btn-default"><?php echo user() -> getUserName(); ?></a>
