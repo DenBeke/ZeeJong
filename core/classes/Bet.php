@@ -1,5 +1,5 @@
 <?php
-
+require_once (dirname(__FILE__) . '/../database.php');
 
 /**
 @brief Class containing a bet
@@ -35,6 +35,41 @@ class Bet {
 	public function getId() {
 		return $this->id;
 	}
+
+	/**
+	 Returns the Match ID
+	 @return Match ID
+	 */
+	 public function getMatchId() {
+	 	return $this->db->getMatchFromBet($this->id);
+	 }
+	 
+	 /**
+	  Returns the User ID
+	  
+	  @return User ID
+	  */
+	  public function getUserId() {
+	  	return $this->db->getUserFromBet($this->id);
+	  }
+	  
+	  /**
+	   Returns the team the bet was put on
+	    
+	   @return Team ID
+	   */
+	   public function getTeamId() {
+	   	return $this->db->getTeamFromBet($this->id);
+	   }
+	   
+	   /**
+	    Returns the amount of money the bet contains
+	     
+	    @return amount of money
+	    */
+	    public function getMoney() {
+	    	return $this->db->getMoneyFromBet($this->id);
+	    }
 
     /**
     String function
