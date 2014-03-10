@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `Bet` (
 `teamId` int(11) NOT NULL,
 `time` int(3) NOT NULL,
 `userId` int(11) NOT NULL,
+`amount` int(11) NOT NULL CHECK (amount>0),
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
