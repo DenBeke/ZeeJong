@@ -30,7 +30,7 @@ class Player {
 	Constructor
 	@param id
 	*/
-	public function __construct($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position, &$db) {
+	public function __construct($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position, $imageUrl, &$db) {
 		$this->id = $id;
 		$this->firstName = $firstName;
 		$this->lastName = $lastName;
