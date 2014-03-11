@@ -67,7 +67,8 @@ Created: February 2014
 				
 				
 					<li class="list-group-item">
-						Competition: <?php echo $this->match->getTournament()->getCompetition()->getName(); ?>
+						Competition: <a href="<?php echo SITE_URL . 'competition/' . $this->match->getTournament()->getCompetition()->getId(); ?>">
+							<?php echo $this->match->getTournament()->getCompetition()->getName(); ?></a>
 					</li>
 				
 					<li class="list-group-item">Date: <?php echo date('d-m-Y', $this->match->getDate()); ?></li>
