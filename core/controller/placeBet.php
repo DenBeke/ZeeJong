@@ -44,6 +44,10 @@ namespace Controller {
 			}
 
 		}
+		
+		public function placeBet($matchId, $teamId,$amount){
+			
+		}
 
 
 	}
