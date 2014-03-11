@@ -41,7 +41,9 @@ Created: February 2014
 				
 				<?php } ?>
 				
-				
+				<li class="list-group-item">Won matches: <?php echo $this->team->getTotalWonMatches(); ?></li>
+
+				<li class="list-group-item">Played matches: <?php echo $this->team->getTotalPlayedMatches(); ?></li>
 			</ul>
 			
 			
