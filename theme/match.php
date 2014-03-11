@@ -101,7 +101,7 @@ Created: February 2014
 		
 			<div class="panel-heading">
 		
-				<h3 class="panel-title"><?php echo $this->match->getTeamA()->getName() ?></h3>
+				<h3 class="panel-title"><a href="<?php echo SITE_URL . 'team/' . $this->match->getTeamA()->getId(); ?>"><?php echo $this->match->getTeamA()->getName() ?></a></h3>
 				
 				
 			</div>
@@ -166,7 +166,7 @@ Created: February 2014
 		
 			<div class="panel-heading">
 		
-				<h3 class="panel-title"><?php echo $this->match->getTeamB()->getName() ?></h3>
+				<h3 class="panel-title"><a href="<?php echo SITE_URL . 'team/' . $this->match->getTeamB()->getId(); ?>"><?php echo $this->match->getTeamB()->getName() ?></a></h3>
 				
 				
 			</div>
