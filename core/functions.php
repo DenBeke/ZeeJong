@@ -112,7 +112,86 @@ function requireEqCount($array, $eq) {
 	if(count($array) != $eq) {
 		throw new exception('Array length is not ' . $eq);
 	}
-} 
+}
+
+
+
+
+function getLatestYear() {
+	
+	$months = array();
+	
+	for($i = 0; $i < 25; $i++) {
+	
+		$month = date("Y-m-1", strtotime("-$i months"));
+		$months[] = array(
+		
+			'name' => date("M Y", strtotime("-$i months")),
+			'timestamp' => strtotime(date("Y-m-1", strtotime("-$i months")))
+		
+		);
+		
+	}
+	
+	return array_reverse($months);
+	
+			
+}
+
+
+
+
+
+function generateChart($input, $id = 0) {
+	
+	$labels = '';
+	$data = '';
+	
+	foreach($input as $label => $number) {
+		
+		$labels = $labels . ',"' . $label . '"';
+		$data = $data . ',' . $number;
+		
+	}
+	
+	$labels = substr($labels, 1);
+	$data = substr($data, 1);
+	
+	
+	$id = md5(serialize($input).$id);
+	
+	?>
+	
+	
+	<canvas id="<?php echo $id; ?>" width="800" height="200"></canvas>
+	
+		<script>
+	
+			var data = {
+				labels : [<?php echo $labels;?>],
+				datasets : [
+					{
+						fillColor : "rgba(151,187,205,0.5)",
+						strokeColor : "rgba(151,187,205,1)",
+						pointColor : "rgba(151,187,205,1)",
+						pointStrokeColor : "#fff",
+						data : [<?php echo $data;?>]
+					}
+				]
+			};
+	
+			var ctx = document.getElementById("<?php echo $id; ?>").getContext("2d");
+			var myNewChart = new Chart(ctx).Bar(data, {
+	animation : false});
+		</script>
+	
+	
+	
+	<?php
+	
+	
+}
+
 
 
 
