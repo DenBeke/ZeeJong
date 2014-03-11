@@ -1,0 +1,144 @@
+/*
+Simple design for php unit test framework
+
+Author: Mathias Beke
+Url: http://denbeke.be
+Date: March 2014
+*/
+
+
+html,
+body {
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	background-color: #eee;
+	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#wrapper {
+	max-width: 800px;
+	min-height: 100%;
+	padding: 20px;
+	background-color: #fff;
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+
+h2 {
+	color: rgb(51, 51, 51);
+	margin-bottom: 30px;
+	font-weight: 200;
+	text-align: center;
+}
+
+
+h3 {
+	color: rgb(51, 51, 51);
+	margin-bottom: 2px;
+	font-weight: 200;
+}
+
+
+div.table-wrapper {
+	border-radius: 5px;
+	overflow: hidden;
+	background-color: #b2dba1;
+	//border: 1px #b2dba1 solid;
+}
+
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	font-size: 14px;
+}
+
+
+table tr {
+	margin-top: 10px;
+	background-image: -webkit-linear-gradient(top, #dff0d8 0%, #c8e5bc 100%);
+	background-image:         linear-gradient(to bottom, #dff0d8 0%, #c8e5bc 100%);
+	background-color: #c8e5bc;
+	border: 1px #b2dba1 solid;
+	color: #3c763d;
+}
+
+
+table tr.failed {
+	background-image: -webkit-linear-gradient(top, #f2dede 0%, #e7c3c3 100%);
+	background-image:         linear-gradient(to bottom, #f2dede 0%, #e7c3c3 100%);
+	color: #a94442;
+	background-color: #e7c3c3;
+	border-color: #dca7a7;
+}
+
+
+table tr:first-child {
+
+}
+
+table td {
+	padding: 5px;
+	vertical-align: top;
+}
+
+table td:nth-child(1) {
+	width: 100%;
+}
+
+table td:nth-child(2) {
+	text-align: right;
+}
+
+
+
+ul.failed-tests {
+	font-size: 12px;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+ul.failed-tests li {
+	padding-top: 10px;
+	padding-left: 10px;
+}
+
+ul.failed-tests p {
+	font-weight: bold;
+	margin: 0;
+}
+
+
+#total-tests {
+	margin-top: 10px;
+	background-image: -webkit-linear-gradient(top, #dff0d8 0%, #c8e5bc 100%);
+	background-image:         linear-gradient(to bottom, #dff0d8 0%, #c8e5bc 50%);
+	background-color: #c8e5bc;
+	border: 1px #b2dba1 solid;
+	color: #3c763d;
+	background-color: #c8e5bc;
+	font-weight: bold;
+	padding: 5px;
+	font-size: 14px;
+	border-radius: 5px;
+}
+
+#total-tests p {
+	margin: 0;
+}
+
+
+#total-tests.failed {
+	background-image: -webkit-linear-gradient(top, #f2dede 0%, #e7c3c3 100%);
+	background-image:         linear-gradient(to bottom, #f2dede 0%, #e7c3c3 100%);
+	color: #a94442;
+	border-color: #dca7a7;
+	background-color: #e7c3c3;
+}
