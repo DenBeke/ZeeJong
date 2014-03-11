@@ -1985,13 +1985,69 @@ class Database {
 		
 		while ($statement->fetch()) {
 		
-			return $amount;
 		
 		}
 		
+		$statement->reset();
 		
+		return $amount;
 		
 	}
+	
+	
+	
+	
+	public function getTotalMatchesWonByPlayerInterval($playerId, $min, $max) {
+		//Query
+		$query = "
+			SELECT COUNT(*) FROM `PlaysMatchInTeam`
+			JOIN `Match` ON `Match`.id = matchId
+			JOIN `Score` ON `Score`.id = scoreId
+			WHERE playerId = ? AND
+			`Match`.date > ? AND
+			`Match`.date < ? AND
+			((teamId = `Match`.teamA AND `Score`.teamA > `Score`.teamB) OR
+			 (teamID = `Match`.teamB AND `Score`.teamB > `Score`.teamA))
+		";
+	
+		//Prepare statement
+		$statement = $this->getStatement($query);
+	
+		//Bind parameters
+		if(!$statement->bind_param('iii', $playerId, $min, $max)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+	
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+	
+		//Store the result in the buffer
+		$statement->store_result();
+	
+	
+		$numberOfResults = $statement->num_rows;
+	
+		if($numberOfResults != 1) {
+			throw new exception('Could not count the matches the player has won');
+		}
+	
+		$statement->bind_result($amount);
+	
+		while ($statement->fetch()) {
+		
+		
+		}
+		
+		$statement->reset();
+		
+		return $amount;
+	}
+	
+	
+	
+	
 	
 	
 

@@ -138,6 +138,36 @@ class Player {
 	}
 	
 	
+	public function getPlayedMatchesStats() {
+		
+		$playedMatches = array();
+		$year = getLatestYear();
+		for($i = 0; $i < sizeof($year)-1; $i++) {
+			
+			$playedMatches[$year[$i]['name']] = $this->db->getTotalNumberOfPlayerMatchesInterval($this->getId(), $year[$i]['timestamp'], $year[$i+1]['timestamp']);
+			
+		}
+		
+		return $playedMatches;
+	}
+	
+	
+	
+	public function getWonMatchesStats() {
+		
+		$playedMatches = array();
+		$year = getLatestYear();
+		for($i = 0; $i < sizeof($year)-1; $i++) {
+			
+			$playedMatches[$year[$i]['name']] = $this->db->getTotalMatchesWonByPlayerInterval($this->getId(), $year[$i]['timestamp'], $year[$i+1]['timestamp']);
+			
+		}
+		
+		return $playedMatches;
+	}
+	
+	
+	
 
 	/**
 	String function
