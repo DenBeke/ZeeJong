@@ -507,7 +507,7 @@ class Parser {
 				}
 
 				if ($colonPos != false) {
-					$this->database->addMatch($teamIdA, $teamIdB, null, null, null, $date, $tournamentId);
+					$this->database->addMatch($teamIdA, $teamIdB, -1, -1, null, $date, $tournamentId);
 				}
 				else {
 

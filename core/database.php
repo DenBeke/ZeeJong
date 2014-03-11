@@ -1388,7 +1388,7 @@ class Database {
 
 		//Create a score for this match and save the id of this score
 		$scoreId = null;
-		if (($scoreA != null) and ($scoreB != null))
+		if (($scoreA != -1) and ($scoreB != -1))
 			$scoreId = $this -> addScore($scoreA, $scoreB);
 
 		//Query
