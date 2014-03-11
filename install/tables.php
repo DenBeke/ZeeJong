@@ -90,7 +90,6 @@ CREATE TABLE IF NOT EXISTS `Player` (
 `height` int(3),
 `weight` int(3),
 `position` varchar(50),
-`imageUrl` varchar(255),
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ',
