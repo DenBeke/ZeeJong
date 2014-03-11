@@ -136,8 +136,8 @@ class Database {
 
 		return $result[0]['matchId'];
 	}
-	
-	
+
+
 	/**
 	 Get the teamId from a bet
 
@@ -152,7 +152,7 @@ class Database {
 
 		return $result[0]['teamId'];
 	}
-	
+
 	/**
 	 Get the userId from a bet
 
@@ -167,7 +167,7 @@ class Database {
 
 		return $result[0]['userId'];
 	}
-	
+
 
 	/**
 	 Get the amount of money from a bet
@@ -1162,7 +1162,7 @@ class Database {
 
 	 @return id of the newly added player or id of existing
 	 */
-	public function addPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position, $imageUrl) {
+	public function addPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position) {
 
 		//Check if the player isn't already in the database
 		try {
@@ -1173,15 +1173,15 @@ class Database {
 
 		//Query
 		$query = "
-			INSERT INTO Player (firstname, lastname, country, dateOfBirth, height, weight, position, imageUrl)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+			INSERT INTO Player (firstname, lastname, country, dateOfBirth, height, weight, position)
+			VALUES (?, ?, ?, ?, ?, ?, ?);
 		";
 
 		//Prepare statement
 		$statement = $this->getStatement($query);
 
 		//Bind parameters
-		if (!$statement -> bind_param('ssiiiiss', $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position, $imageUrl)) {
+		if (!$statement -> bind_param('ssiiiis', $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
 
@@ -1685,22 +1685,22 @@ class Database {
 
 		return $result[0]['id'];
 	}
-	
-	
-	
-	
+
+
+
+
 	public function getPlayersInTeam($teamId) {
-		
+
 		$sel = new \Selector('PlaysIn');
 		$sel->filter([['teamId', '=', $teamId]]);
 		$sel->join('Player', 'playerId', 'id');
 		$sel->select('Player.*');
-		
+
 		$result = $this->select($sel);
-		
+
 		return $this->resultToPlayers($result);
 	}
-	
+
 
 
 	/**
@@ -1934,28 +1934,28 @@ class Database {
 
 			return $coaches[0];
 		}
-		
-		
-		
+
+
+
 	public function getCoachForTeam($teamId) {
-		
+
 		$sel = new \Selector('Coaches');
 		$sel->filter([['Coaches.teamId', '=', $teamId]]);
 		$sel->order('matchId', 'DESC');
 		$sel->join('Coach', 'coachId', 'id');
 		$sel->select(['Coach.*']);
-		
+
 		$result = $this->select($sel);
-		
+
 		$coaches = $this->resultToCoaches($result);
-		
+
 		if(sizeof($coaches) < 1) {
 			return NULL;
 		}
 		else {
 			return $coaches[0];
 		}
-		
+
 	}
 
 
@@ -2082,8 +2082,7 @@ class Database {
 
 		foreach($result as $player) {
 			array_push($players, new Player($player['id'], $player['firstname'], $player['lastname'], $player['country'],
-											$player['dateOfBirth'], $player['height'], $player['weight'], $player['position'],
-											$player['imageUrl'], $this));
+											$player['dateOfBirth'], $player['height'], $player['weight'], $player['position'], $this));
 		}
 
 
