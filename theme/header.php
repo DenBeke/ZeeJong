@@ -69,7 +69,13 @@
 				        </ul>
 				        
 				      </li>
+				    <?php
+					if (loggedIn()) {
+					?>
 					<li><a href="<?php echo SITE_URL; ?>bets">Bets</a></li>
+					<?php
+					}
+					?>
 				    </ul>
 		         
 				       <?php
