@@ -152,6 +152,22 @@ class Player {
 	}
 	
 	
+	
+	public function getWonMatchesStats() {
+		
+		$playedMatches = array();
+		$year = getLatestYear();
+		for($i = 0; $i < sizeof($year)-1; $i++) {
+			
+			$playedMatches[$year[$i]['name']] = $this->db->getTotalMatchesWonByPlayerInterval($this->getId(), $year[$i]['timestamp'], $year[$i+1]['timestamp']);
+			
+		}
+		
+		return $playedMatches;
+	}
+	
+	
+	
 
 	/**
 	String function

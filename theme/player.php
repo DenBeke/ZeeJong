@@ -46,19 +46,27 @@ Created: February 2014
 	</ul>
 	
 
+	<div class="col-md-6">
 
-
-	<h3>Matches</h3>
-
-	<?php
-
-
+		<h3>Matches</h3>
 	
-
-	generateChart($this->player->getPlayedMatchesStats());	
+		<?php
+		generateChart($this->player->getPlayedMatchesStats());		
+		?>
 	
-	?>
+	</div>
+	
+	
+	
+	<div class="col-md-6">
+		<h3>Matches won</h3>
+	
+	
+		<?php
+		generateChart($this->player->getWonMatchesStats());		
+		?>
 
+	</div>
 	
 
 
