@@ -220,7 +220,7 @@ class Parser {
 		//Download the page
 		$try = 0;
 		$page = FALSE;
-		while ($page == FALSE && $try < 10) {
+		while ($page == FALSE && $try < 50) {
 			$page = file_get_contents($url);
 			$try += 1;
 
@@ -703,6 +703,7 @@ set_time_limit(0);
 
 
 $p = new Parser;
+$p->parseArchive();
 $p->parse();
 
 

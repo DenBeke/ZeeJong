@@ -1905,6 +1905,49 @@ class Database {
 
 		return $result[0]['COUNT(*)'];
 	}
+	
+	
+	
+	public function getTotalNumberOfPlayerMatchesInterval($playerId, $min, $max) {
+		
+		$query = 
+		'
+		SELECT COUNT(*)
+		FROM PlaysMatchInTeam AS p
+		INNER JOIN `Match` AS m ON p.matchId = m.id
+		WHERE p.playerId = ?
+		AND m.date > ?
+		AND m.date < ?;
+		';
+		
+		
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		
+		//Bind parameters
+		if (!$statement -> bind_param('iii', $playerId, $min, $max)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		
+		
+		$statement->bind_result($amount);
+		
+		while ($statement->fetch()) {
+		
+			return $amount;
+		
+		}
+		
+		
+		
+	}
+	
+	
 
 	public function getTotalNumberOfCards($playerId) {
 		$sel = new \Selector('Cards');

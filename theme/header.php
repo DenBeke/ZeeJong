@@ -23,6 +23,7 @@
 	<script src="<?php echo SITE_URL ?>js/jquery-1.11.0.min.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/script.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/bootstrap.js" type="text/javascript"></script>
+	<script src="<?php echo SITE_URL ?>js/Chart.js" type="text/javascript"></script>
 	
 
 	
