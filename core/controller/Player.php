@@ -35,7 +35,7 @@ require_once(dirname(__FILE__) . '/Error.php');
 			
 			global $database;
 			$this->player = $database->getPlayerById($args[1]);
-			
+
 			
 		}
 	
