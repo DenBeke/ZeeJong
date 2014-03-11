@@ -29,6 +29,7 @@ require_once(dirname(__FILE__) . '/core/controller/Error.php');
 require_once(dirname(__FILE__) . '/core/controller/News.php');
 require_once(dirname(__FILE__) . '/core/controller/UserConfigPanel.php');
 require_once(dirname(__FILE__) . '/core/controller/Navigator.php');
+require_once(dirname(__FILE__) . '/core/controller/Team.php');
 
 //Create database
 $database = new Database;
@@ -41,6 +42,7 @@ $urls = array(
 	INSTALL_DIR  => 'Controller\Home',
 	INSTALL_DIR . 'login' => 'Controller\Login',
 	INSTALL_DIR . 'coach/(\d+)' => 'Controller\Coach',
+	INSTALL_DIR . 'team/(\d+)' => 'Controller\Team',
 	INSTALL_DIR . 'competition/(\d+)' => 'Controller\Competition',
 	INSTALL_DIR . 'match/(\d+)' => 'Controller\Match',
 	INSTALL_DIR . 'referee/(\d+)' => 'Controller\Referee',
