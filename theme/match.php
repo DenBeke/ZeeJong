@@ -61,6 +61,10 @@ Created: February 2014
 				
 				<ul class="list-group">
 				
+					<li class="list-group-item">
+						Final score: <?php try { echo $this->match->getScore(); } catch(exception $e) {} ?>
+					</li>
+				
 				
 					<li class="list-group-item">
 						Competition: <?php echo $this->match->getTournament()->getCompetition()->getName(); ?>
