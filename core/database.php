@@ -2231,5 +2231,78 @@ class Database {
 		throw new exception('Error while counting the matches the player has won');
 	}
 
+	/**
+	Returns amount of matches won by a team
+
+	@return amount of matches
+	*/
+	public function getTotalMatchesWonByTeam($teamId) {
+		//Query
+		$query = "
+			SELECT COUNT(*) FROM `Team`
+			JOIN `Match` ON `Match`.teamA = `Team`.id OR `Match`.teamB = `Team`.id
+			JOIN `Score` ON `Match`.scoreId = `Score`.id
+			WHERE `Team`.id = ?
+			AND (
+				(`Match`.teamA = `Team`.id AND `Score`.teamA > `Score`.teamB) OR
+				(`Match`.teamB = `Team`.id AND `Score`.teamB > `Score`.teamA)
+				) 
+		";
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if(!$statement->bind_param('i', $teamId)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+
+		//Store the result in the buffer
+		$statement->store_result();
+
+
+		$numberOfResults = $statement->num_rows;
+
+		if($numberOfResults != 1) {
+			throw new exception('Could not count the won matches for team ' . $teamId);
+		}
+
+		$statement->bind_result($amount);
+
+		while ($statement->fetch()) {
+			return $amount;
+		}
+
+		throw new exception('Error while counting the matches the player has won');
+	}
+
+	/**
+	Returns number of played matches by a team
+
+	@return The number of played matches
+	*/
+	public function getTotalMatchesPlayedByTeam($teamId) {
+		$sel = new \Selector('Match');
+		$sel->filter(
+					[
+						['teamA', '=', $teamId],
+						['teamB' , '=', $teamId]
+					]);
+		$sel->filter([['scoreId', 'IS NOT NULL', '']]);
+		$sel->count();
+
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Could not count total played matches for team ' . $teamId);
+		}
+
+		return $result[0]['COUNT(*)'];
+	}
+
 }
 ?>
