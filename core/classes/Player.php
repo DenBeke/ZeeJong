@@ -22,7 +22,6 @@ class Player {
 	private $height;
 	private $weight;
 	private $position;
-	private $imageUrl;
 	private $db;
 	
 	public $number;
@@ -31,7 +30,7 @@ class Player {
 	Constructor
 	@param id
 	*/
-	public function __construct($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position, $imageUrl, &$db) {
+	public function __construct($id, $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position, &$db) {
 		$this->id = $id;
 		$this->firstName = $firstName;
 		$this->lastName = $lastName;
@@ -40,7 +39,6 @@ class Player {
 		$this->height = $height;
 		$this->weight = $weight;
 		$this->position = $position;
-		$this->imageUrl = $imageUrl;
 		$this->db = &$db;		
 	}
 

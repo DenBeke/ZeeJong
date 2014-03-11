@@ -29,6 +29,10 @@ class Selector {
 			}
 
 			foreach($column[2] as &$value) {
+				if($column[1] == 'IS NOT NULL') {
+					continue;
+				}
+
 				array_push($this->values, $value);
 			}
 		}
@@ -120,7 +124,11 @@ class Selector {
 
 			foreach($filter as &$column) {
 				foreach($column[2] as &$orValue) {
-					$sql .= ' ' . $column[0] . $column[1] . '?';
+					$sql .= ' ' . $column[0] . ' ' . $column[1];
+
+					if($column[1] != 'IS NOT NULL') {
+						$sql .= '?';	
+					}
 
 					if(end($column[2]) !== $orValue) {
 						$sql .= ' OR';
