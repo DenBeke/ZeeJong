@@ -396,6 +396,52 @@ class Database {
 
 		return $this->resultToUsers($result)[0];
 	}
+	
+	/**
+	 Get the money address the user
+
+	 @return the money of the user
+	 */
+	public function getMoney($id) {
+		$sel = new \Selector('User');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['money'];
+	}
+	
+	/**
+	 Change the amount of money from the user
+	 
+	 @param the new amount of money
+	 */
+	 public function setMoney($id,$amount){
+	 	//Query
+		$query = "
+			UPDATE User
+			SET money = ?
+			WHERE id = ?;
+		";
+
+		// Test if user exists
+		if(!$this->doesUserExist($id)){
+			throw new exception('User with given ID does not exists');
+		}
+
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		//Bind parameters
+		if (!$statement -> bind_param('ii',$amount, $id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	 }
 
 	/**
 	 Register a user with a given username
