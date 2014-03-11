@@ -121,7 +121,7 @@ function getLatestYear() {
 	
 	$months = array();
 	
-	for($i = 0; $i < 25; $i++) {
+	for($i = 0; $i < 13; $i++) {
 	
 		$month = date("Y-m-1", strtotime("-$i months"));
 		$months[] = array(
@@ -163,7 +163,7 @@ function generateChart($input, $id = 0) {
 	?>
 	
 	
-	<canvas id="<?php echo $id; ?>" width="800" height="200"></canvas>
+	<canvas id="<?php echo $id; ?>"></canvas>
 	
 		<script>
 	
@@ -179,10 +179,27 @@ function generateChart($input, $id = 0) {
 					}
 				]
 			};
+			
+			var options = {
+					animation : false
+			}
 	
 			var ctx = document.getElementById("<?php echo $id; ?>").getContext("2d");
-			var myNewChart = new Chart(ctx).Bar(data, {
-	animation : false});
+			
+	
+	
+	
+	
+		var width = $('canvas').parent().width();
+		$('canvas').attr("width",width);
+		var myNewChart = new Chart(ctx).Bar(data, options);
+		window.onresize = function(event){
+			var width = $('canvas').parent().width();
+			$('canvas').attr("width",width);
+			var myNewChart = new Chart(ctx).Bar(data, options);
+		};
+	
+	
 		</script>
 	
 	
