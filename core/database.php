@@ -139,6 +139,26 @@ class Database {
 
 
 	/**
+	 Get the bets made by a user
+	 @param the id of the user
+	 @return the id's of the bets this user made
+	 */
+	 public function getUserBets($id){
+	 	$sel = new \Selector('Bet');
+		$sel->filter([['userId', '=', $id]]);
+
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['id']);
+		}
+
+		return $result2;
+	 }
+
+
+	/**
 	 Get the teamId from a bet
 
 	 @return the teamId
