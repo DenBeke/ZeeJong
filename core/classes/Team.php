@@ -75,6 +75,14 @@ class Team {
 		}
 	}
 
+	public function getTotalWonMatches() {
+		return $this->db->getTotalMatchesWonByTeam($this->id);
+	}
+
+	public function getTotalPlayedMatches() {
+		return $this->db->getTotalMatchesPlayedByTeam($this->id);
+	}
+
 
 
 	/**
