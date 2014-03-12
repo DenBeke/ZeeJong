@@ -142,7 +142,7 @@ function getLatestYear() {
 
 
 
-function generateChart($input, $id = 0) {
+function generateChart($input, $id = 0, $type = 'Bar') {
 	
 	$datasets = array();	
 	$legends = array();
@@ -156,7 +156,15 @@ function generateChart($input, $id = 0) {
 	
 		foreach($dataset as $label => $number) {
 			
-			$labels = $labels . ',"' . $label . '"';
+			
+			if($type == 'Line' and false) {
+				$labels = $labels . '," "';
+			}
+			else {
+				$labels = $labels . ',"' . $label . '"';
+			}
+			
+			
 			$data = $data . ',' . $number;
 			
 		}
@@ -225,7 +233,8 @@ function generateChart($input, $id = 0) {
 			};
 			
 			var options = {
-					animation : false
+					animation : false,
+					pointDot : false,
 			}
 	
 			var ctx = document.getElementById("<?php echo $id; ?>").getContext("2d");
@@ -236,11 +245,11 @@ function generateChart($input, $id = 0) {
 	
 		var width = $('#<?php echo $id; ?>').parent().width();
 		$('#<?php echo $id; ?>').attr("width",width);
-		var myNewChart = new Chart(ctx).Bar(data, options);
+		var myNewChart = new Chart(ctx).<?php echo $type; ?>(data, options);
 		window.onresize = function(event){
 			var width = $('#<?php echo $id; ?>').parent().width();
 			$('#<?php echo $id; ?>').attr("width",width);
-			var myNewChart = new Chart(ctx).Bar(data, options);
+			var myNewChart = new Chart(ctx).<?php echo $type; ?>(data, options);
 		};
 	
 	
@@ -250,4 +259,29 @@ function generateChart($input, $id = 0) {
 	
 	<?php
 }
+
+
+
+
+
+function getAllMonths($begin, $end = NULL) {
+	
+	
+	if($end == NULL) {
+		$end = time();
+	}
+	
+	$month = strtotime(date('Y-m-1',strtotime("-1 month", $begin)));
+	$months = array();
+	
+	while($month <= $end) {
+		 $months[date('M Y', strtotime("+1 month", $month))] = $month = strtotime(date('Y-m-1',strtotime("+1 month", $month)));
+	}
+	
+	return $months;
+}
+
+
+
+
 ?>
