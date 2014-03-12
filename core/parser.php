@@ -204,9 +204,12 @@ class Parser {
 		//Find all matches
 		foreach($html->find('.match') as $element) {
 
-			$scoreUrl = $element->find('.score a', 0)->href;
+			$scoreUrl = $element->find('.score a', 0);
+			if (is_object($scoreUrl) == FALSE) {
+			    continue;
+			}
 
-			$this->parseMatch('http://int.soccerway.com' . $scoreUrl);
+			$this->parseMatch('http://int.soccerway.com' . $scoreUrl->href);
 		}
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
