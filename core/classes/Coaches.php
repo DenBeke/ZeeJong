@@ -17,17 +17,15 @@ class Coaches {
 	private $id;
 	private $teamId;
 	private $coachId;
-	private $date;
 
 	/**
 	Constructor
 	@param id
 	*/
-	public function __construct($id, $teamId, $coachId, $date) {
+	public function __construct($id, $teamId, $coachId) {
 		$this->id = $id;
 		$this->teamId = $teamId;
 		$this->coachId = $coachId;
-		$this->date = $date;
 	}
 
 	/**
