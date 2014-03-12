@@ -38,6 +38,23 @@ canvas{
 
 
 
+table.matches th:nth-child(1),
+table.matches td:nth-child(1) {
+	text-align: right;
+}
+
+table.matches th:nth-child(2),
+table.matches td:nth-child(2) {
+	text-align: center;
+}
+
+table.matches th:nth-child(3),
+table.matches td:nth-child(3) {
+	text-align: left;
+}
+
+
+
 /* Field *
 *********/
 
