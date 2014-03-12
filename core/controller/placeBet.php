@@ -46,7 +46,7 @@ namespace Controller {
 		}
 		
 		public function placeBet($matchId, $teamId,$amount){
-			
+			$database->addBet($matchId,$teamId,$_SESSION['userID'],$amount);
 		}
 
 
