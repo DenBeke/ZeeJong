@@ -2455,5 +2455,50 @@ class Database {
 		return $result[0]['COUNT(*)'];
 	}
 
+
+
+
+	public function getFirstMatchDate($playerId) {
+		
+		$sel = new \Selector('PlaysMatchInTeam');
+		$sel->filter([['playerId', '=', $playerId]]);
+		$sel->join('Match', 'matchId', 'id');
+		$sel->order('date');
+		$sel->select('`Match`.date');
+		
+		$result = $this->select($sel);
+		
+		if(count($result) >= 1) {
+		
+		return $result[0]['date'];
+		
+		}
+		else {
+			return NULL;
+		}
+	}
+	
+	
+	public function getLastMatchDate($playerId) {
+		
+		$sel = new \Selector('PlaysMatchInTeam');
+		$sel->filter([['playerId', '=', $playerId]]);
+		$sel->join('Match', 'matchId', 'id');
+		$sel->order('date', 'DESC');
+		$sel->select('`Match`.date');
+		
+		$result = $this->select($sel);
+		
+		if(count($result) >= 1) {
+		
+		return $result[0]['date'];
+		
+		}
+		else {
+			return NULL;
+		}
+	}
+
+
 }
 ?>
