@@ -124,5 +124,29 @@ class User {
 		return $this -> d -> setUserSalt($this -> id, $newSalt);
 	}
 
+	/**
+	 Add money to the users' account
+
+	 @param the amount to add
+	 */
+	public function addMoney($amount) {
+		if ($amount > 0) {
+			$newMoney = $this -> d -> getMoney($this -> id) + $amount;
+			return $this -> d -> setMoney($this -> id, $newMoney);
+		}
+	}
+
+	/**
+	 Remove money from the users' account
+
+	 @param the amount to deduct
+	 */
+	public function deductMoney($amount) {
+		if ($amount > 0) {
+			$newMoney = $this -> d -> getMoney($this -> id) - $amount;
+			return $this -> d -> setMoney($this -> id, $newMoney);
+		}
+	}
+
 }
 ?>
