@@ -296,154 +296,164 @@ class Parser {
 	@param url of the match
 	*/
 	private function parseMatch($url) {
+		
+		
+		try {
+		
 
-		$html = $this->loadPage($url);
-
-		//Add the competition and tournament to the database
-		$competitionId = $this->database->addCompetition($this->competition);
-		$tournamentId = $this->database->addTournament($this->tournament, $competitionId);
-
-		//Find the referee
-		if(is_object($html->find('.referee', 0))) {
-			$refereeId = $this->parseReferee('http://int.soccerway.com' . $html->find('.referee', 0)->href);
-		}
-		else {
-			$refereeId = NULL;
-		}
-
-		//Find the final score
-		$score = $html->find('#subheading .bidi', 0)->plaintext;
-		$score = explode(' - ', $score);
-		$scoreA = intval($score[0]);
-		$scoreB = intval($score[1]);
-
-		//Find the teams
-		$teamA = $html->find('.content-column .content .left a', 0);
-		$teamB = $html->find('.content-column .content .right a', 0);
-
-		$this->teams[$teamA->plaintext] = 'http://int.soccerway.com' . $teamA->href;
-		$this->teams[$teamB->plaintext] = 'http://int.soccerway.com' . $teamB->href;
-
-		//Get the countries from these teams
-		$countryIdTeamA = $this->findTeamCountry('http://int.soccerway.com' . $teamA->href);
-		$countryIdTeamB = $this->findTeamCountry('http://int.soccerway.com' . $teamB->href);
-
-		//Add the teams to the database
-		$teamIdA = $this->database->addTeam($teamA->plaintext, $countryIdTeamA);
-		$teamIdB = $this->database->addTeam($teamB->plaintext, $countryIdTeamB);
-
-		//Add the match to the database
-		$date = strtotime($html->find('.middle .details dd', 1)->plaintext);
-		$matchId = $this->database->addMatch($teamIdA, $teamIdB, $scoreA, $scoreB, $refereeId, $date, $tournamentId);
-
-		echo "match: $matchId<br>";
-
-		$teams = array(
-			'teamA' => array(
-				'block' => $html->find('.block_match_lineups .left tbody', 0),
-				'id' => $teamIdA
-			),
-
-			'teamB' => array(
-				'block' => $html->find('.block_match_lineups .right tbody', 0),
-				'id' => $teamIdB
-			),
-		);
-
-		//Find all players and add them to the database
-		foreach ($teams as $team) {
-
-			if(!is_object($team['block'])) {
-				continue;
+			$html = $this->loadPage($url);
+	
+			//Add the competition and tournament to the database
+			$competitionId = $this->database->addCompetition($this->competition);
+			$tournamentId = $this->database->addTournament($this->tournament, $competitionId);
+	
+			//Find the referee
+			if(is_object($html->find('.referee', 0))) {
+				$refereeId = $this->parseReferee('http://int.soccerway.com' . $html->find('.referee', 0)->href);
 			}
-
-			foreach ($team['block']->find('tr') as $row) {
-
-				$number = 0;
-
-				$player = $row->find('.player a', 0);
-				if (sizeof($player) > 0) {
-
-					$number++;
-
-					//Add the player to the database
-					$shirtNumber = $row->find('.shirtnumber', 0);
-
-					if(!is_object($shirtNumber)) {
-						$shirtNumber = $number;
+			else {
+				$refereeId = NULL;
+			}
+	
+			//Find the final score
+			$score = $html->find('#subheading .bidi', 0)->plaintext;
+			$score = explode(' - ', $score);
+			$scoreA = intval($score[0]);
+			$scoreB = intval($score[1]);
+	
+			//Find the teams
+			$teamA = $html->find('.content-column .content .left a', 0);
+			$teamB = $html->find('.content-column .content .right a', 0);
+	
+			$this->teams[$teamA->plaintext] = 'http://int.soccerway.com' . $teamA->href;
+			$this->teams[$teamB->plaintext] = 'http://int.soccerway.com' . $teamB->href;
+	
+			//Get the countries from these teams
+			$countryIdTeamA = $this->findTeamCountry('http://int.soccerway.com' . $teamA->href);
+			$countryIdTeamB = $this->findTeamCountry('http://int.soccerway.com' . $teamB->href);
+	
+			//Add the teams to the database
+			$teamIdA = $this->database->addTeam($teamA->plaintext, $countryIdTeamA);
+			$teamIdB = $this->database->addTeam($teamB->plaintext, $countryIdTeamB);
+	
+			//Add the match to the database
+			$date = strtotime($html->find('.middle .details dd', 1)->plaintext);
+			$matchId = $this->database->addMatch($teamIdA, $teamIdB, $scoreA, $scoreB, $refereeId, $date, $tournamentId);
+	
+			echo "match: $matchId<br>";
+	
+			$teams = array(
+				'teamA' => array(
+					'block' => $html->find('.block_match_lineups .left tbody', 0),
+					'id' => $teamIdA
+				),
+	
+				'teamB' => array(
+					'block' => $html->find('.block_match_lineups .right tbody', 0),
+					'id' => $teamIdB
+				),
+			);
+	
+			//Find all players and add them to the database
+			foreach ($teams as $team) {
+	
+				if(!is_object($team['block'])) {
+					continue;
+				}
+	
+				foreach ($team['block']->find('tr') as $row) {
+	
+					$number = 0;
+	
+					$player = $row->find('.player a', 0);
+					if (sizeof($player) > 0) {
+	
+						$number++;
+	
+						//Add the player to the database
+						$shirtNumber = $row->find('.shirtnumber', 0);
+	
+						if(!is_object($shirtNumber)) {
+							$shirtNumber = $number;
+						}
+						else {
+							$shirtNumber = intval($shirtNumber->plaintext);
+						}
+	
+						$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
+						$this->database->addPlayerToMatch($playerId, $matchId, $team['id'], $shirtNumber);
+	
+	
+	
+						//Add the yellow and red cards
+						$bookings = $row->find('.bookings span');
+						foreach ($bookings as $booking) {
+	
+							$time = 0;
+							$time_parts = explode('+', $booking->plaintext);
+							foreach ($time_parts as $part) {
+								$time += intval($part);
+							}
+	
+							$img = $booking->find('img', 0)->getAttribute('src');
+							if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/YC\.png/', $img)) {
+								$type = Card::yellow;
+							}
+							else if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/Y2C\.png/', $img)) {
+								$type = Card::yellow;
+							}
+							else if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/RC\.png/', $img)) {
+								$type = Card::red;
+							}
+							else {
+								//echo "<em>Parser found unknown card image: $img</em></br>";
+								continue;
+							}
+	
+							$this->database->addFoulCard($playerId, $matchId, $time, $type);
+						}
+	
 					}
-					else {
-						$shirtNumber = intval($shirtNumber->plaintext);
-					}
-
-					$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
-					$this->database->addPlayerToMatch($playerId, $matchId, $team['id'], $shirtNumber);
-
-
-
-					//Add the yellow and red cards
-					$bookings = $row->find('.bookings span');
-					foreach ($bookings as $booking) {
-
+				}
+	
+				//Also add the coach
+				$coach = $team['block']->find('tr a', -1);
+				$coachId = $this->parseCoach('http://int.soccerway.com' . $coach->href);
+				$this->database->addCoaches($coachId, $team['id'], $matchId);
+			}
+	
+			//Find the goals
+			$rawGoals = $html->find('.block_match_goals', 0);
+			if(gettype($rawGoals) != 'NULL') {
+	
+				$goals = array();
+				foreach ($rawGoals->find('.player') as $player) {
+					if(sizeof($player->find('.minute', 0)) > 0) {
+	
 						$time = 0;
-						$time_parts = explode('+', $booking->plaintext);
+						$time_parts = explode('+', $player->find('.minute', 0)->plaintext);
 						foreach ($time_parts as $part) {
 							$time += intval($part);
 						}
-
-						$img = $booking->find('img', 0)->getAttribute('src');
-						if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/YC\.png/', $img)) {
-							$type = Card::yellow;
-						}
-						else if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/Y2C\.png/', $img)) {
-							$type = Card::yellow;
-						}
-						else if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/RC\.png/', $img)) {
-							$type = Card::red;
-						}
-						else {
-							//echo "<em>Parser found unknown card image: $img</em></br>";
-							continue;
-						}
-
-						$this->database->addFoulCard($playerId, $matchId, $time, $type);
+	
+						$playerName = $player->find('a', 0);
+						$goals[$time] = $playerName;
 					}
-
+				}
+	
+				foreach ($goals as $time => $player) {
+					$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
+					$this->database->addGoal($playerId, $time, $matchId);
 				}
 			}
-
-			//Also add the coach
-			$coach = $team['block']->find('tr a', -1);
-			$coachId = $this->parseCoach('http://int.soccerway.com' . $coach->href);
-			$this->database->addCoaches($coachId, $team['id'], $matchId);
+	
+			$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
+			
 		}
-
-		//Find the goals
-		$rawGoals = $html->find('.block_match_goals', 0);
-		if(gettype($rawGoals) != 'NULL') {
-
-			$goals = array();
-			foreach ($rawGoals->find('.player') as $player) {
-				if(sizeof($player->find('.minute', 0)) > 0) {
-
-					$time = 0;
-					$time_parts = explode('+', $player->find('.minute', 0)->plaintext);
-					foreach ($time_parts as $part) {
-						$time += intval($part);
-					}
-
-					$playerName = $player->find('a', 0);
-					$goals[$time] = $playerName;
-				}
-			}
-
-			foreach ($goals as $time => $player) {
-				$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
-				$this->database->addGoal($playerId, $time, $matchId);
-			}
+		
+		catch (exception $e) {
+			$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 		}
-
-		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 	}
 
 
