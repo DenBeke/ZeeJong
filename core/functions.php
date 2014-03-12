@@ -190,7 +190,7 @@ function generateChart($input, $id = 0) {
 		foreach ($legends as $legend) {
 			?>
 			<span class="legend-item" style="background-color: rgba(<?php echo $colors[$count]; ?>,0.5); border-color: rgba(<?php echo $colors[$count]; ?>,1);"></span><?php echo $legend; ?>
-			<?
+			<?php
 		$count++;
 		}
 		
@@ -249,11 +249,5 @@ function generateChart($input, $id = 0) {
 	
 	
 	<?php
-	
-	
 }
-
-
-
-
 ?>
