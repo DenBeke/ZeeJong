@@ -136,8 +136,8 @@ class Database {
 
 		return $result[0]['matchId'];
 	}
-	
-	
+
+
 	/**
 	 Get the teamId from a bet
 
@@ -152,7 +152,7 @@ class Database {
 
 		return $result[0]['teamId'];
 	}
-	
+
 	/**
 	 Get the userId from a bet
 
@@ -167,7 +167,7 @@ class Database {
 
 		return $result[0]['userId'];
 	}
-	
+
 
 	/**
 	 Get the amount of money from a bet
@@ -396,7 +396,7 @@ class Database {
 
 		return $this->resultToUsers($result)[0];
 	}
-	
+
 	/**
 	 Get the money address the user
 
@@ -411,7 +411,7 @@ class Database {
 
 		return $result[0]['money'];
 	}
-	
+
 	/**
 	 Change the amount of money from the user
 	 
@@ -1208,7 +1208,7 @@ class Database {
 
 	 @return id of the newly added player or id of existing
 	 */
-	public function addPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position, $imageUrl) {
+	public function addPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position) {
 
 		//Check if the player isn't already in the database
 		try {
@@ -1219,15 +1219,15 @@ class Database {
 
 		//Query
 		$query = "
-			INSERT INTO Player (firstname, lastname, country, dateOfBirth, height, weight, position, imageUrl)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+			INSERT INTO Player (firstname, lastname, country, dateOfBirth, height, weight, position)
+			VALUES (?, ?, ?, ?, ?, ?, ?);
 		";
 
 		//Prepare statement
 		$statement = $this->getStatement($query);
 
 		//Bind parameters
-		if (!$statement -> bind_param('ssiiiiss', $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position, $imageUrl)) {
+		if (!$statement -> bind_param('ssiiiis', $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
 
@@ -1731,22 +1731,22 @@ class Database {
 
 		return $result[0]['id'];
 	}
-	
-	
-	
-	
+
+
+
+
 	public function getPlayersInTeam($teamId) {
-		
+
 		$sel = new \Selector('PlaysIn');
 		$sel->filter([['teamId', '=', $teamId]]);
 		$sel->join('Player', 'playerId', 'id');
 		$sel->select('Player.*');
-		
+
 		$result = $this->select($sel);
-		
+
 		return $this->resultToPlayers($result);
 	}
-	
+
 
 
 	/**
@@ -1951,11 +1951,11 @@ class Database {
 
 		return $result[0]['COUNT(*)'];
 	}
-	
-	
-	
+
+
+
 	public function getTotalNumberOfPlayerMatchesInterval($playerId, $min, $max) {
-		
+
 		$query = 
 		'
 		SELECT COUNT(*)
@@ -1965,38 +1965,38 @@ class Database {
 		AND m.date > ?
 		AND m.date < ?;
 		';
-		
-		
+
+
 		//Prepare statement
 		$statement = $this->getStatement($query);
-		
+
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $playerId, $min, $max)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
-		
+
 		//Execute statement
 		if (!$statement -> execute()) {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
-		
-		
+
+
 		$statement->bind_result($amount);
-		
+
 		while ($statement->fetch()) {
-		
-		
+
+
 		}
-		
+
 		$statement->reset();
-		
+
 		return $amount;
-		
+
 	}
-	
-	
-	
-	
+
+
+
+
 	public function getTotalMatchesWonByPlayerInterval($playerId, $min, $max) {
 		//Query
 		$query = "
@@ -2009,47 +2009,47 @@ class Database {
 			((teamId = `Match`.teamA AND `Score`.teamA > `Score`.teamB) OR
 			 (teamID = `Match`.teamB AND `Score`.teamB > `Score`.teamA))
 		";
-	
+
 		//Prepare statement
 		$statement = $this->getStatement($query);
-	
+
 		//Bind parameters
 		if(!$statement->bind_param('iii', $playerId, $min, $max)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
-	
+
 		//Execute statement
 		if (!$statement->execute()) {
 			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
 		}
-	
+
 		//Store the result in the buffer
 		$statement->store_result();
-	
-	
+
+
 		$numberOfResults = $statement->num_rows;
-	
+
 		if($numberOfResults != 1) {
 			throw new exception('Could not count the matches the player has won');
 		}
-	
+
 		$statement->bind_result($amount);
-	
+
 		while ($statement->fetch()) {
-		
-		
+
+
 		}
-		
+
 		$statement->reset();
-		
+
 		return $amount;
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 
 	public function getTotalNumberOfCards($playerId) {
 		$sel = new \Selector('Cards');
@@ -2079,28 +2079,28 @@ class Database {
 
 			return $coaches[0];
 		}
-		
-		
-		
+
+
+
 	public function getCoachForTeam($teamId) {
-		
+
 		$sel = new \Selector('Coaches');
 		$sel->filter([['Coaches.teamId', '=', $teamId]]);
 		$sel->order('matchId', 'DESC');
 		$sel->join('Coach', 'coachId', 'id');
 		$sel->select(['Coach.*']);
-		
+
 		$result = $this->select($sel);
-		
+
 		$coaches = $this->resultToCoaches($result);
-		
+
 		if(sizeof($coaches) < 1) {
 			return NULL;
 		}
 		else {
 			return $coaches[0];
 		}
-		
+
 	}
 
 
@@ -2355,12 +2355,12 @@ class Database {
 
 		throw new exception('Error while counting the matches the player has won');
 	}
-	
-	
-	
+
+
+
 	/**
 	Returns amount of matches won by a team
-	
+
 	@return amount of matches
 	*/
 	public function getTotalMatchesWonByTeam($teamId) {
@@ -2375,42 +2375,42 @@ class Database {
 				(`Match`.teamB = `Team`.id AND `Score`.teamB > `Score`.teamA)
 				) 
 		";
-	
+
 		//Prepare statement
 		$statement = $this->getStatement($query);
-	
+
 		//Bind parameters
 		if(!$statement->bind_param('i', $teamId)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
-	
+
 		//Execute statement
 		if (!$statement->execute()) {
 			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
 		}
-	
+
 		//Store the result in the buffer
 		$statement->store_result();
-	
-	
+
+
 		$numberOfResults = $statement->num_rows;
-	
+
 		if($numberOfResults != 1) {
 			throw new exception('Could not count the won matches for team ' . $teamId);
 		}
-	
+
 		$statement->bind_result($amount);
-	
+
 		while ($statement->fetch()) {
 			return $amount;
 		}
-	
+
 		throw new exception('Error while counting the matches the player has won');
 	}
-	
+
 	/**
 	Returns number of played matches by a team
-	
+
 	@return The number of played matches
 	*/
 	public function getTotalMatchesPlayedByTeam($teamId) {
@@ -2422,12 +2422,12 @@ class Database {
 					]);
 		$sel->filter([['scoreId', 'IS NOT NULL', '']]);
 		$sel->count();
-	
+
 		$result = $this->select($sel);
 		if(count($result) != 1) {
 			throw new exception('Could not count total played matches for team ' . $teamId);
 		}
-	
+
 		return $result[0]['COUNT(*)'];
 	}
 
