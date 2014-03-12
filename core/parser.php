@@ -6,7 +6,6 @@ Script for fetching and parsing html pages
 Created: February 2014
 */
 
-
 require_once( dirname(__FILE__) . '/simple_html_dom.php' );
 require_once( dirname(__FILE__) . '/database.php' );
 require_once( dirname(__FILE__) . '/classes/Card.php' );
@@ -22,7 +21,7 @@ class Parser {
 
 	private $database;
 
-	private $teams;
+	private $teams = array();
 
 	// Amount of seconds to store cached files.
 	// 0 to always use cache
@@ -102,9 +101,6 @@ class Parser {
 			echo '<em>Parsing: ' . $competition['name'] . '</em><br>';
 			$this->parseNewMatches($competition['url']);
 		}
-
-		//Refresh the PlaysIn table
-		$this->parsePlayersInTeams();
 	}
 
 
@@ -123,79 +119,7 @@ class Parser {
 			echo '<em>Parsing: ' . $competition['name'] . '</em><br>';
 			$this->parseCompetitionInArchive($competition['archiveUrl']);
 		}
-
-		//Refresh the PlaysIn table
-		$this->parsePlayersInTeams();
 	}
-
-
-	/**
-	Find out which players are currently playing for which team.
-	*/
-	private function parsePlayersInTeams() {
-
-		if (sizeof($this->teams) == 0)
-			return;
-
-		//Loop over the urls and find the players
-		$url_list = array_values($this->teams);
-		foreach ($url_list as $url) {
-
-			$html = $this->loadPage($url);
-
-			$countryId = $this->findTeamCountry($url);
-			$teamName = $html->find('#subheading h1', 0)->plaintext;
-			$teamId = $this->database->addTeam($teamName, $countryId);
-
-			//Remove all players from this team
-			$this->database->removePlayersFromTeam($teamId);
-
-			//Add the current players to the team
-			$table = $html->find('.squad-container table', 0);
-			foreach ($table->children() as $table_row) {
-
-				if ($table_row->tag == 'thead') {
-
-					if (trim($table_row->plaintext) == 'Coach') {
-
-						// Parse the coach ($table_row->next_sibling())
-
-						if ($table_row->next_sibling() == null) {
-							throw new Exception('Head coach was found but not its body?');
-						}
-
-						if ($table_row->next_sibling()->next_sibling() != null) {
-							throw new Exception('Table contains data after coach. Code has to be improved.');
-						}
-
-						break;
-					}
-				}
-
-				if ($table_row->tag == 'tbody') {
-
-					$rows = $table_row->find('tr');
-					foreach ($rows as $row) {
-
-						$player = $row->find('td a', 1);
-						if (is_object($player)) {
-							$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
-							$this->database->addPlayerToTeam($playerId, $teamId);
-						}
-
-						$player = $row->find('td a', 3);
-						if (is_object($player)) {
-							$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
-							$this->database->addPlayerToTeam($playerId, $teamId);
-						}
-					}
-				}
-			}
-
-			$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
-		}
-	}
-
 
 
 	/**
@@ -296,17 +220,17 @@ class Parser {
 	@param url of the match
 	*/
 	private function parseMatch($url) {
-		
-		
+
+
 		try {
-		
+
 
 			$html = $this->loadPage($url);
-	
+
 			//Add the competition and tournament to the database
 			$competitionId = $this->database->addCompetition($this->competition);
 			$tournamentId = $this->database->addTournament($this->tournament, $competitionId);
-	
+
 			//Find the referee
 			if(is_object($html->find('.referee', 0))) {
 				$refereeId = $this->parseReferee('http://int.soccerway.com' . $html->find('.referee', 0)->href);
@@ -314,87 +238,80 @@ class Parser {
 			else {
 				$refereeId = NULL;
 			}
-	
+
 			//Find the final score
 			$score = $html->find('#subheading .bidi', 0)->plaintext;
 			$score = explode(' - ', $score);
 			$scoreA = intval($score[0]);
 			$scoreB = intval($score[1]);
-	
+
 			//Find the teams
 			$teamA = $html->find('.content-column .content .left a', 0);
 			$teamB = $html->find('.content-column .content .right a', 0);
-	
-			$this->teams[$teamA->plaintext] = 'http://int.soccerway.com' . $teamA->href;
-			$this->teams[$teamB->plaintext] = 'http://int.soccerway.com' . $teamB->href;
-	
-			//Get the countries from these teams
-			$countryIdTeamA = $this->findTeamCountry('http://int.soccerway.com' . $teamA->href);
-			$countryIdTeamB = $this->findTeamCountry('http://int.soccerway.com' . $teamB->href);
-	
-			//Add the teams to the database
-			$teamIdA = $this->database->addTeam($teamA->plaintext, $countryIdTeamA);
-			$teamIdB = $this->database->addTeam($teamB->plaintext, $countryIdTeamB);
-	
+
+			//Parse the team pages
+			$teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
+			$teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
+
 			//Add the match to the database
 			$date = strtotime($html->find('.middle .details dd', 1)->plaintext);
 			$matchId = $this->database->addMatch($teamIdA, $teamIdB, $scoreA, $scoreB, $refereeId, $date, $tournamentId);
-	
+
 			echo "match: $matchId<br>";
-	
+
 			$teams = array(
 				'teamA' => array(
 					'block' => $html->find('.block_match_lineups .left tbody', 0),
 					'id' => $teamIdA
 				),
-	
+
 				'teamB' => array(
 					'block' => $html->find('.block_match_lineups .right tbody', 0),
 					'id' => $teamIdB
 				),
 			);
-	
+
 			//Find all players and add them to the database
 			foreach ($teams as $team) {
-	
+
 				if(!is_object($team['block'])) {
 					continue;
 				}
-	
+
 				foreach ($team['block']->find('tr') as $row) {
-	
+
 					$number = 0;
-	
+
 					$player = $row->find('.player a', 0);
 					if (sizeof($player) > 0) {
-	
+
 						$number++;
-	
+
 						//Add the player to the database
 						$shirtNumber = $row->find('.shirtnumber', 0);
-	
+
 						if(!is_object($shirtNumber)) {
 							$shirtNumber = $number;
 						}
 						else {
 							$shirtNumber = intval($shirtNumber->plaintext);
 						}
-	
+
 						$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
 						$this->database->addPlayerToMatch($playerId, $matchId, $team['id'], $shirtNumber);
-	
-	
-	
+
+
+
 						//Add the yellow and red cards
 						$bookings = $row->find('.bookings span');
 						foreach ($bookings as $booking) {
-	
+
 							$time = 0;
 							$time_parts = explode('+', $booking->plaintext);
 							foreach ($time_parts as $part) {
 								$time += intval($part);
 							}
-	
+
 							$img = $booking->find('img', 0)->getAttribute('src');
 							if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/YC\.png/', $img)) {
 								$type = Card::yellow;
@@ -409,49 +326,50 @@ class Parser {
 								//echo "<em>Parser found unknown card image: $img</em></br>";
 								continue;
 							}
-	
+
 							$this->database->addFoulCard($playerId, $matchId, $time, $type);
 						}
-	
+
 					}
 				}
-	
+
 				//Also add the coach
 				$coach = $team['block']->find('tr a', -1);
 				$coachId = $this->parseCoach('http://int.soccerway.com' . $coach->href);
 				$this->database->addCoaches($coachId, $team['id'], $matchId);
 			}
-	
+
 			//Find the goals
 			$rawGoals = $html->find('.block_match_goals', 0);
 			if(gettype($rawGoals) != 'NULL') {
-	
+
 				$goals = array();
 				foreach ($rawGoals->find('.player') as $player) {
 					if(sizeof($player->find('.minute', 0)) > 0) {
-	
+
 						$time = 0;
 						$time_parts = explode('+', $player->find('.minute', 0)->plaintext);
 						foreach ($time_parts as $part) {
 							$time += intval($part);
 						}
-	
+
 						$playerName = $player->find('a', 0);
 						$goals[$time] = $playerName;
 					}
 				}
-	
+
 				foreach ($goals as $time => $player) {
 					$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
 					$this->database->addGoal($playerId, $time, $matchId);
 				}
 			}
-	
+
 			$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
-			
+
 		}
-		
+
 		catch (exception $e) {
+			echo 'Exception in parseMatch: ' . $e->getMessage() . '<br>';
 			$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 		}
 	}
@@ -493,21 +411,9 @@ class Parser {
 				$teamB = $row->find('.team-b a', 0);
 				$scoreOrTime = $row->find('.score-time', 0)->plaintext;
 
-				//Store the teams
-				$this->teams[$teamA->plaintext] = 'http://int.soccerway.com' . $teamA->href;
-				$this->teams[$teamB->plaintext] = 'http://int.soccerway.com' . $teamB->href;
-
-				//Get the countries from these teams
-				$countryIdTeamA = $this->findTeamCountry('http://int.soccerway.com' . $teamA->href);
-				$countryIdTeamB = $this->findTeamCountry('http://int.soccerway.com' . $teamB->href);
-
-				//The names of the teams are truncated, find the full names
-				$teamA = $this->findFullTeamName('http://int.soccerway.com' . $teamA->href);
-				$teamB = $this->findFullTeamName('http://int.soccerway.com' . $teamB->href);
-
-				//Add the teams to the database
-				$teamIdA = $this->database->addTeam($teamA, $countryIdTeamA);
-				$teamIdB = $this->database->addTeam($teamB, $countryIdTeamB);
+				//Parse the team pages
+				$teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
+				$teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
 
 				//Find out if the match has been played already or not
 				$colonPos = strpos(trim($scoreOrTime), ' : ');
@@ -676,19 +582,82 @@ class Parser {
 
 
 	/**
-	Look for the full name of the team
+	Parse the information about the team and add it to the database
 
-	@return name of the team
+	@return id of the team
 	*/
-	private function findFullTeamName($url) {
+	private function parseTeam($url) {
 
 		$html = $this->loadPage($url);
 
 		$name = $html->find('#subheading h1', 0)->plaintext;
+		$countryId = $this->findTeamCountry($html);
+
+		$id = $this->database->addTeam($name, $countryId);
+
+		if ((array_key_exists($name, $this->teams) == FALSE) || ($this->teams[$name] == FALSE)) {
+			$this->parsePlayersInTeams($html, $id);
+			$this->teams[$name] = TRUE;
+		}
 
 		$html->clear();
+		return $id;
+	}
 
-		return $name;
+
+	/**
+	Parse the team page and fill the PlaysIn table
+
+	@return id of the team
+	*/
+	private function parsePlayersInTeams($html, $teamId) {
+
+		//Remove all players from this team
+		$this->database->removePlayersFromTeam($teamId);
+
+		//Add the current players to the team
+		$table = $html->find('.squad-container table', 0);
+		foreach ($table->children() as $table_row) {
+
+			if ($table_row->tag == 'thead') {
+
+				if (trim($table_row->plaintext) == 'Coach') {
+
+					// Parse the coach ($table_row->next_sibling())
+
+					if ($table_row->next_sibling() == null) {
+						$html->clear();
+						throw new Exception('Head coach was found but not its body?');
+					}
+
+					if ($table_row->next_sibling()->next_sibling() != null) {
+						$html->clear();
+						throw new Exception('Table contains data after coach. Code has to be improved.');
+					}
+
+					break;
+				}
+			}
+
+			if ($table_row->tag == 'tbody') {
+
+				$rows = $table_row->find('tr');
+				foreach ($rows as $row) {
+
+					$player = $row->find('td a', 1);
+					if (is_object($player)) {
+						$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
+						$this->database->addPlayerToTeam($playerId, $teamId);
+					}
+
+					$player = $row->find('td a', 3);
+					if (is_object($player)) {
+						$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
+						$this->database->addPlayerToTeam($playerId, $teamId);
+					}
+				}
+			}
+		}
 	}
 
 
@@ -697,9 +666,7 @@ class Parser {
 
 	@return id of the country
 	*/
-	private function findTeamCountry($url) {
-
-		$html = $this->loadPage($url);
+	private function findTeamCountry($html) {
 
 		$properties = $html->find('.first-element .content .fully-padded dt');
 		$values = $html->find('.first-element .content .fully-padded dd');
@@ -716,8 +683,6 @@ class Parser {
 
 			$country = $values[$i]->plaintext;
 			$countryId = $this->database->addCountry($country);
-
-			$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 
 			return $countryId;
 		}
