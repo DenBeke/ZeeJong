@@ -144,39 +144,83 @@ function getLatestYear() {
 
 function generateChart($input, $id = 0) {
 	
-	$labels = '';
-	$data = '';
+	$datasets = array();	
+	$legends = array();
 	
-	foreach($input as $label => $number) {
+	foreach ($input as $legend => $dataset) {
+	
+		$labels = '';
+		$data = '';
+		$legends[] = $legend;
+	
+	
+		foreach($dataset as $label => $number) {
+			
+			$labels = $labels . ',"' . $label . '"';
+			$data = $data . ',' . $number;
+			
+		}
 		
-		$labels = $labels . ',"' . $label . '"';
-		$data = $data . ',' . $number;
+		$labels = substr($labels, 1);
+		$data = substr($data, 1);
+		
+		$datasets[] = [$labels,$data];
 		
 	}
-	
-	$labels = substr($labels, 1);
-	$data = substr($data, 1);
-	
-	
+
 	$id = md5(serialize($input).$id);
+	
+	
+	
+	
+	$colors = array(
+		'220,220,220',
+		'151,187,205'
+	);
+	
 	
 	?>
 	
-	
 	<canvas id="<?php echo $id; ?>"></canvas>
+	
+		<div class="legend">
+	
+		<?php
+		$count = 0;
+		foreach ($legends as $legend) {
+			?>
+			<span class="legend-item" style="background-color: rgba(<?php echo $colors[$count]; ?>,0.5); border-color: rgba(<?php echo $colors[$count]; ?>,1);"></span><?php echo $legend; ?>
+			<?
+		$count++;
+		}
+		
+		?>
+		</div>
+	
 	
 		<script>
 	
 			var data = {
 				labels : [<?php echo $labels;?>],
+				
 				datasets : [
+				
+				<?php
+				$count = 0;
+				foreach($datasets as $data) {
+				?>
 					{
-						fillColor : "rgba(151,187,205,0.5)",
-						strokeColor : "rgba(151,187,205,1)",
-						pointColor : "rgba(151,187,205,1)",
+						fillColor : "rgba(<?php echo $colors[$count]; ?>,0.5)",
+						strokeColor : "rgba(<?php echo $colors[$count]; ?>,1)",
+						pointColor : "rgba(<?php echo $colors[$count]; ?>,1)",
 						pointStrokeColor : "#fff",
-						data : [<?php echo $data;?>]
-					}
+						data : [<?php echo $data[1];?>]
+					},
+					
+				<?php 
+					$count++;
+				} 
+				?>
 				]
 			};
 			

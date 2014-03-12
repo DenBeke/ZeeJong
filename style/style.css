@@ -26,16 +26,38 @@ table a {
 
 
 
+
+/* Style for Charts *
+********************/
+
 canvas{
 	width: 100% !important;
 	height: auto !important;
 }
 
 
+.legend {
+	font-size: 13px;
+}
+
+.legend-item {
+	width: 12px;
+	height: 12px;
+	display: inline-block;
+	border-width: 2px;
+	border-style: solid;
+	margin-left: 10px;
+	margin-right: 2px;
+}
+
 .image-container {
 	text-align: center;
 }
 
+
+
+/* Style for match table *
+*************************/
 
 
 table.matches th:nth-child(1),
