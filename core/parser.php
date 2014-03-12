@@ -206,7 +206,7 @@ class Parser {
 
 			$scoreUrl = $element->find('.score a', 0);
 			if (is_object($scoreUrl) == FALSE) {
-			    continue;
+				continue;
 			}
 
 			$this->parseMatch('http://int.soccerway.com' . $scoreUrl->href);
@@ -625,43 +625,46 @@ class Parser {
 
 		//Add the current players to the team
 		$table = $html->find('.squad-container table', 0);
-		foreach ($table->children() as $table_row) {
+		if (is_object($table)) {
 
-			if ($table_row->tag == 'thead') {
+			foreach ($table->children() as $table_row) {
 
-				if (trim($table_row->plaintext) == 'Coach') {
+				if ($table_row->tag == 'thead') {
 
-					// Parse the coach ($table_row->next_sibling())
+					if (trim($table_row->plaintext) == 'Coach') {
 
-					if ($table_row->next_sibling() == null) {
-						$html->clear();
-						throw new Exception('Head coach was found but not its body?');
+						// Parse the coach ($table_row->next_sibling())
+
+						if ($table_row->next_sibling() == null) {
+							$html->clear();
+							throw new Exception('Head coach was found but not its body?');
+						}
+
+						if ($table_row->next_sibling()->next_sibling() != null) {
+							$html->clear();
+							throw new Exception('Table contains data after coach. Code has to be improved.');
+						}
+
+						break;
 					}
-
-					if ($table_row->next_sibling()->next_sibling() != null) {
-						$html->clear();
-						throw new Exception('Table contains data after coach. Code has to be improved.');
-					}
-
-					break;
 				}
-			}
 
-			if ($table_row->tag == 'tbody') {
+				if ($table_row->tag == 'tbody') {
 
-				$rows = $table_row->find('tr');
-				foreach ($rows as $row) {
+					$rows = $table_row->find('tr');
+					foreach ($rows as $row) {
 
-					$player = $row->find('td a', 1);
-					if (is_object($player)) {
-						$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
-						$this->database->addPlayerToTeam($playerId, $teamId);
-					}
+						$player = $row->find('td a', 1);
+						if (is_object($player)) {
+							$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
+							$this->database->addPlayerToTeam($playerId, $teamId);
+						}
 
-					$player = $row->find('td a', 3);
-					if (is_object($player)) {
-						$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
-						$this->database->addPlayerToTeam($playerId, $teamId);
+						$player = $row->find('td a', 3);
+						if (is_object($player)) {
+							$playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
+							$this->database->addPlayerToTeam($playerId, $teamId);
+						}
 					}
 				}
 			}
