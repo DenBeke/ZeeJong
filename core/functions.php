@@ -190,12 +190,12 @@ function generateChart($input, $id = 0) {
 	
 	
 	
-		var width = $('canvas').parent().width();
-		$('canvas').attr("width",width);
+		var width = $('#<?php echo $id; ?>').parent().width();
+		$('#<?php echo $id; ?>').attr("width",width);
 		var myNewChart = new Chart(ctx).Bar(data, options);
 		window.onresize = function(event){
-			var width = $('canvas').parent().width();
-			$('canvas').attr("width",width);
+			var width = $('#<?php echo $id; ?>').parent().width();
+			$('#<?php echo $id; ?>').attr("width",width);
 			var myNewChart = new Chart(ctx).Bar(data, options);
 		};
 	
