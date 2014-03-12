@@ -2239,7 +2239,7 @@ class Database {
 		$coacheses = array();
 
 		foreach($result as $coaches) {
-			array_push($coacheses, new Coaches($coaches['id'], $coaches['teamId'], $coaches['coachId'], $coaches['date']));
+			array_push($coacheses, new Coaches($coaches['id'], $coaches['teamId'], $coaches['coachId']));
 		}
 
 
