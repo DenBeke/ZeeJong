@@ -98,28 +98,11 @@ Created: February 2014
 	
 	<div class="col-md-12">
 	
-		<h3>Overall Stats</h3>
-	
-		<?php
+		<h3>Overall Stats</h3>	
 		
-		$months = getAllMonths($database->getFirstMatchDate($this->player->getId()), $database->getLastMatchDate($this->player->getId()));
-		$matches = [];
-		$matches_won = [];
-		
-		$count = 1;
-		foreach ($months as $month => $timestamp) {
-			if($count < sizeof($months)) {
-				$matches[$month] = $database->getTotalNumberOfPlayerMatchesInterval($this->player->getId(), array_values($months)[$count-1], array_values($months)[$count]);
-				$matches_won[$month] = $database->getTotalMatchesWonByPlayerInterval($this->player->getId(), array_values($months)[$count-1], array_values($months)[$count]);
-				//var_dump(array_slice($months, $count-1, 1));
-				//echo '<br>';
-			}
-			$count++;
-		}
+		<?php generateChart($this->player->getOveralStats(), 1, 'Line'); ?>
 		
 		
-		generateChart(['Matches' => $matches, 'Matches won' => $matches_won], 1, 'Line');
-		?>
 	
 	</div>
 	

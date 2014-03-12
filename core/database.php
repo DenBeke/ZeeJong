@@ -2074,6 +2074,105 @@ class Database {
 
 
 
+	public function getTotalCardsOfPlayerInterval($playerId, $min, $max) {
+		//Query
+		$query = "
+			SELECT COUNT(*) FROM `Cards`
+			JOIN `Match` ON `Match`.id = matchId
+			WHERE playerId = ? AND
+			`Match`.date > ? AND
+			`Match`.date < ?
+		";
+	
+		//Prepare statement
+		$statement = $this->getStatement($query);
+	
+		//Bind parameters
+		if(!$statement->bind_param('iii', $playerId, $min, $max)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+	
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+	
+		//Store the result in the buffer
+		$statement->store_result();
+	
+	
+		$numberOfResults = $statement->num_rows;
+	
+		if($numberOfResults != 1) {
+			throw new exception('Could not count the matches the player has won');
+		}
+	
+		$statement->bind_result($amount);
+	
+		while ($statement->fetch()) {
+	
+	
+		}
+	
+		$statement->reset();
+	
+		return $amount;
+	}
+	
+	
+	
+	
+	
+	
+	public function getGoalsOfPlayerInterval($playerId, $min, $max) {
+		//Query
+		$query = "
+			SELECT COUNT(*) FROM `Goal`
+			JOIN `Match` ON `Match`.id = matchId
+			WHERE playerId = ? AND
+			`Match`.date > ? AND
+			`Match`.date < ?
+		";
+	
+		//Prepare statement
+		$statement = $this->getStatement($query);
+	
+		//Bind parameters
+		if(!$statement->bind_param('iii', $playerId, $min, $max)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+	
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+	
+		//Store the result in the buffer
+		$statement->store_result();
+	
+	
+		$numberOfResults = $statement->num_rows;
+	
+		if($numberOfResults != 1) {
+			throw new exception('Could not count the matches the player has won');
+		}
+	
+		$statement->bind_result($amount);
+	
+		while ($statement->fetch()) {
+	
+	
+		}
+	
+		$statement->reset();
+	
+		return $amount;
+	}
+
+
+
+
+
 
 	public function getTotalNumberOfCards($playerId) {
 		$sel = new \Selector('Cards');
