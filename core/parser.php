@@ -596,6 +596,11 @@ class Parser {
 		$id = $this->database->addTeam($name, $countryId);
 
 		if ((array_key_exists($name, $this->teams) == FALSE) || ($this->teams[$name] == FALSE)) {
+
+			$imageUrl = $html->find('.content .logo img', 0)->src;
+			$image = file_get_contents($imageUrl);
+			file_put_contents('cache/Team-' . $id . '.png', $image);
+
 			$this->parsePlayersInTeams($html, $id);
 			$this->teams[$name] = TRUE;
 		}
