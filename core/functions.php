@@ -183,7 +183,9 @@ function generateChart($input, $id = 0, $type = 'Bar') {
 	
 	$colors = array(
 		'220,220,220',
-		'151,187,205'
+		'151,187,205',
+		'253,180,92',
+		'70,191,189'
 	);
 	
 	

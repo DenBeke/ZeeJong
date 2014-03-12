@@ -173,6 +173,34 @@ class Player {
 	
 	
 	
+	public function getOveralStats() {
+		
+		$months = getAllMonths($this->db->getFirstMatchDate($this->getId()), $this->db->getLastMatchDate($this->getId()));
+		$matches = [];
+		$matches_won = [];
+		$cards = [];
+		$goals = [];
+		
+		$count = 1;
+		foreach ($months as $month => $timestamp) {
+			if($count < sizeof($months)) {
+				$matches[$month] = $this->db->getTotalNumberOfPlayerMatchesInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
+				$matches_won[$month] = $this->db->getTotalMatchesWonByPlayerInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
+				$cards[$month] = $this->db->getTotalCardsOfPlayerInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
+				$goals[$month] = $this->db->getGoalsOfPlayerInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
+				//var_dump(array_slice($months, $count-1, 1));
+				//echo '<br>';
+			}
+			$count++;
+		}
+		
+		
+		return ['Matches' => $matches, 'Matches won' => $matches_won, 'Cards' => $cards, 'Goals' => $goals];
+		
+	}
+	
+	
+	
 
 	/**
 	String function
