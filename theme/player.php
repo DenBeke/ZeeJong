@@ -71,7 +71,7 @@ Created: February 2014
 		<div class="col-md-2">
 		
 		
-			<img src="<?php echo $this->player->getImageUrl(); ?>">
+			<img src="<?php echo SITE_URL . 'core/cache/Player-' . $this->player->getId() . '.png'; ?>">
 			
 		
 		</div>

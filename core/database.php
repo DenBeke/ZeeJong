@@ -2227,8 +2227,7 @@ class Database {
 
 		foreach($result as $player) {
 			array_push($players, new Player($player['id'], $player['firstname'], $player['lastname'], $player['country'],
-											$player['dateOfBirth'], $player['height'], $player['weight'], $player['position'],
-											$player['imageUrl'], $this));
+											$player['dateOfBirth'], $player['height'], $player['weight'], $player['position'], $this));
 		}
 
 
