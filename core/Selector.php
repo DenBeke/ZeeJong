@@ -68,6 +68,12 @@ class Selector {
 	}
 
 	public function join($table, $from, $to) {
+		
+		$table = trim($table);
+		if(strtolower($table) === 'match') {
+			$table = '`' . $table . '`';
+		}
+		
 		array_push($this->joins, [$table, $from, $to]);
 
 		return $this;
