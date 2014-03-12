@@ -22,6 +22,7 @@ class Player {
 	private $height;
 	private $weight;
 	private $position;
+	private $imageUrl;
 	private $db;
 	
 	public $number;
@@ -39,6 +40,7 @@ class Player {
 		$this->height = $height;
 		$this->weight = $weight;
 		$this->position = $position;
+		$this->imageUrl = $imageUrl;
 		$this->db = &$db;		
 	}
 
@@ -116,6 +118,14 @@ class Player {
 		return $this->weight;
 	}
 	
+	
+	public function getPosition() {
+		return $this->position;
+	}
+	
+	public function getImageUrl() {
+		return $this->imageUrl;
+	}
 	
 	
 	public function getTotalNumberOfGoals() {
