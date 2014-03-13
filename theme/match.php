@@ -66,7 +66,7 @@ Created: February 2014
 					</li>
 
 					<li class="list-group-item">
-						Final score: <?php $prognose = $this->match->getPrognose(); echo $prognose[0] . '-' . $prognose[1]; ?>
+						Prognose: <?php $prognose = $this->match->getPrognose(); echo $prognose[0] . '-' . $prognose[1]; ?>
 					</li>
 				
 				
