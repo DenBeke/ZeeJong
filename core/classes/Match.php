@@ -139,9 +139,9 @@ class Match {
 
 		$prognose = array(0, 0);
 		
-		if(teamARatio > teamBRatio) {
+		if($teamARatio > $teamBRatio) {
 			$prognose[0] = 1;
-		} else if(teamBRatio > teamARatio) {
+		} else if($teamBRatio > $teamARatio) {
 			$prognose[1] = 1;
 		}
 
