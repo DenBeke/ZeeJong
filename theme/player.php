@@ -80,27 +80,38 @@ Created: February 2014
 	</div>
 	
 
-	<div class="col-md-6">
+	<div class="col-md-12">
 
-		<h3>Matches</h3>
+		<h3>Matches Played Last Year</h3>
 	
 		<?php
-		generateChart($this->player->getPlayedMatchesStats(), $this->player->getId()+1);		
+		generateChart(['Matches' => $this->player->getPlayedMatchesStats(), 'Matches won' => $this->player->getWonMatchesStats()], $this->player->getId()+1, 'Bar');		
 		?>
 	
 	</div>
 	
 	
 	
-	<div class="col-md-6">
-		<h3>Matches won</h3>
+	
+	<?php if($this->player->getTotalNumberOfMatches() != 0) { ?>
 	
 	
-		<?php
-		generateChart($this->player->getWonMatchesStats(), $this->player->getId()+2);		
-		?>
-
+	<div class="col-md-12">
+	
+		<h3>Overall Stats</h3>	
+		
+		<?php generateChart($this->player->getOveralStats(), 1, 'Line'); ?>
+		
+		
+	
 	</div>
+	
+	
+	<?php } ?>
+	
+	
+	
+	
 	
 
 

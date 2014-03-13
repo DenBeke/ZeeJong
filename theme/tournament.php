@@ -34,7 +34,7 @@ Created: February 2014
 		<tr>
 				<td><?php echo $match->getTeamA()->getName(); ?></td>
 				
-				<td><a href="<?php echo SITE_URL . 'match/' . $match->getId(0); ?>"><span class="badge"><?php try { echo $match->getScore(); } catch(exception $e) {} ?></span></a></td>
+				<td><a href="<?php echo SITE_URL . 'match/' . $match->getId(0); ?>"><span class="badge"><?php try { echo $match->getScore(); } catch(exception $e) { echo date('d-m-Y', $match->getDate()); } ?></span></a></td>
 				
 				<td><?php echo $match->getTeamB()->getName(); ?></td>
 		</tr>
