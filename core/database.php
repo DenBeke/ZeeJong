@@ -2624,45 +2624,16 @@ class Database {
 	
 	
 	public function getTotalCardsInMatch($matchId) {
-		//Query
-		$query = "
-			SELECT COUNT(*) FROM `Cards`
-			WHERE matchId = ?
-		";
-	
-		//Prepare statement
-		$statement = $this->getStatement($query);
-	
-		//Bind parameters
-		if(!$statement->bind_param('i', $matchId)){
-			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		$sel = new \Selector('Cards');
+		$sel->filter([['matchId', '=', $matchId]]);
+		$sel->count();
+
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Could not count total cards in match ' . $matchId);
 		}
-	
-		//Execute statement
-		if (!$statement->execute()) {
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-	
-		//Store the result in the buffer
-		$statement->store_result();
-	
-	
-		$numberOfResults = $statement->num_rows;
-	
-		if($numberOfResults != 1) {
-			throw new exception('Could not count the matches the player has won');
-		}
-	
-		$statement->bind_result($amount);
-	
-		while ($statement->fetch()) {
-	
-	
-		}
-	
-		$statement->reset();
-	
-		return $amount;
+
+		return $result[0]['COUNT(*)'];
 	}
 
 
