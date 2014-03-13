@@ -64,6 +64,10 @@ Created: February 2014
 					<li class="list-group-item">
 						Final score: <?php try { echo $this->match->getScore(); } catch(exception $e) {} ?>
 					</li>
+
+					<li class="list-group-item">
+						Prognose: <?php $prognose = $this->match->getPrognose(); echo $prognose[0] . '-' . $prognose[1]; ?>
+					</li>
 				
 				
 					<li class="list-group-item">
