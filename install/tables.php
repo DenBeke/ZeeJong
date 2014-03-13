@@ -26,7 +26,8 @@ KEY `coachId` (`coachId`,`teamId`)
 CREATE TABLE IF NOT EXISTS `Bet` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `matchId` int(11) NOT NULL,
-`teamId` int(11) NOT NULL,
+`score1` int(2),
+`score2` int(2),
 `time` int(3) NOT NULL,
 `userId` int(11) NOT NULL,
 `amount` int(11) NOT NULL CHECK (amount>0),
