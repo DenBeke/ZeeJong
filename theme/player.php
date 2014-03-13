@@ -82,7 +82,7 @@ Created: February 2014
 
 	<div class="col-md-12">
 
-		<h3>Matches</h3>
+		<h3>Matches Played Last Year</h3>
 	
 		<?php
 		generateChart(['Matches' => $this->player->getPlayedMatchesStats(), 'Matches won' => $this->player->getWonMatchesStats()], $this->player->getId()+1, 'Bar');		
