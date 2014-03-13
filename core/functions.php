@@ -142,46 +142,101 @@ function getLatestYear() {
 
 
 
-function generateChart($input, $id = 0) {
+function generateChart($input, $id = 0, $type = 'Bar') {
 	
-	$labels = '';
-	$data = '';
+	$datasets = array();	
+	$legends = array();
 	
-	foreach($input as $label => $number) {
+	foreach ($input as $legend => $dataset) {
+	
+		$labels = '';
+		$data = '';
+		$legends[] = $legend;
+	
+	
+		foreach($dataset as $label => $number) {
+			
+			
+			if($type == 'Line' and false) {
+				$labels = $labels . '," "';
+			}
+			else {
+				$labels = $labels . ',"' . $label . '"';
+			}
+			
+			
+			$data = $data . ',' . $number;
+			
+		}
 		
-		$labels = $labels . ',"' . $label . '"';
-		$data = $data . ',' . $number;
+		$labels = substr($labels, 1);
+		$data = substr($data, 1);
+		
+		$datasets[] = [$labels,$data];
 		
 	}
-	
-	$labels = substr($labels, 1);
-	$data = substr($data, 1);
-	
-	
+
 	$id = md5(serialize($input).$id);
+	
+	
+	
+	
+	$colors = array(
+		'220,220,220',
+		'151,187,205',
+		'253,180,92',
+		'70,191,189'
+	);
+	
 	
 	?>
 	
-	
 	<canvas id="<?php echo $id; ?>"></canvas>
+	
+		<div class="legend">
+	
+		<?php
+		$count = 0;
+		foreach ($legends as $legend) {
+			?>
+			<span class="legend-item" style="background-color: rgba(<?php echo $colors[$count]; ?>,0.5); border-color: rgba(<?php echo $colors[$count]; ?>,1);"></span><?php echo $legend; ?>
+			<?php
+		$count++;
+		}
+		
+		?>
+		</div>
+	
 	
 		<script>
 	
 			var data = {
 				labels : [<?php echo $labels;?>],
+				
 				datasets : [
+				
+				<?php
+				$count = 0;
+				foreach($datasets as $data) {
+				?>
 					{
-						fillColor : "rgba(151,187,205,0.5)",
-						strokeColor : "rgba(151,187,205,1)",
-						pointColor : "rgba(151,187,205,1)",
+						fillColor : "rgba(<?php echo $colors[$count]; ?>,0.5)",
+						strokeColor : "rgba(<?php echo $colors[$count]; ?>,1)",
+						pointColor : "rgba(<?php echo $colors[$count]; ?>,1)",
 						pointStrokeColor : "#fff",
-						data : [<?php echo $data;?>]
-					}
+						data : [<?php echo $data[1];?>]
+					},
+					
+				<?php 
+					$count++;
+				} 
+				?>
 				]
 			};
 			
 			var options = {
-					animation : false
+					animation : false,
+					pointDot : false,
 			}
 	
 			var ctx = document.getElementById("<?php echo $id; ?>").getContext("2d");
@@ -192,11 +247,11 @@ function generateChart($input, $id = 0) {
 	
 		var width = $('#<?php echo $id; ?>').parent().width();
 		$('#<?php echo $id; ?>').attr("width",width);
-		var myNewChart = new Chart(ctx).Bar(data, options);
+		var myNewChart = new Chart(ctx).<?php echo $type; ?>(data, options);
 		window.onresize = function(event){
 			var width = $('#<?php echo $id; ?>').parent().width();
 			$('#<?php echo $id; ?>').attr("width",width);
-			var myNewChart = new Chart(ctx).Bar(data, options);
+			var myNewChart = new Chart(ctx).<?php echo $type; ?>(data, options);
 		};
 	
 	
@@ -205,8 +260,27 @@ function generateChart($input, $id = 0) {
 	
 	
 	<?php
+}
+
+
+
+
+
+function getAllMonths($begin, $end = NULL) {
 	
 	
+	if($end == NULL) {
+		$end = time();
+	}
+	
+	$month = strtotime(date('Y-m-1',strtotime("-1 month", $begin)));
+	$months = array();
+	
+	while($month <= $end) {
+		 $months[date('M Y', strtotime("+1 month", $month))] = $month = strtotime(date('Y-m-1',strtotime("+1 month", $month)));
+	}
+	
+	return $months;
 }
 
 
