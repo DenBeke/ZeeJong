@@ -54,13 +54,23 @@ class Bet {
 	  }
 	  
 	  /**
-	   Returns the team the bet was put on
+	   Returns the score put on the first team
 	    
-	   @return Team ID
+	   @return score team A
 	   */
-	   public function getTeamId() {
-	   	return $this->db->getTeamFromBet($this->id);
+	   public function getScoreA() {
+	   	return $this->db->getScoreAFromBet($this->id);
 	   }
+	   
+	   /**
+	   Returns the score put on the second team
+	    
+	   @return score team B
+	   */
+	   public function getScoreA() {
+	   	return $this->db->getScoreBFromBet($this->id);
+	   }
+	   
 	   
 	   /**
 	    Returns the amount of money the bet contains
