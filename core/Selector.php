@@ -14,11 +14,6 @@ class Selector {
 	private $filters = [];
 
 	public function __construct($table) {
-		$table = trim($table);
-		if(strtolower($table) === 'match') {
-			$table = '`' . $table . '`';
-		}
-
 		$this->table = $table;
 	}
 
@@ -68,12 +63,6 @@ class Selector {
 	}
 
 	public function join($table, $from, $to) {
-		
-		$table = trim($table);
-		if(strtolower($table) === 'match') {
-			$table = '`' . $table . '`';
-		}
-		
 		array_push($this->joins, [$table, $from, $to]);
 
 		return $this;
@@ -112,12 +101,12 @@ class Selector {
 			}
 		}
 		
-		$sql .= ' FROM ' . $this->table;
+		$sql .= ' FROM `' . $this->table . '`';
 
 		if(count($this->joins) > 0) {
-			$sql .= ' INNER JOIN ' . $this->joins[0][0] . ' ON ';
-			$sql .= $this->table . '.' . $this->joins[0][1] . '=';
-			$sql .= $this->joins[0][0] . '.' . $this->joins[0][2];
+			$sql .= ' INNER JOIN `' . $this->joins[0][0] . '` ON ';
+			$sql .= '`' . $this->table . '`' . '.' . $this->joins[0][1] . '=';
+			$sql .= '`' . $this->joins[0][0] . '`' . '.' . $this->joins[0][2];
 		}
 
 		if(count($this->filters) > 0) {
