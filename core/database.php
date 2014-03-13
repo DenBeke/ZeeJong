@@ -1359,6 +1359,26 @@ class Database {
 	}
 
 	/**
+	 Check if a match exists with a given ID
+
+	 @param id
+	 @return true if the match exists
+	 @return false if the match doesn't exist
+
+	 @exception When there are multiple matches with the same ID
+	 */
+	public function doesMatchExist($id) {
+		$sel = new \Selector('Match');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireMaxCount($result, 1);
+
+		return count($result) == 1;
+	}
+
+
+	/**
 	 Add a goal to a match
 
 	 @param id of player
