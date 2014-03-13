@@ -1288,9 +1288,6 @@ class Database {
 		$sel->filter([['firstname', '=', $firstName]]);
 		$sel->filter([['lastname', '=', $lastName]]);
 		$sel->filter([['country', '=', $countryId]]);
-		$sel->filter([['dateOfBirth', '=', $dateOfBirth]]);
-		$sel->filter([['height', '=', $height]]);
-		$sel->filter([['weight', '=', $weight]]);
 
 		$result = $this->select($sel);
 		$players = $this->resultToPlayers($result);
@@ -1491,7 +1488,6 @@ class Database {
 		$sel = new \Selector('Match');
 		$sel->filter([['teamA', '=', $teamA]]);
 		$sel->filter([['teamB', '=', $teamB]]);
-		$sel->filter([['refereeId', '=', $refereeId]]);
 		$sel->filter([['date', '=', $date]]);
 		$sel->filter([['tournamentId', '=', $tournamentId]]);
 
