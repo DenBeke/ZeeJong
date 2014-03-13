@@ -74,7 +74,7 @@ Created: February 2014
 					<li class="list-group-item">Date: <?php echo date('d-m-Y', $this->match->getDate()); ?></li>
 					
 					<li class="list-group-item">
-				    	<span class="badge">14</span>
+				    	<span class="badge"><?php echo $this->match->getTotalCards(); ?></span>
 				    	Cards
 				  	</li>
 				  	
