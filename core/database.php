@@ -1263,7 +1263,7 @@ class Database {
 
 		//Check if the player isn't already in the database
 		try {
-			return $this -> getPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight) -> getId();
+			return $this -> getPlayer($firstName, $lastName, $countryId) -> getId();
 
 		} catch (exception $e) {
 		}
@@ -1310,7 +1310,7 @@ class Database {
 
 	 @exception when no player found with the given name, country and date of birth
 	 */
-	public function getPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight) {
+	public function getPlayer($firstName, $lastName, $countryId) {
 		$sel = new \Selector('Player');
 		$sel->filter([['firstname', '=', $firstName]]);
 		$sel->filter([['lastname', '=', $lastName]]);
@@ -1469,7 +1469,7 @@ class Database {
 
 		//Check if the match isn't already in the database
 		try {
-			return $this -> getMatch($teamA, $teamB, $refereeId, $date, $tournamentId) -> getId();
+			return $this -> getMatch($teamA, $teamB, $date, $tournamentId) -> getId();
 
 		} catch (exception $e) {
 		}
@@ -1511,7 +1511,7 @@ class Database {
 		return $id;
 	}
 
-	public function getMatch($teamA, $teamB, $refereeId, $date, $tournamentId) {
+	public function getMatch($teamA, $teamB, $date, $tournamentId) {
 		$sel = new \Selector('Match');
 		$sel->filter([['teamA', '=', $teamA]]);
 		$sel->filter([['teamB', '=', $teamB]]);
