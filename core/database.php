@@ -2580,49 +2580,25 @@ class Database {
 
 
 
-	public function getFirstMatchDate($playerId) {
-		
+	public function getMatchDateBorder($playerId, $first) {
+		$order = ($first ? 'ASC' : 'DESC');		
+
 		$sel = new \Selector('PlaysMatchInTeam');
 		$sel->filter([['playerId', '=', $playerId]]);
 		$sel->join('Match', 'matchId', 'id');
-		$sel->order('date');
+		$sel->order('date', $order);
 		$sel->select('`Match`.date');
 		
 		$result = $this->select($sel);
 		
 		if(count($result) >= 1) {
-		
-		return $result[0]['date'];
-		
+			return $result[0]['date'];
 		}
 		else {
 			return NULL;
 		}
 	}
-	
-	
-	public function getLastMatchDate($playerId) {
 		
-		$sel = new \Selector('PlaysMatchInTeam');
-		$sel->filter([['playerId', '=', $playerId]]);
-		$sel->join('Match', 'matchId', 'id');
-		$sel->order('date', 'DESC');
-		$sel->select('`Match`.date');
-		
-		$result = $this->select($sel);
-		
-		if(count($result) >= 1) {
-		
-		return $result[0]['date'];
-		
-		}
-		else {
-			return NULL;
-		}
-	}
-	
-	
-	
 	public function getTotalCardsInMatch($matchId) {
 		$sel = new \Selector('Cards');
 		$sel->filter([['matchId', '=', $matchId]]);
