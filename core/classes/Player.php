@@ -175,7 +175,7 @@ class Player {
 	
 	public function getOveralStats() {
 		
-		$months = getAllMonths($this->db->getFirstMatchDate($this->getId()), $this->db->getLastMatchDate($this->getId()));
+		$months = getAllMonths($this->db->getMatchDateBorder($this->getId(), true), $this->db->getMatchDateBorder($this->getId(), false));
 		$matches = [];
 		$matches_won = [];
 		$cards = [];
