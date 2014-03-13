@@ -17,7 +17,7 @@ namespace Controller {
 		public $bet;
 		public $betSuccessMessage;
 		public $betErrorMessage;
-		
+
 		/**
 		 Render the template part of the view
 
@@ -38,19 +38,20 @@ namespace Controller {
 		public function __construct() {
 			global $database;
 			// Test if logged in
-			if (!isset($_SESSION['userID']) ) {
+			if (!isset($_SESSION['userID']) || !isset($_POST['matchId']) || !isset($_POST['score1']) || !isset($_POST['score2']) || !isset($_POST['money'])) {
 				return;
 			}
-			if(!$database -> doesUserExist($_SESSION['userID'])){
+			if (!$database -> doesUserExist($_SESSION['userID'])) {
 				return;
 			}
-
-		}
-		
-		public function placeBet($matchId, $teamId,$amount){
-			$database->addBet($matchId,$teamId,$_SESSION['userID'],$amount);
+			$this->placeBet();
 		}
 
+		private function placeBet() {
+			global $database;
+			$database -> addBet($_POST['matchId'], $_POST['score1'], $_POST['score2'], $_SESSION['userID'], $_POST['money']);
+			$this -> betSuccessMessage = $this -> betSuccessMessage . "Bet was successfully placed." . "\r\n";
+		}
 
 	}
 

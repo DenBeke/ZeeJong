@@ -74,6 +74,7 @@
 					if (loggedIn()) {
 					?>
 					<li><a href="<?php echo SITE_URL; ?>bets">Bets</a></li>
+					<li><a href="<?php echo SITE_URL; ?>placeBet">Place a bet</a></li>
 					<?php
 					}
 					?>
