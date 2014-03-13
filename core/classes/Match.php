@@ -127,6 +127,38 @@ class Match {
 	public function getTotalCards() {
 		return $this->db->getTotalCardsInMatch($this->getId());
 	}
+
+	public function getPrognose() {
+		$teamATotal = $this->db->getTotalMatchesPlayedByTeam($this->getTeamAId());
+		$teamAWins = $this->db->getTotalMatchesWonByTeam($this->getTeamAId());
+
+		$teamARatio = 0;
+		if($teamAWins !== 0) {
+			$teamARatio = $teamATotal / $teamAWins;
+		}
+
+		$teamBTotal = $this->db->getTotalMatchesPlayedByTeam($this->getTeamBId());
+		$teamBWins = $this->db->getTotalMatchesWonByTeam($this->getTeamBId());
+
+		$teamBRatio = 0;
+		if($teamBWins !== 0) {
+			$teamBRatio = $teamBTotal / $teamBWins;
+		}
+
+		$maxTotal = max($teamATotal, $teamBTotal, 1);
+		$teamARatio *= $teamATotal / $maxTotal;
+		$teamBRatio *= $teamBTotal / $maxTotal;
+
+		$prognose = array(0, 0);
+		
+		if($teamARatio > $teamBRatio) {
+			$prognose[0] = 1;
+		} else if($teamBRatio > $teamARatio) {
+			$prognose[1] = 1;
+		}
+
+		return $prognose;
+	}
 	
 
 	/**
