@@ -131,11 +131,19 @@ class Match {
 	public function getPrognose() {
 		$teamATotal = $this->db->getTotalMatchesPlayedByTeam($this->getTeamAId());
 		$teamAWins = $this->db->getTotalMatchesWonByTeam($this->getTeamAId());
-		$teamARatio = $teamATotal / $teamAWins;
+
+		$teamARatio = 0;
+		if($teamAWins !== 0) {
+			$teamARatio = $teamATotal / $teamAWins;
+		}
 
 		$teamBTotal = $this->db->getTotalMatchesPlayedByTeam($this->getTeamBId());
 		$teamBWins = $this->db->getTotalMatchesWonByTeam($this->getTeamBId());
-		$teamBRatio = $teamBTotal / $teamBWins;
+
+		$teamBRatio = 0;
+		if($teamBWins !== 0) {
+			$teamBRatio = $teamBTotal / $teamBWins;
+		}
 
 		$prognose = array(0, 0);
 		
