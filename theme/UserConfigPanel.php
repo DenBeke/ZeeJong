@@ -55,7 +55,7 @@
 				<label class="control-label col-sm-2">Current Password (*)</label>
 				<div class="controls col-sm-10">
 					<div class="input-group">
-						<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-user"></span> </span>
+						<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-lock"></span> </span>
 						<input type="Password" class="form-control input-xlarge" id="oldPass" name="oldPass" placeholder="">
 					</div>
 				</div>
