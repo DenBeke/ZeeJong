@@ -15,6 +15,8 @@ namespace Controller {
 		public $page = 'placeBet';
 		private $template = 'placeBet.php';
 		public $bet;
+		public $betSuccessMessage;
+		public $betErrorMessage;
 		
 		/**
 		 Render the template part of the view
