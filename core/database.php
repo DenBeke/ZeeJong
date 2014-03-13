@@ -152,16 +152,13 @@ class Database {
 	 @param the id of the match, team, user and money
 	 */
 	 public function addBet($matchId,$score1,$score2,$userId,$amount){
-	 	if($this->getMatchById($matchId)->getTeamAId()!=$teamId && $this->getMatchById($matchId)->getTeamBId()!=$teamId){
-	 		throw new exception('Adding bet failed, team did not play in the match');
-	 	}
 		//Query
 		$query = "INSERT INTO Bet (`matchId`,`score1`,`score2`,`userId`,`amount`) VALUES (?,?,?,?,?)";
 
 		//Prepare statement
 		$statement = $this->getStatement($query);
 		//Bind parameters
-		if (!$statement -> bind_param('i,i,i,i,i', $matchId,$teamId,$userId,$amount)) {
+		if (!$statement -> bind_param('iiiii', $matchId,$score1,$score2,$userId,$amount)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
 		//Execute statement
