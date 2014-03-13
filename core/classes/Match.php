@@ -122,6 +122,12 @@ class Match {
 		return $this->getTeamB()->getPlayersForMatch($this->id);
 	}
 	
+	
+
+	public function getTotalCards() {
+		return $this->db->getTotalCardsInMatch($this->getId());
+	}
+	
 
 	/**
 	String function
