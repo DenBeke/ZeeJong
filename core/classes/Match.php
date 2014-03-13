@@ -145,6 +145,10 @@ class Match {
 			$teamBRatio = $teamBTotal / $teamBWins;
 		}
 
+		$maxTotal = max($teamATotal, $teamBTotal, 1);
+		$teamARatio *= $teamATotal / $maxTotal;
+		$teamBRatio *= $teamBTotal / $maxTotal;
+
 		$prognose = array(0, 0);
 		
 		if($teamARatio > $teamBRatio) {
