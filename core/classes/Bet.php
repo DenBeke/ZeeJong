@@ -67,7 +67,7 @@ class Bet {
 	    
 	   @return score team B
 	   */
-	   public function getScoreA() {
+	   public function getScoreB() {
 	   	return $this->db->getScoreBFromBet($this->id);
 	   }
 	   
