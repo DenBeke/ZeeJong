@@ -151,17 +151,17 @@ class Database {
 	 
 	 @param the id of the match, team, user and money
 	 */
-	 public function addBet($matchId,$teamId,$userId,$amount){
+	 public function addBet($matchId,$score1,$score2,$userId,$amount){
 	 	if($this->getMatchById($matchId)->getTeamAId()!=$teamId && $this->getMatchById($matchId)->getTeamBId()!=$teamId){
 	 		throw new exception('Adding bet failed, team did not play in the match');
 	 	}
 		//Query
-		$query = "INSERT INTO Bet (`matchId`,`teamId`,`userId`,`amount`) VALUES (?,?,?,?)";
+		$query = "INSERT INTO Bet (`matchId`,`score1`,`score2`,`userId`,`amount`) VALUES (?,?,?,?,?)";
 
 		//Prepare statement
 		$statement = $this->getStatement($query);
 		//Bind parameters
-		if (!$statement -> bind_param('i,i,i,i', $matchId,$teamId,$userId,$amount)) {
+		if (!$statement -> bind_param('i,i,i,i,i', $matchId,$teamId,$userId,$amount)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
 		//Execute statement
@@ -191,14 +191,14 @@ class Database {
 
 	 @return the teamId
 	 */
-	public function getTeamFromBet($id) {
+	public function getScoreAFromBet($id) {
 		$sel = new \Selector('Bet');
 		$sel->filter([['id', '=', $id]]);
 
 		$result = $this->select($sel);
 		requireEqCount($result, 1);
 
-		return $result[0]['teamId'];
+		return $result[0]['score1'];
 	}
 
 	/**
@@ -206,14 +206,14 @@ class Database {
 
 	 @return the userId
 	 */
-	public function getUserFromBet($id) {
+	public function getScoreBFromBet($id) {
 		$sel = new \Selector('Bet');
 		$sel->filter([['id', '=', $id]]);
 
 		$result = $this->select($sel);
 		requireEqCount($result, 1);
 
-		return $result[0]['userId'];
+		return $result[0]['score2'];
 	}
 
 
