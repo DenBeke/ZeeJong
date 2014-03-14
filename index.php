@@ -50,7 +50,7 @@ $urls = array(
 	INSTALL_DIR . 'referee/(\d+)' => 'Controller\Referee',
 	INSTALL_DIR . 'tournament/(\d+)' => 'Controller\Tournament',
 	INSTALL_DIR . 'news' => 'Controller\News',
-	INSTALL_DIR . 'configPanel' => 'Controller\UserConfigPanel',
+	INSTALL_DIR . 'config-panel' => 'Controller\UserConfigPanel',
 	INSTALL_DIR . 'bets' => 'Controller\Bets',
 	INSTALL_DIR . 'place-bet/(\d+)' => 'Controller\placeBet',
 );
