@@ -56,7 +56,7 @@ canvas{
 
 
 
-/* Style for match table *
+/* Style for match *
 *************************/
 
 
@@ -79,6 +79,11 @@ table.matches td:nth-child(3) {
 	width: 50%;
 }
 
+
+.bet-button-container {
+	text-align: center;
+	padding-bottom: 20px;
+}
 
 
 /* Field *

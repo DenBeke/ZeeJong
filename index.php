@@ -52,7 +52,7 @@ $urls = array(
 	INSTALL_DIR . 'news' => 'Controller\News',
 	INSTALL_DIR . 'configPanel' => 'Controller\UserConfigPanel',
 	INSTALL_DIR . 'bets' => 'Controller\Bets',
-	INSTALL_DIR . 'placeBet/(\d+)' => 'Controller\placeBet',
+	INSTALL_DIR . 'place-bet/(\d+)' => 'Controller\placeBet',
 );
 
 
