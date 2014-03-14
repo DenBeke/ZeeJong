@@ -189,8 +189,13 @@ class Parser {
 			$next_html->clear();
 
 			$urls = array();
-			foreach ($parts as $part) {
-				$urls[] = 'http://int.soccerway.com' . $part->href . 'matches/';
+			if (sizeof($parts) == 1) {
+			    $urls[] = 'http://int.soccerway.com' . $tournamentUrl;
+			}
+			else {
+			    foreach ($parts as $part) {
+				    $urls[] = 'http://int.soccerway.com' . $part->href . 'matches/';
+			    }
 			}
 
 			foreach ($urls as $url) {
