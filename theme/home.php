@@ -28,6 +28,14 @@ Created: February 2014
           
           <table class="table table-striped matches">
           
+          
+          	<tr>
+          		<th>Team A</th>
+          		<th>Date</th>
+          		<th>Team B</th>
+          	</tr>
+          
+          
           	<?php
           	
           	foreach ($this->events as $match) {
@@ -55,38 +63,31 @@ Created: February 2014
          <table class="table table-striped">
          
          	<tr>
-         		<th colspan="2">Name</th>
+         		<th>Name</th>
+         		<th>Matches</th>
          		<th>Goals</th>
          	</tr>
-         
-             <tr>
-             	<td>Luis</td>
-             	<td>Suarez</td>
-             	<td>23</td>
-             </tr>
-             
-             <tr>
-             	<td>Cristiano</td>
-             	<td>Ronaldo</td>
-             	<td>22</td>
-             </tr>
-             
-             <tr>
-             	<td>Zlatan</td>
-             	<td>Ibrahimovic</td>
-             	<td>22</td>
-             </tr>
-             
-             <tr>
-             	<td>Alfreð</td>
-             	<td>Finnbogason</td>
-             	<td>21</td>
-             </tr>
+         	
+         	
+         	<?php foreach($this->players as $player) { ?>
+         	
+         	<tr>
+	         	
+	         	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
+	         	
+	         	<td class="center"><span class="badge"><?php echo $player->getTotalNumberOfMatches(); ?></span></td>
+	         	
+	         	<td class="center"><span class="badge"><?php echo $player->getTotalNumberOfGoals(); ?></span></td>
+	         	
+	        </tr>
+         	
+         	
+         	<?php } ?>
              
          </table>
          
          
-          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+          <p><a class="btn btn-default" href="#" role="button">More players »</a></p>
        </div>
         <div class="col-md-4">
           <h2>Leagues</h2>
@@ -109,8 +110,6 @@ Created: February 2014
               
           </table>
           
-          
-          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
         </div>
       </div>
 
