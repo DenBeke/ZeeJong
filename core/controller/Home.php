@@ -14,9 +14,12 @@ require_once(dirname(__FILE__) . '/Controller.php');
 	class Home extends Controller {
 	
 		public $page = 'home';
+		public $events;
 	
 		public function __construct() {
+			global $database;
 			$this->theme = 'home.php';
+			$this->events = $database->getUpcommingEvents(6);
 		}
 		
 		
