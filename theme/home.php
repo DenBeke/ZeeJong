@@ -12,7 +12,7 @@ Created: February 2014
 <div class="jumbotron">
       <div class="container">
         <h1>ZeeJong</h1>
-        <p>ZeeJong is the ultimate betting website! With over 1000 players in the database, 500 matches and 10 competitions, ZeeJong covers most of the matches in the world of soccer!</p>
+        <p>ZeeJong is the ultimate betting website! With over 25000 players, 5000 matches and 7 competitions in the database, ZeeJong covers most of the matches in the world of soccer!</p>
         <p><a class="btn btn-primary btn-lg" role="button" href="<?php echo SITE_URL ?>register">Register now »</a></p>
       </div>
 </div>
@@ -64,8 +64,8 @@ Created: February 2014
          
          	<tr>
          		<th>Name</th>
-         		<th>Matches</th>
-         		<th>Goals</th>
+         		<th class="center">Matches</th>
+         		<th class="center">Goals</th>
          	</tr>
          	
          	
@@ -87,7 +87,7 @@ Created: February 2014
          </table>
          
          
-          <p><a class="btn btn-default" href="#" role="button">More players »</a></p>
+          <p><a class="btn btn-default" href="<?php echo SITE_URL . 'player/'; ?>" role="button">More players »</a></p>
        </div>
         <div class="col-md-4">
           <h2>Leagues</h2>
