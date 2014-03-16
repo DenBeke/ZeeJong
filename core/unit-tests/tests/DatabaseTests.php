@@ -994,8 +994,6 @@ class BasicPlaysMatchInTeamTest extends UnitTest {
 		$this->id2 = $this->db->addPlayerToMatch($this->playerId2, $this->matchId2, $this->teamId2, $this->number2);
 		$this->id3 = $this->db->addPlayerToMatch($this->playerId3, $this->matchId3, $this->teamId3, $this->number3);
 		$this->id4 = $this->db->addPlayerToMatch($this->playerId4, $this->matchId4, $this->teamId4, $this->number4);
-
-		echo $this->id1;
 	}
 
 	public function basicGetters() {
