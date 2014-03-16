@@ -2233,9 +2233,9 @@ class Database {
 	
 		$numberOfResults = $statement->num_rows;
 		
-		$statement->bind_result($id, $firstname, $lastname, $country, $dateOfBirth, $height, $weight, $position);
+		$statement->bind_result($id, $firstname, $lastname, $country, $dateOfBirth, $height, $weight, $position, $playedMatches);
 	
-		$result = [[]]
+		$result = [];
 		while ($statement->fetch()) {
 			array_push($result, 
 				['id' => $id, 'firstname' => $firstname, 'lastname' => $lastname,
@@ -2245,7 +2245,7 @@ class Database {
 	
 		$statement->reset();
 	
-		return resultToPlayers($result);
+		return $this->resultToPlayers($result);
 	}
 
 
