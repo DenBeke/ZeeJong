@@ -85,6 +85,11 @@ table.matches td:nth-child(3) {
 }
 
 
+.center {
+	text-align: center;
+}
+
+
 /* Field *
 *********/
 

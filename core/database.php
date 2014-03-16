@@ -2185,11 +2185,6 @@ class Database {
 		return $amount;
 	}
 	
-	
-	
-	
-	
-	
 	public function getGoalsOfPlayerInterval($playerId, $min, $max) {
 		//Query
 		$query = "
@@ -2236,7 +2231,48 @@ class Database {
 	}
 
 
-
+	public function getPlayersWithMostMatches($start, $end) {
+		//Query
+		$query = "
+			SELECT `Player`.*, COUNT(*) AS `playedMatches` FROM `Player`
+			JOIN `PlaysMatchInTeam` ON `PlaysMatchInTeam`.playerId = `Player`.id
+			GROUP BY `Player`.id
+			ORDER BY `playedMatches` DESC
+			LIMIT ?,?
+		";
+	
+		//Prepare statement
+		$statement = $this->getStatement($query);
+	
+		//Bind parameters
+		if(!$statement->bind_param('ii', $start, $end)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+	
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+	
+		//Store the result in the buffer
+		$statement->store_result();
+	
+		$numberOfResults = $statement->num_rows;
+		
+		$statement->bind_result($id, $firstname, $lastname, $country, $dateOfBirth, $height, $weight, $position, $playedMatches);
+	
+		$result = [];
+		while ($statement->fetch()) {
+			array_push($result, 
+				['id' => $id, 'firstname' => $firstname, 'lastname' => $lastname,
+				'country' => $country, 'dateOfBirth' => $dateOfBirth,
+				'height' => $height, 'weight' => $weight, 'position' => $position]);	
+		}
+	
+		$statement->reset();
+	
+		return $this->resultToPlayers($result);
+	}
 
 
 
@@ -2673,9 +2709,9 @@ class Database {
 		//Query
 		$query = "
 			SELECT * FROM `Match`
-			WHERE date > ?
+			WHERE date >= ?
 			ORDER BY date ASC
-			LIMIT 0, ?;
+			LIMIT 0,?;
 		";
 	
 		//Prepare statement
@@ -2683,6 +2719,7 @@ class Database {
 	
 		//Bind parameters
 		$time = time();
+		$time = strtotime(date('d-m-Y', $time));
 		if(!$statement->bind_param('ii', $time, $limit)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
@@ -2705,7 +2742,7 @@ class Database {
 			$events[] = new Match($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId, $this);
 		}
 		
-		return array_reverse($events);
+		return $events;
 	
 	}
 
