@@ -1797,6 +1797,22 @@ class Database {
 	}
 
 
+	/**
+	 Returns a PlaysIn row, or throw an exception
+
+	 @param id
+	 */
+	public function getPlaysInById($id) {
+
+		$sel = new \Selector('PlaysIn');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		$playsIns = $this->resultToPlaysIn($result);		
+		requireEqCount($result, 1);
+
+		return $playsIns[0];
+	}
 
 
 	public function getPlayersInTeam($teamId) {
@@ -2361,6 +2377,17 @@ class Database {
 
 
 		return $goals;
+	}
+
+	private function resultToPlaysIn($result) {
+		$playsIns = array();
+
+		foreach($result as $playsIn) {
+			array_push($playsIns, new PlaysIn($playsIn['id'], $playsIn['playerId'], $playsIn['teamId'], $this));
+		}
+
+
+		return $playsIns;
 	}
 
 	private function resultToCoaches($result) {
