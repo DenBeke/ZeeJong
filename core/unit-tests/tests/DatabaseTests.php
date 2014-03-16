@@ -911,14 +911,14 @@ class BasicPlaysInTest extends UnitTest {
 
 	public function basicGetters() {
 
-		//Check team A
+		//Check players
 		$this->REQUIRE_EQUAL($this->db->getPlaysInById($this->id1)->getplayer()->getId(), $this->playerId1);
 		$this->REQUIRE_EQUAL($this->db->getPlaysInById($this->id2)->getplayer()->getId(), $this->playerId2);
 		$this->REQUIRE_EQUAL($this->db->getPlaysInById($this->id3)->getplayer()->getId(), $this->playerId3);
 		$this->REQUIRE_EQUAL($this->db->getPlaysInById($this->id4)->getplayer()->getId(), $this->playerId4);		
 
 
-		//Check team B
+		//Check teams
 		$this->REQUIRE_EQUAL($this->db->getPlaysInById($this->id1)->getTeam()->getId(), $this->teamId1);
 		$this->REQUIRE_EQUAL($this->db->getPlaysInById($this->id2)->getTeam()->getId(), $this->teamId2);
 		$this->REQUIRE_EQUAL($this->db->getPlaysInById($this->id3)->getTeam()->getId(), $this->teamId3);
@@ -932,6 +932,107 @@ class BasicPlaysInTest extends UnitTest {
 		$this->REQUIRE_EQUAL($this->db->addPlayerToTeam($this->playerId2, $this->teamId2), $this->id2);
 		$this->REQUIRE_EQUAL($this->db->addPlayerToTeam($this->playerId3, $this->teamId3), $this->id3);
 		$this->REQUIRE_EQUAL($this->db->addPlayerToTeam($this->playerId4, $this->teamId4), $this->id4);
+	}
+
+}
+
+class BasicPlaysMatchInTeamTest extends UnitTest {
+
+	private $db;
+
+	private $id1;
+	private $teamId1;
+	private $playerId1;
+	private $matchId1;
+	private $number1;
+
+	private $id2;
+	private $teamId2;
+	private $playerId2;
+	private $matchId2;
+	private $number2;
+
+	private $id3;
+	private $teamId3;
+	private $playerId3;
+	private $matchId3;
+	private $number3;
+
+	private $id4;
+	private $teamId4;
+	private $playerId4;
+	private $matchId4;
+	private $number4;	
+
+
+	public function __construct() {
+
+		$this->teamId1 = 1;
+		$this->playerId1 = 1;
+		$this->matchId1 = 1;
+		$this->number1 = 11;
+
+		$this->teamId2 = 1;
+		$this->playerId2 = 2;
+		$this->matchId2 = 2;
+		$this->number2 = 12;
+
+		$this->teamId3 = 3;
+		$this->playerId3 = 1;
+		$this->matchId3 = 3;
+		$this->number3 = 4;
+
+		$this->teamId4 = 2;
+		$this->playerId4 = 2;
+		$this->matchId4 = 1;
+		$this->number4 = 1;
+
+		$db = new \Database(DB_HOST, DB_USER, DB_PASS, "TestDB");
+		$this->db = $db;
+
+		$this->id1 = $this->db->addPlayerToMatch($this->playerId1, $this->matchId1, $this->teamId1, $this->number1);
+		$this->id2 = $this->db->addPlayerToMatch($this->playerId2, $this->matchId2, $this->teamId2, $this->number2);
+		$this->id3 = $this->db->addPlayerToMatch($this->playerId3, $this->matchId3, $this->teamId3, $this->number3);
+		$this->id4 = $this->db->addPlayerToMatch($this->playerId4, $this->matchId4, $this->teamId4, $this->number4);
+
+		echo $this->id1;
+	}
+
+	public function basicGetters() {
+
+		//Check players
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id1)->getplayer()->getId(), $this->playerId1);
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id2)->getplayer()->getId(), $this->playerId2);
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id3)->getplayer()->getId(), $this->playerId3);
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id4)->getplayer()->getId(), $this->playerId4);		
+
+
+		//Check teams
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id1)->getTeam()->getId(), $this->teamId1);
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id2)->getTeam()->getId(), $this->teamId2);
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id3)->getTeam()->getId(), $this->teamId3);
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id4)->getTeam()->getId(), $this->teamId4);
+
+
+		//Check matches
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id1)->getMatch()->getId(), $this->matchId1);
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id2)->getMatch()->getId(), $this->matchId2);
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id3)->getMatch()->getId(), $this->matchId3);
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id4)->getMatch()->getId(), $this->matchId4);
+
+		//Check numbers
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id1)->getNumber(), $this->number1);
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id2)->getNumber(), $this->number2);
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id3)->getNumber(), $this->number3);
+		$this->REQUIRE_EQUAL($this->db->getPlaysMatchInTeamById($this->id4)->getNumber(), $this->number4);
+	}
+
+	public function checkDuplicates() {
+
+		$this->REQUIRE_EQUAL($this->db->addPlayerToMatch($this->playerId1, $this->matchId1, $this->teamId1, $this->number1), $this->id1);
+		$this->REQUIRE_EQUAL($this->db->addPlayerToMatch($this->playerId2, $this->matchId2, $this->teamId2, $this->number2), $this->id2);
+		$this->REQUIRE_EQUAL($this->db->addPlayerToMatch($this->playerId3, $this->matchId3, $this->teamId3, $this->number3), $this->id3);
+		$this->REQUIRE_EQUAL($this->db->addPlayerToMatch($this->playerId4, $this->matchId4, $this->teamId4, $this->number4), $this->id4);
 	}
 
 }
