@@ -2159,11 +2159,6 @@ class Database {
 		return $amount;
 	}
 	
-	
-	
-	
-	
-	
 	public function getGoalsOfPlayerInterval($playerId, $min, $max) {
 		//Query
 		$query = "
@@ -2210,7 +2205,48 @@ class Database {
 	}
 
 
-
+	public function getPlayersWithMostMatches($start, $end) {
+		//Query
+		$query = "
+			SELECT `Player`.*, COUNT(*) AS `playedMatches` FROM `Player`
+			JOIN `PlaysMatchInTeam` ON `PlaysMatchInTeam`.playerId = `Player`.id
+			GROUP BY `Player`.id
+			ORDER BY `playedMatches` DESC
+			LIMIT ?,?
+		";
+	
+		//Prepare statement
+		$statement = $this->getStatement($query);
+	
+		//Bind parameters
+		if(!$statement->bind_param('ii', $start, $end)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+	
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+	
+		//Store the result in the buffer
+		$statement->store_result();
+	
+		$numberOfResults = $statement->num_rows;
+		
+		$statement->bind_result($id, $firstname, $lastname, $country, $dateOfBirth, $height, $weight, $position);
+	
+		$result = [[]]
+		while ($statement->fetch()) {
+			array_push($result, 
+				['id' => $id, 'firstname' => $firstname, 'lastname' => $lastname,
+				'country' => $country, 'dateOfBirth' => $dateOfBirth,
+				'height' => $height, 'weight' => $weight, 'position' => $position]);	
+		}
+	
+		$statement->reset();
+	
+		return resultToPlayers($result);
+	}
 
 
 
