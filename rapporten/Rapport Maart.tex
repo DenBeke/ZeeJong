@@ -1,0 +1,338 @@
+\documentclass[11pt]{article}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage[greek,dutch]{babel} 
+\usepackage{listings}
+\usepackage{color}
+\usepackage{framed}
+
+
+\usepackage[applemac]{inputenc}
+\usepackage[T1]{fontenc}
+
+\pagestyle{fancy}
+
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},         % size of fonts used for the code
+  breaklines=true,                 % automatic line breaking only at whitespace
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  keywordstyle=\color{blue},       % keyword style
+  stringstyle=\color{mymauve},     % string literal style
+}
+
+
+
+\interfootnotelinepenalty=10000
+
+
+\title{Raport Project Databases Maart}
+\author{Mathias Beke}
+\date{\today}
+
+
+\setlength{\parindent}{0cm}
+
+\begin{document}
+
+\lhead{Raport Project Databases: Maart}
+\rhead{}
+
+  \begin{center}
+      \Large\textbf{Raport Project Databases: Maart}
+   \end{center}
+
+
+
+
+
+\section{Status}
+
+
+
+
+\subsection{Taakverdeling}
+
+
+\begin{enumerate}
+    
+        \item ERM Schema: samen opgesteld. Digitalisatie: Mathias\footnote{De verdere digitalisatie en verdere aanpassingen werden door Alexander gedaan.}
+        
+        \item ERM Model omzetten in SQL tables: Alexander, Timo, Elias\footnote{De verfijning hiervan (wat het meeste tijd in beslag neemt) werd vooral door Timo gedaan.}
+        
+        \item Parser schrijven: Bruno, Mathias\footnote{Bruno heeft zich vooral toegelegd op de parser, en heeft er dan ook veruit het meeste voor gedaan.}
+        
+        \item Basis datastructuren: Alexander, Elias
+        
+        \item \emph{Teams} tabel vullen (Bruno)
+        
+        \item \emph{Coaches} tabel vullen (Bruno)
+        
+        \item \emph{Player} tabel moet extra informatie meekrijgen zoals lengte, gewicht, positie, geboortedatum, ... Bruno
+        
+        \item \emph{Date} attribuut van tabellen in orde brengen (Elias)
+        
+        \item Feitelijk login script, met sessions, registraties, login pagina, ... (Alexander)
+        
+        \item Verdere implementatie van \emph{get} queries voor de klassen. (Elias)
+    
+        \item Pagina's en algemeen ontwerp van de site (Timo en Mathias)
+        
+        \item \emph{Analyse van de data} Timo
+        
+        \item \emph{Herstructureren van de klassen} Elias      
+        
+        \item \emph{Crawler die automatisch nieuwe wedstrijden binnenhaalt, en de scores update van gespeelde wedstrijden.} Bruno
+
+        \item \emph{Informatie includen op pagina's} Mathias   
+
+        \item \emph{RSS feed ophalen} Mathias  
+        
+        \item \emph{Configuratie scherm gebruiker} Alexander     
+        
+        \item \emph{Pagina's stylen, nadat ze ge\"implementeerd zijn} Alexander\footnote{Alexander heeft vooral de gebruikers- en wed pagina's van een design voorzien. Het algemeen design werd vooral door Mathias gedaan, gebruik makende van Bootstrap}     
+        
+        \item \emph{Update functies/queries voor goals en wedstrijden} Elias
+        
+        \item \emph{Functies voor de 'bets'} Alexander
+
+        \item \emph{Geavanceerde view, met statistieken e.d.} Mathias
+        
+        \item \emph{Parser afmaken} Bruno
+        
+        \item \emph{Prognose} Timo
+        
+        \item \emph{Constraints} Timo
+        
+        \item \emph{Bets uitbreiden} Alexander
+        
+        \item \emph{Unit tests database} Elias
+        
+        \item \emph{Laatste details aan user interface} Mathias
+    
+    \end{enumerate}
+
+
+
+
+\section{Design}
+
+
+\subsection{UML diagram}
+
+% Bruno
+
+
+\subsection{MVC}
+
+% Mathias
+Om geen spaghetti te maken van de implementatie van de pagina's, hebben we geopteerd voor het \emph{Model View Pattern}. We routeren onze urls via \emph{GluePHP} en \emph{mod\_rewrite}. Apache geeft alle urls door aan \emph{GluePHP}, welke a.h.v. gedefini\"eerde reguliere expressies de url zal mappen op een bepaalde klasse. Het framework zal dan de GET of POST functie (afhangende van het type request) uitvoeren op de nieuwe instantie van de juiste klasse. (In onze implementatie hebben we er echter voor gezorgd dat het framework dat object ook terugkeert, zodat we het verder kunnen gebruiken. Verder hebben we ook een catch-all controller toegevoegd aan het framework om error pagina's te kunnen genereren.)
+
+Zo laten we \emph{GluePHP} een instantie van een \emph{Controller} aanmaken, die we bij het aanmaken de nodige datastructuren en informatie zal inladen. Op elke controller kunnen we dan een \emph{template} functie oproepen, die het overeenkomstige thema gedeelte zal insluiten op de pagina.
+
+
+\begin{framed}
+\begin{lstlisting}[language=php]
+$urls = array(
+	'error' => 'Controller\Error', //Catch all
+	INSTALL_DIR . 'player/(\d+)' => 'Controller\Player',
+	INSTALL_DIR . 'competition/(\d+)' => 'Controller\Competition',
+	INSTALL_DIR . 'match/(\d+)' => 'Controller\Match',
+	INSTALL_DIR . 'news' => 'Controller\News',
+);
+
+$controller = glue::stick($urls);
+\end{lstlisting}
+\end{framed}
+
+
+\begin{framed}
+\begin{lstlisting}[language=php]
+//Include the header template
+include(dirname(__FILE__) . '/theme/header.php');
+
+
+//Include the theme part
+$controller->template();
+
+
+//Include the footer template
+include(dirname(__FILE__) . '/theme/footer.php');
+\end{lstlisting}
+\end{framed}
+
+
+
+\section{Database}
+
+\subsection{Schema (ER-diagramma)}
+
+\subsection{Constraints}
+
+% Timo$
+
+
+
+
+\section{User Interface}
+
+
+De user interface concentreert zich vooral op matchen (met de voorspellingen en weddenschappen) en de spelers.
+Gebruikers navigeren vanaf de homepage door de competities, seizoenen (binnen zo'n competitie) en krijgen dan een overzichtspagina van een bepaalde wedstrijd.
+Op deze match pagina staat dan wat algemenen informatie zoals de score, scheidsrechters, ..., geflankeerd door de teams met hun spelers (voor die bepaalde match) opgelijst.
+
+Gebruikers kunnen te allen tijde doorklikken op spelers, teams, coaches, competities, om zo telkens weer op een overzichtelijke pagina te komen waarop wat meer informatie staat.
+
+Bij de spelers voorzien we de bezoeker van de nodige statistische data over een speler. Zo staan er het aantal gespeelde wedstrijden, gewonnen wedstrijden, kaarten en goals. Daarnaast staat er ook wat metadata over de spelers, zoals diens nationaliteit, positie op het veld, lengte, gewicht, etc.
+Onderaan de pagina kan de bezoeker een grafiek zien met de wedstrijden van het laatste jaar. Daaronder staat een overzichts grafiek die de tijdlijn van de speler voorstelt. Met daarop alle matchen van zijn carri\`ere.
+
+(Zie figuur \ref{fig:speler} p. \pageref{fig:speler} voor een voorbeeld van een speler pagina.)\\
+
+Om het design tot een goed einde te brengen hebben we gebruik gemaakt van het \emph{Bootstrap} 
+framework. Hierdoor hadden we een stevige basis om op te steunen bij het stylen van de pagina's. (Voor de installatie pagina hebben we echter de minimalistische framework \emph{Pure CSS} gebruikt.)
+
+De grafieken worden in javascript gerenderd op de html5 canvas d.m.v. de javascript module \emph{ChartJS}.
+
+Intern hebben we slechts \'e\'en framework gebruikt, namelijk \emph{GluePHP}. Dit framework zet urls om in klasse objecten op basis van reguliere expressies. Zo konden we met Apache's \emph{mod\_rewrite} onze urls afhandelen.
+
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[scale=0.29]{player.png}
+
+	\caption{Schermafbeelding van de speler pagina}
+	\label{fig:speler}
+	\end{center}
+\end{figure}
+
+
+
+
+
+\section{Extra Functionaliteit}
+
+
+\subsection{Selector class}
+
+%Timo
+% gelieve dat de syntax in zo'n box te zetten
+
+
+\begin{framed}
+\begin{lstlisting}[language=php]
+$sel = new \Selector('Coaches');
+$sel->filter([['teamId', '=', $teamId]]);
+$sel->filter([['matchId', '=', $matchId]]);
+$sel->join('Coach', 'coachId', 'id');
+$sel->select(['Coach.*']);
+
+$result = $this->select($sel);
+$coaches = $this->resultToCoaches($result);
+return $coaches[0];
+\end{lstlisting}
+\end{framed}
+
+
+
+
+
+\subsection{Unit Test Framework}
+
+Om ons ervan te vergewissen dat database de functie volledig werken, hebben we unit tests voorzien. Voor vele talen vind je dan zeer snel een zeer eenvoudig framework. Dit was echter niet meteen snel te vinden voor PHP. Daarom heeft Mathias zelf een test framework geschreven, waarmee het schrijven van unit tests veel gemakkelijk moet gaan.\\
+
+Een test \emph{case} wordt gedeclareerd door simpelweg een PHP klasse te declareren. Een test \emph{section} binnen zulk een \emph{case} is dan gewoon een functie met daarin enkele uitvoerbare tests.
+Voor het uitvoeren van de tests zijn er enkele \emph{REQUIRE} functies, zoals \emph{require\_true, require\_false, require\_equal, require\_notequal} en \emph{require\_exception}.
+
+Een voorbeeld van een test bestand ziet er dan als volgt uit:
+
+\begin{framed}
+\begin{lstlisting}[language=php]
+class Example extends UnitTest {
+	
+	public function AnotherTest() {
+		
+		$this->REQUIRE_EQUAL($var, $this->testVarA);
+		$this->REQUIRE_NOTEQUAL('one', 'two');
+		$this->REQUIRE_TRUE('one' == 'one');
+		$this->REQUIRE_FALSE('one' == 'two');
+		
+	}
+	
+	public function ExceptionTest() {
+		
+		$this->BEGIN_REQUIRE_EXCEPTION();
+
+		//A statement between BEGIN_REQUIRE and
+		//END_REQUIRE should throw an exception
+		//in order to make the performed test 'passed'.
+		
+		divide(2, 0);
+		
+		$this->END_REQUIRE_EXCEPTION();
+		
+	}	
+	
+}
+\end{lstlisting}
+\end{framed}
+
+
+De gebruiker van het test framework plaatst alle te uitvoeren tests in de \emph{test} map, en het framework handelt de rest af. Je krijgt uiteraard een overzichtelijke html output bij het runnen van de tests (Zie figuur \ref{fig:unit-tests} p. \pageref{fig:unit-tests}).
+
+
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[scale=0.39]{unit-tests.png}
+
+	\caption{HTML uitvoer van unit tests}
+	\label{fig:unit-tests}
+	\end{center}
+\end{figure}
+
+
+
+
+\subsection{RSS nieuwsfeed}
+
+Om de gebruikers meer interessante inhoud op de website te bieden, hebben we onze site voorzien van een \emph{News} pagina, waarop we met RSS de laatste voetbal nieuwtjes binnehalen. Omdat zelf een RSS parser schrijven geen gemakkelijke klus is, gebruiken we \emph{SimplePie RSS}, een nieuwer alternatief voor \emph{Magpie RSS}.
+
+
+
+\section{Planning}
+
+Voor de volgende deadline verwachten we om het wedden op matchen volledig ge\"implementeerd te hebben. Daarnaast zou er ook een administratie pagina moeten komen voor dit geheel, waar de admins hun betting site in de gaten kunnen houden, en handmatig wedstrijden toevoegen of wijzigen.\\
+
+Zoals we reeds deden, zullen we ook nu weer elke donderdag afspreken om afspraken te maken en issues te bespreken.
+
+
+
+\section{Appendix}
+
+\subsection{Volledige Queries}
+
+
+%Elias
+%Gelieve alle queries in de syntax highlighting 'veld' te zetten.
+
+\begin{framed}
+\begin{lstlisting}[language=sql]
+SELECT veldna(a)m(en)
+ FROM Tabelnaam
+ [WHERE conditie]
+ [GROUP BY veldnaam [, veldnaam ...]]
+ [HAVING conditie2]
+ [ORDER BY veldnaam [ASC | DESC] [, veldnaam [ASC | DESC] ...]];
+\end{lstlisting}
+\end{framed}
+
+
+
+\end{document}
