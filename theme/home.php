@@ -46,7 +46,7 @@ Created: February 2014
 	          
           </table>
           
-          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+          <p><a class="btn btn-default" href="<?php echo SITE_URL . 'events/'; ?>" role="button">More Events »</a></p>
         </div>
         <div class="col-md-4">
           <h2>Players</h2>

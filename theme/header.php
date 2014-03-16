@@ -56,7 +56,7 @@
 		
 				<div class="navbar-collapse collapse" style="height: auto;">
 				    <ul class="nav navbar-nav">
-				      <li class="active"><a href="#">Upcoming Events</a></li>
+				      <li class=""><a href="<?php echo SITE_URL . 'events/'; ?>">Upcoming Events</a></li>
 				      <li><a href="<?php echo SITE_URL; ?>news">News</a></li>
 				      <li class="dropdown">
 				        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Leagues <b class="caret"></b></a>

@@ -2669,7 +2669,7 @@ class Database {
 			$events[] = new Match($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId, $this);
 		}
 		
-		return array_reverse($events);
+		return $events;
 	
 	}
 
