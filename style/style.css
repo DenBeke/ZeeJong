@@ -63,20 +63,19 @@ canvas{
 table.matches th:nth-child(1),
 table.matches td:nth-child(1) {
 	text-align: right;
-	width: 50%;
+	width: 45%;
 }
 
 table.matches th:nth-child(2),
 table.matches td:nth-child(2) {
 	text-align: center;
-	padding-left: 3%;
-	padding-right: 3%;
+	width: 10%;
 }
 
 table.matches th:nth-child(3),
 table.matches td:nth-child(3) {
 	text-align: left;
-	width: 50%;
+	width: 45%;
 }
 
 
