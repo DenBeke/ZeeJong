@@ -2636,9 +2636,9 @@ class Database {
 		//Query
 		$query = "
 			SELECT * FROM `Match`
-			WHERE date > ?
+			WHERE date >= ?
 			ORDER BY date ASC
-			LIMIT 0, ?;
+			LIMIT 0,?;
 		";
 	
 		//Prepare statement
@@ -2646,6 +2646,7 @@ class Database {
 	
 		//Bind parameters
 		$time = time();
+		$time = strtotime(date('d-m-Y', $time));
 		if(!$statement->bind_param('ii', $time, $limit)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
