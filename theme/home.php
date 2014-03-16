@@ -26,36 +26,23 @@ Created: February 2014
         <div class="col-md-4">
           <h2>Upcoming Events</h2>
           
-          <table class="table table-striped">
+          <table class="table table-striped matches">
           
-          	<tr>
-          		<th colspan="2">Country</th>
-          		<th>Date</th>
-          	</tr>
-          
-	          <tr>
-	          	<td>Belgium</td>
-	          	<td>Scotland</td>
-	          	<td>13 February</td>
-	          </tr>
-	          
-	          <tr>
-	          	<td>France</td>
-	          	<td>Germany</td>
-	          	<td>14 March</td>
-	          </tr>
-	          
-	          <tr>
-	          	<td>Anderlecht</td>
-	          	<td>AA Gent</td>
-	          	<td>23 March</td>
-	          </tr>
-	          
-	          <tr>
-	          	<td>Club Brugge</td>
-	          	<td>Standard Liège</td>
-	          	<td>23 April</td>
-	          </tr>
+          	<?php
+          	
+          	foreach ($this->events as $match) {
+				?>
+				<tr>
+						<td><?php echo $match->getTeamA()->getName(); ?></td>
+						
+						<td><a href="<?php echo SITE_URL . 'match/' . $match->getId(0); ?>"><span class="badge"><?php try { echo $match->getScore(); } catch(exception $e) { echo date('d-m-Y', $match->getDate()); } ?></span></a></td>
+						
+						<td><?php echo $match->getTeamB()->getName(); ?></td>
+				</tr>
+				<?php
+			}
+          	
+          	?>
 	          
           </table>
           
