@@ -1622,7 +1622,7 @@ class Database {
 		//Check if this isn't already in the database
 		try {
 
-			return $this -> getPlaysMatchInTeam($playerId, $matchId, $teamId, $number);
+			return $this -> getPlaysMatchInTeam($playerId, $matchId, $teamId, $number)->getId();
 		} catch (exception $e) {
 		}
 
@@ -1671,6 +1671,16 @@ class Database {
 		return $playsMatchInTeams[0];
 	}
 
+	public function getPlaysMatchInTeamById($id) {
+		$sel = new \Selector('PlaysMatchInTeam');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		$playsMatchInTeams = $this->resultToPlaysMatchInTeams($result);
+		requireEqCount($playsMatchInTeams, 1);
+
+		return $playsMatchInTeams[0];
+	}
 
 
 	public function getTeamInMatch($teamId, $matchId) {
