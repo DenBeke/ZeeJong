@@ -1622,7 +1622,7 @@ class Database {
 		//Check if this isn't already in the database
 		try {
 
-			return $this -> getPlaysMatchInTeam($playerId, $matchId, $teamId, $number);
+			return $this -> getPlaysMatchInTeam($playerId, $matchId, $teamId, $number)->getId();
 		} catch (exception $e) {
 		}
 
@@ -1671,6 +1671,16 @@ class Database {
 		return $playsMatchInTeams[0];
 	}
 
+	public function getPlaysMatchInTeamById($id) {
+		$sel = new \Selector('PlaysMatchInTeam');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		$playsMatchInTeams = $this->resultToPlaysMatchInTeams($result);
+		requireEqCount($playsMatchInTeams, 1);
+
+		return $playsMatchInTeams[0];
+	}
 
 
 	public function getTeamInMatch($teamId, $matchId) {
@@ -1797,6 +1807,22 @@ class Database {
 	}
 
 
+	/**
+	 Returns a PlaysIn row, or throw an exception
+
+	 @param id
+	 */
+	public function getPlaysInById($id) {
+
+		$sel = new \Selector('PlaysIn');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		$playsIns = $this->resultToPlaysIn($result);		
+		requireEqCount($result, 1);
+
+		return $playsIns[0];
+	}
 
 
 	public function getPlayersInTeam($teamId) {
@@ -2397,6 +2423,17 @@ class Database {
 
 
 		return $goals;
+	}
+
+	private function resultToPlaysIn($result) {
+		$playsIns = array();
+
+		foreach($result as $playsIn) {
+			array_push($playsIns, new PlaysIn($playsIn['id'], $playsIn['playerId'], $playsIn['teamId'], $this));
+		}
+
+
+		return $playsIns;
 	}
 
 	private function resultToCoaches($result) {
