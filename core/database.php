@@ -2277,7 +2277,7 @@ class Database {
 	public function getTournamentsInCompetition($competitionId) {
 		$sel = new \Selector('Tournament');
 		$sel->filter([['competitionId', '=', $competitionId]]);
-
+		$sel->order('name', 'DESC');
 
 		$result = $this->select($sel);
 
