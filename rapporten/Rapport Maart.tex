@@ -218,6 +218,48 @@ Onderaan de pagina kan de bezoeker een grafiek zien met de wedstrijden van het l
 
 (Zie figuur \ref{fig:speler} p. \pageref{fig:speler} voor een voorbeeld van een speler pagina.)\\
 
+
+
+Gebruikers kunnen op de website reeds registreren, inloggen, accountinstellingen wijzigen en bets plaatsen.
+Het registratie,login en controle paneel is voorzien van voldoende checks die nagaan of de door de user opgegeven informatie correct is.  Zo kan een user bijvoorbeeld niet registreren met een syntactisch ongeldig emailadres of een gebruikersnaam die reeds bestaat.
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[scale=0.35]{changesettings.png}
+
+	\caption{Schermafbeelding van het userConfigPanel}
+	\label{fig:configPanel}
+	\end{center}
+\end{figure}
+We hebben getracht ons user systeem volgens huidige maatstaven erg veilig te maken.
+Wanneer een gebruiker registreert, dan wordt er een random salt gegenereerd en vervolgens wordt de sha256 hash berekend aan de hand van het gekozen wachtwoord, geconcateneerd met de salt.
+In de database worden de salt en het gehashte wachtwoord opgeslagen.
+Bij het inloggen wordt min of meer hetzelfde gedaan: de sha256 hash wordt wederom berekend aan de hand van de salt van de user (in de database) en het wachtwoord dat de user ingeeft.
+Als de berekende hash dan overeenkomt met de hash van de user in de database, dan was het wachtwoord correct en is de gebruiker ingelogd.
+\\\\
+Een gebruiker kan reeds bets plaatsen op een score voor een bepaalde match en achteraf de reeds geplaatste bets bekijken.  Dit systeem is echter nog vrij primitief waardoor de bets bijvoorbeeld bij afloop van een match niet berekend worden en gewoon 'blijven staan'.
+Het plaatsen van een bet gebeurt door naar de pagina van een bepaalde wedstrijd te gaan en op de 'bet' knop te drukken.  Vervolgens landt de gebruiker op een pagina bij welke hij een bepaalde score en geldbedrag kan kiezen.
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[scale=0.35]{placeBet.png}
+
+	\caption{Schermafbeelding van de place bet pagina}
+	\label{fig:placeBet}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[scale=0.35]{bets.png}
+	\caption{Schermafbeelding van de bets pagina}
+	\label{fig:bets}
+	\end{center}
+\end{figure}
+
+
+
+
+
+
 Om het design tot een goed einde te brengen hebben we gebruik gemaakt van het \emph{Bootstrap} 
 framework. Hierdoor hadden we een stevige basis om op te steunen bij het stylen van de pagina's. (Voor de installatie pagina hebben we echter de minimalistische framework \emph{Pure CSS} gebruikt.)
 
@@ -233,7 +275,6 @@ Intern hebben we slechts \'e\'en framework gebruikt, namelijk \emph{GluePHP}. Di
 	\label{fig:speler}
 	\end{center}
 \end{figure}
-
 
 
 
