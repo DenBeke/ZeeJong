@@ -340,6 +340,465 @@ Zoals we reeds deden, zullen we ook nu weer elke donderdag afspreken om afsprake
 \subsection{Volledige Queries}
 
 
+\subsubsection{Tabellen}
+
+
+
+
+    \paragraph{Bet}
+        Bevat alle weddenschappen met de volgende informatie:
+            match, score ploeg a, score ploeg b, tijdstip van weddenschap, de gebruiker,
+            hoeveel geld er gewed is.
+        De foreign keys zijn de gebruiker die de bet heeft gemaakt en de match waarop 
+        de bet is gezet.
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `Bet` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `matchId` int(11) NOT NULL,
+  `score1` int(2) DEFAULT NULL,
+  `score2` int(2) DEFAULT NULL,
+  `time` int(3) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `matchId_2` (`matchId`,`score1`,`score2`,`userId`),
+  KEY `userId` (`userId`),
+  KEY `matchId` (`matchId`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+
+    \paragraph{Cards}
+    
+        Deze tabel bevat alle kaarten die spelers krijgen gedurende een wedstrijd.
+        De tabel heeft dus als attributen de speler, match, kleur (geel/rood) en de tijd (d.i. het aantal verstreken minuten sinds het begin van de match)
+    
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `Cards` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `playerId` int(11) NOT NULL,
+  `matchId` int(11) NOT NULL,
+  `color` tinyint(1) NOT NULL,
+  `time` int(3) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `playerId_3` (`playerId`,`matchId`,`time`),
+  KEY `playerId` (`playerId`,`matchId`),
+  KEY `playerId_2` (`playerId`),
+  KEY `matchId` (`matchId`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+    
+    
+    \paragraph{Coach}
+        Bevat alle coaches met de volgende informatie:
+            naam, land
+        Het land word gerefereerd door een foreign key.
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+ CREATE TABLE IF NOT EXISTS `Coach` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `firstname` varchar(50) NOT NULL,
+   `lastname` varchar(50) NOT NULL,
+   `country` int(11) NOT NULL,
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `firstname` (`firstname`,`lastname`,`country`),
+   KEY `country` (`country`),
+   KEY `country_2` (`country`)
+ ) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+        
+        
+        
+    \paragraph{Coaches}
+        Houdt bij wat de coach van een team is voor een bepaalde wedstrijd. Het bevat dus de volgende informatie:
+            coach, team, match
+        Coach, team en match zijn foreign keys.
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `Coaches` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `coachId` int(11) NOT NULL,
+  `teamId` int(11) NOT NULL,
+  `matchId` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `coachId_3` (`coachId`,`teamId`,`matchId`),
+  KEY `coachId` (`coachId`,`teamId`),
+  KEY `matchId` (`matchId`),
+  KEY `teamId` (`teamId`),
+  KEY `coachId_2` (`coachId`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+        
+        
+        
+    \paragraph{Competition}
+        Bevat de namen van de competities.
+        Bijvoorbeeld: World Cup, UEFA Europa League, ...
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `Competition` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+        
+        
+        
+        
+    \paragraph{Country}
+        Bevat de namen van landen.
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `Country` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+        
+        
+        
+        
+    \paragraph{Goal}
+        Bevat de volgende gegevens over een goal:
+            speler, match, tijdstip
+        De speler en de match zijn de foreign keys.
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `Goal` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `playerId` int(11) NOT NULL,
+  `matchId` int(11) NOT NULL,
+  `time` int(3) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `playerId_3` (`playerId`,`matchId`,`time`),
+  KEY `playerId` (`playerId`,`matchId`),
+  KEY `matchId` (`matchId`),
+  KEY `playerId_2` (`playerId`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+        
+        
+        
+        
+        
+    \paragraph{Match}
+        Bevat de volgende informatie over een match:
+            de 2 teams, het tournament, de scheidsrechter, datum, de uitslag
+        De teams, het tournament, de scheidsrechter en de uitslag zijn foreign keys.
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `Match` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `teamA` int(11) NOT NULL,
+  `teamB` int(11) NOT NULL,
+  `tournamentId` int(11) NOT NULL,
+  `refereeId` int(11) DEFAULT NULL,
+  `date` int(11) NOT NULL,
+  `scoreId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `teamA_2` (`teamA`,`teamB`,`tournamentId`,`date`),
+  KEY `teamA` (`teamA`,`teamB`),
+  KEY `tournamentId` (`tournamentId`,`refereeId`),
+  KEY `scoreId` (`scoreId`),
+  KEY `refereeId` (`refereeId`),
+  KEY `tournamentId_2` (`tournamentId`),
+  KEY `teamB` (`teamB`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+        
+        
+        
+        
+    \paragraph{Player}
+        Bevat de volgende gegevens over een speler:
+            naam, land, geboortedatum, lengte, gewicht, positie(aanvaller,verdediger,...)
+        Het land is een foreign key.
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `Player` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `country` int(11) NOT NULL,
+  `dateOfBirth` int(11) DEFAULT NULL,
+  `height` int(3) DEFAULT NULL,
+  `weight` int(3) DEFAULT NULL,
+  `position` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `firstname` (`firstname`,`lastname`,`country`,`dateOfBirth`),
+  KEY `country` (`country`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+        
+        
+        
+        
+    \paragraph{PlaysIn}
+        Linkt de spelers met hun huidig team.
+        De foreign keys zijn dus de speler en het team.
+        Een speler heeft 1 huidig team, dit kan dus eventueel als extra informatie bij de speler worden opgeslagen.
+        Hierdoor zal deze tabel overbodig worden.
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `PlaysIn` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `playerId` int(11) NOT NULL,
+  `teamId` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `playerId_2` (`playerId`,`teamId`),
+  KEY `playerId` (`playerId`),
+  KEY `teamId` (`teamId`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+        
+        
+        
+    \paragraph{PlaysMatchInTeam}
+        Houd bij welke spelers voor welk team speelden in een bepaalde match.
+        De foreign keys zijn de speler, het team en de match.
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `PlaysMatchInTeam` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `playerId` int(11) NOT NULL,
+  `number` int(11) NOT NULL,
+  `teamId` int(11) NOT NULL,
+  `matchId` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `playerId_2` (`playerId`,`teamId`,`matchId`),
+  KEY `playerId` (`playerId`,`teamId`,`matchId`),
+  KEY `teamId` (`teamId`),
+  KEY `matchId` (`matchId`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+        
+        
+        
+    
+    \paragraph{Referee}
+        Bevat de volgende informatia over een scheidsrechter:
+            naam, land
+        Het land is een foreign key.
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `Referee` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `countryId` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `firstname` (`firstname`,`lastname`,`countryId`),
+  KEY `countryId` (`countryId`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+        
+        
+        
+        
+    \paragraph{Score}
+        Bevat de uitslagen, de score van team 1 en van team 2.
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `Score` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `teamA` int(11) DEFAULT NULL,
+  `teamB` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `teamA` (`teamA`,`teamB`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+        
+        
+        
+    
+    \paragraph{Team}
+        Bevat de naam en het land van een team.
+        Het land is de foreign key.
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `Team` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `country` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`,`country`),
+  KEY `country` (`country`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+        
+        
+        
+        
+    \paragraph{Tournament}
+        Bevat de naam en bij welke competetie het hoort.
+        De competitie is de foreign key.
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `Tournament` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `competitionId` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_2` (`name`,`competitionId`),
+  KEY `competitionId` (`competitionId`),
+  KEY `name` (`name`,`competitionId`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+        
+        
+        
+        
+    \paragraph{User}
+        Bevat informatie over de geregistreerde gebruikers(username, password, email, money).
+        
+        \begin{framed}
+        \begin{lstlisting}[language=sql]
+CREATE TABLE IF NOT EXISTS `User` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(128) NOT NULL,
+  `salt` varchar(128) NOT NULL,
+  `emailAddress` varchar(50) NOT NULL,
+  `money` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) AUTO_INCREMENT=1 ;
+        \end{lstlisting}
+        \end{framed}
+
+
+
+
+\subsubsection{Constraints}
+
+    \begin{framed}
+    \begin{lstlisting}[language=sql]
+--
+-- Constraints for table `Bet`
+--
+ALTER TABLE `Bet`
+  ADD CONSTRAINT `Bet_ibfk_2` FOREIGN KEY (`matchId`) REFERENCES `Match` (`id`),
+  ADD CONSTRAINT `Bet_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `User` (`id`);
+
+--
+-- Constraints for table `Cards`
+--
+ALTER TABLE `Cards`
+  ADD CONSTRAINT `Cards_ibfk_2` FOREIGN KEY (`matchId`) REFERENCES `Match` (`id`),
+  ADD CONSTRAINT `Cards_ibfk_1` FOREIGN KEY (`playerId`) REFERENCES `Player` (`id`);
+
+--
+-- Constraints for table `Coach`
+--
+ALTER TABLE `Coach`
+  ADD CONSTRAINT `Coach_ibfk_1` FOREIGN KEY (`country`) REFERENCES `Country` (`id`);
+
+--
+-- Constraints for table `Coaches`
+--
+ALTER TABLE `Coaches`
+  ADD CONSTRAINT `Coaches_ibfk_3` FOREIGN KEY (`matchId`) REFERENCES `Match` (`id`),
+  ADD CONSTRAINT `Coaches_ibfk_1` FOREIGN KEY (`coachId`) REFERENCES `Coach` (`id`),
+  ADD CONSTRAINT `Coaches_ibfk_2` FOREIGN KEY (`teamId`) REFERENCES `Team` (`id`);
+
+--
+-- Constraints for table `Goal`
+--
+ALTER TABLE `Goal`
+  ADD CONSTRAINT `Goal_ibfk_2` FOREIGN KEY (`matchId`) REFERENCES `Match` (`id`),
+  ADD CONSTRAINT `Goal_ibfk_1` FOREIGN KEY (`playerId`) REFERENCES `Player` (`id`);
+
+--
+-- Constraints for table `Match`
+--
+ALTER TABLE `Match`
+  ADD CONSTRAINT `Match_ibfk_5` FOREIGN KEY (`scoreId`) REFERENCES `Score` (`id`),
+  ADD CONSTRAINT `Match_ibfk_1` FOREIGN KEY (`teamA`) REFERENCES `Team` (`id`),
+  ADD CONSTRAINT `Match_ibfk_2` FOREIGN KEY (`teamB`) REFERENCES `Team` (`id`),
+  ADD CONSTRAINT `Match_ibfk_3` FOREIGN KEY (`tournamentId`) REFERENCES `Tournament` (`id`),
+  ADD CONSTRAINT `Match_ibfk_4` FOREIGN KEY (`refereeId`) REFERENCES `Referee` (`id`);
+
+--
+-- Constraints for table `Player`
+--
+ALTER TABLE `Player`
+  ADD CONSTRAINT `Player_ibfk_1` FOREIGN KEY (`country`) REFERENCES `Country` (`id`);
+
+--
+-- Constraints for table `PlaysIn`
+--
+ALTER TABLE `PlaysIn`
+  ADD CONSTRAINT `PlaysIn_ibfk_2` FOREIGN KEY (`teamId`) REFERENCES `Team` (`id`),
+  ADD CONSTRAINT `PlaysIn_ibfk_1` FOREIGN KEY (`playerId`) REFERENCES `Player` (`id`);
+
+--
+-- Constraints for table `PlaysMatchInTeam`
+--
+ALTER TABLE `PlaysMatchInTeam`
+  ADD CONSTRAINT `PlaysMatchInTeam_ibfk_3` FOREIGN KEY (`matchId`) REFERENCES `Match` (`id`),
+  ADD CONSTRAINT `PlaysMatchInTeam_ibfk_1` FOREIGN KEY (`playerId`) REFERENCES `Player` (`id`),
+  ADD CONSTRAINT `PlaysMatchInTeam_ibfk_2` FOREIGN KEY (`teamId`) REFERENCES `Team` (`id`);
+
+--
+-- Constraints for table `Referee`
+--
+ALTER TABLE `Referee`
+  ADD CONSTRAINT `Referee_ibfk_1` FOREIGN KEY (`countryId`) REFERENCES `Country` (`id`);
+
+--
+-- Constraints for table `Team`
+--
+ALTER TABLE `Team`
+  ADD CONSTRAINT `Team_ibfk_1` FOREIGN KEY (`country`) REFERENCES `Country` (`id`);
+
+--
+-- Constraints for table `Tournament`
+--
+ALTER TABLE `Tournament`
+  ADD CONSTRAINT `Tournament_ibfk_1` FOREIGN KEY (`competitionId`) REFERENCES `Competition` (`id`);
+     \end{lstlisting}
+     \end{framed}
+
+
+
+
+
+
+
 %Elias
 %Gelieve alle queries in de syntax highlighting 'veld' te zetten.
 
