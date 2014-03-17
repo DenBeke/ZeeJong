@@ -455,7 +455,7 @@ class Parser {
 					else {
 
 						try {
-							$matchId = $this->database->getMatch($teamIdA, $teamIdB, null, $date, $tournamentId);
+							$matchId = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId);
 
 							//If no exception gets thrown then the match was already in the database
 							$this->database->removeMatch($matchId);
