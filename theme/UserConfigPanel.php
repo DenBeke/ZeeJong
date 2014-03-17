@@ -50,7 +50,7 @@
 
 
 	<div class="well">
-		<form id="changeSettings" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>configPanel">
+		<form id="changeSettings" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>config-panel">
 			<div class="form-group">
 				<label class="control-label col-sm-2">Current Password (*)</label>
 				<div class="controls col-sm-10">
