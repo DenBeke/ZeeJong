@@ -70,7 +70,7 @@ $navigator = new Controller\Navigator;
 include(dirname(__FILE__) . '/theme/header.php');
 
 
-
+//Include the theme part
 $controller->template();
 
 
