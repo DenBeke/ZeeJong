@@ -882,7 +882,7 @@ class Database {
 		} catch (exception $e) {
 		}
 
-		return $this->insert('Coach', ['firstName', 'lastName', 'countryId'], [$firstName, $lastName, $countryId]);
+		return $this->insert('Coach', ['firstname', 'lastname', 'country'], [$firstName, $lastName, $countryId]);
 	}
 
 	/**
@@ -1217,7 +1217,7 @@ class Database {
 		}
 
 		return $this->insert('Goal', ['playerId', 'matchId', 'time'],
-									[$playerId, $time, $matchId]);
+									[$playerId, $matchId, $time]);
 	}
 
 	/**
@@ -1298,7 +1298,7 @@ class Database {
 			$scoreId = $this -> addScore($scoreA, $scoreB);
 
 		return $this->insert('Match', ['teamA', 'teamB', 'tournamentId', 'refereeId', 'date', 'scoreId'],
-									[$teamA, $teamB, $scoreA, $scoreB, $refereeId, $date, $tournamentId]);
+									[$teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId]);
 	}
 
 	public function getMatch($teamA, $teamB, $date, $tournamentId) {
