@@ -106,7 +106,7 @@ class Database {
 
 		$statement = $this->getStatement2($query);
 		$statement->execute($values);
-		return $statement->insert_id;
+		return $this->con->lastInsertId();
 	}
 
 	public function select($selector) {
@@ -2383,44 +2383,19 @@ class Database {
 	
 	
 	public function getUpcommingEvents($limit) {
-		//Query
-		$query = "
-			SELECT * FROM `Match`
-			WHERE date >= ?
-			ORDER BY date ASC
-			LIMIT 0,?;
-		";
-	
-		//Prepare statement
-		$statement = $this->getStatement($query);
-	
-		//Bind parameters
 		$time = time();
 		$time = strtotime(date('d-m-Y', $time));
-		if(!$statement->bind_param('ii', $time, $limit)){
-			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-	
-		//Execute statement
-		if (!$statement->execute()) {
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-	
-		//Store the result in the buffer
-		$statement->store_result();
-	
-	
-		$numberOfResults = $statement->num_rows;
-	
-		$statement->bind_result($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId);
-		$events = [];
-		
-		while ($statement->fetch()) {
-			$events[] = new Match($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId, $this);
-		}
-		
-		return $events;
-	
+
+		$sel = new \Selector('Match');
+		$sel->filter([['date', '>=', $time]]);
+		$sel->order('date', 'ASC');
+		$sel->limit(0, $limit);
+
+		$result = $this->select($sel);
+
+		$matches = $this->resultToMatches($result);
+
+		return $matches;	
 	}
 
 
