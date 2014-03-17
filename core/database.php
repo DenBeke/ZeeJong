@@ -79,6 +79,36 @@ class Database {
 
 	}
 
+	public function insert($table, $columns, $values) {
+		$table = '`' . $table . '`';		
+
+		foreach($columns as &$column) {
+			$column = '`' . $column . '`';
+		}
+
+		$questionMarks = [];
+		$paramTypes = '';
+		foreach($values as $value) {
+			if(is_int($value)) {
+				$paramTypes .= 'i';
+			} else if(is_double($value)) {
+				$paramTypes .= 'd';
+			} else if(is_string($value)) {
+				$paramTypes .= 's';
+			} else {
+				throw new Exception('value can only be integer double or string');
+			}
+
+			array_push($questionMarks, '?');
+		}
+
+		$query = 'INSERT INTO ' . $table . '(' . implode(',', $columns) . ')' . ' VALUES (' . implode(',', $questionMarks) . ')';
+
+		$statement = $this->getStatement2($query);
+		$statement->execute($values);
+		
+	}
+
 	public function select($selector) {
 		//echo "<pre>";
 		//print_r($selector->sql());
@@ -141,10 +171,6 @@ class Database {
 
 		return $result2;
 	 }
-	 
-	 
-	 
-
 
 	/**
 	 Add a bet
