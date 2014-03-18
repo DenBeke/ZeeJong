@@ -132,6 +132,19 @@
 % Bruno
 
 
+\subsection{Parser}
+
+De parser bestaat uit twee delen. De parseArchive functie zal, voor alle geselecteerde competities, alle wedstrijden van de afgelopen jaren gaan opzoeken en de data extraheren en in de database opslaan. Het is de bedoeling dat deze functie slechts eenmalig moet worden aangeroepen. Het andere deel, de crawler, zal regelmatig opnieuw worden uitgevoerd. Het zal de huidige competities in de gaten houden door nieuwe wedstrijden toe te voegen en de gegevens voor gespeelde wedstrijden te updaten.
+
+Om het internetverkeer minder te belasten zal elke pagina die wordt binnengehaald gecached worden. Voor het archief zullen deze pagina's in de cache blijven, voor andere pagina's zal de pagina na een bepaalde tijd opnieuw worden gedownload.
+
+De urls van de competities zijn hardcoded, maar vanaf deze pagina's worden alle matchen en teams door de parser ontdekt. Dus zelfs al zouden de urls wijzigen, dan zou dit haast geen werk kosten. Maar normaal moet de parser zonder problemen de komende jaren blijven werken.
+
+Intern wordt gebruik gemaakt van de PHP Simple HTML DOM Parser om de pagina's om zo simpel de inhoud van een bepaalde tag op te kunnen vragen.
+
+Uiteraard worden niet enkel de matchen geparset, maar zal de parser ook informatie over de spelers, teams, coaches en zelfs scheidsrechters zoeken en opslaan in de database.
+
+
 \subsection{MVC}
 
 % Mathias
