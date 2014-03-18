@@ -8,10 +8,11 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{framed}
-
+\usepackage{subfig}
 
 \usepackage[applemac]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage[section]{placeins}
 
 \pagestyle{fancy}
 
@@ -130,6 +131,47 @@
 \subsection{UML diagram}
 
 % Bruno
+\includegraphics[scale=0.4]{UML_Bet.png}
+\includegraphics[scale=0.4]{UML_Card.png}
+\includegraphics[scale=0.4]{UML_Coach.png}
+\includegraphics[scale=0.4]{UML_Coaches.png}
+\includegraphics[scale=0.4]{UML_Competition.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Bets.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Coach.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Competition.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Controller.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Error.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Events.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Home.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Login.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Match.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Navigator.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1News.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Player.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Referee.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Register.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Team.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1TopPlayers.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1Tournament.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1UserConfigPanel.png}
+\includegraphics[scale=0.4]{UML_Controller_1_1placeBet.png}
+\includegraphics[scale=0.4]{UML_Country.png}
+\includegraphics[scale=0.4]{UML_Database1.png}
+\includegraphics[scale=0.4]{UML_Database2.png}
+\includegraphics[scale=0.4]{UML_Fault.png}
+\includegraphics[scale=0.4]{UML_Goal.png}
+\includegraphics[scale=0.4]{UML_Match.png}
+\includegraphics[scale=0.4]{UML_Parser.png}
+\includegraphics[scale=0.4]{UML_Player.png}
+\includegraphics[scale=0.4]{UML_PlaysIn.png}
+\includegraphics[scale=0.4]{UML_PlaysMatchInTeam.png}
+\includegraphics[scale=0.4]{UML_Referee.png}
+\includegraphics[scale=0.4]{UML_Score.png}
+\includegraphics[scale=0.4]{UML_Team.png}
+\includegraphics[scale=0.4]{UML_Tournament.png}
+\includegraphics[scale=0.4]{UML_User.png}
+
+
 
 
 \subsection{Parser}
@@ -301,19 +343,67 @@ Intern hebben we slechts \'e\'en framework gebruikt, namelijk \emph{GluePHP}. Di
 % gelieve dat de syntax in zo'n box te zetten
 
 
+
+\paragraph{Selector}
+
+Om te voorkomen dat er zeer veel verschillende queries geschreven moeten is er een wrapper geschreven die
+deze queries automatisch genereert. Momenteel werkt deze wrapper alleen voor niet al te ingewikkelde select queries.
+
+Bijvoorbeeld: We willen weten hoeveel goals een speler heeft gemaakt:
 \begin{framed}
 \begin{lstlisting}[language=php]
-$sel = new \Selector('Coaches');
-$sel->filter([['teamId', '=', $teamId]]);
-$sel->filter([['matchId', '=', $matchId]]);
-$sel->join('Coach', 'coachId', 'id');
-$sel->select(['Coach.*']);
-
-$result = $this->select($sel);
-$coaches = $this->resultToCoaches($result);
-return $coaches[0];
+$sel = new Selector('Goal'); // Selecteer Goal column
+$sel->filter([['playerId', '=', $playerId]]); // Filter op de speler
+$sel->count(); // Tel het aantal resultaten.
 \end{lstlisting}
 \end{framed}
+
+
+De selector kan dan aan de database worden gegeven die de sql query zal omzetten in een prepared statement en uitvoeren.
+In dit geval zal de volgende query gegenereerd worden:
+\begin{framed}
+\begin{lstlisting}[language=php]
+SELECT COUNT(*) FROM `Goal` WHERE (`playerId`=?)
+\end{lstlisting}
+\end{framed}
+
+De gebruiker krijgt dan als resultaat een associatieve array terug met de values die geselecteerd zijn.\\
+
+Hier nog enkele voorbeelden:
+
+\paragraph{Voorbeeld 1}
+
+Selecteer de spelers in een bepaald team
+\begin{framed}
+\begin{lstlisting}[language=php]
+$sel = new Selector('PlaysIn');
+$sel->filter([['teamId', '=', $teamId]]);
+$sel->join('Player', 'playerId', 'id');
+$sel->select('Player.*');
+\end{lstlisting}
+\end{framed}
+
+\paragraph{Voorbeeld 2}
+
+Tel hoeveel matchen een team gespeeld heeft
+\begin{framed}
+\begin{lstlisting}[language=php]
+$sel = new Selector('Match');
+$sel->filter(
+    [
+      // We moeten 1 van de teams zijn in deze match
+      ['teamA', '=', $teamId],
+      ['teamB' , '=', $teamId]
+    ]);
+// Als de scoreId niet NULL is hebben we gespeeld
+$sel->filter([['scoreId', 'IS NOT NULL', '']]);
+$sel->count();
+\end{lstlisting}
+\end{framed}
+
+
+
+
 
 
 
