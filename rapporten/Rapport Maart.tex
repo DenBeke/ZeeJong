@@ -946,16 +946,205 @@ ALTER TABLE `Tournament`
 %Elias
 %Gelieve alle queries in de syntax highlighting 'veld' te zetten.
 
-\begin{framed}
-\begin{lstlisting}[language=sql]
-SELECT veldna(a)m(en)
- FROM Tabelnaam
- [WHERE conditie]
- [GROUP BY veldnaam [, veldnaam ...]]
- [HAVING conditie2]
- [ORDER BY veldnaam [ASC | DESC] [, veldnaam [ASC | DESC] ...]];
-\end{lstlisting}
-\end{framed}
+\subsubsection{Queries}
+
+
+\paragraph{Getters: ID}
+
+  Alle getters via id worden automatisch gegenereerd door een selector omdat deze allemaal een zeer gelijkaardige vorm hebben.
+  Hier enkele voorbeelden, de id wordt telkens gegeven:
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT *
+   FROM Country
+   [WHERE id = ?];
+  \end{lstlisting}
+  \end{framed}
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT *
+   FROM Match
+   [WHERE id = ?];
+  \end{lstlisting}
+  \end{framed}
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT *
+   FROM Player
+   [WHERE id = ?];
+  \end{lstlisting}
+  \end{framed}
+
+
+\paragraph{Getters: Attributen}
+
+  Alle getters via attributen worden automatisch gegenereerd door een selector omdat deze allemaal een zeer gelijkaardige vorm hebben.
+  Hier enkele voorbeelden, alle bepalende attributen, op de id na, worden telkens gegeven:
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT *
+   FROM Country
+   [WHERE name = ?];
+  \end{lstlisting}
+  \end{framed}
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT *
+   FROM Match
+   [WHERE teamA = ? AND
+   teamB = ? AND
+   date = ? AND
+   tournamentId = ?];
+  \end{lstlisting}
+  \end{framed}
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT *
+   FROM Player
+   [WHERE firstname = ? AND
+   lastname = ? AND
+   country = ?];
+  \end{lstlisting}
+  \end{framed}
+
+
+
+
+\emph{Naast de simpele get en insert queries, blijven er nog enkele ingewikkeldere queries over die we handmatig hebben geschreven.}
+
+
+\paragraph{Gewonnen wedstrijden van speler binnen interval}
+
+  Deze query vraagt de hoeveelheid matches waarbij de gegeven speler voor het winnende team speelde binnen een gegeven tijdspanne op.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT COUNT(*)
+   FROM `PlaysMatchInTeam`
+   [JOIN `Match` ON `Match`.id = matchId]
+   [JOIN `Score` ON `Score`.id = scoreId]
+   [WHERE playerId = ? AND
+   `Match`.date > ? AND
+   `Match`.date < ? AND
+      ((teamId = `Match`.teamA AND `Score`.teamA > `Score`.teamB) OR
+      (teamID = `Match`.teamB AND `Score`.teamB > `Score`.teamA))];
+  \end{lstlisting}
+  \end{framed}
+
+
+\paragraph{Gewonnen wedstrijden van speler}
+
+  Deze query vraagt de hoeveelheid matches waarbij de gegeven speler in totaal voor het winnende team speelde.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT COUNT(*)
+   FROM `PlaysMatchInTeam`
+   [JOIN `Match` ON `Match`.id = matchId]
+   [JOIN `Score` ON `Score`.id = scoreId]
+   [WHERE playerId = ? AND
+      ((teamId = `Match`.teamA AND `Score`.teamA > `Score`.teamB) OR
+      (teamID = `Match`.teamB AND `Score`.teamB > `Score`.teamA))];
+  \end{lstlisting}
+  \end{framed}
+
+
+
+
+\paragraph{Gewonnen wedstrijden van team}
+
+  Deze query vraagt de hoeveelheid matches die het gegeven team in totaal gewonnen heeft op.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT COUNT(*)
+   FROM `Team`
+   [JOIN `Match` ON `Match`.teamA = `Team`.id OR `Match`.teamB = `Team`.id]
+   [JOIN `Score` ON `Match`.scoreId = `Score`.id]
+   [WHERE `Team`.id = ? AND
+    ((`Match`.teamA = `Team`.id AND `Score`.teamA > `Score`.teamB) OR
+    (`Match`.teamB = `Team`.id AND `Score`.teamB > `Score`.teamA)) ];
+
+  \end{lstlisting}
+  \end{framed}
+
+
+
+\paragraph{Gespeelde wedstrijden}
+
+  Deze query vraagt de hoeveelheid matches dat de gegeven speler in totaal gespeeld heeft op.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT COUNT(*)
+   FROM `PlaysMatchInTeam` AS p
+   [INNER JOIN `Match` AS m ON p.matchIid = m.id]
+   [WHERE p.playerId = ? AND
+    m.date > ? AND
+    m.date < ?];
+
+  \end{lstlisting}
+  \end{framed}
+
+
+
+\paragraph{Kaarten binnen interval}
+
+  Deze query vraagt de hoeveelheid strafkaarten dat de gegeven speler heeft gekregen binnen een bepaalde tijdspanne op.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT COUNT(*)
+   FROM `Cards`
+   [JOIN `Match` ON `Match`.id = matchId]
+   [WHERE playerId = ? AND
+    `Match`.date > ? AND
+    `Match`.date < ?];
+
+  \end{lstlisting}
+  \end{framed}
+
+
+
+\paragraph{Goals binnen interval}
+
+  Deze query vraagt de hoeveelheid goals dat de gegeven speler gescoord heeft binnen een bepaalde tijdspanne op.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT COUNT(*)
+   FROM `Goal`
+   [JOIN `Match` ON `Match`.id = matchId]
+   [WHERE playerId = ? AND
+    `Match`.date > ? AND
+    `Match`.date < ?];
+
+  \end{lstlisting}
+  \end{framed}
+
+
+\paragraph{Meeste goals}
+
+  Deze query vraagt een gegeven aantal spelers op met de meeste goals.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT Player.*, COUNT(*) AS `playedMatches`
+   FROM `Player`
+   [JOIN `PlaysMatchInTeam` ON `PlaysMatchInTeam`.playerId = `Player.id`]
+    [GROUP BY `Player`.id] 
+    [ORDER BY `playedMatches` [DESC]]   
+    LIMIT ?, ?;
+
+  \end{lstlisting}
+  \end{framed}
+
 
 
 
