@@ -1325,7 +1325,7 @@ class Database {
 
 		//Query
 		$query = "
-			REMOVE FROM `Match` WHERE id = ?;
+			DELETE FROM `Match` WHERE id = ?;
 		";
 
 		$statement = $this->getStatement($query);
