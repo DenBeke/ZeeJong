@@ -1013,7 +1013,31 @@ ALTER TABLE `Tournament`
   \end{lstlisting}
   \end{framed}
 
+\paragraph{Inserts}
 
+  Ook alle insert queries worden automatisch gegenereerd door een selector omdat deze allemaal een zeer gelijkaardige vorm hebben.
+  Hier enkele voorbeelden, alle attributen, op de id na, worden telkens gegeven:
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+    INSERT INTO Country (name)
+    VALUES (?);
+  \end{lstlisting}
+  \end{framed}
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+    INSERT INTO `Match` (teamA, teamB, tournamentId, refereeId, date, scoreId)
+    VALUES (?, ?, ?, ?, ?, ?);
+  \end{lstlisting}
+  \end{framed}
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+      INSERT INTO Player (firstname, lastname, country, dateOfBirth, height, weight, position)
+      VALUES (?, ?, ?, ?, ?, ?, ?);
+  \end{lstlisting}
+  \end{framed}
 
 
 \emph{Naast de simpele get en insert queries, blijven er nog enkele ingewikkeldere queries over die we handmatig hebben geschreven.}
