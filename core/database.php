@@ -51,7 +51,7 @@ class Database {
 	 @param database name
 	 */
 	public function __construct($db_host = DB_HOST, $db_user = DB_USER, $db_password = DB_PASS, $db_database = DB_NAME) {
-		$this->con = new PDO("mysql:host=$db_host;dbname=$db_database", $db_user, $db_password);
+		$this->con = new PDO("mysql:host=$db_host;dbname=$db_database;charset=utf8", $db_user, $db_password);
 
 		//Connect to the database
 		$this -> link = new mysqli($db_host, $db_user, $db_password, $db_database);
@@ -62,6 +62,7 @@ class Database {
 			throw new Exception("Connect failed: $error");
 		}
 
+		$this->link->set_charset('utf8');
 	}
 
 	/**
