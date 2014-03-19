@@ -199,9 +199,9 @@ Om het internetverkeer minder te belasten zal elke pagina die wordt binnengehaal
 
 De urls van de competities zijn hardcoded, maar vanaf deze pagina's worden alle matchen en teams door de parser ontdekt. Dus zelfs al zouden de urls wijzigen, dan zou dit haast geen werk kosten. Maar normaal moet de parser zonder problemen de komende jaren blijven werken.
 
-Intern wordt gebruik gemaakt van de PHP Simple HTML DOM Parser om de pagina's om zo simpel de inhoud van een bepaalde tag op te kunnen vragen.
+Intern wordt gebruik gemaakt van de \emph{PHP Simple HTML DOM Parser} om de inhoud van de pagina's te parsen.
 
-Uiteraard worden niet enkel de matchen geparset, maar zal de parser ook informatie over de spelers, teams, coaches en zelfs scheidsrechters zoeken en opslaan in de database.
+Uiteraard worden niet enkel de matchen geparsed, maar zal de parser ook informatie over de spelers, teams, coaches en zelfs scheidsrechters zoeken en opslaan in de database.
 
 
 \subsection{MVC}
@@ -210,6 +210,10 @@ Uiteraard worden niet enkel de matchen geparset, maar zal de parser ook informat
 Om geen spaghetti te maken van de implementatie van de pagina's, hebben we geopteerd voor het \emph{Model View Pattern}. We routeren onze urls via \emph{GluePHP} en \emph{mod\_rewrite}. Apache geeft alle urls door aan \emph{GluePHP}, welke a.h.v. gedefini\"eerde reguliere expressies de url zal mappen op een bepaalde klasse. Het framework zal dan de GET of POST functie (afhangende van het type request) uitvoeren op de nieuwe instantie van de juiste klasse. (In onze implementatie hebben we er echter voor gezorgd dat het framework dat object ook terugkeert, zodat we het verder kunnen gebruiken. Verder hebben we ook een catch-all controller toegevoegd aan het framework om error pagina's te kunnen genereren.)
 
 Zo laten we \emph{GluePHP} een instantie van een \emph{Controller} aanmaken, die we bij het aanmaken de nodige datastructuren en informatie zal inladen. Op elke controller kunnen we dan een \emph{template} functie oproepen, die het overeenkomstige thema gedeelte zal insluiten op de pagina.
+
+
+
+\paragraph{Controller} Onderstaand php fragment toont hoe we de juiste controller verkrijgen a.h.v. de reguliere expressies. We defini\"eren een array van urls die we mappen op een controller klasse.
 
 
 \begin{framed}
@@ -225,6 +229,10 @@ $urls = array(
 $controller = glue::stick($urls);
 \end{lstlisting}
 \end{framed}
+
+
+
+\paragraph{Theme} Wanneer we de juiste controller hebben, kunnen we de correcte template bestanden includen voor die welbepaalde controller. (zie onderstaande code)
 
 
 \begin{framed}
@@ -248,14 +256,14 @@ include(dirname(__FILE__) . '/theme/footer.php');
 
 \subsection{Schema (ER-diagramma)}
 
-Bij het aanvatten van een project zo omvangrijk in database structuur als dit, is het erg belangrijk om van in het begin een solide databasestructuur af te spreken.
-Hiervoor hebben we dan ook meteen onze eerste samenkomst opge{\"e}ist.  We hebben goed nagedacht over welke zaken en hoe we deze met elkaar in verband gingen moeten brengen (wat niet zo eenvoudig was gezien niemand van onze groep een voetbalkenner is).
+Bij het aanvatten van een project met zo'n omvangrijke database structuur als hier, is het erg belangrijk om van in het begin een solide database structuur af te spreken.
+Hiervoor hebben we dan ook meteen onze eerste samenkomst gebruikt.  We hebben goed nagedacht over welke zaken en hoe we deze met elkaar in verband zouden brengen (wat niet zo eenvoudig was gezien niemand van onze groep een echte voetbalkenner is).
 
-Het heeft alleszins zijn vruchten afgeworpen gezien onze huidige (ge{\"i}mplementeerde) databasestructuur erg weinig afwijkt van de eerste kribbel die we destijds op papier gezet hadden (met uitzondering van het nog niet ge{\"i}mplementeerde deel).
+Het heeft alleszins zijn vruchten afgeworpen gezien onze huidige (ge{\"i}mplementeerde) database structuur erg weinig afwijkt van de eerste kribbel die we destijds op papier gezet hadden (met uitzondering van het nog niet ge{\"i}mplementeerde deel).
 
 In de ERM zijn we vertrokken vanuit de entiteiten Match, Player en Team.  Hierop hebben we de rest van het 'voetbal' gedeelte van onze ERM gebouwd.  Ten slotte hebben we nog een 'gebruikers' gedeelte toegevoegd.
 
-Gezien de omvang van de ERM kan het zijn dat u deze apart moet openen om deze voldoende leesbaar te kunnen bekijken.  (bijlages/ERM.png)
+\emph{Gezien de omvang van de ERM kan het zijn dat deze apart moet geopend worden om deze voldoende leesbaar te kunnen bekijken.  (bijlages/ERM.png)}
 
 
 \begin{figure}[h!]
@@ -281,10 +289,11 @@ Gezien de omvang van de ERM kan het zijn dat u deze apart moet openen om deze vo
 
 De user interface concentreert zich vooral op matchen (met de voorspellingen en weddenschappen) en de spelers.
 Gebruikers navigeren vanaf de homepage door de competities, seizoenen (binnen zo'n competitie) en krijgen dan een overzichtspagina van een bepaalde wedstrijd.
-Op deze match pagina staat dan wat algemenen informatie zoals de score, scheidsrechters, ..., geflankeerd door de teams met hun spelers (voor die bepaalde match) opgelijst.
+Op deze match pagina staat dan wat algemene informatie zoals de score, scheidsrechters, ..., geflankeerd door de teams met hun spelers (voor die bepaalde match) opgelijst.
 
 Gebruikers kunnen te allen tijde doorklikken op spelers, teams, coaches, competities, om zo telkens weer op een overzichtelijke pagina te komen waarop wat meer informatie staat.
 
+\paragraph{Spelers}
 Bij de spelers voorzien we de bezoeker van de nodige statistische data over een speler. Zo staan er het aantal gespeelde wedstrijden, gewonnen wedstrijden, kaarten en goals. Daarnaast staat er ook wat metadata over de spelers, zoals diens nationaliteit, positie op het veld, lengte, gewicht, etc.
 Onderaan de pagina kan de bezoeker een grafiek zien met de wedstrijden van het laatste jaar. Daaronder staat een overzichts grafiek die de tijdlijn van de speler voorstelt. Met daarop alle matchen van zijn carri\`ere.
 
@@ -292,11 +301,12 @@ Onderaan de pagina kan de bezoeker een grafiek zien met de wedstrijden van het l
 
 
 
+\paragraph{Gebruikers}
 Gebruikers kunnen op de website reeds registreren, inloggen, accountinstellingen wijzigen en bets plaatsen.
-Het registratie,login en controle paneel is voorzien van voldoende checks die nagaan of de door de user opgegeven informatie correct is.  Zo kan een user bijvoorbeeld niet registreren met een syntactisch ongeldig emailadres of een gebruikersnaam die reeds bestaat.
+Het registratie-, login- en controle paneel is voorzien van voldoende checks die nagaan of de door de user opgegeven informatie correct is.  Zo kan een user bijvoorbeeld niet registreren met een syntactisch ongeldig emailadres of een gebruikersnaam die reeds bestaat.
 \begin{figure}[h!]
 	\begin{center}
-	\includegraphics[scale=0.35]{changesettings.png}
+	\includegraphics[scale=0.30]{changesettings.png}
 
 	\caption{Schermafbeelding van het userConfigPanel}
 	\label{fig:configPanel}
@@ -312,7 +322,7 @@ Een gebruiker kan reeds bets plaatsen op een score voor een bepaalde match en ac
 Het plaatsen van een bet gebeurt door naar de pagina van een bepaalde wedstrijd te gaan en op de 'bet' knop te drukken.  Vervolgens landt de gebruiker op een pagina bij welke hij een bepaalde score en geldbedrag kan kiezen.
 \begin{figure}[h!]
 	\begin{center}
-	\includegraphics[scale=0.35]{placeBet.png}
+	\includegraphics[scale=0.30]{placeBet.png}
 
 	\caption{Schermafbeelding van de place bet pagina}
 	\label{fig:placeBet}
@@ -321,7 +331,7 @@ Het plaatsen van een bet gebeurt door naar de pagina van een bepaalde wedstrijd 
 
 \begin{figure}[h!]
 	\begin{center}
-	\includegraphics[scale=0.35]{bets.png}
+	\includegraphics[scale=0.30]{bets.png}
 	\caption{Schermafbeelding van de bets pagina}
 	\label{fig:bets}
 	\end{center}
@@ -331,7 +341,7 @@ Het plaatsen van een bet gebeurt door naar de pagina van een bepaalde wedstrijd 
 
 
 
-
+\paragraph{Design}
 Om het design tot een goed einde te brengen hebben we gebruik gemaakt van het \emph{Bootstrap} 
 framework. Hierdoor hadden we een stevige basis om op te steunen bij het stylen van de pagina's. (Voor de installatie pagina hebben we echter de minimalistische framework \emph{Pure CSS} gebruikt.)
 
@@ -379,7 +389,7 @@ $sel->count(); // Tel het aantal resultaten.
 De selector kan dan aan de database worden gegeven die de sql query zal omzetten in een prepared statement en uitvoeren.
 In dit geval zal de volgende query gegenereerd worden:
 \begin{framed}
-\begin{lstlisting}[language=php]
+\begin{lstlisting}[language=sql]
 SELECT COUNT(*) FROM `Goal` WHERE (`playerId`=?)
 \end{lstlisting}
 \end{framed}
@@ -428,7 +438,7 @@ $sel->count();
 
 \subsection{Unit Test Framework}
 
-Om ons ervan te vergewissen dat database de functie volledig werken, hebben we unit tests voorzien. Voor vele talen vind je dan zeer snel een zeer eenvoudig framework. Dit was echter niet meteen snel te vinden voor PHP. Daarom heeft Mathias zelf een test framework geschreven, waarmee het schrijven van unit tests veel gemakkelijk moet gaan.\\
+Om ons ervan te vergewissen dat de database functies volledig werken, hebben we unit tests voorzien. Voor vele talen vind je dan zeer snel een zeer eenvoudig framework. Dit was echter niet meteen snel te vinden voor PHP. Daarom hebben we zelf een test framework geschreven, waarmee het schrijven van unit tests veel gemakkelijk moet gaan.\\
 
 Een test \emph{case} wordt gedeclareerd door simpelweg een PHP klasse te declareren. Een test \emph{section} binnen zulk een \emph{case} is dan gewoon een functie met daarin enkele uitvoerbare tests.
 Voor het uitvoeren van de tests zijn er enkele \emph{REQUIRE} functies, zoals \emph{require\_true, require\_false, require\_equal, require\_notequal} en \emph{require\_exception}.
@@ -490,7 +500,9 @@ Om de gebruikers meer interessante inhoud op de website te bieden, hebben we onz
 
 \section{Planning}
 
-Voor de volgende deadline verwachten we om het wedden op matchen volledig ge\"implementeerd te hebben. Daarnaast zou er ook een administratie pagina moeten komen voor dit geheel, waar de admins hun betting site in de gaten kunnen houden, en handmatig wedstrijden toevoegen of wijzigen.\\
+Voor de volgende deadline verwachten we om het wedden op matchen volledig ge\"implementeerd te hebben. Daarnaast zou er ook een administratie pagina moeten komen voor dit geheel, waar de admins hun betting site in de gaten kunnen houden, en handmatig wedstrijden toevoegen of wijzigen.
+
+Tot slot zou de prognose ook accurater kunnen worden.\\
 
 Zoals we reeds deden, zullen we ook nu weer elke donderdag afspreken om afspraken te maken en issues te bespreken.
 
@@ -556,7 +568,9 @@ CREATE TABLE IF NOT EXISTS `Cards` (
     
     \paragraph{Coach}
         Bevat alle coaches met de volgende informatie:
-            naam, land
+            naam, land.
+            
+            
         Het land word gerefereerd door een foreign key.
         
         \begin{framed}
@@ -577,8 +591,9 @@ CREATE TABLE IF NOT EXISTS `Cards` (
         
         
     \paragraph{Coaches}
-        Houdt bij wat de coach van een team is voor een bepaalde wedstrijd. Het bevat dus de volgende informatie:
-            coach, team, match
+        Houdt bij wie de coach van een team is voor een bepaalde wedstrijd. Het bevat dus de volgende informatie:
+            coach, team, match.
+            
         Coach, team en match zijn foreign keys.
         
         \begin{framed}
@@ -637,7 +652,8 @@ CREATE TABLE IF NOT EXISTS `Country` (
         
     \paragraph{Goal}
         Bevat de volgende gegevens over een goal:
-            speler, match, tijdstip
+            speler, match, tijdstip.
+            
         De speler en de match zijn de foreign keys.
         
         \begin{framed}
@@ -662,7 +678,8 @@ CREATE TABLE IF NOT EXISTS `Goal` (
         
     \paragraph{Match}
         Bevat de volgende informatie over een match:
-            de 2 teams, het tournament, de scheidsrechter, datum, de uitslag
+            de 2 teams, het tournament, de scheidsrechter, datum, de uitslag.
+            
         De teams, het tournament, de scheidsrechter en de uitslag zijn foreign keys.
         
         \begin{framed}
@@ -693,6 +710,7 @@ CREATE TABLE IF NOT EXISTS `Match` (
     \paragraph{Player}
         Bevat de volgende gegevens over een speler:
             naam, land, geboortedatum, lengte, gewicht, positie(aanvaller,verdediger,...)
+            
         Het land is een foreign key.
         
         \begin{framed}
@@ -719,6 +737,7 @@ CREATE TABLE IF NOT EXISTS `Player` (
     \paragraph{PlaysIn}
         Linkt de spelers met hun huidig team.
         De foreign keys zijn dus de speler en het team.
+        
         Een speler heeft 1 huidig team, dit kan dus eventueel als extra informatie bij de speler worden opgeslagen.
         Hierdoor zal deze tabel overbodig worden.
         
@@ -764,7 +783,8 @@ CREATE TABLE IF NOT EXISTS `PlaysMatchInTeam` (
     
     \paragraph{Referee}
         Bevat de volgende informatia over een scheidsrechter:
-            naam, land
+            naam, land.
+            
         Het land is een foreign key.
         
         \begin{framed}
@@ -803,7 +823,8 @@ CREATE TABLE IF NOT EXISTS `Score` (
         
     
     \paragraph{Team}
-        Bevat de naam en het land van een team.
+        Bevat de naam en het land van een team.   
+        
         Het land is de foreign key.
         
         \begin{framed}
@@ -824,6 +845,7 @@ CREATE TABLE IF NOT EXISTS `Team` (
         
     \paragraph{Tournament}
         Bevat de naam en bij welke competetie het hoort.
+        
         De competitie is de foreign key.
         
         \begin{framed}
@@ -1030,7 +1052,31 @@ ALTER TABLE `Tournament`
   \end{lstlisting}
   \end{framed}
 
+\paragraph{Inserts}
 
+  Ook alle insert queries worden automatisch gegenereerd door een selector omdat deze allemaal een zeer gelijkaardige vorm hebben.
+  Hier enkele voorbeelden, alle attributen, op de id na, worden telkens gegeven:
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+    INSERT INTO Country (name)
+    VALUES (?);
+  \end{lstlisting}
+  \end{framed}
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+    INSERT INTO `Match` (teamA, teamB, tournamentId, refereeId, date, scoreId)
+    VALUES (?, ?, ?, ?, ?, ?);
+  \end{lstlisting}
+  \end{framed}
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+      INSERT INTO Player (firstname, lastname, country, dateOfBirth, height, weight, position)
+      VALUES (?, ?, ?, ?, ?, ?, ?);
+  \end{lstlisting}
+  \end{framed}
 
 
 \emph{Naast de simpele get en insert queries, blijven er nog enkele ingewikkeldere queries over die we handmatig hebben geschreven.}
