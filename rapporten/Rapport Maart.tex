@@ -190,7 +190,7 @@ Uiteraard worden niet enkel de matchen geparsed, maar zal de parser ook informat
 \subsection{MVC}
 
 % Mathias
-Om geen spaghetti te maken van de implementatie van de pagina's, hebben we geopteerd voor het \emph{Model View Pattern}. We routeren onze urls via \emph{GluePHP} en \emph{mod\_rewrite}. Apache geeft alle urls door aan \emph{GluePHP}, welke a.h.v. gedefini\"eerde reguliere expressies de url zal mappen op een bepaalde klasse. Het framework zal dan de GET of POST functie (afhangende van het type request) uitvoeren op de nieuwe instantie van de juiste klasse. (In onze implementatie hebben we er echter voor gezorgd dat het framework dat object ook terugkeert, zodat we het verder kunnen gebruiken. Verder hebben we ook een catch-all controller toegevoegd aan het framework om error pagina's te kunnen genereren.)
+Om geen spaghetti te maken van de implementatie van de pagina's, hebben we geopteerd voor het \emph{Model View Controller Pattern}. We routeren onze urls via \emph{GluePHP} en \emph{mod\_rewrite}. Apache geeft alle urls door aan \emph{GluePHP}, welke a.h.v. gedefini\"eerde reguliere expressies de url zal mappen op een bepaalde klasse. Het framework zal dan de GET of POST functie (afhangende van het type request) uitvoeren op de nieuwe instantie van de juiste klasse. (In onze implementatie hebben we er echter voor gezorgd dat het framework dat object ook terugkeert, zodat we het verder kunnen gebruiken. Verder hebben we ook een catch-all controller toegevoegd aan het framework om error pagina's te kunnen genereren.)
 
 Zo laten we \emph{GluePHP} een instantie van een \emph{Controller} aanmaken, die we bij het aanmaken de nodige datastructuren en informatie zal inladen. Op elke controller kunnen we dan een \emph{template} functie oproepen, die het overeenkomstige thema gedeelte zal insluiten op de pagina.
 
@@ -237,7 +237,7 @@ include(dirname(__FILE__) . '/theme/footer.php');
 
 \section{Database}
 
-\subsection{Schema (ER-diagramma)}
+\subsection{Schema (ERM-diagram)}
 
 Bij het aanvatten van een project met zo'n omvangrijke database structuur als hier, is het erg belangrijk om van in het begin een solide database structuur af te spreken.
 Hiervoor hebben we dan ook meteen onze eerste samenkomst gebruikt.  We hebben goed nagedacht over welke zaken en hoe we deze met elkaar in verband zouden brengen (wat niet zo eenvoudig was gezien niemand van onze groep een echte voetbalkenner is).
@@ -260,9 +260,6 @@ In de ERM zijn we vertrokken vanuit de entiteiten Match, Player en Team.  Hierop
 
 
 
-\subsection{Constraints}
-
-% Timo$
 
 
 
