@@ -12,6 +12,12 @@ About
 Installation
 ------------
 
+*Requirements*
+
+- PHP 5.5 or newer
+- PDO for mysqli
+- Apache mod_rewrite support
+
 In order to install *ZeeJong* you must navigate to the installation
 directory with your browser.  
 Navigate to `yourdomain.com/install` and fill all fields. The script

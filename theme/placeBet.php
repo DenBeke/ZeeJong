@@ -122,7 +122,7 @@
 					</li>
 					
 					<li class="list-group-item">
-						Pgrognose: 
+						Prognose: 
 						<?php $prognose = $match->getPrognose();
 						echo $prognose[0] . '-' . $prognose[1]?>
 					</li>
