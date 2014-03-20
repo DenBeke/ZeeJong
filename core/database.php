@@ -51,7 +51,7 @@ class Database {
 	 @param database name
 	 */
 	public function __construct($db_host = DB_HOST, $db_user = DB_USER, $db_password = DB_PASS, $db_database = DB_NAME) {
-		$this->con = new PDO("mysql:host=$db_host;dbname=$db_database", $db_user, $db_password);
+		$this->con = new PDO("mysql:host=$db_host;dbname=$db_database;charset=utf8", $db_user, $db_password);
 
 		//Connect to the database
 		$this -> link = new mysqli($db_host, $db_user, $db_password, $db_database);
@@ -62,6 +62,7 @@ class Database {
 			throw new Exception("Connect failed: $error");
 		}
 
+		$this->link->set_charset('utf8');
 	}
 
 	/**
@@ -77,6 +78,36 @@ class Database {
 
 		$this->link->close();
 
+	}
+
+	public function insert($table, $columns, $values) {
+		$table = '`' . $table . '`';		
+
+		foreach($columns as &$column) {
+			$column = '`' . $column . '`';
+		}
+
+		$questionMarks = [];
+		$paramTypes = '';
+		foreach($values as $value) {
+			if(is_int($value)) {
+				$paramTypes .= 'i';
+			} else if(is_double($value)) {
+				$paramTypes .= 'd';
+			} else if(is_string($value)) {
+				$paramTypes .= 's';
+			} else {
+				throw new Exception('value can only be integer double or string');
+			}
+
+			array_push($questionMarks, '?');
+		}
+
+		$query = 'INSERT INTO ' . $table . '(' . implode(',', $columns) . ')' . ' VALUES (' . implode(',', $questionMarks) . ')';
+
+		$statement = $this->getStatement2($query);
+		$statement->execute($values);
+		return $this->con->lastInsertId();
 	}
 
 	public function select($selector) {
@@ -141,10 +172,6 @@ class Database {
 
 		return $result2;
 	 }
-	 
-	 
-	 
-
 
 	/**
 	 Add a bet
@@ -152,19 +179,8 @@ class Database {
 	 @param the id of the match, team, user and money
 	 */
 	 public function addBet($matchId,$score1,$score2,$userId,$amount){
-		//Query
-		$query = "INSERT INTO Bet (`matchId`,`score1`,`score2`,`userId`,`amount`) VALUES (?,?,?,?,?)";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-		//Bind parameters
-		if (!$statement -> bind_param('iiiii', $matchId,$score1,$score2,$userId,$amount)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
+		$this->insert('Bet', ['matchId', 'score1', 'score2', 'userId', 'amount'],
+							[$matchId, $score1, $score2, $userId, $amount]);
 	 }
 
 	/**
@@ -498,19 +514,8 @@ class Database {
 	 @return id of the newly added user
 	 */
 	public function registerUser($username, $salt, $hashedPassword, $emailAddress) {
-		//Query
-		$query = "INSERT INTO User (`username`,`salt`,`password`,`emailAddress`) VALUES (?,?,?,?)";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-		//Bind parameters
-		if (!$statement -> bind_param('ssss', $username, $salt, $hashedPassword, $emailAddress)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
+		$this->insert('User', ['username', 'salt', 'password', 'emailAddress'],
+							[$username, $salt, $hashedPassword, $emailAddress]);
 
 		return $this -> getUser($username) -> getId();
 	}
@@ -574,24 +579,7 @@ class Database {
 
 		}
 
-		//Query
-		$query = "
-			INSERT INTO Country (name)
-			VALUES (?);
-		";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('s', $name)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
+		$this->insert('Country', ['name'], [$name]);
 
 		return $this -> getCountry($name) -> getId();
 	}
@@ -670,32 +658,7 @@ class Database {
 
 		}
 
-		//Query
-		$query = "
-			INSERT INTO Competition (name)
-			VALUES (?);
-		";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('s', $name)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Keep id of the last inserted row
-		$id = $statement -> insert_id;
-		//TODO Check if this works always...
-
-
-		return $id;
-
+		return $this->insert('Competition', ['name'], [$name]);
 	}
 
 	/**
@@ -722,32 +685,7 @@ class Database {
 			return;
 		}
 
-		//Query
-		$query = "
-			INSERT INTO Tournament (name, competitionId)
-			VALUES (?, ?);
-		";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('si', $name, $competitionId)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Keep id of the last inserted row
-		$id = $statement -> insert_id;
-		//TODO Check if this works always...
-
-
-		return $id;
-
+		return $this->insert('Tournament', ['name', 'competitionId'], [$name, $competitionId]);
 	}
 
 	/**
@@ -826,32 +764,7 @@ class Database {
 		} catch (exception $e) {
 		}
 
-		//Query
-		$query = "
-			INSERT INTO Referee (firstName, lastName, countryId)
-			VALUES (?, ?, ?);
-		";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Keep id of the last inserted row
-		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-
-		return $id;
-
+		return $this->insert('Referee', ['firstName', 'lastName', 'countryId'], [$firstName, $lastName, $countryId]);
 	}
 
 	/**
@@ -970,30 +883,7 @@ class Database {
 		} catch (exception $e) {
 		}
 
-		//Query
-		$query = "
-			INSERT INTO Coach (firstName, lastName, country)
-			VALUES (?, ?, ?);
-		";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('ssi', $firstName, $lastName, $countryId)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Keep id of the last inserted row
-		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-		return $id;
+		return $this->insert('Coach', ['firstname', 'lastname', 'country'], [$firstName, $lastName, $countryId]);
 	}
 
 	/**
@@ -1080,32 +970,8 @@ class Database {
 				} catch (exception $e) {
 
 				}
-
-				//Query
-				$query = "
-					INSERT INTO Coaches (coachId, teamId, matchId)
-					VALUES (?, ?, ?);
-				";
-
-				$statement = $this->getStatement($query);
-
-				//Bind parameters
-				if (!$statement -> bind_param('iii', $coachId, $teamId, $matchId)) {
-					throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-				}
-
-				//Execute statement
-				if (!$statement -> execute()) {
-					throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-				}
-
-				//Keep id of the last inserted row
-				$id = $statement -> insert_id;
-				//TODO Check if this always works...
-
-
-
-				return $id;
+	
+				return $this->insert('Coaches', ['coachId', 'teamId', 'matchId'], [$coachId, $teamId, $matchId]);
 			} else {
 
 				return;
@@ -1157,31 +1023,7 @@ class Database {
 
 		}
 
-		//Query
-		$query = "
-			INSERT INTO Team (name, country)
-			VALUES (?, ?);
-		";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('si', $name, $countryId)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Keep id of the last inserted row
-		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-
-		return $id;
+		return $this->insert('Team', ['name', 'country'], [$name, $countryId]);
 	}
 
 	/**
@@ -1265,32 +1107,8 @@ class Database {
 		} catch (exception $e) {
 		}
 
-		//Query
-		$query = "
-			INSERT INTO Player (firstname, lastname, country, dateOfBirth, height, weight, position)
-			VALUES (?, ?, ?, ?, ?, ?, ?);
-		";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('ssiiiis', $firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Keep id of the last inserted row
-		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-
-		return $id;
-
+		return $this->insert('Player', ['firstname', 'lastname', 'country', 'dateOfBirth', 'height', 'weight', 'position'],
+									[$firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position]);
 	}
 
 	/**
@@ -1399,30 +1217,8 @@ class Database {
 			return;
 		}
 
-		//Query
-		$query = "
-			INSERT INTO `Goal` (playerId, matchId, time)
-			VALUES (?, ?, ?);
-		";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('iii', $playerId, $matchId, $time)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Keep id of the last inserted row
-		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-		return $id;
+		return $this->insert('Goal', ['playerId', 'matchId', 'time'],
+									[$playerId, $matchId, $time]);
 	}
 
 	/**
@@ -1502,30 +1298,8 @@ class Database {
 		if (($scoreA != -1) and ($scoreB != -1))
 			$scoreId = $this -> addScore($scoreA, $scoreB);
 
-		//Query
-		$query = "
-			INSERT INTO `Match` (teamA, teamB, tournamentId, refereeId, date, scoreId)
-			VALUES (?, ?, ?, ?, ?, ?);
-		";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('iiiiii', $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Keep id of the last inserted row
-		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-		return $id;
+		return $this->insert('Match', ['teamA', 'teamB', 'tournamentId', 'refereeId', 'date', 'scoreId'],
+									[$teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId]);
 	}
 
 	public function getMatch($teamA, $teamB, $date, $tournamentId) {
@@ -1552,7 +1326,7 @@ class Database {
 
 		//Query
 		$query = "
-			REMOVE FROM `Match` WHERE id = ?;
+			DELETE FROM `Match` WHERE id = ?;
 		";
 
 		$statement = $this->getStatement($query);
@@ -1631,30 +1405,8 @@ class Database {
 			return;
 		}
 
-		//Query
-		$query = "
-			INSERT INTO `PlaysMatchInTeam` (playerId, teamId, matchId, number)
-			VALUES (?, ?, ?, ?);
-		";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('iiii', $playerId, $teamId, $matchId, $number)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Keep id of the last inserted row
-		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-		return $id;
+		return $this->insert('PlaysMatchInTeam', ['playerId', 'teamId', 'matchId', 'number'],
+									[$playerId, $teamId, $matchId, $number]);
 	}
 
 	public function getPlaysMatchInTeam($playerId, $matchId, $teamId, $number) {
@@ -1758,33 +1510,8 @@ class Database {
 			return;
 		}
 
-		//Query
-		$query = "
-			INSERT INTO `PlaysIn` (playerId, teamId)
-			VALUES (?, ?);
-		";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('ii', $playerId, $teamId)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Keep id of the last inserted row
-		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-
-
-
-		return $id;
+		return $this->insert('PlaysIn', ['playerId', 'teamId'],
+									[$playerId, $teamId]);
 	}
 
 
@@ -1891,34 +1618,8 @@ class Database {
 
 		}
 
-		//Query
-		$query = "
-			INSERT INTO Cards (playerId, matchId, color, time)
-			VALUES (?, ?, ?, ?);
-		";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('iiii', $playerId, $matchId, $color, $time)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Keep id of the last inserted row
-		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-
-
-
-		return $id;
-
+		return $this->insert('Cards', ['playerId', 'matchId', 'color', 'time'],
+									[$playerId, $matchId, $color, $time]);
 	}
 
 	public function getFoulCard($playerId, $matchId, $time, $color) {
@@ -1963,31 +1664,8 @@ class Database {
 		} catch (exception $e) {
 		}
 
-		//Query
-		$query = "
-			INSERT INTO Score (teamA, teamB)
-			VALUES (?, ?);
-		";
-
-		//Prepare statement
-		$statement = $this->getStatement($query);
-
-		//Bind parameters
-		if (!$statement -> bind_param('ii', $teamA, $teamB)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Execute statement
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		//Keep id of the last inserted row
-		$id = $statement -> insert_id;
-		//TODO Check if this always works...
-
-
-		return $id;
+		return $this->insert('Score', ['teamA', 'teamB'],
+									[$teamA, $teamB]);
 	}
 
 	public function getScore($teamA, $teamB) {
@@ -2706,44 +2384,19 @@ class Database {
 	
 	
 	public function getUpcommingEvents($limit) {
-		//Query
-		$query = "
-			SELECT * FROM `Match`
-			WHERE date >= ?
-			ORDER BY date ASC
-			LIMIT 0,?;
-		";
-	
-		//Prepare statement
-		$statement = $this->getStatement($query);
-	
-		//Bind parameters
 		$time = time();
 		$time = strtotime(date('d-m-Y', $time));
-		if(!$statement->bind_param('ii', $time, $limit)){
-			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-	
-		//Execute statement
-		if (!$statement->execute()) {
-			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
-		}
-	
-		//Store the result in the buffer
-		$statement->store_result();
-	
-	
-		$numberOfResults = $statement->num_rows;
-	
-		$statement->bind_result($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId);
-		$events = [];
-		
-		while ($statement->fetch()) {
-			$events[] = new Match($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId, $this);
-		}
-		
-		return $events;
-	
+
+		$sel = new \Selector('Match');
+		$sel->filter([['date', '>=', $time]]);
+		$sel->order('date', 'ASC');
+		$sel->limit(0, $limit);
+
+		$result = $this->select($sel);
+
+		$matches = $this->resultToMatches($result);
+
+		return $matches;	
 	}
 
 

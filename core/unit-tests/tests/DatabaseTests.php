@@ -508,32 +508,32 @@ class BasicMatchTest extends UnitTest {
 		$this->tournamentId1 = 1;
 		$this->refId1 = 1;
 		$this->date1 = 1245681;
-		$this->scoreTeamA1 = 3;
-		$this->scoreTeamB1 = 1;
+		$this->scoreTeamA1 = 1;
+		$this->scoreTeamB1 = 3;
 
 		$this->teamAId2 = 3;
 		$this->teamBId2 = 1;
 		$this->tournamentId2 = 1;
 		$this->refId2 = 1;
 		$this->date2 = 15121;
-		$this->scoreTeamA1 = 2;
-		$this->scoreTeamB1 = 0;
+		$this->scoreTeamA2 = 3;
+		$this->scoreTeamB2 = 2;
 		
 		$this->teamAId3 = 2;
 		$this->teamBId3 = 3;
 		$this->tournamentId3 = 1;
 		$this->refId3 = 2;
 		$this->date3 = 1214512;
-		$this->scoreTeamA1 = 0;
-		$this->scoreTeamB1 = 0;
+		$this->scoreTeamA3 = 0;
+		$this->scoreTeamB3 = 1;
 		
 		$this->teamAId4 = 3;
 		$this->teamBId4 = 1;
 		$this->tournamentId4 = 2;
 		$this->refId4 = 1;
 		$this->date4 = 158154;
-		$this->scoreTeamA1 = 1;
-		$this->scoreTeamB1 = 1;
+		$this->scoreTeamA4 = 1;
+		$this->scoreTeamB4 = 1;
 
 		$db = new \Database(DB_HOST, DB_USER, DB_PASS, "TestDB");
 		$this->db = &$db;
@@ -544,7 +544,6 @@ class BasicMatchTest extends UnitTest {
 		$this->id2 = $this->db->addMatch($this->teamAId2, $this->teamBId2, $this->scoreTeamA2, $this->scoreTeamB2, $this->refId2, $this->date2, $this->tournamentId2);
 		$this->id3 = $this->db->addMatch($this->teamAId3, $this->teamBId3, $this->scoreTeamA3, $this->scoreTeamB3, $this->refId3, $this->date3, $this->tournamentId3);
 		$this->id4 = $this->db->addMatch($this->teamAId4, $this->teamBId4, $this->scoreTeamA4, $this->scoreTeamB4, $this->refId4, $this->date4, $this->tournamentId4);
-
 	}
 
 	public function basicGetters() {
@@ -1033,6 +1032,151 @@ class BasicPlaysMatchInTeamTest extends UnitTest {
 		$this->REQUIRE_EQUAL($this->db->addPlayerToMatch($this->playerId4, $this->matchId4, $this->teamId4, $this->number4), $this->id4);
 	}
 
+}
+
+class AdvancedCompetitionTest extends UnitTest {
+
+	private $db;
+
+	public function __construct() {
+
+		$db = new \Database(DB_HOST, DB_USER, DB_PASS, "TestDB");
+		$this->db = $db;		
+	}
+
+	public function getTournaments() {
+
+		$this->REQUIRE_EQUAL(sizeof($this->db->getCompetitionById(1)->getTournaments()), 2);
+		$this->REQUIRE_EQUAL(sizeof($this->db->getCompetitionById(2)->getTournaments()), 1);
+		$this->REQUIRE_EQUAL(sizeof($this->db->getCompetitionById(3)->getTournaments()), 1);
+
+	}
+}
+
+class AdvancedMatchTest extends UnitTest {
+
+	private $db;
+
+	public function __construct() {
+
+		$db = new \Database(DB_HOST, DB_USER, DB_PASS, "TestDB");
+		$this->db = $db;		
+	}
+
+	public function getTotalCards() {
+
+		$this->REQUIRE_EQUAL($this->db->getMatchById(1)->getTotalCards(), 1);
+		$this->REQUIRE_EQUAL($this->db->getMatchById(2)->getTotalCards(), 3);
+		$this->REQUIRE_EQUAL($this->db->getMatchById(3)->getTotalCards(), 0);
+		$this->REQUIRE_EQUAL($this->db->getMatchById(4)->getTotalCards(), 0);
+
+	}
+
+	public function getPlayers() {
+
+		//Check team A
+		$this->REQUIRE_EQUAL(sizeof($this->db->getMatchById(1)->getPlayersTeamA()), 1);
+		$this->REQUIRE_EQUAL(sizeof($this->db->getMatchById(2)->getPlayersTeamA()), 0);
+		$this->REQUIRE_EQUAL(sizeof($this->db->getMatchById(3)->getPlayersTeamA()), 0);
+		$this->REQUIRE_EQUAL(sizeof($this->db->getMatchById(4)->getPlayersTeamA()), 0);
+
+		//Check team B		
+		$this->REQUIRE_EQUAL(sizeof($this->db->getMatchById(1)->getPlayersTeamB()), 1);
+		$this->REQUIRE_EQUAL(sizeof($this->db->getMatchById(2)->getPlayersTeamB()), 1);
+		$this->REQUIRE_EQUAL(sizeof($this->db->getMatchById(3)->getPlayersTeamB()), 1);
+		$this->REQUIRE_EQUAL(sizeof($this->db->getMatchById(4)->getPlayersTeamB()), 0);
+	}
+}
+
+class AdvancedPlayerTest extends UnitTest {
+
+	private $db;
+
+	public function __construct() {
+
+		$db = new \Database(DB_HOST, DB_USER, DB_PASS, "TestDB");
+		$this->db = $db;		
+	}
+
+	public function getTotalCards() {
+
+		$this->REQUIRE_EQUAL($this->db->getPlayerById(1)->getTotalNumberOfCards(), 2);
+		$this->REQUIRE_EQUAL($this->db->getPlayerById(2)->getTotalNumberOfCards(), 1);
+		$this->REQUIRE_EQUAL($this->db->getPlayerById(3)->getTotalNumberOfCards(), 1);
+
+	}
+
+	public function getTotalGoals() {
+
+		$this->REQUIRE_EQUAL($this->db->getPlayerById(1)->getTotalNumberOfGoals(), 2);
+		$this->REQUIRE_EQUAL($this->db->getPlayerById(2)->getTotalNumberOfGoals(), 1);
+		$this->REQUIRE_EQUAL($this->db->getPlayerById(3)->getTotalNumberOfGoals(), 1);
+	}
+
+	public function getTotalMatches() {
+
+		$this->REQUIRE_EQUAL($this->db->getPlayerById(1)->getTotalNumberOfMatches(), 2);
+		$this->REQUIRE_EQUAL($this->db->getPlayerById(2)->getTotalNumberOfMatches(), 2);
+		$this->REQUIRE_EQUAL($this->db->getPlayerById(3)->getTotalNumberOfMatches(), 0);
+	}
+
+	public function getTotalMatchesWon() {
+		
+		$this->REQUIRE_EQUAL($this->db->getPlayerById(1)->getTotalNumberOfWonMatches(), 1);
+		$this->REQUIRE_EQUAL($this->db->getPlayerById(2)->getTotalNumberOfWonMatches(), 1);
+		$this->REQUIRE_EQUAL($this->db->getPlayerById(3)->getTotalNumberOfWonMatches(), 0);
+	}
+}
+
+class AdvancedTeamTest extends UnitTest {
+
+	private $db;
+
+	public function __construct() {
+
+		$db = new \Database(DB_HOST, DB_USER, DB_PASS, "TestDB");
+		$this->db = $db;		
+	}
+
+	public function getTotalMatches() {
+		
+		$this->REQUIRE_EQUAL($this->db->getTeamById(1)->getTotalPlayedMatches(), 3);
+		$this->REQUIRE_EQUAL($this->db->getTeamById(2)->getTotalPlayedMatches(), 2);
+		$this->REQUIRE_EQUAL($this->db->getTeamById(3)->getTotalPlayedMatches(), 3);
+	}
+
+	public function getTotalMatchesWon() {
+
+		$this->REQUIRE_EQUAL($this->db->getTeamById(1)->getTotalWonMatches(), 0);
+		$this->REQUIRE_EQUAL($this->db->getTeamById(2)->getTotalWonMatches(), 1);
+		$this->REQUIRE_EQUAL($this->db->getTeamById(3)->getTotalWonMatches(), 2);
+	}
+
+	public function getPlayers() {
+	
+		$this->REQUIRE_EQUAL(count($this->db->getTeamById(1)->getPlayers()), 2);
+		$this->REQUIRE_EQUAL(count($this->db->getTeamById(2)->getPlayers()), 1);
+		$this->REQUIRE_EQUAL(count($this->db->getTeamById(3)->getPlayers()), 1);		
+	}
+}
+
+class AdvancedTournamentTest extends UnitTest {
+
+	private $db;
+
+	public function __construct() {
+
+		$db = new \Database(DB_HOST, DB_USER, DB_PASS, "TestDB");
+		$this->db = $db;		
+	}
+
+	public function getMatches() {
+	
+		$this->REQUIRE_EQUAL(count($this->db->getTournamentById(1)->getMatches(0)), 3);
+		$this->REQUIRE_EQUAL(count($this->db->getTournamentById(2)->getMatches(0)), 1);
+		$this->REQUIRE_EQUAL(count($this->db->getTournamentById(3)->getMatches(0)), 0);		
+		$this->REQUIRE_EQUAL(count($this->db->getTournamentById(4)->getMatches(0)), 0);		
+	}
 }
 
 ?>
