@@ -8,7 +8,7 @@ Created: March 2014
 
 <div class="container">
 
-	<h2 id="title-events">Upcomming Events</h2>
+	<h2 id="title-events">Upcoming Events</h2>
 
 
 	<table class="table striped matches">
