@@ -87,21 +87,7 @@ class Database {
 			$column = '`' . $column . '`';
 		}
 
-		$questionMarks = [];
-		$paramTypes = '';
-		foreach($values as $value) {
-			if(is_int($value)) {
-				$paramTypes .= 'i';
-			} else if(is_double($value)) {
-				$paramTypes .= 'd';
-			} else if(is_string($value)) {
-				$paramTypes .= 's';
-			} else {
-				throw new Exception('value can only be integer double or string');
-			}
-
-			array_push($questionMarks, '?');
-		}
+		$questionMarks = array_fill(0, count($values), '?');
 
 		$query = 'INSERT INTO ' . $table . '(' . implode(',', $columns) . ')' . ' VALUES (' . implode(',', $questionMarks) . ')';
 
