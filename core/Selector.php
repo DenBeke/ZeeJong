@@ -8,6 +8,7 @@ class Selector {
 	private $table = '';
 	private $select = ['*'];
 	private $values = [];
+	private $group = [];
 
 	private $joins = [];
 
@@ -53,6 +54,25 @@ class Selector {
 		$this->orderByColumns = $columns;
 		$this->sortType = $sortType;
 
+		return $this;
+	}
+
+	public function group($columns) {
+		if(!is_array($columns)) {
+			$columns = [$columns];
+		}
+
+		foreach($columns as &$column) {
+			$exploded = explode('.', $column);
+
+			$column = '`' . $exploded[0] . '`';
+
+			if(count($exploded) == 2) {
+				$column .= '.`' . $exploded[1] . '`';
+			}
+		}
+
+		$this->group = $columns;
 		return $this;
 	}
 
@@ -139,6 +159,17 @@ class Selector {
 
 			if(end($this->filters) !== $filter) {
 				$sql .= ' AND';
+			}
+		}
+
+		if(count($this->group) > 0) {
+			$sql .= ' GROUP BY ';
+			foreach($this->group as &$group) {
+				$sql .= $group;
+
+				if(end($this->group) !== $group) {
+					$sql .= ',';
+				}
 			}
 		}
 

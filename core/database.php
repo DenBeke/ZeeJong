@@ -2025,7 +2025,7 @@ class Database {
 		return $this->resultToMatches($result);
 	}
 
-	private function resultToCompetitions($result) {
+	public function resultToCompetitions($result) {
 		$competitions = array();
 
 		foreach($result as $competition) {
@@ -2035,7 +2035,7 @@ class Database {
 		return $competitions;
 	}
 
-	private function resultToTournaments($result) {
+	public function resultToTournaments($result) {
 		$tournaments = array();
 
 		foreach($result as $tournament) {
@@ -2045,7 +2045,7 @@ class Database {
 		return $tournaments;
 	}
 
-	private function resultToTeams($result) {
+	public function resultToTeams($result) {
 		$teams = array();
 
 		foreach($result as $team) {
@@ -2055,7 +2055,7 @@ class Database {
 		return $teams;
 	}
 
-	private function resultToReferees($result) {
+	public function resultToReferees($result) {
 		$referees = array();
 
 		foreach($result as $referee) {
@@ -2065,7 +2065,7 @@ class Database {
 		return $referees;
 	}
 
-	private function resultToMatches($result) {
+	public function resultToMatches($result) {
 		$matches = array();
 
 		foreach($result as $match) {
@@ -2078,7 +2078,7 @@ class Database {
 		return $matches;
 	}
 
-	private function resultToGoals($result) {
+	public function resultToGoals($result) {
 		$goals = array();
 
 		foreach($result as $goal) {
@@ -2089,7 +2089,7 @@ class Database {
 		return $goals;
 	}
 
-	private function resultToPlaysIn($result) {
+	public function resultToPlaysIn($result) {
 		$playsIns = array();
 
 		foreach($result as $playsIn) {
@@ -2100,7 +2100,7 @@ class Database {
 		return $playsIns;
 	}
 
-	private function resultToCoaches($result) {
+	public function resultToCoaches($result) {
 		$coaches = array();
 
 		foreach($result as $coach) {
@@ -2111,7 +2111,7 @@ class Database {
 		return $coaches;
 	}
 
-	private function resultToCoacheses($result) {
+	public function resultToCoacheses($result) {
 		$coacheses = array();
 
 		foreach($result as $coaches) {
@@ -2122,7 +2122,7 @@ class Database {
 		return $coacheses;
 	}
 
-	private function resultToPlayers($result) {
+	public function resultToPlayers($result) {
 		$players = array();
 
 		foreach($result as $player) {
@@ -2134,7 +2134,7 @@ class Database {
 		return $players;
 	}
 
-	private function resultToScores($result) {
+	public function resultToScores($result) {
 		$scores = array();
 
 		foreach($result as $score) {
@@ -2145,7 +2145,7 @@ class Database {
 		return $scores;
 	}
 
-	private function resultToCountries($result) {
+	public function resultToCountries($result) {
 		$countries = array();
 
 		foreach($result as $country) {
@@ -2156,7 +2156,7 @@ class Database {
 		return $countries;
 	}
 
-	private function resultToCards($result) {
+	public function resultToCards($result) {
 		$cards = array();
 
 		foreach($result as $card) {
@@ -2168,7 +2168,7 @@ class Database {
 		return $cards;
 	}
 
-	private function resultToPlaysMatchInTeams($result) {
+	public function resultToPlaysMatchInTeams($result) {
 		$playsMatchInTeams = array();
 
 		foreach($result as $pmit) {
@@ -2181,7 +2181,7 @@ class Database {
 		return $playsMatchInTeams;
 	}
 
-	private function resultToUsers($result) {
+	public function resultToUsers($result) {
 		$users = array();
 
 		foreach($result as $user) {

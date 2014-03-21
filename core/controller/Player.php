@@ -28,15 +28,8 @@ require_once(dirname(__FILE__) . '/Error.php');
 		@param params
 		*/
 		public function GET($args) {
-			if(!isset($args[1])) {
-				throw new \exception('No player id given');
-				return;
-			}
-			
 			global $database;
 			$this->player = $database->getPlayerById($args[1]);
-
-			
 		}
 	
 	
