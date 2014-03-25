@@ -1,0 +1,32 @@
+[
+   {
+	  "title":"Goal",
+	  "url":"http:\/\/goal.com\/en\/",
+	  "rss":"http:\/\/www.goal.com\/en\/feeds\/news?fmt=rss&ICID=HP"
+   },
+   {
+	  "title":"Football365",
+	  "url":"http:\/\/www.football365.com",
+	  "rss":"http:\/\/www.football365.com\/rss"
+   },
+   {
+	  "title":"TEAMtalk",
+	  "url":"http:\/\/www.teamtalk.com",
+	  "rss":"http:\/\/www.teamtalk.com\/rss\/1765"
+   },
+   {
+	  "title":"FourFourTwo",
+	  "url":"http:\/\/www.fourfourtwo.com\/news\/",
+	  "rss":"http:\/\/www.fourfourtwo.com\/news\/rss"
+   },
+   {
+	  "title":"Tribal Football",
+	  "url":"http:\/\/www.tribalfootball.com\/",
+	  "rss":"http:\/\/www.tribalfootball.com\/rss.xml"
+   },
+   {
+	  "title":"Soccerlens",
+	  "url":"http:\/\/soccerlens.com",
+	  "rss":"http:\/\/feeds.feedburner.com\/soccerlens"
+   }
+]

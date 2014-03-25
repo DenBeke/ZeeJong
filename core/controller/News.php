@@ -15,16 +15,46 @@ require_once(dirname(__FILE__) . '/../simplepie/autoloader.php');
 	class News extends Controller {
 	
 		public $page = 'news';
-		public $items;
+		public $feeds;
 	
 		public function __construct() {
 			$this->theme = 'news.php';
 			
+			//decode json file containing all the sites
+			$sites = json_decode(file_get_contents(dirname(__FILE__) . '/../feeds.json'));
+			
+			//loop through all sites and fetch the rss
+			foreach ($sites as $site) {
+				$feed = [
+				
+				'title' => $site->title,
+				'url' => $site->url,
+				'items' => $this->getFeed($site->rss)
+				
+				];
+				
+				$this->feeds[] = $feed;
+			}
+					
+		}
+		
+		
+		/**
+		Call GET methode with parameters
+		
+		@param params
+		*/
+		public function GET($args) {
+		}
+	
+	
+	
+		private function getFeed($url) {
 			// Create a new instance of the SimplePie object
 			$feed = new \SimplePie();
 			
 			// Set feed
-			$feed->set_feed_url('http://www.football.co.uk/news/rss.xml');
+			$feed->set_feed_url($url);
 			
 			// Allow us to change the input encoding from the URL string if we want to. (optional)
 			if (!empty($_GET['input']))
@@ -50,17 +80,8 @@ require_once(dirname(__FILE__) . '/../simplepie/autoloader.php');
 			$feed->init();
 			
 			
-			$this->items = $feed->get_items(0,10);
-			
-		}
-		
-		
-		/**
-		Call GET methode with parameters
-		
-		@param params
-		*/
-		public function GET($args) {
+			return $feed->get_items(0,10);;
+
 		}
 	
 	
