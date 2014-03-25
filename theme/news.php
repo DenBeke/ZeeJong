@@ -11,7 +11,7 @@ Created: February 2014
 	<h2 id="title-news">Latest News</h2>
 	
 	
-	<?php foreach($this->items as $item): ?>
+	<?php foreach($this->feeds[0]['items'] as $item): ?>
 		<div class="chunk">
 	
 	
