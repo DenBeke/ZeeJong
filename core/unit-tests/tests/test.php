@@ -1,5 +1,5 @@
 <?php
-
+/*
 namespace UnitTest;
 
 
@@ -35,5 +35,5 @@ class Equals extends UnitTest {
 	
 
 }
-
+*/
 ?>

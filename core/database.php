@@ -500,10 +500,15 @@ class Database {
 	 @return id of the newly added user
 	 */
 	public function registerUser($username, $salt, $hashedPassword, $emailAddress) {
+		if($this->doesUserNameExist($username)){
+			return $this -> getUser($username) -> getId();
+		}else{
+		
 		$this->insert('User', ['username', 'salt', 'password', 'emailAddress'],
 							[$username, $salt, $hashedPassword, $emailAddress]);
-
+	
 		return $this -> getUser($username) -> getId();
+		}
 	}
 
 	/**

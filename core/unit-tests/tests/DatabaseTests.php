@@ -1179,4 +1179,133 @@ class AdvancedTournamentTest extends UnitTest {
 	}
 }
 
+class BasicUserTest extends UnitTest {
+
+	private $db;
+	private $id1;
+	private	$username1;
+	private $password1;
+	private $hashedPassword1;
+	private $salt1;
+	private $emailAddress1;
+	private $money1;
+	private $id2;
+	private	$username2;
+	private $password2;
+	private $hashedPassword2;
+	private $salt2;
+	private $emailAddress2;
+	private $money2;
+
+
+
+	public function __construct() {
+		$this->username1 = "testUser1";
+		$this->password1 = "pass1";
+		$this->salt1 = "1394275321a87b8d743";
+		$this->hashedPassword1 = hash('sha256', $this->password1 . $this->salt1);
+		$this->emailAddress1 = "testUser1@hotmail.com";
+		$this->money1 = "100";
+		
+		$this->username2 = "testUser2";
+		$this->password2 = "pass2";
+		$this->salt2 = "9484065326ff2f987a9";
+		$this->hashedPassword2 = hash('sha256', $this->password2 . $this->salt2);
+		$this->emailAddress2 = "testUser2@hotmail.com";
+		$this->money2 = "150";
+		
+
+
+		$db = new \Database(DB_HOST, DB_USER, DB_PASS, "TestDB");
+		$this->db = &$db;
+
+		$this->id1 = $this->db->registerUser($this->username1,$this->salt1,$this->hashedPassword1,$this->emailAddress1);
+		$this->id2 = $this->db->registerUser($this->username2,$this->salt2,$this->hashedPassword2,$this->emailAddress2);
+		$this->db->setMoney($this->id1,$this->money1);
+		$this->db->setMoney($this->id2,$this->money2);
+		$this->db->setUserMail($this->id1,$this->emailAddress1);
+		$this->db->setUserMail($this->id2,$this->emailAddress2);
+		$this->db->setUserSalt($this->id1,$this->salt1);
+		$this->db->setUserSalt($this->id2,$this->salt2);
+		$this->db->setUserHash($this->id1,$this->hashedPassword1);
+		$this->db->setUserHash($this->id2,$this->hashedPassword2);
+
+
+	}
+
+	public function basicGetters() {
+
+		// Check usernames
+		$this->REQUIRE_EQUAL($this->db->getUserName($this->id1), $this->username1);
+		$this->REQUIRE_EQUAL($this->db->getUserName($this->id2), $this->username2);
+
+		
+		// Check userPasswordHash
+		$this->REQUIRE_EQUAL($this->db->getUserPasswordHash($this->id1), $this->hashedPassword1);
+		$this->REQUIRE_EQUAL($this->db->getUserPasswordHash($this->id2), $this->hashedPassword2);
+		
+		
+		// Check userPasswordSalt
+		$this->REQUIRE_EQUAL($this->db->getUserPasswordSalt($this->id1), $this->salt1);
+		$this->REQUIRE_EQUAL($this->db->getUserPasswordSalt($this->id2), $this->salt2);
+		
+		// Check userMail
+		$this->REQUIRE_EQUAL($this->db->getUserMail($this->id1), $this->emailAddress1);
+		$this->REQUIRE_EQUAL($this->db->getUserMail($this->id2), $this->emailAddress2);
+		
+		// Check money
+		$this->REQUIRE_EQUAL($this->db->getMoney($this->id1), $this->money1);
+		$this->REQUIRE_EQUAL($this->db->getMoney($this->id2), $this->money2);
+
+	}
+
+	public function checkExists() {
+
+		$this->REQUIRE_TRUE($this->db->doesUserNameExist($this->username1));
+		$this->REQUIRE_TRUE($this->db->doesUserNameExist($this->username2));
+		
+		$this->REQUIRE_TRUE($this->db->doesUserExist($this->id1));
+		$this->REQUIRE_TRUE($this->db->doesUserExist($this->id2));
+	}	
+
+	public function basicSetters() {
+		$this->emailAddress1 = "newmail1@hotmail.com";
+		$this->db->setUserMail($this->id1,$this->emailAddress1);
+		$this->REQUIRE_EQUAL($this->db->getUserMail($this->id1), $this->emailAddress1);
+		
+		$this->emailAddress2 = "newmail2@hotmail.com";
+		$this->db->setUserMail($this->id2,$this->emailAddress2);
+		$this->REQUIRE_EQUAL($this->db->getUserMail($this->id2), $this->emailAddress2);
+		
+		$this->salt1 = "30894753342be4c0951";
+		$this->salt2 = "37822153342bef64a42";
+		$this->password1 = "newPass1";
+		$this->password2 = "newPass2";
+		$this->hashedPassword1 = hash('sha256', $this->password1 . $this->salt1);
+		$this->hashedPassword2 = hash('sha256', $this->password2 . $this->salt2);
+		
+		$this->db->setUserSalt($this->id1,$this->salt1);
+		$this->REQUIRE_EQUAL($this->db->getUserPasswordSalt($this->id1),$this->salt1);
+		$this->db->setUserSalt($this->id2,$this->salt2);
+		$this->REQUIRE_EQUAL($this->db->getUserPasswordSalt($this->id2),$this->salt2);
+		
+		$this->db->setUserHash($this->id1,$this->hashedPassword1);
+		$this->REQUIRE_EQUAL($this->db->getUserPasswordHash($this->id1),$this->hashedPassword1);
+		$this->db->setUserHash($this->id2,$this->hashedPassword2);
+		$this->REQUIRE_EQUAL($this->db->getUserPasswordHash($this->id2),$this->hashedPassword2);
+		
+		$this->money1 = "500";
+		$this->money2 = "1000";
+		
+		$this->db->setMoney($this->id1,$this->money1);
+		$this->REQUIRE_EQUAL($this->db->getMoney($this->id1),$this->money1);
+		
+		$this->db->setMoney($this->id2,$this->money2);
+		$this->REQUIRE_EQUAL($this->db->getMoney($this->id2),$this->money2);
+		
+	}
+
+}
+
+
 ?>
