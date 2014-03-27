@@ -1,5 +1,5 @@
 <?php
-
+/*
 namespace UnitTest;
 
 class String extends UnitTest {
@@ -32,5 +32,5 @@ class String extends UnitTest {
 	}
 
 }
-
+*/
 ?>
