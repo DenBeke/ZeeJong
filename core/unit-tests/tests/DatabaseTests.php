@@ -1179,7 +1179,7 @@ class AdvancedTournamentTest extends UnitTest {
 	}
 }
 
-class BasicUserTest extends UnitTest {
+class AdvancedUserTest extends UnitTest {
 
 	private $db;
 	private $id1;
@@ -1305,6 +1305,65 @@ class BasicUserTest extends UnitTest {
 		
 	}
 
+}
+
+class AdvancedBetTest extends UnitTest {
+	private $id1;
+	private $matchId1;
+	private $score11;
+	private $score12;
+	private $time1;
+	private $userId1;
+	private $amount1;
+	private $id2;
+	private $matchId2;
+	private $score21;
+	private $score22;
+	private $time2;
+	private $userId2;
+	private $amount2;
+	private $db;
+
+	public function __construct() {
+
+		$db = new \Database(DB_HOST, DB_USER, DB_PASS, "TestDB");
+		$this->db = $db;		
+		
+		$this->matchId1 = "1";
+		$this->score11 = "5";
+		$this->score12 = "3";
+		$this->userId1 ="1";
+		$this->amount1 = "20";
+		
+		$this->matchId2 = "2";
+		$this->score21 = "6";
+		$this->score22 = "7";
+		$this->userId2 ="2";
+		$this->amount2 = "200";
+		
+		$this->db->addBet($this->matchId1,$this->score11,$this->score12,$this->userId1,$this->amount1);
+		$this->db->addBet($this->matchId2,$this->score21,$this->score22,$this->userId2,$this->amount2);
+
+		$betsUser1 = $this->db->getUserBets($this->userId1);
+		$betsUser2 = $this->db->getUserBets($this->userId2);
+		$this->id1 = $betsUser1[0];
+		$this->id2 = $betsUser2[0];
+		
+	}
+
+	public function getbets() {
+	
+			$this->REQUIRE_EQUAL($this->db->getMatchFromBet($this->id1), $this->matchId1);	
+			$this->REQUIRE_EQUAL($this->db->getMatchFromBet($this->id2), $this->matchId2);	
+			
+			$this->REQUIRE_EQUAL($this->db->getScoreAFromBet($this->id1), $this->score11);
+			$this->REQUIRE_EQUAL($this->db->getScoreBFromBet($this->id1), $this->score12);
+			$this->REQUIRE_EQUAL($this->db->getScoreAFromBet($this->id2), $this->score21);
+			$this->REQUIRE_EQUAL($this->db->getScoreBFromBet($this->id2), $this->score22);
+			
+			$this->REQUIRE_EQUAL($this->db->getMoneyFromBet($this->id1), $this->amount1);
+			$this->REQUIRE_EQUAL($this->db->getMoneyFromBet($this->id2), $this->amount2);
+	}
 }
 
 
