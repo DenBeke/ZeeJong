@@ -165,8 +165,9 @@ class Database {
 	 @param the id of the match, team, user and money
 	 */
 	 public function addBet($matchId,$score1,$score2,$userId,$amount){
-		$this->insert('Bet', ['matchId', 'score1', 'score2', 'userId', 'amount'],
+		$this->insert('Bet', ['matchId', 'score1', 'score2','userId', 'amount'],
 							[$matchId, $score1, $score2, $userId, $amount]);
+							
 	 }
 
 	/**
@@ -186,7 +187,7 @@ class Database {
 
 
 	/**
-	 Get the teamId from a bet
+	 Get the second score from a bet
 
 	 @return the teamId
 	 */
@@ -201,7 +202,7 @@ class Database {
 	}
 
 	/**
-	 Get the userId from a bet
+	 Get the first score from a bet
 
 	 @return the userId
 	 */
