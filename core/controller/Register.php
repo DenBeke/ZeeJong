@@ -19,6 +19,7 @@ namespace Controller {
 		public $page = 'register';
 		public $user;
 		public $registerMessage;
+		public $title;
 
 
 		/**
@@ -26,6 +27,7 @@ namespace Controller {
 		 */
 		public function __construct() {
 			$this->theme = 'register.php';
+			$this->title = 'Register - ' . Controller::siteName;
 
 			if (!isset($_POST['username']) || !isset($_POST['password']) || !isset($_POST['password2']) || !isset($_POST['email'])) {
 				return;

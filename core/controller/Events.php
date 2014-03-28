@@ -15,11 +15,13 @@ require_once(dirname(__FILE__) . '/Controller.php');
 
 		public $page = 'events';
 		public $events;
+		public $title;
 
 		public function __construct() {
 			global $database;
 			$this->theme = 'events.php';
 			$this->events = $database->getUpcommingEvents(30);
+			$this->title = 'Events - ' . Controller::siteName;
 		}
 
 

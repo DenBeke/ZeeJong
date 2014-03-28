@@ -15,7 +15,8 @@ namespace Controller {
 		public $page = 'bets';
 		private $template = 'bets.php';
 		public $bet;
-		
+		public $title;
+
 		/**
 		 Render the template part of the view
 
@@ -34,6 +35,8 @@ namespace Controller {
 		}
 
 		public function __construct() {
+		    $this->title = 'Bets - ' . Controller::siteName;
+
 			global $database;
 			// Test if logged in
 			if (!isset($_SESSION['userID']) ) {
@@ -42,7 +45,6 @@ namespace Controller {
 			if(!$database -> doesUserExist($_SESSION['userID'])){
 				return;
 			}
-
 		}
 
 		/*

@@ -21,6 +21,8 @@ namespace Controller {
 		public $configSuccessMessage;
 		public $configErrorMessage;
 		private $user;
+		public $title;
+
 		/**
 		 Render the template part of the view
 
@@ -42,6 +44,8 @@ namespace Controller {
 		 * Constructor
 		 */
 		public function __construct() {
+		    $this->title = 'Config Panel - ' . Controller::siteName;
+
 			if (!isset($_SESSION['userID'])) {
 				return;
 			}
