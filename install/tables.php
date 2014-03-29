@@ -193,6 +193,7 @@ CREATE TABLE IF NOT EXISTS `GroupMembership` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `userId` int(11) NOT NULL,
 `groupId` int(11) NOT NULL,
+`accepted` BOOLEAN,
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB ;
 '

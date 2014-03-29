@@ -34,6 +34,7 @@ require_once(dirname(__FILE__) . '/core/controller/Bets.php');
 require_once(dirname(__FILE__) . '/core/controller/placeBet.php');
 require_once(dirname(__FILE__) . '/core/controller/Events.php');
 require_once(dirname(__FILE__) . '/core/controller/TopPlayers.php');
+require_once(dirname(__FILE__) . '/core/controller/createGroup.php');
 
 //Create database
 $database = new Database;
@@ -56,7 +57,8 @@ $urls = array(
 	INSTALL_DIR . 'bets' => 'Controller\Bets',
 	INSTALL_DIR . 'place-bet/(\d+)' => 'Controller\placeBet',
 	INSTALL_DIR . 'events' => 'Controller\Events',
-	INSTALL_DIR . 'player' => 'Controller\TopPlayers'
+	INSTALL_DIR . 'player' => 'Controller\TopPlayers',
+	INSTALL_DIR . 'create-group' => 'Controller\CreateGroup'
 );
 
 
