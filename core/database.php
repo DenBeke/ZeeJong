@@ -223,8 +223,8 @@ class Database {
 
 		$result = $this->select($sel);
 		requireEqCount($result, 1);
-
-		return $result[0];
+		//echo print_r($result);
+		return $result[0]['id'];
 	}
 
 
