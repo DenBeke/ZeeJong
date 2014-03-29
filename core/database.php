@@ -24,6 +24,7 @@ require_once(dirname(__FILE__) . '/classes/Score.php');
 require_once(dirname(__FILE__) . '/classes/Team.php');
 require_once(dirname(__FILE__) . '/classes/Tournament.php');
 require_once(dirname(__FILE__) . '/classes/User.php');
+require_once(dirname(__FILE__) . '/classes/Group.php');
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -138,6 +139,94 @@ class Database {
 
 		return $this->statements[$query];
 	}
+
+
+	/**
+	 Create a groupmembership with for a userId and groupId
+
+	 @param userId, groupId
+	 */
+	public function addGroupMembership($userId, $groupId) {
+		$this->insert('GroupMembership', ['userId', 'GroupId','accepted'],
+								[$userId, $groupId, 0]);
+	}
+	
+	/**
+	 Accept a membership of a group
+	 
+	 @param userId, groupId
+	 */
+	 public function acceptMembership($userId,$groupId){
+	 	//Query
+		$query = "
+			UPDATE GroupMembership
+			SET accepted = ?
+			WHERE userId = ? AND groupId = ?;
+		";
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		$ok = 1;
+		//Bind parameters
+		if (!$statement -> bind_param('iii', $ok, $userId,$groupId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		
+	 }
+
+
+	/**
+	 Create a group with a given name and an owner
+
+	 @param name,ownerid
+	 @return id of the newly added group
+	 */
+	public function addGroup($name, $ownerId) {
+		if(!$this->doesGroupNameExist($name)){		
+			$this->insert('Group', ['name', 'ownerId'],
+								[$name, $ownerId]);
+		}
+		return $this -> getGroupId($name);
+	}
+	
+	/**
+	 Test whether a specific groupname exists
+
+	 @param the name to test
+
+	 @return boolean
+	 */
+	public function doesGroupNameExist($name) {
+		$sel = new \Selector('Group');
+		$sel->filter([['name', '=', $name]]);
+
+		$result = $this->select($sel);
+
+		return count($result) == 1;
+	}
+	
+	/**
+	 Get the id from a group with a specific name
+
+	 @param name
+	 @return the id of the group with the given name
+
+	 @exception when no group found with the given name
+	 */
+	public function getGroupId($name) {
+		$sel = new \Selector('Group');
+		$sel->filter([['name', '=', $name]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0];
+	}
+
 
 
 	/**
