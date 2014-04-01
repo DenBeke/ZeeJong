@@ -90,6 +90,22 @@ table.matches td:nth-child(3) {
 }
 
 
+
+/* News *
+********/
+
+
+.nav-news {
+	border-bottom-width: 0px !important;
+}
+
+.nav-news li.active {
+	border-bottom: 1px solid #ddd !important;
+}
+
+
+
+
 /* Field *
 *********/
 

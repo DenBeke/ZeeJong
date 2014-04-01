@@ -11,7 +11,7 @@ Created: February 2014
 	<h2 id="title-news">Latest News</h2>
 	
 	
-	<ul class="nav nav-pills">
+	<ul class="nav nav-tabs nav-news">
 	  <?php $count = 0; ?>
 	  <?php foreach($this->feeds as $feed) { ?>
 	  <!-- <li class="active"><a href="#">Home</a></li>
