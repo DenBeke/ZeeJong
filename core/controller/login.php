@@ -10,30 +10,32 @@ namespace Controller {
 	require_once(dirname(__FILE__) . '/../classes/User.php');	// We need the user class file
 	require_once(dirname(__FILE__) . '/../functions.php');
 	require_once(dirname(__FILE__) . '/Controller.php');
-	
-	
+
+
 	class Login extends Controller {
-	
-	
+
+
 		public $page = 'login';
 		public $loggedIn;
 		public $loginMessage;
 		public $user;
+		public $title;
 
-	
+
 		public function __construct() {
 			$this->theme = 'login.php';
+			$this->title = 'Login - ' . Controller::siteName;
 
 			$this->checkLogin();
 		}
-	
-	
+
+
 		/**
 		Try to login with the given username and password
-		
+
 		@param username
 		@param password
-		
+
 		@return true (login succeded) / false (wrong login details)
 		*/
 		private function login($username, $password) {
@@ -54,30 +56,30 @@ namespace Controller {
 				return false;
 			}
 		}
-		
-		
-		
-		
+
+
+
+
 
 		public function GET($args) {
 			$this->data = $args;
 		}
-		
-		
-		
+
+
+
 		public function POST($args) {
 			$this->data = array_merge($this->data, $args);
 		}
-		
-		
-	
+
+
+
 		private function checkLogin() {
-		
+
 			global $database;
-		
+
 			//Check if login page
-		
-					
+
+
 			//Check for active session
 			if( isset($_SESSION['userID']) and $database->doesUserExist($_SESSION['userID'])) {
 				$this->loginMessage = 'You are already logged in';
@@ -89,10 +91,10 @@ namespace Controller {
 				$this->loggedIn = false;
 			}
 			else {
-			
+
 				$username = htmlspecialchars($_POST['username']);
 				$password = htmlspecialchars($_POST['password']); 
-				
+
 				if($this->login($username,$password)) {
 					$this->loginMessage = "Hi, $username!";
 					$this->loggedIn = true;
@@ -102,23 +104,23 @@ namespace Controller {
 					$this->loginMessage = 'Wrong username or password';
 					$this->loggedIn = false;
 				}
-				
+
 			}
-					
-				
+
+
 		}
 
-		
-			
-		
-		
-		
-	
-	
+
+
+
+
+
+
+
 	} //end class Login
-	
+
 
 
 } //end namespace Controller
-	
+
 ?>
