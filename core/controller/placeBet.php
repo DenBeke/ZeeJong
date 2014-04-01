@@ -16,10 +16,14 @@ namespace Controller {
 		private $betSuccessMessage;
 		private $betErrorMessage;
 		private $matchId;
+		public $title;
+
 
 		public function __construct() {
 			global $database;
 			$this -> theme = 'placeBet.php';
+			$this->title = 'Place Bet - ' . Controller::siteName;
+
 			// Test if logged in
 			if (!isset($_SESSION['userID']) || !isset($_POST['score1']) || !isset($_POST['score2']) || !isset($_POST['money']) || !isset($_POST['matchId'])) {
 				return;
