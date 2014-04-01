@@ -38,7 +38,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			global $database;
 			$this->match = $database->getMatchById($args[1]);
 
-			$this->title = 'Match - ' . $this->match->getTeamA() . ' vs ' . $this->match->getTeamB() . ' - ' . Controller::siteName;
+			$this->title = 'Match - ' . $this->match->getTeamA()->getName() . ' vs ' . $this->match->getTeamB()->getName() . ' - ' . Controller::siteName;
 		}
 
 
