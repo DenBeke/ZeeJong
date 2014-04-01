@@ -34,6 +34,14 @@ class Group {
 		return $this->id;
 	}
 
+	/**
+	 Returns the name
+	 
+	 @return the name
+	 */
+	 public function getName(){
+	 	return $this->db->getGroupName($this->id);
+	 }
 
     /**
     String function
