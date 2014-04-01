@@ -11,34 +11,21 @@ Created: February 2014
 	<h2 id="title-news">Latest News</h2>
 	
 	
-	<?php foreach($this->feeds[0]['items'] as $item): ?>
-		<div class="chunk">
+	<ul class="nav nav-pills">
+	  <?php $count = 0; ?>
+	  <?php foreach($this->feeds as $feed) { ?>
+	  <!-- <li class="active"><a href="#">Home</a></li>
+	  <li><a href="#">Profile</a></li> -->
+	  <li class="news-button"><a href="#" data-json="<?php echo SITE_URL . 'core/ajax/news.php?feed=' . $count; ?>"><?php echo $feed['title']; ?></a></li>
+	  <?php $count++; ?>
+	  <?php } ?>
+	  
+	</ul>
 	
 	
-			<div class="panel panel-default">
-			
-				<div class="panel-heading">
-					<h3 class="panel-title">
-						<?php if ($item->get_permalink()) echo '<a href="' . $item->get_permalink() . '">'; echo $item->get_title(); if ($item->get_permalink()) echo '</a>'; ?>
-					</h3>
-				</div>
-				
-				<div class="panel-body">
-					<?php echo $item->get_content(); ?>
-				</div>
-				
-				<div class="panel-footer rss-footer">
-					<?php echo $item->get_date('j M Y, g:i a'); ?>
-				</div>
-			
-			
-			</div>
-	
-	
-		</div>
-	
-	<!-- Stop looping through each item once we've gone through all of them. -->
-	<?php endforeach; ?>
+	<div id="news-feed">
+		<!-- Will be filled by ajax calls -->
+	</div>
 	
 	
 </div>
