@@ -37,13 +37,9 @@ namespace Controller {
 		
 		private function addGroup(){
 			$database = new \Database;
-			echo '1';
 			$groupId = $database->addGroup($_POST['name'], $_SESSION['userID']);
-			echo '2';
 			$database->addGroupMembership($_SESSION['userID'],$groupId);
-			echo '3';
 			$database->acceptMembership($_SESSION['userID'],$groupId);
-			echo '4';
 		}
 
 

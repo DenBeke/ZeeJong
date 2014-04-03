@@ -210,6 +210,41 @@ class Database {
 	}
 	
 	/**
+	 Test whether a user is member of a group
+	 Will return false too when group or user doesn't exist
+	  
+	 @param: userId & groupId
+	 @return True if member is part of group in ALL other cases false
+	 */
+	public function isUserMemberOfGroup($userId,$groupId){
+		if(!$this->doesUserExist($userId) || !$this->doesGroupExist($groupId)){
+			return False;
+		}
+		$sel = new \Selector('GroupMembership');
+	 	$sel->filter([['userId', '=', $userId,'groupId','=',$groupId]]);
+
+		$result = $this->select($sel);
+
+		return count($result) == 1;
+		
+	}
+	
+	/**
+	 Test whether a group ID exists
+	 
+	 @param the id to test
+	 @return boolean
+	 */
+	 public function doesGroupExist($id){
+	 	$sel = new \Selector('Group');
+	 	$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+
+		return count($result) == 1;
+	 }
+	
+	/**
 	 Get the id from a group with a specific name
 
 	 @param name
@@ -223,9 +258,26 @@ class Database {
 
 		$result = $this->select($sel);
 		requireEqCount($result, 1);
-		//echo print_r($result);
 		return $result[0]['id'];
 	}
+	
+	/**
+	 Get the name from a group with a specific id
+
+	 @param name
+	 @return the name of the group with the given id
+
+	 @exception when no group found with the given id
+	 */
+	public function getGroupName($id) {
+		$sel = new \Selector('Group');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+		return $result[0]['name'];
+	}
+	
 
 
 
