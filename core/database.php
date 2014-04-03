@@ -279,6 +279,26 @@ class Database {
 	}
 	
 
+	/**
+	 Get the groups a user is owner of
+	 @param the id of the user
+	 @return the id's of the bets this user made
+	 */
+	 public function getGroupsWithOwner($id){
+	 	$sel = new \Selector('Group');
+		$sel->filter([['ownerId', '=', $id]]);
+
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['name']);
+		}
+
+		return $result2;
+	 }
+
+
 
 
 	/**
