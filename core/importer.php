@@ -20,7 +20,65 @@ $data = json_decode(file_get_contents($filename), true);
 
 
 
+
+//Database and JSON schama
+//This links the json file to database tables and columns
+$schama = [
+
+	[
+		'json' => 'Countries',
+		'db' => 'Country',
+		'cols' => [
+			'Id' => 'id',
+			'Name' => 'name'
+		]
+	],
+	
+	[
+		'json' => 'Players',
+		'db' => 'Player',
+		'cols' => [
+			'Id' => 'id',
+			'Firstname' => 'firstname',
+			'Lastname' => 'lastname',
+			'Country' => 'country',
+			'DateOfBirth' => 'dateOfBirth',
+			'Height' => 'height',
+			'Weight' => 'weight',
+			'Position' => 'position'
+		]
+	]
+
+];
+
+
+
+//Add all json objects to the database
+
+foreach ($schama as $meta) {
+	$table = $meta['db'];
+	$json = $meta['json'];
+	
+	foreach ($data[$json] as $set) {
+		$values = [];
+		$attributes = [];
+		foreach ($meta['cols'] as $key => $value) {
+			$values[] = $set[$key];
+			$attributes[] = $value;
+		}
+		$db->insert($table, $attributes, $values);
+	}
+	
+	echo 'Added ' . sizeof($data[$json]) . ' items to `' . $table . '`<br>';
+}
+
+
+
+
 //Add countries
+
+
+/*
 foreach ($data['Countries'] as $country) {
 	$id = $country['Id'];
 	$name = $country['Name'];
@@ -34,6 +92,7 @@ foreach ($data['Countries'] as $country) {
 	$db->insert('Country', ['id', 'name'],
 	[$id, $name]);
 }
+*/
 
 //Add players
 
