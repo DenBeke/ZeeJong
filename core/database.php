@@ -114,6 +114,21 @@ class Database {
 
 		return $results;
 	}
+	
+	
+	
+	public function truncate($table) {
+		
+		$table = '`' . $table . '`';	
+		
+		$query = "TRUNCATE $table";
+		
+		$statement = $this->getStatement2($query);
+		
+		$statement->execute();
+		
+	}
+	
 
 	private function getStatement2($query) {
 		$query = trim($query);
