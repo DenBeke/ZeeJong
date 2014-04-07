@@ -29,7 +29,7 @@
 	</div>
 	<?php
 	}
-	// Display 'change settings' form
+	// Display 'create group' form
 	?>
 	<div class="well">
 		<form id="signup" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>create-group">

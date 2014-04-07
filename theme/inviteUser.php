@@ -40,13 +40,13 @@
 	</div>
 	<?php
 	}
-	// Display 'change settings' form
+	// Display 'invite user' form
 	?>
 	
 	
 	
 	<div class="well">
-		<form id="signup" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>invite-user">
+		<form id="inviteUser" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>invite-user">
 			<div class="form-group">
 				<label class="control-label col-sm-2">User to invite</label>
 				<div class="controls col-sm-10">
