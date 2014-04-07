@@ -65,7 +65,7 @@
 								<input type="hidden" name="userToRemove" id="userToRemove" value=<?php echo $memberId?> />
 								<input type="hidden" name="groupName" id="groupName" value=<?php echo $this->getGroup()->getName()?> />
 								<td>
-									<button type="submit" class="btn btn-warning" >Delete</button>
+									<button type="submit" class="btn btn-warning" >Remove</button>
 								</td>
 								</form>							
 								
