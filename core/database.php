@@ -234,7 +234,24 @@ class Database {
 		return $result[0]['groupId'];
 	}
 	
-	 
+	 /**
+	 Get the groups a user is member of
+	 @param the id of the user
+	 @return the id's of the groups this user is member of
+	 */
+	 public function getUserGroups($id){
+	 	$sel = new \Selector('GroupMembership');
+		$sel->filter([['userId', '=', $id]]);
+
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['groupId']);
+		}
+
+		return $result2;
+	 }
 	 
 	/**
 	 Remove a user from a group
