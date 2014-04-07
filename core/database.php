@@ -234,6 +234,26 @@ class Database {
 		return $result[0]['groupId'];
 	}
 	
+	/**
+	 Test whether an invite to a user of a specific group was sent
+
+	 @param the id's of the user and the group to test
+
+	 @return boolean
+	 @exception when there exists more than one invite
+	 */
+	public function doesInviteExist($userId,$groupId) {
+		$sel = new \Selector('GroupMembership');
+		$sel->filter([['userId', '=', $userId]]);
+		$sel->filter([['groupId', '=', $groupId]]);
+		$result = $this->select($sel);
+		if(count($result)>1){
+			throw new exception('More than 1 invite with same user and group found.');
+		}
+		
+		return count($result) == 1;
+	}
+	
 	 /**
 	 Get the groups a user is member of
 	 @param the id of the user
@@ -242,7 +262,7 @@ class Database {
 	 public function getUserGroups($id){
 	 	$sel = new \Selector('GroupMembership');
 		$sel->filter([['userId', '=', $id]]);
-
+		$sel->filter([['accepted', '=', 1]]);
 		$result = $this->select($sel);
 
 		$result2=array();
@@ -371,6 +391,7 @@ class Database {
 		$sel = new \Selector('GroupMembership');
 	 	$sel->filter([['userId', '=', $userId]]);
 		$sel->filter([['groupId','=',$groupId]]);
+		$sel->filter([['accepted','=',1]]);
 
 		$result = $this->select($sel);
 
