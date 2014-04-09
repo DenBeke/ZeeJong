@@ -85,10 +85,7 @@
 				       	
 				      
 				       	
-<!--				       	
 				       	<form class="navbar-form navbar-right" role="form" id="login" action="<?php echo SITE_URL; ?>login" method="post">
--->
-                        <form class="navbar-form navbar-right" role="form" id="login" action="<?php echo SITE_URL; ?>login-alternative/" method="post">
                         
 				       		 <div class="form-group">
 				       	
@@ -106,13 +103,10 @@
 				       		<button type="submit" name="submit" value="login" class="btn btn-default">Sign in</button>
 				       		
 				       		<a href="<?php echo SITE_URL; ?>register" class="btn btn-default">Register</a>       		
+				       		<a href="<?php echo SITE_URL; ?>login-alternative/" class="btn btn-default">Alternative Login</a>       	
 				       		
 				       	</form>
-<!--				       	
-				       	<form class="navbar-form navbar-right" role="form" id="login" action="<?php echo SITE_URL; ?>login-alternative/" method="post">
-				       	    <button type="submit" name="submit" value="login" class="btn btn-default">Alternative Login</button>
-				       	</form>
--->
+
 				       	<?php
 						}
 						else {
