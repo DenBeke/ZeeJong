@@ -7,7 +7,7 @@ Created: February 2014
 
 require_once(dirname(__FILE__) . '/../core/openid.php');
 
-?>
+/*
 <!--
 <script>
   window.fbAsyncInit = function() {
@@ -83,130 +83,86 @@ throw new Exception("Else");
     });
   }
 </script>
--->
-<div class="container">
+-->*/
+        $openid = new LightOpenID("localhost");
+        
+        $this->loggedIn = false;
 
-
-<?php
-    $openid = new LightOpenID("localhost");
-    
-    $this->loggedIn = false;
-
-    if ($openid->mode) {
-        if ($openid->mode == 'cancel') {
-            throw new Exception("User has canceled authentication!");
-        } elseif($openid->validate()) {
-            $data = $openid->getAttributes();
-            $this->email = $data['contact/email'];
-            $this->name = $data['namePerson/first'];
-            $this->id = $openid->identity;
-            
-            $this->login();
+        if ($openid->mode) {
+            if ($openid->mode == 'cancel') {
+                throw new Exception("User has canceled authentication!");
+            } elseif($openid->validate()) {
+                $data = $openid->getAttributes();
+                $this->email = $data['contact/email'];
+                
+                if (array_key_exists('namePerson/first', $data)) {
+                    $this->name = $data['namePerson/first'];
+                }
+                else {
+                    $this->name = $this->email;
+                }
+                
+                $this->id = $openid->identity;
+                
+                $this->login();
+            }
         }
-    }
+        else {
+            if(isset($_GET['oid'])) {
+                $oid = $_GET['oid'];
 
-    if ($this->loggedIn) {
-?>
-            <h2></h2>
-		
-		    <div class="alert alert-success">
-			    <strong><?php echo $this->loginMessage; ?></strong>
-			    You are successfully logged in!
-		    </div>
-<?php
-    }
-    else {
-    
-	/*
-	if($this->loggedIn) {
-		?>
-		<h2></h2>
-		
-		<div class="alert alert-success">
-			<strong><?php echo $this->loginMessage; ?></strong>
-			You are successfully logged in!
-		</div>
-		<?php
-	}
-	else {*/
-?>
-	
-	<h2 id="title-login">Login</h2>
-	<!--
-	<div class="alert alert-danger">
-		<strong>Error</strong> 
-		<?php echo $this->loginMessage; ?>
-	</div>
-	
+                $openid->identity = $oid;
+            
+                $openid->required = array(
+                  'namePerson/first',
+                  'contact/email',
+                );
 
-	<div class="well">
-		<form id="signup" class="form-horizontal" method="post" action="<?php echo SITE_URL; ?>login">
-			
-			<div class="form-group">
-				<label class="control-label col-sm-2">Username</label>
-				<div class="controls col-sm-10">
-					<div class="input-group">
-						<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-user"></span> </span>
-						<input type="text" class="form-control input-xlarge" id="username" name="username" placeholder="Username">
-					</div>
-				</div>
-			</div>
-			
-			
-			<div class="form-group">
-				<label class="control-label col-sm-2">Password</label>
-				<div class="controls col-sm-10">
-					<div class="input-group">
-						<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-lock"></span> </span>
-						<input type="Password" class="form-control input-xlarge" id="password" name="password" placeholder="Password">
-					</div>
-				</div>
-			</div>
-			
-			
-			<div class="form-group">
-				<label class="control-label col-sm-2"></label>
-				<div class="controls col-sm-10">
-					<button type="submit" class="btn btn-success" >
-						Login
-					</button>
-			
-				</div>
-			</div>
-			
-		</form>
-	</div>
-	-->
-	
-	<?php
-        $openid->identity = 'https://www.google.com/accounts/o8/id';
-        $openid->required = array(
-          'namePerson/first',
-          'contact/email',
-        );
+                $openid->returnUrl = 'http://localhost/zeejong/login-alternative/';
+                
+                header('Location: ' . $openid->authUrl());
+            }
+        }
 
-        $openid->returnUrl = 'http://localhost/zeejong/login-alternative/';
+        if ($this->loggedIn) {
     ?>
+                <div class="container">
+                <h2>Login</h2>
+		
+		        <div class="alert alert-success">
+			        <strong><?php echo $this->loginMessage; ?></strong>
+			        You are successfully logged in!
+		        </div>
+    <?php
+        }
+        else {
+    ?>
+	    <div class="container">
+	    <h2 id="title-login">Login</h2>
 
-    <a href="<?php echo $openid->authUrl(); ?>" class="btn btn-default">Login with Google</a>
+        <a href="?oid=https://www.google.com/accounts/o8/id" class="btn btn-default">Login with Google</a>
+        <br/>
+        <br/>
+        <a href="?oid=https://openid.stackexchange.com" class="btn btn-default">Login with StackExchange</a>
+        <br/>
+        <br/>
+        <a href="?oid=https://me.yahoo.com" class="btn btn-default">Login with Yahoo</a>
+        <br/>
+        <br/>
+        <a href="?oid=https://username.wordpress.com/" class="btn btn-default">Login with Wordpress</a>
+        <br/>
+        <br/>
+        <form role="form" action="<?php echo SITE_URL; ?>login-alternative/" method="get">
+       		 <div class="form-group">
+       			<input name="oid" class="form-control" type="text" placeholder="OpenID Provider" id="provider">
+       			
+       			<button type="submit" class="btn btn-default">Login</button>
+       		</div>
+       	</form>
+         
 
-	
-	<!--
-	<div class="well">
-	    <div class="form-group">
-	        <label class="control-label col-sm-2">Username</label>
-		    <div class="controls col-sm-10">
-			    <div class="input-group">
-				    <span class="add-on input-group-addon"> <span class="glyphicon glyphicon-user"></span> </span>
-				    <input type="text" class="form-control input-xlarge" id="username" name="username" placeholder="Username">
-			    </div>
-		    </div>
-	    </div>
-	</div>
-	-->
-	
-<?php	
-	}
+    <?php	
+	    }
 ?>
 
 </div>
