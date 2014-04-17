@@ -37,7 +37,7 @@ Created: February 2014
 							Name: <?php echo $this->team->getName(); ?>
 						</li>
 					
-						<li class="list-group-item">Country: <?php echo $this->team->getCountry()->getName(); ?></li>
+						<li class="list-group-item">Country: <a href="<?php echo SITE_URL . 'country/' . $this->team->getCountry()->getId(); ?>"><?php echo $this->team->getCountry()->getName(); ?></a></li>
 						
 						<?php if($this->team->getCoach() != NULL) { ?>
 						
