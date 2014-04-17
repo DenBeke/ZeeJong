@@ -2547,6 +2547,17 @@ class Database {
 
 		return $matches;	
 	}
+	
+	
+	
+	public function getTeamsInCountry($countryId) {
+		$sel = new \Selector('Team');
+		$sel->filter([['country', '=', $countryId]]);
+		
+		$result = $this->select($sel);
+		
+		return $this->resultToCountries($result);
+	}
 
 
 }
