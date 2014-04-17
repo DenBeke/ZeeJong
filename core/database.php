@@ -2748,7 +2748,7 @@ class Database {
 		
 		$result = $this->select($sel);
 		
-		return $this->resultToCountries($result);
+		return $this->resultToTeams($result);
 	}
 	
 	public function getRefereesInCountry($countryId) {
@@ -2767,6 +2767,17 @@ class Database {
 		$result = $this->select($sel);
 		
 		return $this->resultToCoaches($result);
+	}
+	
+	
+	public function getPlayerTeams($playerId) {
+		$sel = new \Selector('PlaysIn');
+		$sel->filter([['playerId', '=', $playerId]]);
+		$sel->join('Team', 'teamId', 'id');
+		
+		$result = $this->select($sel);
+		
+		return $this->resultToTeams($result);
 	}
 
 
