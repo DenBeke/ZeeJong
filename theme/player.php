@@ -30,7 +30,7 @@ Created: February 2014
 			  </li>
 			  
 			  <li class="list-group-item">
-			  	<b>Nationality</b>: <?php echo $this->player->getCountry()->getName(); ?>
+			  	<b>Nationality</b>: <a href="<?php echo SITE_URL . 'country/' . $this->player->getCountry()->getId(); ?>"><?php echo $this->player->getCountry()->getName(); ?></a>
 			  </li>
 			  
 			  
