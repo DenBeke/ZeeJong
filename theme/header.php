@@ -23,10 +23,10 @@
 	<script src="<?php echo SITE_URL ?>js/jquery-1.11.0.min.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/script.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/bootstrap.js" type="text/javascript"></script>
-	<script src="<?php echo SITE_URL ?>js/Chart.js" type="text/javascript"></script>
-	
-
-	
+	<script src="<?php echo SITE_URL ?>js/flot/jquery.flot.js" type="text/javascript"></script>
+	<script src="<?php echo SITE_URL ?>js/flot/jquery.flot.time.js" type="text/javascript"></script>
+	<script src="<?php echo SITE_URL ?>js/flot/jquery.flot.navigate.js" type="text/javascript"></script>
+	<script src="<?php echo SITE_URL ?>js/flot/jquery.flot.orderBars.js" type="text/javascript"></script>
 	
 	<?php	
 	if($controller->page == 'login' and loggedIn() == true) {

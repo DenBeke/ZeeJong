@@ -140,125 +140,86 @@ function getLatestYear() {
 
 
 
-
-
 function generateChart($input, $id = 0, $type = 'Bar') {
-	
-	$datasets = array();	
-	$legends = array();
-	
-	foreach ($input as $legend => $dataset) {
-	
-		$labels = '';
-		$data = '';
-		$legends[] = $legend;
-	
-	
-		foreach($dataset as $label => $number) {
-			
-			
-			if($type == 'Line' and false) {
-				$labels = $labels . '," "';
-			}
-			else {
-				$labels = $labels . ',"' . $label . '"';
-			}
-			
-			
-			$data = $data . ',' . $number;
-			
-		}
-		
-		$labels = substr($labels, 1);
-		$data = substr($data, 1);
-		
-		$datasets[] = [$labels,$data];
-		
-	}
-
-	$id = md5(serialize($input).$id);
-	
-	
-	
-	
-	$colors = array(
-		'220,220,220',
-		'151,187,205',
-		'253,180,92',
-		'70,191,189'
-	);
-	
-	
 	?>
-	
-	<canvas id="<?php echo $id; ?>"></canvas>
-	
-		<div class="legend">
-	
+
+	<div id="<?php echo $id; ?>" style="width: 100%; height: 300px;">
+
+	</div>
+
+	<script>
+		var plotData = [];
 		<?php
-		$count = 0;
-		foreach ($legends as $legend) {
-			?>
-			<span class="legend-item" style="background-color: rgba(<?php echo $colors[$count]; ?>,0.5); border-color: rgba(<?php echo $colors[$count]; ?>,1);"></span><?php echo $legend; ?>
-			<?php
-		$count++;
-		}
-		
+			$smallestX = 0;
+			$smallestY = 0;
+			$largestX = 0;
+			$largestY = 0;
+			foreach($input as $label => $data) {
 		?>
-		</div>
-	
-	
-		<script>
-	
-			var data = {
-				labels : [<?php echo $labels;?>],
 				
-				datasets : [
-				
-				<?php
-				$count = 0;
-				foreach($datasets as $data) {
-				?>
-					{
-						fillColor : "rgba(<?php echo $colors[$count]; ?>,0.5)",
-						strokeColor : "rgba(<?php echo $colors[$count]; ?>,1)",
-						pointColor : "rgba(<?php echo $colors[$count]; ?>,1)",
-						pointStrokeColor : "#fff",
-						data : [<?php echo $data[1];?>]
-					},
-					
-				<?php 
-					$count++;
-				} 
-				?>
-				]
-			};
-			
-			var options = {
-					animation : false,
-					pointDot : false,
+				plotData['<?php echo $label; ?>'] = [
+					<?php
+						$i = 0;
+						foreach($data as $x => $y) {
+							$x *=  1000;
+							if($i == 0) {
+								$smallestX = $x;
+								$smallestY = $y;
+								$largestX = $x;
+								$largestY = $y;
+							}
+
+							$smallestX = min($x, $smallestX);
+							$smallestY = min($y, $smallestY);
+							$largestX = max($x, $largestX);
+							$largestY = max($y, $largestY);
+
+							echo "[$x, $y]";
+
+							if(next($data) !== false) {
+								echo ',';
+							}
+
+							$i++;
+						}
+					?>
+				];
+
+		<?php
 			}
+		?>
 	
-			var ctx = document.getElementById("<?php echo $id; ?>").getContext("2d");
-			
-	
-	
-	
-	
-		var width = $('#<?php echo $id; ?>').parent().width();
-		$('#<?php echo $id; ?>').attr("width",width);
-		var myNewChart = new Chart(ctx).<?php echo $type; ?>(data, options);
-		window.onresize = function(event){
-			var width = $('#<?php echo $id; ?>').parent().width();
-			$('#<?php echo $id; ?>').attr("width",width);
-			var myNewChart = new Chart(ctx).<?php echo $type; ?>(data, options);
-		};
-	
-	
-		</script>
-	
-	
-	
+		var plot = [];
+
+		for(var i in plotData) {
+			plot.push({
+				data: plotData[i],
+				label: i,
+				bars: {show: true, barWidth: 60 * 60 * 24 * 31 * 1000},
+			});
+		}
+
+		$.plot($('#<?php echo $id; ?>'), plot, {
+			xaxis: {
+				zoomRange: [<?php echo 0; ?>, <?php echo $largestX - $smallestX; ?>],
+				panRange: [<?php echo $smallestX ?>, <?php echo $largestX ?>],
+				mode: 'time',
+				timeformat: "%b-%Y",
+			},
+			yaxis: {
+				zoomRange: false,
+				panRange: false,
+			},
+			zoom: {
+				interactive: true
+			},
+			pan: {
+				interactive: true
+			},
+
+		});
+	</script>
+
 	<?php
 }
 
