@@ -38,6 +38,7 @@ require_once(dirname(__FILE__) . '/core/controller/createGroup.php');
 require_once(dirname(__FILE__) . '/core/controller/Country.php');
 require_once(dirname(__FILE__) . '/core/controller/Group.php');
 require_once(dirname(__FILE__) . '/core/controller/InviteUser.php');
+require_once(dirname(__FILE__) . '/core/controller/Invites.php');
 
 //Create database
 $database = new Database;
@@ -64,7 +65,8 @@ $urls = array(
 	INSTALL_DIR . 'create-group' => 'Controller\CreateGroup',
 	INSTALL_DIR . 'country/(\d+)' => 'Controller\Country',
 	INSTALL_DIR . 'group/(\S+)' => 'Controller\Group',
-	INSTALL_DIR . 'invite-user' => 'Controller\InviteUser'
+	INSTALL_DIR . 'invite-user' => 'Controller\InviteUser',
+	INSTALL_DIR . 'invites' => 'Controller\Invites'
 );
 
 
