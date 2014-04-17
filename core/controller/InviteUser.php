@@ -50,6 +50,12 @@ namespace Controller {
 			global $database;
 			$groupId = $database->getGroupId($_POST['groupName']);
 			$userId = $database->getUser($_POST['userName'])->getId();
+			
+			if($database->doesInviteExist($userId,$groupId)){
+				$this->errorMessage = $this->errorMessage."An invite for that group was already sent to the same user or the user is already a member of that group." . "\r\n";
+				return;
+			}
+			
 			$database->addGroupMembership($userId,$groupId);
 			$this -> successMessage = $this -> successMessage . "Successfully sent invite." . "\r\n";
 		}

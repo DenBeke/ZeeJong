@@ -167,6 +167,158 @@ class Database {
 								[$userId, $groupId, 0]);
 	}
 	
+	
+	/**
+	 Get the invites for a user
+	 @param the id of the user
+	 @return the id's of the invites this user has
+	 */
+	 public function getInvites($id){
+	 	$sel = new \Selector('GroupMembership');
+
+		$sel->filter([['userId', '=', $id]]);
+		$sel->filter([['accepted','=',0]]);
+
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['id']);
+		}
+
+		return $result2;
+	 }
+	 	 
+	/**
+	 Accept an invite
+	 
+	 @param GroupMembership id
+	 */
+	 public function acceptInvite($Id){
+	 	//Query
+		$query = "
+			UPDATE GroupMembership
+			SET accepted = ?
+			WHERE id = ?;
+		";
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		$ok = 1;
+		//Bind parameters
+		if (!$statement -> bind_param('ii', $ok, $Id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		
+	 }
+		 
+		 
+	 /**
+	 Get the id of the group from a membership
+
+	 @param id
+	 @return the id of the group in the membership
+
+	 @exception when no group found with the given name
+	 */
+	public function getGroupIdFromMembership($id) {
+		$sel = new \Selector('GroupMembership');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+		return $result[0]['groupId'];
+	}
+	
+	/**
+	 Test whether an invite to a user of a specific group was sent
+
+	 @param the id's of the user and the group to test
+
+	 @return boolean
+	 @exception when there exists more than one invite
+	 */
+	public function doesInviteExist($userId,$groupId) {
+		$sel = new \Selector('GroupMembership');
+		$sel->filter([['userId', '=', $userId]]);
+		$sel->filter([['groupId', '=', $groupId]]);
+		$result = $this->select($sel);
+		if(count($result)>1){
+			throw new exception('More than 1 invite with same user and group found.');
+		}
+		
+		return count($result) == 1;
+	}
+	
+	 /**
+	 Get the groups a user is member of
+	 @param the id of the user
+	 @return the id's of the groups this user is member of
+	 */
+	 public function getUserGroups($id){
+	 	$sel = new \Selector('GroupMembership');
+		$sel->filter([['userId', '=', $id]]);
+		$sel->filter([['accepted', '=', 1]]);
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['groupId']);
+		}
+
+		return $result2;
+	 }
+	 
+	/**
+	 Remove a user from a group
+
+	 @param id
+	*/
+	public function removeUserFromGroup($userId, $groupId) {
+
+		//Query
+		$query = "
+			DELETE FROM `GroupMembership` WHERE userId = ? AND groupId = ?;
+		";
+
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if (!$statement -> bind_param('ii', $userId, $groupId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+	}
+	 
+	 
+	 /**
+	 Get the groups a user is owner of
+	 @param the id of the user
+	 @return the id's of the bets this user made
+	 */
+	 public function getGroupsWithOwner($id){
+	 	$sel = new \Selector('Group');
+		$sel->filter([['ownerId', '=', $id]]);
+
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['name']);
+		}
+
+		return $result2;
+	 }
+	
 	/**
 	 Accept a membership of a group
 	 
@@ -237,13 +389,36 @@ class Database {
 			return False;
 		}
 		$sel = new \Selector('GroupMembership');
-	 	$sel->filter([['userId', '=', $userId,'groupId','=',$groupId]]);
+	 	$sel->filter([['userId', '=', $userId]]);
+		$sel->filter([['groupId','=',$groupId]]);
+		$sel->filter([['accepted','=',1]]);
 
 		$result = $this->select($sel);
 
 		return count($result) == 1;
 		
 	}
+	
+	/**
+	 Get the users in a certain group
+	 @param the id of the group
+	 @return the user id's of the members of the group
+	 */
+	 public function getGroupMembers($id){
+	 	$sel = new \Selector('GroupMembership');
+		$sel->filter([['groupId', '=', $id]]);
+		$sel->filter([['accepted', '=', 1]]);
+
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['userId']);
+		}
+
+		return $result2;
+	 }
+	
 	
 	/**
 	 Test whether a group ID exists
@@ -292,6 +467,23 @@ class Database {
 		$result = $this->select($sel);
 		requireEqCount($result, 1);
 		return $result[0]['name'];
+	}
+	
+	/**
+	 Get the owners' id from a group with a specific id
+
+	 @param id
+	 @return the id of the owner
+
+	 @exception when no group found with the given id
+	 */
+	public function getGroupOwnerId($id) {
+		$sel = new \Selector('Group');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+		return $result[0]['ownerId'];
 	}
 	
 
