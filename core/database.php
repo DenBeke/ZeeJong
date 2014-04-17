@@ -2558,6 +2558,15 @@ class Database {
 		
 		return $this->resultToCountries($result);
 	}
+	
+	public function getRefereesInCountry($countryId) {
+		$sel = new \Selector('Referee');
+		$sel->filter([['countryId', '=', $countryId]]);
+		
+		$result = $this->select($sel);
+		
+		return $this->resultToReferees($result);
+	}
 
 
 }

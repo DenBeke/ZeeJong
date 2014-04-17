@@ -17,6 +17,10 @@ Created: February 2014
 			</div>
 			
 			
+			
+			<!-- Teams -->
+			<h2>Teams</h2>
+			
 			<ul>
 				
 				<?php foreach ($this->teams as $team) { ?>
@@ -30,6 +34,27 @@ Created: February 2014
 				<?php } ?>
 			
 			</ul>
+			<!-- Teams -->
+			
+			
+			
+			<!-- Referees -->
+			<h2>Referees</h2>
+			
+			<ul>
+				
+				<?php foreach ($this->referees as $ref) { ?>
+				
+				<li>
+					<a href="<?php echo SITE_URL . 'referee/' . $ref->getId(); ?>">
+						<?php echo $ref->getName(); ?>
+					</a>
+				</li>
+				
+				<?php } ?>
+			
+			</ul>
+			<!-- Referees -->
 			
 	
 	

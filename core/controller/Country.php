@@ -18,6 +18,7 @@ require_once(dirname(__FILE__) . '/Error.php');
 		public $country;
 		public $title;
 		public $teams;
+		public $referees;
 
 
 		public function __construct() {
@@ -40,6 +41,7 @@ require_once(dirname(__FILE__) . '/Error.php');
 			global $database;
 			$this->country = $database->getCountryById($args[1]);
 			$this->teams = $database->getTeamsInCountry($this->country->getId());
+			$this->referees = $database->getRefereesInCountry($this->country->getId());
 
 			$this->title = 'Country - ' . $this->country->getName() . ' - ' . Controller::siteName;
 		}
