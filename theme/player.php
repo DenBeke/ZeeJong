@@ -43,6 +43,19 @@ Created: February 2014
 			   	<b>Position</b>: <?php echo $this->player->getPosition(); ?>
 			   </li>
 			  
+			  
+			  <li class="list-group-item">
+			   	<b>Teams</b>:
+			   	<?php
+			   		$count = 0;
+			   		foreach($this->teams as $team) {
+				   		if($count > 0) echo ',';
+				   		$count++;
+				?>
+				<a href="<?php echo SITE_URL . 'team/' . $team->getId(); ?>"><?php echo $team->getName(); ?></a>
+				<?php } ?>
+			   </li>
+			  
 			
 			  <li class="list-group-item">
 			    <span class="badge"><?php echo $this->player->getTotalNumberOfGoals(); ?></span>
