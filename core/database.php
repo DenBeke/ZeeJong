@@ -2567,6 +2567,15 @@ class Database {
 		
 		return $this->resultToReferees($result);
 	}
+	
+	public function getCoachesInCountry($countryId) {
+		$sel = new \Selector('Coach');
+		$sel->filter([['country', '=', $countryId]]);
+		
+		$result = $this->select($sel);
+		
+		return $this->resultToCoaches($result);
+	}
 
 
 }
