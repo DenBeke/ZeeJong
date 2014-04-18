@@ -5,6 +5,7 @@ Template part for facebook login page
 Created: February 2014
 */
 
+require_once(dirname(__FILE__) . '/../core/config.php');
 require_once(dirname(__FILE__) . '/../core/openid.php');
 
 /*
@@ -84,7 +85,7 @@ throw new Exception("Else");
   }
 </script>
 -->*/
-        $openid = new LightOpenID("zeejong.eu");
+        $openid = new LightOpenID(SITE_URL);
         
         $this->loggedIn = false;
 
@@ -118,16 +119,15 @@ throw new Exception("Else");
                   'contact/email',
                 );
 
-                $openid->returnUrl = 'http://zeejong.eu/login-alternative/';
-                
+                $openid->returnUrl = SITE_URL . 'login-alternative/';
                 header('Location: ' . $openid->authUrl());
             }
         }
 
         if ($this->loggedIn) {
-    ?>
-                <meta http-equiv="refresh" content="2;url=http://zeejong.eu/">
 
+                header("refresh:2;url=" . SITE_URL);
+    ?>
                 <div class="container">
                 <h2>Login</h2>
 		
