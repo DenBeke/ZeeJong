@@ -195,7 +195,7 @@ function generateChart($input, $id = 0, $type = 'Bar') {
 			plot.push({
 				data: plotData[i],
 				label: i,
-				bars: {show: true, barWidth: 60 * 60 * 24 * 31 * 1000},
+				bars: {show: true, barWidth: 60 * 60 * 24 * 27 * 1000},
 			});
 		}
 
