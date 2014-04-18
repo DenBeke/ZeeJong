@@ -105,9 +105,8 @@
 				       	
 				      
 				       	
-				       	
 				       	<form class="navbar-form navbar-right" role="form" id="login" action="<?php echo SITE_URL; ?>login" method="post">
-				       	
+                        
 				       		 <div class="form-group">
 				       	
 				       			<input name="username" class="form-control" type="text" placeholder="Username" id="username">
@@ -124,10 +123,10 @@
 				       		<button type="submit" name="submit" value="login" class="btn btn-default">Sign in</button>
 				       		
 				       		<a href="<?php echo SITE_URL; ?>register" class="btn btn-default">Register</a>       		
-				       		
+				       		<a href="<?php echo SITE_URL; ?>login-alternative/" class="btn btn-default">Alternative Login</a>       	
 				       		
 				       	</form>
-				       	
+
 				       	<?php
 						}
 						else {
