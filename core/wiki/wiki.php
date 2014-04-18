@@ -44,7 +44,6 @@ class Wiki {
 
 			foreach ($results as $section) {
 
-				echo $this->wiki->getText("$this->article", "{$section['index']}"), "<br>";
 				$tempText = $text . $this->wiki->getText("$this->article", "{$section['index']}");
 				$text = $tempText;
 			}
@@ -72,7 +71,6 @@ class Wiki {
 		$searchResults = $html->find('.mw-search-results' , 0);
 		$searchResultElement = $searchResults->first_child()->first_child()->first_child();
 		$this->article = $searchResultElement->getAttribute('title');
-		echo $this->article;
 	}
 
 
@@ -114,8 +112,6 @@ class Wiki {
 			}
 		}
 
-		echo utf8_decode($this->article);
-
 		$this->fullpage = $fullpage;
 		$wiki = $this->run();
 
@@ -143,5 +139,5 @@ class Wiki {
 }
 
 $wi = new Wiki();
-echo utf8_decode($wi->getPlayerWiki("José de Jesús Corona Rodríguez"));
+echo utf8_decode($wi->getPlayerWiki("Maarten Stekelenburg"));
 ?>
