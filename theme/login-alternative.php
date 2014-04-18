@@ -84,7 +84,7 @@ throw new Exception("Else");
   }
 </script>
 -->*/
-        $openid = new LightOpenID("localhost");
+        $openid = new LightOpenID("zeejong.eu");
         
         $this->loggedIn = false;
 
@@ -118,7 +118,7 @@ throw new Exception("Else");
                   'contact/email',
                 );
 
-                $openid->returnUrl = 'http://localhost/zeejong/login-alternative/';
+                $openid->returnUrl = 'http://zeejong.eu/login-alternative/';
                 
                 header('Location: ' . $openid->authUrl());
             }
@@ -126,6 +126,8 @@ throw new Exception("Else");
 
         if ($this->loggedIn) {
     ?>
+                <meta http-equiv="refresh" content="2;url=http://zeejong.eu/">
+
                 <div class="container">
                 <h2>Login</h2>
 		
