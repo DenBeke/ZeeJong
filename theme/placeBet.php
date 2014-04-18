@@ -23,6 +23,20 @@
 			<strong>You are not logged in.</strong>
 		</div>
 		<?php
+		}else if($this->stop()){
+
+		if(strlen($this->getErrorMessage())>0){
+		// there were errors, let's display them
+		?>
+		<div class="alert alert-danger">
+			<strong> <?php
+			echo nl2br($this -> getErrorMessage());
+			?></strong>
+		</div>
+	
+		<?php
+		}
+
 		}else{
 		if(strlen($this->getErrorMessage())>0){
 		// there were errors, let's display them
@@ -114,11 +128,13 @@
 				<ul class="list-group">
 					
 					<li class="list-group-item">
-						<?php  $match = $database -> getMatchById($this->getMatchId());echo $match->getTeamA()->getName().' vs '.$match->getTeamB()->getName(); ?>
+						<?php  $match = $database -> getMatchById($this -> getMatchId());
+						echo $match -> getTeamA() -> getName() . ' vs ' . $match -> getTeamB() -> getName();
+ ?>
 					</li>
 					
 					<li class="list-group-item">
-						Date: <?php echo date('d-m-Y',$match->getDate()); ?>
+						Date: <?php echo date('d-m-Y', $match -> getDate()); ?>
 					</li>
 					
 					<li class="list-group-item">
