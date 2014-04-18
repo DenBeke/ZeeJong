@@ -23,6 +23,20 @@
 			<strong>You are not logged in.</strong>
 		</div>
 		<?php
+		}else if($this->stop()){
+
+		if(strlen($this->getErrorMessage())>0){
+		// there were errors, let's display them
+		?>
+		<div class="alert alert-danger">
+			<strong> <?php
+			echo nl2br($this -> getErrorMessage());
+			?></strong>
+		</div>
+	
+		<?php
+		}
+
 		}else{
 		if(strlen($this->getErrorMessage())>0){
 		// there were errors, let's display them
@@ -57,7 +71,7 @@
 			<form id="changeSettings" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>place-bet/<?php echo $this->getMatchId()?>">
 				<input type="hidden" name="matchId" id="matchId" value=<?php echo $this->getMatchId()?> />
 				<div class="form-group">
-					<label class="control-label col-sm-4">Score Team 1</label>
+					<label class="control-label col-sm-4">Score <?php $match = $database -> getMatchById($this->getMatchId());echo $match->getTeamA()->getName() ?></label>
 					<div class="controls col-sm-8">
 						<div class="input-group">
 							<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-arrow-right"></span> </span>
@@ -66,7 +80,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-4">Score Team 2</label>
+					<label class="control-label col-sm-4">Score <?php $match = $database -> getMatchById($this->getMatchId());echo $match->getTeamB()->getName() ?></label>
 					<div class="controls col-sm-8">
 						<div class="input-group">
 							<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-arrow-right"></span> </span>
@@ -114,11 +128,13 @@
 				<ul class="list-group">
 					
 					<li class="list-group-item">
-						<?php  $match = $database -> getMatchById($this->getMatchId());echo $match->getTeamA()->getName().' vs '.$match->getTeamB()->getName(); ?>
+						<?php  $match = $database -> getMatchById($this -> getMatchId());
+						echo $match -> getTeamA() -> getName() . ' vs ' . $match -> getTeamB() -> getName();
+ ?>
 					</li>
 					
 					<li class="list-group-item">
-						Date: <?php echo date('d-m-Y',$match->getDate()); ?>
+						Date: <?php echo date('d-m-Y', $match -> getDate()); ?>
 					</li>
 					
 					<li class="list-group-item">
