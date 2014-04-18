@@ -778,6 +778,22 @@ class Database {
 
 		return count($result) == 1;
 	}
+	
+	/**
+	 Test whether a specific user exists
+
+	 @param the username to test
+
+	 @return boolean
+	 */
+	public function doesAlternativeUserExist($id) {
+		$sel = new \Selector('AlternativeUser');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+
+		return count($result) == 1;
+	}
 
 	/**
 	 Get the user with a given username
@@ -790,6 +806,34 @@ class Database {
 	public function getUser($username) {
 		$sel = new \Selector('User');
 		$sel->filter([['username', '=', $username]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $this->resultToUsers($result)[0];
+	}
+	
+	
+	/**
+	 Get the alternative user with a given id
+
+	 @param id
+	 @return a User object
+
+	 @exception when no user found with the given name
+	 */
+	public function getAlternativeUser($id) {
+	
+	    $sel = new \Selector('AlternativeUser');
+	    $sel->filter([['id', '=', $id]]);
+	    
+	    $result = $this->select($sel);
+		requireEqCount($result, 1);
+		
+		$userId = $result[0]['userId'];
+	
+		$sel = new \Selector('User');
+		$sel->filter([['id', '=', $userId]]);
 
 		$result = $this->select($sel);
 		requireEqCount($result, 1);
@@ -860,6 +904,29 @@ class Database {
 		return $this -> getUser($username) -> getId();
 		}
 	}
+	
+	
+	/**
+	 Register a user with a given id
+
+	 @return id of the newly added user
+	 */
+	public function registerAlternativeUser($id, $username, $salt, $hashedPassword, $emailAddress) {
+		if($this->doesAlternativeUserExist($id)){
+			return $this->getAlternativeUser($id)->getId();
+		}else{
+		    $this->insert('User', ['username', 'salt', 'password', 'emailAddress'],
+							    [$username, $salt, $hashedPassword, $emailAddress]);
+	
+		    $userId = $this->getUser($username)->getId();
+		    
+		    $this->insert('AlternativeUser', ['id', 'username', 'emailAddress', 'userId'],
+					        [$id, $username, $emailAddress, $userId]);
+
+		    return $userId;
+		}
+	}
+	
 
 	/**
 	 Get the country with the given name
