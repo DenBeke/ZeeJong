@@ -147,6 +147,8 @@ namespace Controller {
 			$this -> setGroup();
 			return (count($this -> group -> getMembers()) <= 1 && $this -> group -> isUserOwner($_SESSION['userID']));
 		}
+		
+
 
 	}
 

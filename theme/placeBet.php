@@ -23,21 +23,16 @@
 			<strong>You are not logged in.</strong>
 		</div>
 		<?php
-		}else if($this->stop()){
-
-		if(strlen($this->getErrorMessage())>0){
-		// there were errors, let's display them
-		?>
+		}
+		if($this->stop()){
+			?>
 		<div class="alert alert-danger">
-			<strong> <?php
-			echo nl2br($this -> getErrorMessage());
-			?></strong>
+			<strong>Either the match does not exist or has already been played.</strong>
 		</div>
-	
 		<?php
 		}
-
-		}else{
+		
+		else{
 		if(strlen($this->getErrorMessage())>0){
 		// there were errors, let's display them
 		?>

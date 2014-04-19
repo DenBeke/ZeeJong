@@ -31,19 +31,19 @@
 			
 			
 			<?php
-		}else if(!$this->setGroup()){
+			}else if(!$this->setGroup()){
 			?>
 			<div class="alert alert-danger">
 			<strong>This group does not exist.</strong>
 			</div>
 			<?php
-			
+
 			}else{
 			// We're good to go
 			?>
 			
 			<div class="col-md-12">
-			<h1><?php echo $this->getGroup()->getName() ?></h1>
+			<div class=top-left><div class=badge><h1><?php echo $this->getGroup()->getName() ?></h1></div></div>
 			<div class="col-md-3">
 				<h2>Members</h2>
 				<table class="table table-striped">
@@ -71,8 +71,8 @@
 								
 							
 							<?php
-						}
-				if($this->mayGroupBeDeleted()){
+							}
+							if($this->mayGroupBeDeleted()){
 					?>
 								<form id="deleteGroup" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>group/<?php echo $this->getGroup()->getName()?>">			
 								<input type="hidden" name="groupToRemove" id="groupToRemove" value=<?php echo $this->getGroup()->getName()?> />
@@ -81,8 +81,8 @@
 								</td>
 								</form>		
 						<?php
-					
-				}else if($memberId == $_SESSION['userID']&&!$this->getGroup()->isUserOwner($memberId))	{
+
+						}else if($memberId == $_SESSION['userID']&&!$this->getGroup()->isUserOwner($memberId))	{
 							?>
 						
 								<form id="removeUser" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>group/<?php echo $this->getGroup()->getName()?>">			
@@ -96,13 +96,47 @@
 								
 							
 							<?php
-			}
+							}
 						?>
 				</tr>
 				
 				<?php } ?>
 				</table>
 			</div>
+			<div class="col-md-6">
+				<h2>Bets</h2>
+				<table class="table table-striped">
+				<tr>
+					<th>Made by</th>
+					<th>Team 1</th>
+					<th>Score</th>
+					<th>Team 2</th>
+					<th>Amount</th>
+				</tr>
+			<?php
+		
+				global $database;
+				$bets = $this->getGroup()->getBets();
+				foreach($bets as $betId) {
+				$bet = new Bet($betId,$database);
+			?>
+				<tr>
+					<td><?php echo $database->getUserName($bet->getUserId())?></td>
+					<td><?php echo $database->getMatchById($bet->getMatchId())->getTeamA()->getName() ?></td>
+					<td><span class="badge"><?php  echo $bet -> getScoreA() . " - " . $bet -> getScoreB(); ?></span></td>
+					<td><?php echo $database->getMatchById($bet->getMatchId())->getTeamB()->getName() ?></td>
+					<td><?php echo "€ ".$bet->getMoney() ?></td>
+				</tr>
+			<?php
+
+			}
+			?>
+		</table>
+				
+			</div>
+			
+			
+			
 			
 			</div>
 
