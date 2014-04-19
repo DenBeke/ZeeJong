@@ -161,6 +161,16 @@ $schama = [
 	
 	
 	//Add goals
+	[
+		'json' => 'Goals',
+		'db' => 'Goal',
+		'cols' => [
+			'Id' => 'id',
+			'MatchId' => 'matchId',
+			'PlayerId' => 'playerId',
+			'Time' => 'time'
+		]
+	],
 	
 	
 	//Add cards
