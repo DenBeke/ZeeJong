@@ -142,16 +142,16 @@ throw new Exception("Else");
 	    <div class="container">
 	    <h2 id="title-login">Login</h2>
 
-        <a href="?oid=https://www.google.com/accounts/o8/id" class="btn btn-default">Login with Google</a>
+        <a href="?oid=https://www.google.com/accounts/o8/id"><img src="../img/Google.png"></img></a>
         <br/>
         <br/>
-        <a href="?oid=https://openid.stackexchange.com" class="btn btn-default">Login with StackExchange</a>
+        <a href="?oid=https://openid.stackexchange.com"><img src="../img/StackExchange.png"></img></a>
         <br/>
         <br/>
-        <a href="?oid=https://me.yahoo.com" class="btn btn-default">Login with Yahoo</a>
+        <a href="?oid=https://me.yahoo.com"><img src="../img/Yahoo.png"></img></a>
         <br/>
         <br/>
-        <a href="?oid=https://username.wordpress.com/" class="btn btn-default">Login with Wordpress</a>
+        <a href="?oid=https://username.wordpress.com/"><img src="../img/Wordpress.png"></img></a>
         <br/>
         <br/>
         <form role="form" action="<?php echo SITE_URL; ?>login-alternative/" method="get">
