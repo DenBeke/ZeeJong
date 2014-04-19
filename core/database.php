@@ -560,6 +560,21 @@ class Database {
 
 		return $result[0]['matchId'];
 	}
+	
+	/**
+	 Get the userId from a bet
+
+	 @return the userId
+	 */
+	public function getUserFromBet($id) {
+		$sel = new \Selector('Bet');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['userId'];
+	}
 
 
 	/**
