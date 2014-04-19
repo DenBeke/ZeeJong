@@ -93,7 +93,8 @@ namespace Controller {
 		private function removeUser($userId) {
 			$this -> group -> removeUser($userId);
 			if($userId == $_SESSION['userID']){
-				$this -> errorMessage = $this -> errorMessage . "You are not a member of this group." . "\r\n";
+				$url = SITE_URL;
+				header( "Location: $url" );
 			}
 		}
 
@@ -109,6 +110,8 @@ namespace Controller {
 			// Delete the group itself
 			global $database;
 			$database -> removeGroup($this -> groupId);
+			$url = SITE_URL;
+			header( "Location: $url" );
 		}
 
 		/**
