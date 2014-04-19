@@ -49,14 +49,7 @@
 				<table class="table table-striped">
 					<tr>
 						<th>Name</th>
-						
-						<?php if($this->getGroup()->isUserOwner($_SESSION['userID'])){
-							?>
-							<th>Remove</th>
-							<?php
-						}
-						?>
-						
+						<th>Action</th>
 					</tr>
 				<?php		
 				$members = $this->getGroup()->getMembers();
@@ -89,7 +82,21 @@
 								</form>		
 						<?php
 					
-				}
+				}else if($memberId == $_SESSION['userID']&&!$this->getGroup()->isUserOwner($memberId))	{
+							?>
+						
+								<form id="removeUser" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>group/<?php echo $this->getGroup()->getName()?>">			
+								<input type="hidden" name="userToRemove" id="userToRemove" value=<?php echo $memberId?> />
+								<input type="hidden" name="groupName" id="groupName" value=<?php echo $this->getGroup()->getName()?> />
+								<td>
+									<button type="submit" class="btn btn-warning" >Leave</button>
+								</td>
+								</form>							
+								
+								
+							
+							<?php
+			}
 						?>
 				</tr>
 				

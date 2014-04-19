@@ -92,6 +92,9 @@ namespace Controller {
 		 */
 		private function removeUser($userId) {
 			$this -> group -> removeUser($userId);
+			if($userId == $_SESSION['userID']){
+				$this -> errorMessage = $this -> errorMessage . "You are not a member of this group." . "\r\n";
+			}
 		}
 
 		/**
