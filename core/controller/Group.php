@@ -31,12 +31,12 @@ namespace Controller {
 			if (!$database -> doesUserExist($_SESSION['userID'])) {
 				return;
 			}
-			if (isset($_POST['groupName'])) {
-				$this -> groupId = $database -> getGroupId($_POST['groupName']);
-				$this -> group = new \Group($this -> groupId, $database);
-			}
+			$this -> setGroup();
 			if (isset($_POST['userToRemove'])) {
 				$this -> removeUser($_POST['userToRemove']);
+			}
+			if (isset($_POST['groupToRemove'])) {
+				$this -> deleteGroup();
 			}
 		}
 
@@ -83,11 +83,7 @@ namespace Controller {
 		 @return the group object
 		 */
 		public function getGroup() {
-			if (isset($_POST['groupName'])) {
-				global $database;
-				$this -> groupId = $database -> getGroupId($_POST['groupName']);
-				$this -> group = new \Group($this -> groupId, $database);
-			}
+			$this -> setGroup();
 			return $this -> group;
 		}
 
@@ -96,6 +92,54 @@ namespace Controller {
 		 */
 		private function removeUser($userId) {
 			$this -> group -> removeUser($userId);
+		}
+
+		/**
+		 Delete the group
+		 */
+		private function deleteGroup() {
+			if (!$this -> mayGroupBeDeleted()) {
+				return;
+			}
+			// Delete the membership of the owner
+			$this -> group -> removeUser($_SESSION['userID']);
+			// Delete the group itself
+			global $database;
+			$database -> removeGroup($this -> groupId);
+		}
+
+		/**
+		 Try to set the group (only possible when groupId was set in POST)
+		 */
+		public function setGroup() {
+			if (isset($_POST['groupName'])) {
+				global $database;
+				if (!$database -> doesGroupNameExist($_POST['groupName'])) {
+					$this -> errorMessage = $this -> errorMessage . "This group does not exist." . "\r\n";
+					return False;
+				}
+				$this -> groupId = $database -> getGroupId($_POST['groupName']);
+				$this -> group = new \Group($this -> groupId, $database);
+			} else if (isset($_POST['groupToRemove'])) {
+				global $database;
+				if (!$database -> doesGroupNameExist($_POST['groupToRemove'])) {
+					$this -> errorMessage = $this -> errorMessage . "This group does not exist." . "\r\n";
+					return False;
+				}
+				$this -> groupId = $database -> getGroupId($_POST['groupToRemove']);
+				$this -> group = new \Group($this -> groupId, $database);
+			}
+			return True;
+		}
+
+		/**
+		 Can group be deleted?  The group can only be deleted if only the owner is left as member
+
+		 @return a boolean indicating whether the group may be deleted
+		 */
+		public function mayGroupBeDeleted() {
+			$this -> setGroup();
+			return (count($this -> group -> getMembers()) <= 1 && $this -> group -> isUserOwner($_SESSION['userID']));
 		}
 
 	}

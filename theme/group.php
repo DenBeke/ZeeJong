@@ -31,7 +31,13 @@
 			
 			
 			<?php
-
+		}else if(!$this->setGroup()){
+			?>
+			<div class="alert alert-danger">
+			<strong>This group does not exist.</strong>
+			</div>
+			<?php
+			
 			}else{
 			// We're good to go
 			?>
@@ -73,6 +79,17 @@
 							
 							<?php
 						}
+				if($this->mayGroupBeDeleted()){
+					?>
+								<form id="deleteGroup" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>group/<?php echo $this->getGroup()->getName()?>">			
+								<input type="hidden" name="groupToRemove" id="groupToRemove" value=<?php echo $this->getGroup()->getName()?> />
+								<td>
+									<button type="submit" class="btn btn-warning" >Remove group</button>
+								</td>
+								</form>		
+						<?php
+					
+				}
 						?>
 				</tr>
 				
