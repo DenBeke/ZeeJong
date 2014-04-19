@@ -361,6 +361,33 @@ class Database {
 		return $this -> getGroupId($name);
 	}
 	
+	
+	/**
+	 Remove a group
+
+	 @param groupid
+	*/
+	public function removeGroup($groupId) {
+
+		//Query
+		$query = "
+			DELETE FROM `Group` WHERE id = ?;
+		";
+
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if (!$statement -> bind_param('i',$groupId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+	}
+	
 	/**
 	 Test whether a specific groupname exists
 
@@ -532,6 +559,21 @@ class Database {
 		requireEqCount($result, 1);
 
 		return $result[0]['matchId'];
+	}
+	
+	/**
+	 Get the userId from a bet
+
+	 @return the userId
+	 */
+	public function getUserFromBet($id) {
+		$sel = new \Selector('Bet');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['userId'];
 	}
 
 
