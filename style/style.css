@@ -90,6 +90,11 @@ table.matches td:nth-child(3) {
 }
 
 
+table.goals td:first-child.team-b,
+table.goals td:last-child.team-a {
+	font-size: 0;
+}
+
 
 /* News *
 ********/
