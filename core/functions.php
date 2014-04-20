@@ -148,7 +148,9 @@ function generateChart($input, $id = 0, $type = 'Bar') {
 	</div>
 
 	<script>
-		var plotData = [];
+		var series = [];
+		var yValues = [];
+
 		<?php
 			$smallestX = 0;
 			$smallestY = 0;
@@ -156,25 +158,12 @@ function generateChart($input, $id = 0, $type = 'Bar') {
 			$largestY = 0;
 			foreach($input as $label => $data) {
 		?>
-				
-				plotData['<?php echo $label; ?>'] = [
+				series.push({label: '<?php echo $label; ?>'});
+				yValues.push([
 					<?php
 						$i = 0;
 						foreach($data as $x => $y) {
-							$x *=  1000;
-							if($i == 0) {
-								$smallestX = $x;
-								$smallestY = $y;
-								$largestX = $x;
-								$largestY = $y;
-							}
-
-							$smallestX = min($x, $smallestX);
-							$smallestY = min($y, $smallestY);
-							$largestX = max($x, $largestX);
-							$largestY = max($y, $largestY);
-
-							echo "[$x, $y]";
+							echo "[$x * 1000,$y]";
 
 							if(next($data) !== false) {
 								echo ',';
@@ -183,41 +172,44 @@ function generateChart($input, $id = 0, $type = 'Bar') {
 							$i++;
 						}
 					?>
-				];
+				]);
 
 		<?php
 			}
 		?>
-	
-		var plot = [];
+	 
+	var plot = $.jqplot(<?php echo $id; ?>, yValues, {
+		seriesDefaults:{
+			showMarker: false,
+		    rendererOptions: {
+				fillToZero: true,
+				smooth: true
+			}
+		},
+		series: series,
+		legend: {
+			renderer: $.jqplot.EnhancedLegendRenderer,
+		    show: true,
+		    placement: 'outsideGrid'
+		},
+		axes: {
+				xaxis: {
+					renderer: $.jqplot.DateAxisRenderer,
+					tickOptions: {
+						formatString: '%b-%y'					
+					}
+				},
+				yaxis: {
+					min: 0
+				}
+		},
+		cursor: {
+			show: true,
+			zoom: true,
+			showTooltip: false
+		},
+	});
 
-		for(var i in plotData) {
-			plot.push({
-				data: plotData[i],
-				label: i,
-				bars: {show: true, barWidth: 60 * 60 * 24 * 27 * 1000},
-			});
-		}
-
-		$.plot($('#<?php echo $id; ?>'), plot, {
-			xaxis: {
-				zoomRange: [<?php echo 0; ?>, <?php echo $largestX - $smallestX; ?>],
-				panRange: [<?php echo $smallestX ?>, <?php echo $largestX ?>],
-				mode: 'time',
-				timeformat: "%b-%Y",
-			},
-			yaxis: {
-				zoomRange: false,
-				panRange: false,
-			},
-			zoom: {
-				interactive: true
-			},
-			pan: {
-				interactive: true
-			},
-
-		});
 	</script>
 
 	<?php
