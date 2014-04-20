@@ -13,6 +13,122 @@ Created: February 2014
 	
 	
 	
+	<div class="row">
+	
+		<!-- Information panel -->
+		<div class="col-md-4">
+		
+			<div class="panel panel-default">
+			
+			
+				<div class="panel-heading">
+			
+					<h3 class="panel-title">Information</h3>
+					
+					
+				</div>
+				
+				
+				
+				<div class="panel-body">
+					
+					<ul class="list-group">
+					
+						<li class="list-group-item">
+							Final score: <?php try { echo $this->match->getScore(); } catch(exception $e) {} ?>
+						</li>
+		
+						<li class="list-group-item">
+							Prognose: <?php $prognose = $this->match->getPrognose(); echo $prognose[0] . '-' . $prognose[1]; ?>
+						</li>
+					
+					
+						<li class="list-group-item">
+							Competition: <a href="<?php echo SITE_URL . 'competition/' . $this->match->getTournament()->getCompetition()->getId(); ?>">
+								<?php echo $this->match->getTournament()->getCompetition()->getName(); ?></a>
+						</li>
+					
+						<li class="list-group-item">Date: <?php echo date('d-m-Y', $this->match->getDate()); ?></li>
+						
+						<li class="list-group-item">
+							<span class="badge"><?php echo $this->match->getTotalCards(); ?></span>
+							Cards
+					  	</li>
+					  	
+					  	<li class="list-group-item">
+							Referee:
+							<?php if($referee = $this->match->getReferee()) { ?>
+								<a href="<?php echo SITE_URL . 'referee/' . $this->match->getReferee()->getId(); ?>"><?php echo $this->match->getReferee()->getName(); ?></a>
+							<?php } else { ?>
+								Not found
+							<?php } ?>
+					  	</li>
+					</ul>
+					
+					
+				</div>
+			
+			</div>
+			
+			
+			
+			<?php if($this->match->getDate() >= strtotime(date('d M Y', time()))) { ?>
+			
+			
+			<div class="col-md-12 bet-button-container container">
+					<a href="<?php echo SITE_URL . 'place-bet/' . $this->match->getId(); ?>" class="btn btn-success btn-lg">Place Bet</a>
+				
+			</div>
+			
+			
+			<?php } ?>
+			
+			
+		</div>
+	
+		
+		
+		
+		<!-- Goals -->
+		
+		<?php if(sizeof($this->goals) > 0) { ?>
+		
+		<div class="col-md-8">
+		
+			<table class="goals table table-striped">
+				<?php foreach($this->goals as $goal) {
+				
+					if($goal->getTeamId() == $this->match->getTeamA()->getId()) {
+						$gClass = 'team-a';
+					}
+					else {
+						$gClass = 'team-b';
+					}
+				
+				?>
+				<tr class="goal">
+					
+					<td class="<?php echo $gClass; ?>">
+						<?php echo $database->getPlayerById($goal->getPlayerId())->getName(); ?>		
+					</td>
+					
+					<td><?php echo $goal->getTime(); ?>'</td>
+					
+					<td class="<?php echo $gClass; ?>">
+						<?php echo $database->getPlayerById($goal->getPlayerId())->getName(); ?>		
+					</td>
+					
+				</tr>
+				
+				<?php } ?>
+			</table>
+		
+		</div>
+		
+		<?php } ?>
+	
+	</div>
+	
 	
 	<!--<div id="field">
 		
@@ -42,206 +158,137 @@ Created: February 2014
 	
 	
 	
-	<!-- Information panel -->
-	<div class="col-md-4">
+		
 	
-		<div class="panel panel-default">
-		
-		
-			<div class="panel-heading">
-		
-				<h3 class="panel-title">Information</h3>
-				
-				
-			</div>
+	<div class="row">
+	
+	
+		<!-- Team A -->
+		<div class="col-md-6">
+			<div class="panel panel-default">
 			
 			
+				<div class="panel-heading">
 			
-			<div class="panel-body">
-				
-				<ul class="list-group">
-				
-					<li class="list-group-item">
-						Final score: <?php try { echo $this->match->getScore(); } catch(exception $e) {} ?>
-					</li>
-
-					<li class="list-group-item">
-						Prognose: <?php $prognose = $this->match->getPrognose(); echo $prognose[0] . '-' . $prognose[1]; ?>
-					</li>
-				
-				
-					<li class="list-group-item">
-						Competition: <a href="<?php echo SITE_URL . 'competition/' . $this->match->getTournament()->getCompetition()->getId(); ?>">
-							<?php echo $this->match->getTournament()->getCompetition()->getName(); ?></a>
-					</li>
-				
-					<li class="list-group-item">Date: <?php echo date('d-m-Y', $this->match->getDate()); ?></li>
+					<h3 class="panel-title"><a href="<?php echo SITE_URL . 'team/' . $this->match->getTeamA()->getId(); ?>"><?php echo $this->match->getTeamA()->getName() ?></a></h3>
 					
-					<li class="list-group-item">
-				    	<span class="badge"><?php echo $this->match->getTotalCards(); ?></span>
-				    	Cards
-				  	</li>
-				  	
-				  	<li class="list-group-item">
-						Referee:
-						<?php if($referee = $this->match->getReferee()) { ?>
-							<a href="<?php echo SITE_URL . 'referee/' . $this->match->getReferee()->getId(); ?>"><?php echo $this->match->getReferee()->getName(); ?></a>
+					
+				</div>
+				
+				
+				
+				<div class="panel-body">
+				
+				
+					<table class="table table-striped">
+					         
+					    <tbody>
+						    <tr>
+						    	<th>#</th>
+						    	<th>Name</th>
+						    </tr>
+						    
+						    
+						    <?php
+						    foreach($this->match->getPlayersTeamA() as $player) { 
+						    ?>
+						     <tr>
+						     	<td><?php echo $player->number; ?></td>
+						     	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
+						     </tr>
+						     
+						     <?php
+						     } //end foreach
+						     ?>
+					             
+						</tbody>
+					</table>
+				
+					
+				</div>
+				
+				
+				
+				<div class="panel-footer">
+						Coach:
+						<?php if($coach = $this->match->getTeamA()->getCoachForMatch($this->match->getId())) { ?>
+							<a href="<?php echo SITE_URL . 'coach/' . $coach->getId(); ?>"><?php echo $coach->getName(); ?></a>
 						<?php } else { ?>
 							Not found
 						<?php } ?>
-				  	</li>
-				</ul>
+				</div>
 				
-				
+			
 			</div>
-		
-		</div>
-		
-		
-		
-		<?php if($this->match->getDate() >= strtotime(date('d M Y', time()))) { ?>
-		
-		
-		<div class="col-md-12 bet-button-container container">
-				<a href="<?php echo SITE_URL . 'place-bet/' . $this->match->getId(); ?>" class="btn btn-success btn-lg">Place Bet</a>
 			
 		</div>
 		
 		
-		<?php } ?>
 		
 		
+		
+		<!-- Team B -->
+		<div class="col-md-6">
+		
+			<div class="panel panel-default">
+			
+			
+				<div class="panel-heading">
+			
+					<h3 class="panel-title"><a href="<?php echo SITE_URL . 'team/' . $this->match->getTeamB()->getId(); ?>"><?php echo $this->match->getTeamB()->getName() ?></a></h3>
+					
+					
+				</div>
+				
+				
+				
+				<div class="panel-body">
+					
+					<table class="table table-striped">
+					         
+					    <tbody>
+						    <tr>
+						    	<th>#</th>
+						    	<th>Name</th>
+						    </tr>
+						    
+						    
+						    <?php
+						    foreach($this->match->getPlayersTeamB() as $player) { 
+						    ?>
+						    
+						     <tr>
+						     	<td><?php echo $player->number; ?></td>
+						     	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
+						     </tr>
+						     
+						     <?php
+						     } //end foreach
+						     ?>
+					             
+						</tbody>
+					</table>
+					
+					
+				</div>
+				
+				
+				
+				<div class="panel-footer">
+						Coach:
+						<?php if($coach = $this->match->getTeamB()->getCoachForMatch($this->match->getId())) { ?>
+							<a href="<?php echo SITE_URL . 'coach/' . $coach->getId(); ?>"><?php echo $coach->getName(); ?></a>
+						<?php } else { ?>
+							Not found
+						<?php } ?>
+				</div>
+				
+			
+			</div>
+			
+		</div>
+	
 	</div>
-	
-	
-	
-	
-	
-	<!-- Team A -->
-	<div class="col-md-4">
-		<div class="panel panel-default">
-		
-		
-			<div class="panel-heading">
-		
-				<h3 class="panel-title"><a href="<?php echo SITE_URL . 'team/' . $this->match->getTeamA()->getId(); ?>"><?php echo $this->match->getTeamA()->getName() ?></a></h3>
-				
-				
-			</div>
-			
-			
-			
-			<div class="panel-body">
-			
-			
-				<table class="table table-striped">
-				         
-				    <tbody>
-					    <tr>
-					    	<th>#</th>
-					    	<th>Name</th>
-					    </tr>
-					    
-					    
-					    <?php
-					    foreach($this->match->getPlayersTeamA() as $player) { 
-					    ?>
-					     <tr>
-					     	<td><?php echo $player->number; ?></td>
-					     	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
-					     </tr>
-					     
-					     <?php
-					     } //end foreach
-					     ?>
-				             
-					</tbody>
-				</table>
-			
-				
-			</div>
-			
-			
-			
-			<div class="panel-footer">
-					Coach:
-					<?php if($coach = $this->match->getTeamA()->getCoachForMatch($this->match->getId())) { ?>
-						<a href="<?php echo SITE_URL . 'coach/' . $coach->getId(); ?>"><?php echo $coach->getName(); ?></a>
-					<?php } else { ?>
-						Not found
-					<?php } ?>
-			</div>
-			
-		
-		</div>
-		
-	</div>
-	
-	
-	
-	
-	
-	<!-- Team B -->
-	<div class="col-md-4">
-	
-		<div class="panel panel-default">
-		
-		
-			<div class="panel-heading">
-		
-				<h3 class="panel-title"><a href="<?php echo SITE_URL . 'team/' . $this->match->getTeamB()->getId(); ?>"><?php echo $this->match->getTeamB()->getName() ?></a></h3>
-				
-				
-			</div>
-			
-			
-			
-			<div class="panel-body">
-				
-				<table class="table table-striped">
-				         
-				    <tbody>
-					    <tr>
-					    	<th>#</th>
-					    	<th>Name</th>
-					    </tr>
-					    
-					    
-					    <?php
-					    foreach($this->match->getPlayersTeamB() as $player) { 
-					    ?>
-					    
-					     <tr>
-					     	<td><?php echo $player->number; ?></td>
-					     	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
-					     </tr>
-					     
-					     <?php
-					     } //end foreach
-					     ?>
-				             
-					</tbody>
-				</table>
-				
-				
-			</div>
-			
-			
-			
-			<div class="panel-footer">
-					Coach:
-					<?php if($coach = $this->match->getTeamB()->getCoachForMatch($this->match->getId())) { ?>
-						<a href="<?php echo SITE_URL . 'coach/' . $coach->getId(); ?>"><?php echo $coach->getName(); ?></a>
-					<?php } else { ?>
-						Not found
-					<?php } ?>
-			</div>
-			
-		
-		</div>
-		
-	</div>
-	
 	
 
 </div>

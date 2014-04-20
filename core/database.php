@@ -2546,7 +2546,8 @@ class Database {
 		$goals = array();
 
 		foreach($result as $goal) {
-			array_push($goals, new Goal($goal['id'], $goal['playerId'], $goal['matchId'], $goal['time'], $this));
+			$teamId = $this->getTeamIdFromGoal($goal['matchId'], $goal['playerId']);
+			array_push($goals, new Goal($goal['id'], $goal['playerId'], $goal['matchId'], $goal['time'], $teamId, $this));
 		}
 
 
@@ -2887,6 +2888,30 @@ class Database {
 		$result = $this->select($sel);
 		
 		return $this->resultToTeams($result);
+	}
+	
+	
+	
+	public function getGoalsInMatch($matchId) {
+		$sel = new \Selector('Goal');
+		$sel->filter([['matchId', '=', $matchId]]);
+		
+		$result = $this->select($sel);
+		
+		return $this->resultToGoals($result);
+	}
+	
+	
+	public function getTeamIdFromGoal($matchId, $playerId) {
+		$sel = new \Selector('PlaysMatchInTeam');
+		$sel->filter([
+			['matchId', '=', $matchId],
+			['playerId', '=', $playerId]
+		]);
+		
+		$result = $this->select($sel);
+		
+		return $result[0]['teamId'];
 	}
 
 
