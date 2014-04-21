@@ -112,7 +112,7 @@ Created: February 2014
 						<?php echo $database->getPlayerById($goal->getPlayerId())->getName(); ?>		
 					</td>
 					
-					<td><?php echo $goal->getTime(); ?>'</td>
+					<td><span class="badge"><?php echo $goal->getTime(); ?>'</span></td>
 					
 					<td class="<?php echo $gClass; ?>">
 						<?php echo $database->getPlayerById($goal->getPlayerId())->getName(); ?>		
