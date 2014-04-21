@@ -2988,12 +2988,22 @@ class Database {
 	
 	public function getTeamIdFromGoal($matchId, $playerId) {
 		$sel = new \Selector('PlaysMatchInTeam');
-		$sel->filter([
-			['matchId', '=', $matchId],
-			['playerId', '=', $playerId]
-		]);
+		$sel->filter([['playerId', '=', $playerId]]);
+		$sel->filter([['matchId', '=', $matchId]]);
 		
 		$result = $this->select($sel);
+		
+		if(sizeof($result) > 1) {
+			echo '<pre>';
+			var_dump($result);
+			echo '</pre>';
+			throw new \Exception('Multiple rows for PlaysMatchInTeam');
+		}
+		elseif(sizeof($result) < 1) {
+			echo "No rows for PlaysMatchInTeam, for matchId $matchId, and playerId $playerId";
+			return null;
+			//throw new \Exception("No rows for PlaysMatchInTeam, for matchId $matchId, and playerId $playerId");
+		}
 		
 		return $result[0]['teamId'];
 	}
