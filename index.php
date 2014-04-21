@@ -17,6 +17,7 @@ require_once(dirname(__FILE__) . '/core/classes/User.php');	// We need the user 
 require_once(dirname(__FILE__) . '/core/functions.php');
 require_once(dirname(__FILE__) . '/core/gluephp/glue.php');
 require_once(dirname(__FILE__) . '/core/controller/login.php');
+require_once(dirname(__FILE__) . '/core/controller/login-alternative.php');
 require_once(dirname(__FILE__) . '/core/controller/Player.php');
 require_once(dirname(__FILE__) . '/core/controller/Home.php');
 require_once(dirname(__FILE__) . '/core/controller/Register.php');
@@ -38,6 +39,7 @@ require_once(dirname(__FILE__) . '/core/controller/createGroup.php');
 require_once(dirname(__FILE__) . '/core/controller/Country.php');
 require_once(dirname(__FILE__) . '/core/controller/Group.php');
 require_once(dirname(__FILE__) . '/core/controller/InviteUser.php');
+require_once(dirname(__FILE__) . '/core/controller/Invites.php');
 
 //Create database
 $database = new Database;
@@ -49,6 +51,7 @@ $urls = array(
 	INSTALL_DIR . 'register' => 'Controller\Register',
 	INSTALL_DIR  => 'Controller\Home',
 	INSTALL_DIR . 'login' => 'Controller\Login',
+	INSTALL_DIR . 'login-alternative/?(\?.*)?' => 'Controller\LoginAlternative',
 	INSTALL_DIR . 'coach/(\d+)' => 'Controller\Coach',
 	INSTALL_DIR . 'team/(\d+)' => 'Controller\Team',
 	INSTALL_DIR . 'competition/(\d+)' => 'Controller\Competition',
@@ -64,7 +67,8 @@ $urls = array(
 	INSTALL_DIR . 'create-group' => 'Controller\CreateGroup',
 	INSTALL_DIR . 'country/(\d+)' => 'Controller\Country',
 	INSTALL_DIR . 'group/(\S+)' => 'Controller\Group',
-	INSTALL_DIR . 'invite-user' => 'Controller\InviteUser'
+	INSTALL_DIR . 'invite-user' => 'Controller\InviteUser',
+	INSTALL_DIR . 'invites' => 'Controller\Invites'
 );
 
 

@@ -196,6 +196,17 @@ CREATE TABLE IF NOT EXISTS `GroupMembership` (
 `accepted` BOOLEAN,
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB ;
+',
+
+'
+CREATE TABLE IF NOT EXISTS `AlternativeUser` (
+`id` varchar(255) NOT NULL,
+`username` varchar(50) NOT NULL,
+`emailAddress` varchar(50) NOT NULL,
+`userId` int(11) NOT NULL,
+PRIMARY KEY (`id`),
+KEY `userId` (`userId`)
+) ENGINE=InnoDB CHARSET=utf8 ;
 '
 );
 

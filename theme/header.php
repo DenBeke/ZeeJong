@@ -20,13 +20,15 @@
 	<link href="<?php echo SITE_URL ?>style/style.css" rel="stylesheet" type="text/css">
 	<link href="<?php echo SITE_URL ?>style/bootstrap.css" rel="stylesheet" type="text/css">
 	<link href="<?php echo SITE_URL ?>style/bootstrap-theme.css" rel="stylesheet" type="text/css">
+	<link href="<?php echo SITE_URL ?>js/jqplot/jquery.jqplot.css" rel="stylesheet" type="text/css">
 	<script src="<?php echo SITE_URL ?>js/jquery-1.11.0.min.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/script.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/bootstrap.js" type="text/javascript"></script>
-	<script src="<?php echo SITE_URL ?>js/Chart.js" type="text/javascript"></script>
-	
-
-	
+	<script src="<?php echo SITE_URL ?>js/jqplot/jquery.jqplot.js" type="text/javascript"></script>
+	<script src="<?php echo SITE_URL ?>js/jqplot/plugins/jqplot.barRenderer.min.js" type="text/javascript"></script>
+	<script src="<?php echo SITE_URL ?>js/jqplot/plugins/jqplot.cursor.min.js" type="text/javascript"></script>
+	<script src="<?php echo SITE_URL ?>js/jqplot/plugins/jqplot.dateAxisRenderer.min.js" type="text/javascript"></script>
+	<script src="<?php echo SITE_URL ?>js/jqplot/plugins/jqplot.enhancedLegendRenderer.min.js" type="text/javascript"></script>
 	
 	<?php	
 	if($controller->page == 'login' and loggedIn() == true) {
@@ -74,6 +76,26 @@
 					if (loggedIn()) {
 					?>
 					<li><a href="<?php echo SITE_URL; ?>bets">Bets</a></li>
+					
+					
+					
+					
+					  <li class="dropdown">
+				        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Groups <b class="caret"></b></a>
+				        <ul class="dropdown-menu">
+				        	<li> <a href ="<?php echo SITE_URL; ?>create-group">Create a group</a></li>
+					      	<li> <a href ="<?php echo SITE_URL; ?>invite-user">Invite users</a></li>
+					        <li> <a href ="<?php echo SITE_URL; ?>invites">Invites</a></li>
+					      	<?php foreach($database->getUserGroups($_SESSION['userID']) as $groupId) {?>				      		
+						    <li><a href="<?php echo SITE_URL . 'group/' . $database->getGroupName($groupId); ?>"><?php echo $database->getGroupName($groupId); ?></a></li>
+						   	<?php } ?>
+
+				        </ul>
+				        
+				      </li>
+					
+					
+					
 					<?php
 					}
 					?>
@@ -85,9 +107,8 @@
 				       	
 				      
 				       	
-				       	
 				       	<form class="navbar-form navbar-right" role="form" id="login" action="<?php echo SITE_URL; ?>login" method="post">
-				       	
+                        
 				       		 <div class="form-group">
 				       	
 				       			<input name="username" class="form-control" type="text" placeholder="Username" id="username">
@@ -104,10 +125,10 @@
 				       		<button type="submit" name="submit" value="login" class="btn btn-default">Sign in</button>
 				       		
 				       		<a href="<?php echo SITE_URL; ?>register" class="btn btn-default">Register</a>       		
-				       		
+				       		<a href="<?php echo SITE_URL; ?>login-alternative/" class="btn btn-default">Alternative Login</a>       	
 				       		
 				       	</form>
-				       	
+
 				       	<?php
 						}
 						else {
