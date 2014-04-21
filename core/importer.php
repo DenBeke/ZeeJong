@@ -130,7 +130,8 @@ $schama = [
 			'Id' => 'id',
 			'PlayerId' => 'playerId',
 			'TeamId' => 'teamId',
-			'MatchId' => 'matchId'
+			'MatchId' => 'matchId',
+			'Number' => 'number'
 		]
 	],
 	
