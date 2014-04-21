@@ -30,7 +30,7 @@ Created: February 2014
 			  </li>
 			  
 			  <li class="list-group-item">
-			  	<b>Nationality</b>: <?php echo $this->player->getCountry()->getName(); ?>
+			  	<b>Nationality</b>: <a href="<?php echo SITE_URL . 'country/' . $this->player->getCountry()->getId(); ?>"><?php echo $this->player->getCountry()->getName(); ?></a>
 			  </li>
 			  
 			  
@@ -41,6 +41,19 @@ Created: February 2014
 			   
 			   <li class="list-group-item">
 			   	<b>Position</b>: <?php echo $this->player->getPosition(); ?>
+			   </li>
+			  
+			  
+			  <li class="list-group-item">
+			   	<b>Teams</b>:
+			   	<?php
+			   		$count = 0;
+			   		foreach($this->teams as $team) {
+				   		if($count > 0) echo ',';
+				   		$count++;
+				?>
+				<a href="<?php echo SITE_URL . 'team/' . $team->getId(); ?>"><?php echo $team->getName(); ?></a>
+				<?php } ?>
 			   </li>
 			  
 			

@@ -25,6 +25,7 @@ $data = json_decode(file_get_contents($filename), true);
 //This links the json file to database tables and columns
 $schama = [
 
+	//Countries
 	[
 		'json' => 'Countries',
 		'db' => 'Country',
@@ -34,6 +35,7 @@ $schama = [
 		]
 	],
 	
+	//Players
 	[
 		'json' => 'Players',
 		'db' => 'Player',
@@ -47,7 +49,144 @@ $schama = [
 			'Weight' => 'weight',
 			'Position' => 'position'
 		]
-	]
+	],
+	
+	//Teams
+	[
+		'json' => 'Teams',
+		'db' => 'Team',
+		'cols' => [
+			'Id' => 'id',
+			'Name' => 'name',
+			'CountryId' => 'country'
+		]
+	],
+	
+	//Coaches
+	[
+		'json' => 'Coaches',
+		'db' => 'Coach',
+		'cols' => [
+			'Id' => 'id',
+			'Firstname' => 'firstname',
+			'Lastname' => 'lastname',
+			'Country' => 'country',
+		]
+	],
+	
+	//Referees
+	[
+		'json' => 'Referees',
+		'db' => 'Referee',
+		'cols' => [
+			'Id' => 'id',
+			'Firstname' => 'firstname',
+			'Lastname' => 'lastname',
+			'Country' => 'countryId',
+		]
+	],
+	
+	//Add competitions
+	[
+		'json' => 'Competitions',
+		'db' => 'Competition',
+		'cols' => [
+			'Id' => 'id',
+			'Name' => 'name',
+		]
+	],
+	
+	//Add tournaments
+	[
+		'json' => 'Seasons',
+		'db' => 'Tournament',
+		'cols' => [
+			'Id' => 'id',
+			'Name' => 'name',
+			'CompetitionId' => 'competitionId'
+		]
+	],
+
+	//Add matches
+	[
+		'json' => 'Matches',
+		'db' => 'Match',
+		'cols' => [
+			'Id' => 'id',
+			'TeamA' => 'teamA',
+			'TeamB' => 'teamB',
+			'Season' => 'tournamentId',
+			'Referee' => 'refereeID',
+			'Date' => 'date',
+			'Score' => 'scoreID'
+		]
+	],
+	
+	//Add playsMatchInteam
+	[
+		'json' => 'PlaysMatchInTeams',
+		'db' => 'PlaysMatchInTeam',
+		'cols' => [
+			'Id' => 'id',
+			'PlayerId' => 'playerId',
+			'TeamId' => 'teamId',
+			'MatchId' => 'matchId'
+		]
+	],
+	
+	//Add Coacheses
+	[
+		'json' => 'Coacheses',
+		'db' => 'Coaches',
+		'cols' => [
+			'Id' => 'id',
+			'CoachId' => 'coachId',
+			'TeamId' => 'teamId',
+			'MatchId' => 'matchId'
+		]
+	],
+	
+	
+	//Add playsIn
+	[
+		'json' => 'PlaysIn',
+		'db' => 'PlaysIn',
+		'cols' => [
+			'Id' => 'id',
+			'TeamId' => 'teamId',
+			'PlayerId' => 'playerId'
+		]
+	],
+
+	
+	
+	//Add goals
+	[
+		'json' => 'Goals',
+		'db' => 'Goal',
+		'cols' => [
+			'Id' => 'id',
+			'MatchId' => 'matchId',
+			'PlayerId' => 'playerId',
+			'Time' => 'time'
+		]
+	],
+	
+	
+	//Add Score
+	//Add goals
+	[
+		'json' => 'Scores',
+		'db' => 'Score',
+		'cols' => [
+			'Id' => 'id',
+			'TeamA' => 'teamA',
+			'TeamB' => 'teamB',
+		]
+	],
+	
+	
+	//Add cards
 
 ];
 
@@ -56,8 +195,13 @@ $schama = [
 //Add all json objects to the database
 
 foreach ($schama as $meta) {
+	
 	$table = $meta['db'];
 	$json = $meta['json'];
+	
+	
+	//Empty table
+	$db->truncate($table);
 	
 	foreach ($data[$json] as $set) {
 		$values = [];
@@ -74,62 +218,5 @@ foreach ($schama as $meta) {
 
 
 
-
-//Add countries
-
-
-/*
-foreach ($data['Countries'] as $country) {
-	$id = $country['Id'];
-	$name = $country['Name'];
-	echo  "<p>$id. $name</p>";
-	
-	
-	if($id == 160) {
-		echo "160!!!<br>";
-	}
-	
-	$db->insert('Country', ['id', 'name'],
-	[$id, $name]);
-}
-*/
-
-//Add players
-
-
-//Add teams
-
-
-//Add coaches
-
-
-//Add referees
-
-
-//Add competitions
-
-
-//Add tournaments
-
-
-//Add matches
-
-
-//Add playsMatchInteam
-
-
-//Add Coacheses
-
-
-//Add playsIn
-
-
-//Add referee for match
-
-
-//Add goals
-
-
-//Add cards
 
 ?>
