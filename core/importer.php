@@ -173,6 +173,19 @@ $schama = [
 	],
 	
 	
+	//Add Score
+	//Add goals
+	[
+		'json' => 'Scores',
+		'db' => 'Score',
+		'cols' => [
+			'Id' => 'id',
+			'TeamA' => 'teamA',
+			'TeamB' => 'teamB',
+		]
+	],
+	
+	
 	//Add cards
 
 ];
