@@ -1,0 +1,199 @@
+\documentclass[11pt]{article}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage[greek,dutch]{babel} 
+\usepackage{listings}
+\usepackage{color}
+\usepackage{framed}
+\usepackage{subfig}
+
+\usepackage[applemac]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[section]{placeins}
+
+\pagestyle{fancy}
+
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},         % size of fonts used for the code
+  breaklines=true,                 % automatic line breaking only at whitespace
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  keywordstyle=\color{blue},       % keyword style
+  stringstyle=\color{mymauve},     % string literal style
+}
+
+
+
+\interfootnotelinepenalty=10000
+
+
+\title{Raport Project Databases Maart}
+\author{Mathias Beke, Bruno Van de Velde, Elias Van Langenhove, Alexander Vanhulle, Timo Truyts}
+
+\author{
+  Mathias Beke
+  \and
+  Bruno Van de Velde
+  \and
+  Elias Van Langenhove
+  \and
+  Alexander Vanhulle
+  \and
+  Timo Truyts
+}
+
+
+\date{\today}
+
+
+\setlength{\parindent}{0cm}
+
+\begin{document}
+
+\lhead{Raport Project Databases: Maart}
+\rhead{}
+
+
+
+\maketitle
+
+
+\tableofcontents
+
+
+
+
+
+\section{Status}
+
+
+
+
+\subsection{Taakverdeling}
+
+
+\begin{enumerate}
+    
+   \item todo    
+    
+\end{enumerate}
+
+
+
+
+\section{Design}
+
+
+\subsection{UML diagram}
+
+Bruno
+
+\subsection{API}
+
+Iemand?
+
+
+\subsection{Parser (GO)}
+
+Mathias
+
+
+
+
+\section{Database}
+
+\subsection{Schema (ERM-diagram)}
+
+Alexander
+
+
+
+
+\section{User Interface}
+
+
+\subsection{Grafieken}
+
+Timo
+
+
+
+
+
+
+
+\subsection{Gebruikersgroepen}
+
+Alexander
+
+
+
+\section{Extra Functionaliteit}
+
+
+\subsection{Wiki}
+
+Elias
+
+
+
+\subsection{RSS nieuwsfeed}
+
+Mathias
+
+
+
+\subsection{OpenID}
+
+Bruno
+
+
+
+
+
+
+\section{Planning}
+
+
+Iemand?
+
+
+
+\section{Appendix}
+
+\subsection{Queries}
+
+Elias\\
+Graag ook nu weer de code is zo'n box steken...
+
+
+\paragraph{Gewonnen wedstrijden van speler binnen interval}
+
+  Deze query vraagt de hoeveelheid matches waarbij de gegeven speler voor het winnende team speelde binnen een gegeven tijdspanne op.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT COUNT(*)
+   FROM `PlaysMatchInTeam`
+   [JOIN `Match` ON `Match`.id = matchId]
+   [JOIN `Score` ON `Score`.id = scoreId]
+   [WHERE playerId = ? AND
+   `Match`.date > ? AND
+   `Match`.date < ? AND
+      ((teamId = `Match`.teamA AND `Score`.teamA > `Score`.teamB) OR
+      (teamID = `Match`.teamB AND `Score`.teamB > `Score`.teamA))];
+  \end{lstlisting}
+  \end{framed}
+
+
+
+\end{document}
