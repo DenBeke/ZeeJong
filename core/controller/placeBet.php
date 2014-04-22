@@ -69,6 +69,8 @@ namespace Controller {
 				$this -> betErrorMessage = $this -> betErrorMessage . "Match does not exist." . "\r\n";
 				$this -> stop = True;
 				return;
+			}else{
+				$this->stop= False;
 			}
 			$this -> matchId = $args[1];
 		}
@@ -104,6 +106,9 @@ namespace Controller {
 		 */
 		public function matchOver($id) {
 			global $database;
+			if(!$database->doesMatchExist($id)){
+				return True;
+			}
 			$match = $database -> getMatchById($id);
 			if ($match -> getDate() < strtotime(date('d M Y', time())))
 				$this -> betErrorMessage = $this -> betErrorMessage . "You cannot place a bet for a match which is already played." . "\r\n";
@@ -116,6 +121,9 @@ namespace Controller {
 		 @return a boolean indicating whether it's safe to continue
 		 */
 		public function stop() {
+			if(isset($_POST['matchId'])){
+				$this->matchId = $_POST['matchId'];
+			}
 			return $this -> stop || $this -> matchOver($this -> matchId);
 		}
 
