@@ -36,7 +36,7 @@
 \interfootnotelinepenalty=10000
 
 
-\title{Raport Project Databases Maart}
+\title{Raport Project Databases April}
 \author{Mathias Beke, Bruno Van de Velde, Elias Van Langenhove, Alexander Vanhulle, Timo Truyts}
 
 \author{
@@ -59,7 +59,7 @@
 
 \begin{document}
 
-\lhead{Raport Project Databases: Maart}
+\lhead{Raport Project Databases: April}
 \rhead{}
 
 
@@ -113,11 +113,17 @@ Mathias
 
 \subsection{Schema (ERM-diagram)}
 
-Alexander
+De ERM uit onze vorige versie was reeds redelijk compleet waardoor we hier slechts enkele kleine zaken voor nieuwe functionaliteiten dienden toe te voegen.\\
+Hier ging het om de gebruiker-gerelateerde features: het groepen-systeem waardoor een gebruiker lid kan zijn van 0 of meer groepen en het alternatief login systeem waardoor o.a. Google en Facebook accounts nu tevens gebruikt kunnen worden voor het inloggen.  \emph{Zoals vorige keer voegen we de ERM eveneens toe als bijlage zodat deze apart geopend kan worden (zie bijlages/ERM2.png).}
 
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[scale=0.11]{ERM2.png}
 
-
-
+	\caption{ERM schema}
+	\label{fig:speler}
+	\end{center}
+\end{figure}
 \section{User Interface}
 
 
@@ -128,12 +134,72 @@ Timo
 
 
 
+pp
 
 
 
 \subsection{Gebruikersgroepen}
 
-Alexander
+Een heel gebruikersgroepen systeem werd toegevoegd.  Dit systeem stelt de gebruiker in staat zelf groepen aan te maken, andere gebruikers uit te nodigen enzovoort.  Hieronder een overzicht:\\
+
+Gebruikers kunnen zelf groepen aanmaken.  Hierdoor worden zij de administrator van deze groep en hebben ze volledige rechten.\\
+
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[scale=0.4]{createGroup.png}
+
+	\caption{Create Group}
+	\label{fig:createGroup}
+	\end{center}
+\end{figure}
+
+Nadat de groep aangemaakt is, kan de beheerder andere gebruikers uitnodigen.  Hiervoor is een formulier met een drop-down menu voorzien om tussen de verschillende groepen te kiezen waarvan de gebruiker administrator is.\\
+
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[scale=0.4]{inviteUser.png}
+
+	\caption{Invite User}
+	\label{fig:inviteUser}
+	\end{center}
+\end{figure}
+
+Elke gebruiker heeft een venster waarop de uitnodigingen zichtbaar zijn die deze gebruiker ontvangen heeft en die de gebruiker verstuurd heeft.  Een uitnodiging kan geaccepteerd/ingetrokken worden.\\
+
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[scale=0.4]{invites.png}
+
+	\caption{Invites}
+	\label{fig:invites}
+	\end{center}
+\end{figure}
+
+Wanneer een gebruiker een uitnodiging aanvaard heeft, wordt de groep toegevoegd aan het drop-down menu in de header waardoor de gebruiker naar de groep kan navigeren.\\
+
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[scale=0.4]{inviteAccepted.png}
+
+	\caption{Invite Accepted}
+	\label{fig:inviteAccepted}
+	\end{center}
+\end{figure}
+
+In het groepsvenster kan de gebruiker bets van andere spelers van de groep zien.  Een gebruiker kan ook uit de groep vertrekken.  Indien de gebruiker tevens de administrator is, dan kan hij andere gebruikers uit de groep verwijderen en eventueel de groep zelf opdoeken.\\
+
+\begin{figure}[h!]
+	\begin{center}
+	\includegraphics[scale=0.4]{group.png}
+
+	\caption{Group}
+	\label{fig:group}
+	\end{center}
+\end{figure}
+
+\section{User Interface}
+
+
 
 
 
