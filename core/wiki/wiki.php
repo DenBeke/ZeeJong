@@ -1,4 +1,6 @@
+
 <?php 
+header('Content-Type: text/html; charset=UTF-8');
 require_once(dirname(__FILE__) . '/wikidrain/api.php');
 require_once(dirname(__FILE__) . '/../simple_html_dom.php');
 
@@ -24,7 +26,7 @@ class Wiki {
 
 		$this->sections = "about";
 
-		$search = $this->wiki->Search($this->article);
+		$search = $this->wiki->Search($this->article, 1);
 
 		if(sizeof($search) == 0) {
 
@@ -89,15 +91,17 @@ class Wiki {
 	}
 
 	/**
-	Get the text of the player's wiki page
-
-	@param playerName The player's name
-	@param $fullpage Get the full page or just the intro. Default value is false (get just the intro)
-
-	@returns wiki page in text format, without references, external links and images
-
+	*Get the text of the player's wiki page
+	*
+	*@param playerName The player's name
+	*@param $fullpage Get the full page or just the intro. Default value is false (get just the intro)
+	*
+	*@returns wiki page in text format, without references, external links and images
+	*
 	*/
 	public function getPlayerWiki($playerName, $fullpage = false) {
+
+		$this->article = "";
 
 		for($i = 0; $i < strlen($playerName); $i++) {
 
@@ -138,6 +142,6 @@ class Wiki {
 	}		
 }
 
-$wi = new Wiki();
-echo utf8_decode($wi->getPlayerWiki("Maarten Stekelenburg"));
+
+
 ?>
