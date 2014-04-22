@@ -27,7 +27,7 @@ function setSort(q) {
 function loadPlayers() {
 	$.ajax({
 		dataType: "json",
-		url: '/zeejong/api/player',
+		url: '<?php echo SITE_URL; ?>api/player',
 		data: get,
 		success: function(data) {
 			var html = '<tr><th><a href="#" onclick="toggleOrder();setSort(\'firstname\');loadPlayers();">Name</a></th><th class="center"><a href="#" onclick="toggleOrder();setSort(\'match\');loadPlayers();">Matches</a></th><th class="center">Goals</th></tr>';
