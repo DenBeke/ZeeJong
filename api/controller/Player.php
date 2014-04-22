@@ -1,0 +1,87 @@
+<?php
+
+namespace Controller {
+
+require_once(dirname(__FILE__) . '/../../core/controller/Controller.php');
+require_once(dirname(__FILE__) . '/../../core/Selector.php');
+
+	class Player extends Controller {
+		private $result = [];
+
+		public function __construct() {
+		}
+		
+		public function GET($args) {
+			global $database;
+
+			$sel = new \Selector('Player');
+
+			$sort = false;
+			$sortColumn = '';
+			$sortOrder = '';
+
+			foreach($_GET as $column => $value) {
+				switch($column) {
+				case 'id':
+					$sel->filter([['Player.id', '=', $value]]);
+					break;
+				case 'firstname':
+				case 'lastname':
+					if(strlen($value) < 3) {
+						$this->players = [];
+						return;
+					}
+
+					$value = str_replace('%', '\%', $value);
+					$value = str_replace('[', '\[', $value);
+					$value = str_replace(']', '\]', $value);
+					$value = str_replace('_', '\_', $value);
+					$value = '%' . $value . '%';
+					$sel->filter([['Player.' . $column, 'LIKE', $value]]);
+
+					break;
+
+				case 'sort':
+					if($value == 'match') {
+						$sort = true;
+						$sortColumn = 'playedMatches';
+						$sel->join('PlaysMatchInTeam', 'id', 'playerId');
+						$sel->group('Player.id');
+						$sel->select(['Player.*', 'COUNT(*) as playedMatches']);
+					}
+					elseif($value == 'firstname') {
+						$sort = true;
+						$sortColumn = 'firstName';
+					}
+					break;
+
+				case 'order':
+					$sortOrder = $value;
+					break;
+				}
+			}
+
+			if($sort) {
+				if($sortOrder === '') {
+					$sel->order($sortColumn, 'DESC');
+				}
+				else {
+					$sel->order($sortColumn, $sortOrder);
+				}
+			}
+			
+			$sel->limit(0, 10);
+
+			$result = $database->select($sel);
+			$this->result = $database->resultToPlayers($result);
+		}
+	
+		public function template() {
+			echo json_encode($this->result);
+		}
+	
+	}
+
+}
+
+?>

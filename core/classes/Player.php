@@ -12,7 +12,7 @@ The class contains the following information:
 - name
 - country
 */
-class Player {
+class Player implements JsonSerializable {
 
 	private $id;
 	private $firstName;
@@ -199,7 +199,21 @@ class Player {
 		
 	}
 	
-	
+	public function jsonSerialize() {
+		return [
+			'id' => $this->id,
+			'firstName' => $this->firstName,
+			'lastName' => $this->lastName,
+			'countryId' => $this->countryId,
+			'dateOfBirth' => $this->dateOfBirth,
+			'height' => $this->height,
+			'weight' => $this->weight,
+			'position' => $this->position,
+			'goals' => $this->getTotalNumberOfGoals(),
+			'matches' => $this->getTotalNumberOfMatches(),
+			'matchesWon' => $this->getTotalNumberOfWonMatches()
+		];
+	}
 	
 
 	/**
