@@ -188,6 +188,50 @@ class Database {
 
 		return $result2;
 	 }
+	 
+	 /** 
+	  Get the invites sent by a specific user
+	  @param the id of the user
+	  @return the id's of the invites this user sent
+	  */
+	  	 public function getInvitesSent($id){
+	 			
+		//Query
+		$query = "SELECT GroupMembership.id
+		FROM GroupMembership
+		INNER JOIN `Group`
+		ON GroupMembership.groupId=Group.id
+		WHERE Group.ownerId=? and GroupMembership.accepted=0;
+		";		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();	
+		//Bind return values
+		$statement->bind_result($ids);
+
+
+		$results = array();
+		while($statement->fetch()) {
+			array_push($results, $ids);
+		}
+	
+		$statement->close();
+		return $results;
+	 }
 	 	 
 	/**
 	 Accept an invite
@@ -232,6 +276,23 @@ class Database {
 		$result = $this->select($sel);
 		requireEqCount($result, 1);
 		return $result[0]['groupId'];
+	}
+	
+	/**
+	 Get the id of the user from a membership
+
+	 @param id
+	 @return the id of the user in the membership
+
+	 @exception when no groupmembership with given id
+	 */
+	public function getUserIdFromMembership($id) {
+		$sel = new \Selector('GroupMembership');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+		return $result[0]['userId'];
 	}
 	
 	/**
@@ -298,6 +359,29 @@ class Database {
 		}
 
 	}
+	
+	/**
+	 Withdraw an invite
+	 @param id
+	 */
+	 public function withdrawInvite($id){
+	 			//Query
+		$query = "
+			DELETE FROM `GroupMembership` WHERE id = ? AND accepted = False;
+		";
+
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if (!$statement -> bind_param('i',$id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	 }
 	 
 	 
 	 /**
@@ -359,6 +443,33 @@ class Database {
 								[$name, $ownerId]);
 		}
 		return $this -> getGroupId($name);
+	}
+	
+	
+	/**
+	 Remove a group
+
+	 @param groupid
+	*/
+	public function removeGroup($groupId) {
+
+		//Query
+		$query = "
+			DELETE FROM `Group` WHERE id = ?;
+		";
+
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if (!$statement -> bind_param('i',$groupId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
 	}
 	
 	/**
@@ -532,6 +643,21 @@ class Database {
 		requireEqCount($result, 1);
 
 		return $result[0]['matchId'];
+	}
+	
+	/**
+	 Get the userId from a bet
+
+	 @return the userId
+	 */
+	public function getUserFromBet($id) {
+		$sel = new \Selector('Bet');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['userId'];
 	}
 
 
@@ -2504,7 +2630,8 @@ class Database {
 		$goals = array();
 
 		foreach($result as $goal) {
-			array_push($goals, new Goal($goal['id'], $goal['playerId'], $goal['matchId'], $goal['time'], $this));
+			$teamId = $this->getTeamIdFromGoal($goal['matchId'], $goal['playerId']);
+			array_push($goals, new Goal($goal['id'], $goal['playerId'], $goal['matchId'], $goal['time'], $teamId, $this));
 		}
 
 
@@ -2845,6 +2972,40 @@ class Database {
 		$result = $this->select($sel);
 		
 		return $this->resultToTeams($result);
+	}
+	
+	
+	
+	public function getGoalsInMatch($matchId) {
+		$sel = new \Selector('Goal');
+		$sel->filter([['matchId', '=', $matchId]]);
+		
+		$result = $this->select($sel);
+		
+		return $this->resultToGoals($result);
+	}
+	
+	
+	public function getTeamIdFromGoal($matchId, $playerId) {
+		$sel = new \Selector('PlaysMatchInTeam');
+		$sel->filter([['playerId', '=', $playerId]]);
+		$sel->filter([['matchId', '=', $matchId]]);
+		
+		$result = $this->select($sel);
+		
+		if(sizeof($result) > 1) {
+			echo '<pre>';
+			var_dump($result);
+			echo '</pre>';
+			throw new \Exception('Multiple rows for PlaysMatchInTeam');
+		}
+		elseif(sizeof($result) < 1) {
+			echo "No rows for PlaysMatchInTeam, for matchId $matchId, and playerId $playerId";
+			return null;
+			//throw new \Exception("No rows for PlaysMatchInTeam, for matchId $matchId, and playerId $playerId");
+		}
+		
+		return $result[0]['teamId'];
 	}
 
 

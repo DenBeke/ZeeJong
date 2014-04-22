@@ -27,53 +27,27 @@ table a {
 
 
 
-/* Style for Charts *
-********************/
-
-canvas{
-	width: 100% !important;
-	height: auto !important;
-}
-
-
-.legend {
-	font-size: 13px;
-}
-
-.legend-item {
-	width: 12px;
-	height: 12px;
-	display: inline-block;
-	border-width: 2px;
-	border-style: solid;
-	margin-left: 10px;
-	margin-right: 2px;
-}
-
-.image-container {
-	text-align: center;
-}
-
-
-
 /* Style for match *
 *************************/
 
 
 table.matches th:nth-child(1),
-table.matches td:nth-child(1) {
+table.matches td:nth-child(1),
+table.goals td:nth-child(1) {
 	text-align: right;
 	width: 45%;
 }
 
 table.matches th:nth-child(2),
-table.matches td:nth-child(2) {
+table.matches td:nth-child(2),
+table.goals td:nth-child(2) {
 	text-align: center;
 	width: 10%;
 }
 
 table.matches th:nth-child(3),
-table.matches td:nth-child(3) {
+table.matches td:nth-child(3),
+table.goals td:nth-child(3) {
 	text-align: left;
 	width: 45%;
 }
@@ -89,6 +63,11 @@ table.matches td:nth-child(3) {
 	text-align: center;
 }
 
+
+table.goals td:first-child.team-b,
+table.goals td:last-child.team-a {
+	font-size: 0;
+}
 
 
 /* News *

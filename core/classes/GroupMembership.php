@@ -53,6 +53,15 @@ class GroupMembership {
 	 	return $this->db-> getUserName($this->db->getGroupOwnerId($this->db->getGroupIdFromMembership($this->id)));
 	 }
 	 
+	 /**
+	  Returns the user
+	  
+	  @return the userId
+	  */
+	  public function getUserId(){
+	  	return $this->db->getUserIdFromMembership($this->id);
+	  }
+	 
 	 
 
     /**

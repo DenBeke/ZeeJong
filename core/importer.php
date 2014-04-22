@@ -137,7 +137,7 @@ $schama = [
 	//Add Coacheses
 	[
 		'json' => 'Coacheses',
-		'db' => 'Coacheses',
+		'db' => 'Coaches',
 		'cols' => [
 			'Id' => 'id',
 			'CoachId' => 'coachId',
@@ -148,12 +148,42 @@ $schama = [
 	
 	
 	//Add playsIn
-	
-	
-	//Add referee for match
+	[
+		'json' => 'PlaysIn',
+		'db' => 'PlaysIn',
+		'cols' => [
+			'Id' => 'id',
+			'TeamId' => 'teamId',
+			'PlayerId' => 'playerId'
+		]
+	],
+
 	
 	
 	//Add goals
+	[
+		'json' => 'Goals',
+		'db' => 'Goal',
+		'cols' => [
+			'Id' => 'id',
+			'MatchId' => 'matchId',
+			'PlayerId' => 'playerId',
+			'Time' => 'time'
+		]
+	],
+	
+	
+	//Add Score
+	//Add goals
+	[
+		'json' => 'Scores',
+		'db' => 'Score',
+		'cols' => [
+			'Id' => 'id',
+			'TeamA' => 'teamA',
+			'TeamB' => 'teamB',
+		]
+	],
 	
 	
 	//Add cards
