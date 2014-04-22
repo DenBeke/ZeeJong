@@ -56,7 +56,7 @@ $urls = array(
 	INSTALL_DIR . 'bets' => 'Controller\Bets',
 	INSTALL_DIR . 'place-bet/(\d+)' => 'Controller\placeBet',
 	INSTALL_DIR . 'events' => 'Controller\Events',
-	INSTALL_DIR . 'player(/\?.*)?' => 'Controller\TopPlayers'
+	INSTALL_DIR . 'player(\?.*)?' => 'Controller\TopPlayers'
 );
 
 $controller = glue::stick($urls);
