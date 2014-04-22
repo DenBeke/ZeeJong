@@ -18,7 +18,7 @@ namespace Controller {
 
 		public $page = 'create-group';
 		public $title;
-
+		private $successMessage;
 
 		/**
 		 * Constructor
@@ -40,6 +40,12 @@ namespace Controller {
 			$groupId = $database->addGroup($_POST['name'], $_SESSION['userID']);
 			$database->addGroupMembership($_SESSION['userID'],$groupId);
 			$database->acceptMembership($_SESSION['userID'],$groupId);
+			$this -> successMessage = $this -> successMessage . "Successfully created group." . "\r\n";
+		}
+		
+		public function getSuccessMessage(){
+			return $this->successMessage;
+			
 		}
 
 

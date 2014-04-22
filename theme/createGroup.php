@@ -9,7 +9,28 @@
 <div class="container">
 
 	<h1>Create a new group</h1>
+<?php
+	if(!loggedIn()){
+	// User is not logged in
 
+	?>
+	<div class="alert alert-danger">
+		<strong>You are not logged in.</strong>
+	</div>
+	<?php
+	}else{
+	if(strlen($this->getSuccessMessage())>0){
+	// at least one thing succeeded, let's display what
+	?>
+	<div class="alert alert-success">
+		<strong> <?php
+		echo nl2br($this -> getSuccessMessage());
+		?></strong>
+	</div>
+	<?php
+	}
+	// Display 'create group' form
+	?>
 	<div class="well">
 		<form id="signup" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>create-group">
 			<div class="form-group">
@@ -34,3 +55,6 @@
 	</div>
 
 </div>
+<?php
+}
+?>

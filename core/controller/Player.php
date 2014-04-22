@@ -16,6 +16,7 @@ require_once(dirname(__FILE__) . '/Error.php');
 	class Player extends Controller {
 
 		public $player;
+		public $teams;
 		public $title;
 
 
@@ -38,6 +39,7 @@ require_once(dirname(__FILE__) . '/Error.php');
 
 			global $database;
 			$this->player = $database->getPlayerById($args[1]);
+			$this->teams = $database->getPlayerTeams($this->player->getId());
 
 			$this->title = 'Player - ' . $this->player->getName() . ' - ' . Controller::siteName;
 		}
