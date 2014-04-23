@@ -54,13 +54,37 @@ table.goals td:nth-child(3) {
 }
 
 
-.football-icon {
+table.goals .football-icon {
 	background-image: url('../img/football.svg');
 	background-size: contain;
 	background-repeat: no-repeat;
 	padding: 10px;
 	display: inline-block;
 	font-size: 0;
+	vertical-align: middle;
+}
+
+
+.football-player {
+	background-image: url('../img/football-player.svg');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: top center;
+	opacity: 0.9;
+	-webkit-transition: 0.5s all;
+	height: 300px;
+}
+
+.football-player h2 {
+	padding-left: 33%;
+}
+
+
+table.goals a {
+	margin: 0;
+	padding: 0;
+	vertical-align: middle;
+	display: inline-block;
 }
 
 

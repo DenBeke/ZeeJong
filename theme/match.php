@@ -72,18 +72,6 @@ Created: February 2014
 			
 			
 			
-			<?php if($this->match->getDate() >= strtotime(date('d M Y', time()))) { ?>
-			
-			
-			<div class="col-md-12 bet-button-container container">
-					<a href="<?php echo SITE_URL . 'place-bet/' . $this->match->getId(); ?>" class="btn btn-success btn-lg">Place Bet</a>
-				
-			</div>
-			
-			
-			<?php } ?>
-			
-			
 		</div>
 	
 		
@@ -109,7 +97,7 @@ Created: February 2014
 				<tr class="goal">
 					
 					<td class="<?php echo $gClass; ?>">
-						<?php echo $database->getPlayerById($goal->getPlayerId())->getName(); ?>
+						<a href="<?php echo SITE_URL . 'player/' . $database->getPlayerById($goal->getPlayerId())->getId(); ?>"><?php echo $database->getPlayerById($goal->getPlayerId())->getName(); ?></a>
 						<span class="football-icon"></span>
 					</td>
 					
@@ -117,7 +105,9 @@ Created: February 2014
 					
 					<td class="<?php echo $gClass; ?>">
 						<span class="football-icon"></span>
-						<?php echo $database->getPlayerById($goal->getPlayerId())->getName(); ?>		
+						<a href="<?php echo SITE_URL . 'player/' . $database->getPlayerById($goal->getPlayerId()); ?>">
+							<?php echo $database->getPlayerById($goal->getPlayerId())->getName(); ?>
+						</a>	
 					</td>
 					
 				</tr>
@@ -131,35 +121,7 @@ Created: February 2014
 	
 	</div>
 	
-	
-	<!--<div id="field">
-		
-			<table>
-			  <tbody><tr>
-			    <td rowspan="4"><div class="player">1</div></td>
-			    <td><div class="player">5</div></td>
-			    <td><div class="player">8</div></td>
-			    <td><div class="player">11</div></td>
-			  </tr>
-			  <tr>
-			    <td><div class="player">4</div></td>
-			    <td rowspan="2"><div class="player">8</div></td>
-			    <td rowspan="2"><div class="player">9</div></td>
-			  </tr>
-			  <tr>
-			    <td><div class="player">3</div></td>
-			  </tr>
-			  <tr>
-			    <td><div class="player">2</div></td>
-			    <td><div class="player">6</div></td>
-			    <td><div class="player">7</div></td>
-			  </tr>
-			</tbody></table>
-		
-	</div>-->
-	
-	
-	
+
 		
 	
 	<div class="row">
