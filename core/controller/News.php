@@ -18,7 +18,6 @@ require_once(dirname(__FILE__) . '/../simplepie/autoloader.php');
 		public $feeds;
 		public $title;
 
-
 		public function __construct() {
 			$this->theme = 'news.php';
 			$this->title = 'News - ' . Controller::siteName;
@@ -32,7 +31,7 @@ require_once(dirname(__FILE__) . '/../simplepie/autoloader.php');
 
 				'title' => $site->title,
 				'url' => $site->url,
-				'items' => $this->getFeed($site->rss)
+				'rss' => $site->rss
 
 				];
 
@@ -52,7 +51,13 @@ require_once(dirname(__FILE__) . '/../simplepie/autoloader.php');
 
 
 
-		private function getFeed($url) {
+		public function getFeed($id) {
+			return $this->getFeedByUrl($this->feeds[$id]['rss']);
+		}
+
+
+		private function getFeedByUrl($url) {
+			
 			// Create a new instance of the SimplePie object
 			$feed = new \SimplePie();
 
