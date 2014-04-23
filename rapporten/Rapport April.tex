@@ -198,7 +198,7 @@ Hier enkele voorbeelden van hoe de api werkt:
 
 \subsection{Parser (GO)}
 
-Bij de aanvang van het project zijn we meteen begonnen met onze parser. We schreven die toen in \emph{PHP} en maakten gebruik van de \emph{PHP Simple HTML DOM Parser}.
+Bij de aanvang van het project zijn we meteen begonnen met onze parser. We schreven die toen in \emph{PHP} en maakten gebruik van de \emph{PHP Simple HTML DOM Parser}\footnote{\url{http://simplehtmldom.sourceforge.net}}.
 Dit framework bleek zeer traag te zijn, en had geheugenlekken. Ook is PHP niet de snelste taal om zulke dingen te doen.\\
 
 Daarom hebben we besloten op de parser opnieuw te beginnen. Ditmaal hebben we deze in \emph{GO} geschreven. \emph{GO} is een programmeertaal die uitermate geschikt is om concurrent te werken. Recent bedacht, maakt de taal concurrent programmeren veel gemakkelijker. Hierdoor wordt \emph{GO} vaak op servers gebruikt.\\
@@ -232,7 +232,7 @@ Hier ging het om de gebruiker-gerelateerde features: het groepen-systeem waardoo
 
 De framework die we gebruikten bleek niet geavanceerd genoeg om bijvoorbeeld te zoomen, ranges te selecteren, etc.\\
 We hebben al veel frameworks geprobeerd maar hebben er nog geen gevonden die volledig voldoet aan onze behoeften.\\
-Het huidige framework is jqplot waarmee we kunnen inzoomen en selecteren welke informatie er getoond moet worden.
+Het huidige framework is \emph{jqPlot}\footnote{\url{http://www.jqplot.com}} waarmee we kunnen inzoomen en selecteren welke informatie er getoond moet worden.
 
 
 
@@ -308,8 +308,8 @@ In het groepsvenster kan de gebruiker bets van andere spelers van de groep zien.
 
 Nu wordt op de speler pagina ook de introductie van de speler op wikipedia getoond.
 Deze pagina wordt gevonden door eerst te zoeken naar een sectie met als naam de naam van de speler.
-Indien deze niet gevonden kan worden wordt er een wikipedia search gedaan met als termen de volledige naam van de speler en wordt zo de spelerpagina gevonden.
-Voor het laden van deze tekst wordt Wikidrain gebruikt, mits enige aanpassingen die we zelf toegepast hebben.
+Indien deze niet gevonden kan worden wordt er een \emph{Wikipedia} search gedaan met als termen de volledige naam van de speler en wordt zo de speler pagina gevonden.
+Voor het laden van deze tekst wordt \emph{wikidrain}\footnote{\url{https://github.com/abreksa4/wikidrain}} gebruikt, mits enige aanpassingen die we zelf toegepast hebben.
 
 
 \subsection{RSS nieuwsfeed}
@@ -317,11 +317,13 @@ Voor het laden van deze tekst wordt Wikidrain gebruikt, mits enige aanpassingen 
 De RSS nieuwspagina werd uitgebreid met extra feeds. De gebruiker krijgt bovenaan een menuutje, waarin hij een feed kan uitkiezen om het nieuws te lezen.
 De urls naar de feeds worden bijgehouden in een JSON file, zodat het toevoegen van extra feeds amper werk is.
 
+Intern werkt de RSS nog steeds met \emph{SimplePie}\footnote{url{http://simplepie.org}} rss parser.
+
 
 
 \subsection{OpenID}
 
-Naast de normale login is er ook een optie om in te loggen door gebruik te maken van een externe account. Wanneer je naar de alternatieve login pagina gaat, krijg je een keuze uit verschillende services (zoals Facebook en Google) waarmee je kunt inloggen. Buiten Facebook werken deze allen met openid en er is uiteindelijk voor de LightOpenID library gekozen omdat deze makkelijk te gebruiken was. Facebook is achteraf nog appart toegevoegd aangezien die helemaal geen OpenID provider is. Om in te kunnen loggen via Facebook moest eerst een app worden aangemaakt op hun site om alles mogelijk te maken. Buiten het feit dat er extra code nodig is die het verschil tussen een openid en een facebook login checked, is het grote nadeel dat de facebook login enkel op de server kan werken en niet ondertussen op de localhost getest kan worden. Maar dit heeft geen gevolgen voor de gebruikers van de site.
+Naast de normale login is er ook een optie om in te loggen door gebruik te maken van een externe account. Wanneer je naar de alternatieve login pagina gaat, krijg je een keuze uit verschillende services (zoals \emph{Facebook} en \emph{Google}) waarmee je kunt inloggen. Buiten Facebook werken deze allen met \emph{OpenID} en er is uiteindelijk voor de \emph{LightOpenID}\footnote{\url{https://code.google.com/p/lightopenid/}} library gekozen omdat deze makkelijk te gebruiken was. \emph{Facebook} is achteraf nog apart toegevoegd aangezien die helemaal geen \emph{OpenID} provider is. Om in te kunnen loggen via \emph{Facebook} moest eerst een app worden aangemaakt op hun site om alles mogelijk te maken. Buiten het feit dat er extra code nodig is die het verschil tussen een \emph{OpenID} en een \emph{Facebook} login checked, is het grote nadeel dat de \emph{Facebook} login enkel op de server kan werken en niet ondertussen op de localhost getest kan worden. Maar dit heeft geen gevolgen voor de gebruikers van de site.
 
 
 
