@@ -165,7 +165,7 @@ Hier ging het om de gebruiker-gerelateerde features: het groepen-systeem waardoo
 
 \begin{figure}[h!]
 	\begin{center}
-	\includegraphics[scale=0.11]{ERM2.png}
+
 
 	\caption{ERM schema}
 	\label{fig:speler}
@@ -193,7 +193,7 @@ Gebruikers kunnen zelf groepen aanmaken.  Hierdoor worden zij de administrator v
 
 \begin{figure}[h!]
 	\begin{center}
-	\includegraphics[scale=0.4]{createGroup.png}
+
 
 	\caption{Create Group}
 	\label{fig:createGroup}
@@ -204,7 +204,7 @@ Nadat de groep aangemaakt is, kan de beheerder andere gebruikers uitnodigen.  Hi
 
 \begin{figure}[h!]
 	\begin{center}
-	\includegraphics[scale=0.4]{inviteUser.png}
+
 
 	\caption{Invite User}
 	\label{fig:inviteUser}
@@ -215,7 +215,7 @@ Elke gebruiker heeft een venster waarop de uitnodigingen zichtbaar zijn die deze
 
 \begin{figure}[h!]
 	\begin{center}
-	\includegraphics[scale=0.4]{invites.png}
+
 
 	\caption{Invites}
 	\label{fig:invites}
@@ -226,7 +226,7 @@ Wanneer een gebruiker een uitnodiging aanvaard heeft, wordt de groep toegevoegd 
 
 \begin{figure}[h!]
 	\begin{center}
-	\includegraphics[scale=0.4]{inviteAccepted.png}
+
 
 	\caption{Invite Accepted}
 	\label{fig:inviteAccepted}
@@ -237,7 +237,7 @@ In het groepsvenster kan de gebruiker bets van andere spelers van de groep zien.
 
 \begin{figure}[h!]
 	\begin{center}
-	\includegraphics[scale=0.4]{group.png}
+
 
 	\caption{Group}
 	\label{fig:group}
@@ -255,8 +255,10 @@ In het groepsvenster kan de gebruiker bets van andere spelers van de groep zien.
 
 \subsection{Wiki}
 
-Elias
-
+Nu wordt op de speler pagina ook de introductie van de speler op wikipedia getoond.
+Deze pagina wordt gevonden door eerst te zoeken naar een sectie met als naam de naam van de speler.
+Indien deze niet gevonden kan worden wordt er een wikipedia search gedaan met als termen de volledige naam van de speler en wordt zo de spelerpagina gevonden.
+Voor het laden van deze tekst wordt Wikidrain gebruikt, mits enige aanpassingen die we zelf toegepast hebben.
 
 
 \subsection{RSS nieuwsfeed}
@@ -283,8 +285,19 @@ Iemand?
 
 \subsection{Queries}
 
-Elias\\
-Graag ook nu weer de code is zo'n box steken...
+\paragraph{Komende wedstrijden binnen bepaalde tijd}
+
+  Deze query vraagt de komende wedstrijden binnen een gegeven tijdspanne op, gesorteerd volgens datum.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+  SELECT *
+   FROM `Match`
+   WHERE date >= ? AND
+   ORDER BY date ASC
+   Limit 0,?;
+  \end{lstlisting}
+  \end{framed}
 
 
 \paragraph{Gewonnen wedstrijden van speler binnen interval}
