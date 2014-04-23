@@ -203,7 +203,7 @@ Dit framework bleek zeer traag te zijn, en had geheugenlekken. Ook is PHP niet d
 
 Daarom hebben we besloten op de parser opnieuw te beginnen. Ditmaal hebben we deze in \emph{GO} geschreven. \emph{GO} is een programmeertaal die uitermate geschikt is om concurrent te werken. Recent bedacht, maakt de taal concurrent programmeren veel gemakkelijker. Hierdoor wordt \emph{GO} vaak op servers gebruikt.\\
 
-De nieuwe versie van de parser is dus in \emph{GO} geschreven en draait vele malen sneller doordat de competities en tournaments concurrent kunnen geparsed worden. De nieuwe parser zal dit archief dan exporteren in een \emph{JSON} bestand, welke we in PHP importeren en toevoegen aan de database. (Door met een import/export file te werken, moesten we de database toegang niet herschrijven, en konden we de PHP herbruiken.)
+De nieuwe versie van de parser is dus in \emph{GO} geschreven en draait vele malen sneller doordat de competities en tournaments concurrent kunnen geparsed worden. De nieuwe parser zal dit archief dan exporteren in een \emph{JSON} bestand, welk we in PHP importeren en toevoegen aan de database. (Door met een import/export file te werken, moesten we de database toegang niet herschrijven, en konden we de PHP herbruiken.)
 
 Waar PHP er uren over doet, handelt GO de klus af binnen het half uur af. Een geslaagde verbetering dus. 
 
@@ -314,7 +314,8 @@ Voor het laden van deze tekst wordt Wikidrain gebruikt, mits enige aanpassingen 
 
 \subsection{RSS nieuwsfeed}
 
-Mathias
+De RSS nieuwspagina werd uitgebreid met extra feeds. De gebruiker krijgt bovenaan een menuutje, waarin hij een feed kan uitkiezen om het nieuws te lezen.
+De urls naar de feeds worden bijgehouden in een JSON file, zodat het toevoegen van extra feeds amper werk is.
 
 
 
@@ -328,7 +329,8 @@ Naast de normale login is er ook een optie om in te loggen door gebruik te maken
 \section{Planning}
 
 
-Iemand?
+De verdere planning focust zich vooral op kleine verbeteringen.
+We hopen dat we geen structurele veranderingen meer moeten doorvoeren.
 
 
 
