@@ -3000,8 +3000,21 @@ class Database {
 			throw new \Exception('Multiple rows for PlaysMatchInTeam');
 		}
 		elseif(sizeof($result) < 1) {
-			echo "No rows for PlaysMatchInTeam, for matchId $matchId, and playerId $playerId";
-			return null;
+			//echo "No rows for PlaysMatchInTeam, for matchId $matchId, and playerId $playerId<br>";
+			
+			//If we don't find any rows, we check in which team he is playing
+			$sel = new \Selector('PlaysMatchInTeam');
+			$sel->filter([['matchId', '=', $matchId]]);
+			$sel->join('PlaysIn', 'teamId', 'teamId');
+			$sel->filter([['PlaysIn.playerId', '=', $playerId]]);
+			
+			$result = $this->select($sel);
+			if(sizeof($result) > 0) {
+				return $result[0]['teamId'];
+			}
+			else {
+				return null;
+			}
 			//throw new \Exception("No rows for PlaysMatchInTeam, for matchId $matchId, and playerId $playerId");
 		}
 		
