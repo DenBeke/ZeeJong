@@ -1,0 +1,21 @@
+\select@language {dutch}
+\contentsline {section}{\numberline {1}Status}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}Taakverdeling}{2}{subsection.1.1}
+\contentsline {section}{\numberline {2}Design}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}UML diagram}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}API}{2}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Parser (GO)}{2}{subsection.2.3}
+\contentsline {section}{\numberline {3}Database}{2}{section.3}
+\contentsline {subsection}{\numberline {3.1}Schema (ERM-diagram)}{2}{subsection.3.1}
+\contentsline {section}{\numberline {4}User Interface}{3}{section.4}
+\contentsline {subsection}{\numberline {4.1}Grafieken}{3}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Gebruikersgroepen}{3}{subsection.4.2}
+\contentsline {section}{\numberline {5}User Interface}{7}{section.5}
+\contentsline {section}{\numberline {6}Extra Functionaliteit}{7}{section.6}
+\contentsline {subsection}{\numberline {6.1}Wiki}{7}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}RSS nieuwsfeed}{7}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}OpenID}{7}{subsection.6.3}
+\contentsline {section}{\numberline {7}Planning}{7}{section.7}
+\contentsline {section}{\numberline {8}Appendix}{7}{section.8}
+\contentsline {subsection}{\numberline {8.1}Queries}{7}{subsection.8.1}
+\contentsline {paragraph}{Gewonnen wedstrijden van speler binnen interval}{7}{section*.8}
