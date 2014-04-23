@@ -16,7 +16,7 @@ Created: February 2014
 				<h2 id="title-player"><?php echo $this->player->getName(); ?></h2>
 			</div>
 			
-			<div class="col-md-10">
+			<div class="col-md-4">
 			
 			
 			<ul class="list-group player-meta">
@@ -88,6 +88,15 @@ Created: February 2014
 			
 		
 		</div>
+		
+		
+		
+		<div class="col-md-6">
+			
+			<div class="wiki">
+			<?php echo $this->info; ?>
+			</div>
+		</div>		
 	
 	
 	</div>
@@ -121,6 +130,7 @@ Created: February 2014
 	
 	
 	<?php } ?>
+	
 	
 	
 	
