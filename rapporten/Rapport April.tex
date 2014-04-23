@@ -172,7 +172,14 @@ Hier enkele voorbeelden van hoe de api werkt:
 
 \subsection{Parser (GO)}
 
-Mathias
+Bij de aanvang van het project zijn we meteen begonnen met onze parser. We schreven die toen in \emph{PHP} en maakten gebruik van de \emph{PHP Simple HTML DOM Parser}.
+Dit framework bleek zeer traag te zijn, en had geheugenlekken. Ook is PHP niet de snelste taal om zulke dingen te doen.\\
+
+Daarom hebben we besloten op de parser opnieuw te beginnen. Ditmaal hebben we deze in \emph{GO} geschreven. \emph{GO} is een programmeertaal die uitermate geschikt is om concurrent te werken. Recent bedacht, maakt de taal concurrent programmeren veel gemakkelijker. Hierdoor wordt \emph{GO} vaak op servers gebruikt.\\
+
+De nieuwe versie van de parser is dus in \emph{GO} geschreven en draait vele malen sneller doordat de competities en tournaments concurrent kunnen geparsed worden. De nieuwe parser zal dit archief dan exporteren in een \emph{JSON} bestand, welke we in PHP importeren en toevoegen aan de database. (Door met een import/export file te werken, moesten we de database toegang niet herschrijven, en konden we de PHP herbruiken.)
+
+Waar PHP er uren over doet, handelt GO de klus af binnen het half uur af. Een geslaagde verbetering dus. 
 
 
 
