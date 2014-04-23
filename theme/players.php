@@ -54,6 +54,7 @@ $(document).ready(function(){
 
 	<h2 id="title-events">Top Players</h2>
 
+	<div class="loader"></div>
 
 	<table id="players" class="table table-striped">
 	

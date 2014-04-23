@@ -24,6 +24,7 @@ require_once(dirname(__FILE__) . '/classes/Score.php');
 require_once(dirname(__FILE__) . '/classes/Team.php');
 require_once(dirname(__FILE__) . '/classes/Tournament.php');
 require_once(dirname(__FILE__) . '/classes/User.php');
+require_once(dirname(__FILE__) . '/classes/Group.php');
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -52,6 +53,7 @@ class Database {
 	 */
 	public function __construct($db_host = DB_HOST, $db_user = DB_USER, $db_password = DB_PASS, $db_database = DB_NAME) {
 		$this->con = new PDO("mysql:host=$db_host;dbname=$db_database;charset=utf8", $db_user, $db_password);
+		$this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 		//Connect to the database
 		$this -> link = new mysqli($db_host, $db_user, $db_password, $db_database);
@@ -112,6 +114,21 @@ class Database {
 
 		return $results;
 	}
+	
+	
+	
+	public function truncate($table) {
+		
+		$table = '`' . $table . '`';	
+		
+		$query = "TRUNCATE $table";
+		
+		$statement = $this->getStatement2($query);
+		
+		$statement->execute();
+		
+	}
+	
 
 	private function getStatement2($query) {
 		$query = trim($query);
@@ -141,6 +158,449 @@ class Database {
 
 
 	/**
+	 Create a groupmembership with for a userId and groupId
+
+	 @param userId, groupId
+	 */
+	public function addGroupMembership($userId, $groupId) {
+		$this->insert('GroupMembership', ['userId', 'GroupId','accepted'],
+								[$userId, $groupId, 0]);
+	}
+	
+	
+	/**
+	 Get the invites for a user
+	 @param the id of the user
+	 @return the id's of the invites this user has
+	 */
+	 public function getInvites($id){
+	 	$sel = new \Selector('GroupMembership');
+
+		$sel->filter([['userId', '=', $id]]);
+		$sel->filter([['accepted','=',0]]);
+
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['id']);
+		}
+
+		return $result2;
+	 }
+	 
+	 /** 
+	  Get the invites sent by a specific user
+	  @param the id of the user
+	  @return the id's of the invites this user sent
+	  */
+	  	 public function getInvitesSent($id){
+	 			
+		//Query
+		$query = "SELECT GroupMembership.id
+		FROM GroupMembership
+		INNER JOIN `Group`
+		ON GroupMembership.groupId=Group.id
+		WHERE Group.ownerId=? and GroupMembership.accepted=0;
+		";		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();	
+		//Bind return values
+		$statement->bind_result($ids);
+
+
+		$results = array();
+		while($statement->fetch()) {
+			array_push($results, $ids);
+		}
+	
+		$statement->close();
+		return $results;
+	 }
+	 	 
+	/**
+	 Accept an invite
+	 
+	 @param GroupMembership id
+	 */
+	 public function acceptInvite($Id){
+	 	//Query
+		$query = "
+			UPDATE GroupMembership
+			SET accepted = ?
+			WHERE id = ?;
+		";
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		$ok = 1;
+		//Bind parameters
+		if (!$statement -> bind_param('ii', $ok, $Id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		
+	 }
+		 
+		 
+	 /**
+	 Get the id of the group from a membership
+
+	 @param id
+	 @return the id of the group in the membership
+
+	 @exception when no group found with the given name
+	 */
+	public function getGroupIdFromMembership($id) {
+		$sel = new \Selector('GroupMembership');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+		return $result[0]['groupId'];
+	}
+	
+	/**
+	 Get the id of the user from a membership
+
+	 @param id
+	 @return the id of the user in the membership
+
+	 @exception when no groupmembership with given id
+	 */
+	public function getUserIdFromMembership($id) {
+		$sel = new \Selector('GroupMembership');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+		return $result[0]['userId'];
+	}
+	
+	/**
+	 Test whether an invite to a user of a specific group was sent
+
+	 @param the id's of the user and the group to test
+
+	 @return boolean
+	 @exception when there exists more than one invite
+	 */
+	public function doesInviteExist($userId,$groupId) {
+		$sel = new \Selector('GroupMembership');
+		$sel->filter([['userId', '=', $userId]]);
+		$sel->filter([['groupId', '=', $groupId]]);
+		$result = $this->select($sel);
+		if(count($result)>1){
+			throw new exception('More than 1 invite with same user and group found.');
+		}
+		
+		return count($result) == 1;
+	}
+	
+	 /**
+	 Get the groups a user is member of
+	 @param the id of the user
+	 @return the id's of the groups this user is member of
+	 */
+	 public function getUserGroups($id){
+	 	$sel = new \Selector('GroupMembership');
+		$sel->filter([['userId', '=', $id]]);
+		$sel->filter([['accepted', '=', 1]]);
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['groupId']);
+		}
+
+		return $result2;
+	 }
+	 
+	/**
+	 Remove a user from a group
+
+	 @param id
+	*/
+	public function removeUserFromGroup($userId, $groupId) {
+
+		//Query
+		$query = "
+			DELETE FROM `GroupMembership` WHERE userId = ? AND groupId = ?;
+		";
+
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if (!$statement -> bind_param('ii', $userId, $groupId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+	}
+	
+	/**
+	 Withdraw an invite
+	 @param id
+	 */
+	 public function withdrawInvite($id){
+	 			//Query
+		$query = "
+			DELETE FROM `GroupMembership` WHERE id = ? AND accepted = False;
+		";
+
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if (!$statement -> bind_param('i',$id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	 }
+	 
+	 
+	 /**
+	 Get the groups a user is owner of
+	 @param the id of the user
+	 @return the id's of the bets this user made
+	 */
+	 public function getGroupsWithOwner($id){
+	 	$sel = new \Selector('Group');
+		$sel->filter([['ownerId', '=', $id]]);
+
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['name']);
+		}
+
+		return $result2;
+	 }
+	
+	/**
+	 Accept a membership of a group
+	 
+	 @param userId, groupId
+	 */
+	 public function acceptMembership($userId,$groupId){
+	 	//Query
+		$query = "
+			UPDATE GroupMembership
+			SET accepted = ?
+			WHERE userId = ? AND groupId = ?;
+		";
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		$ok = 1;
+		//Bind parameters
+		if (!$statement -> bind_param('iii', $ok, $userId,$groupId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		
+	 }
+
+
+	/**
+	 Create a group with a given name and an owner
+
+	 @param name,ownerid
+	 @return id of the newly added group
+	 */
+	public function addGroup($name, $ownerId) {
+		if(!$this->doesGroupNameExist($name)){		
+			$this->insert('Group', ['name', 'ownerId'],
+								[$name, $ownerId]);
+		}
+		return $this -> getGroupId($name);
+	}
+	
+	
+	/**
+	 Remove a group
+
+	 @param groupid
+	*/
+	public function removeGroup($groupId) {
+
+		//Query
+		$query = "
+			DELETE FROM `Group` WHERE id = ?;
+		";
+
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if (!$statement -> bind_param('i',$groupId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+	}
+	
+	/**
+	 Test whether a specific groupname exists
+
+	 @param the name to test
+
+	 @return boolean
+	 */
+	public function doesGroupNameExist($name) {
+		$sel = new \Selector('Group');
+		$sel->filter([['name', '=', $name]]);
+
+		$result = $this->select($sel);
+
+		return count($result) == 1;
+	}
+	
+	/**
+	 Test whether a user is member of a group
+	 Will return false too when group or user doesn't exist
+	  
+	 @param: userId & groupId
+	 @return True if member is part of group in ALL other cases false
+	 */
+	public function isUserMemberOfGroup($userId,$groupId){
+		if(!$this->doesUserExist($userId) || !$this->doesGroupExist($groupId)){
+			return False;
+		}
+		$sel = new \Selector('GroupMembership');
+	 	$sel->filter([['userId', '=', $userId]]);
+		$sel->filter([['groupId','=',$groupId]]);
+		$sel->filter([['accepted','=',1]]);
+
+		$result = $this->select($sel);
+
+		return count($result) == 1;
+		
+	}
+	
+	/**
+	 Get the users in a certain group
+	 @param the id of the group
+	 @return the user id's of the members of the group
+	 */
+	 public function getGroupMembers($id){
+	 	$sel = new \Selector('GroupMembership');
+		$sel->filter([['groupId', '=', $id]]);
+		$sel->filter([['accepted', '=', 1]]);
+
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['userId']);
+		}
+
+		return $result2;
+	 }
+	
+	
+	/**
+	 Test whether a group ID exists
+	 
+	 @param the id to test
+	 @return boolean
+	 */
+	 public function doesGroupExist($id){
+	 	$sel = new \Selector('Group');
+	 	$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+
+		return count($result) == 1;
+	 }
+	
+	/**
+	 Get the id from a group with a specific name
+
+	 @param name
+	 @return the id of the group with the given name
+
+	 @exception when no group found with the given name
+	 */
+	public function getGroupId($name) {
+		$sel = new \Selector('Group');
+		$sel->filter([['name', '=', $name]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+		return $result[0]['id'];
+	}
+	
+	/**
+	 Get the name from a group with a specific id
+
+	 @param name
+	 @return the name of the group with the given id
+
+	 @exception when no group found with the given id
+	 */
+	public function getGroupName($id) {
+		$sel = new \Selector('Group');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+		return $result[0]['name'];
+	}
+	
+	/**
+	 Get the owners' id from a group with a specific id
+
+	 @param id
+	 @return the id of the owner
+
+	 @exception when no group found with the given id
+	 */
+	public function getGroupOwnerId($id) {
+		$sel = new \Selector('Group');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+		return $result[0]['ownerId'];
+	}
+	
+
+
+
+	/**
 	 Get the bets made by a user
 	 @param the id of the user
 	 @return the id's of the bets this user made
@@ -165,8 +625,9 @@ class Database {
 	 @param the id of the match, team, user and money
 	 */
 	 public function addBet($matchId,$score1,$score2,$userId,$amount){
-		$this->insert('Bet', ['matchId', 'score1', 'score2', 'userId', 'amount'],
+		$this->insert('Bet', ['matchId', 'score1', 'score2','userId', 'amount'],
 							[$matchId, $score1, $score2, $userId, $amount]);
+							
 	 }
 
 	/**
@@ -183,10 +644,25 @@ class Database {
 
 		return $result[0]['matchId'];
 	}
+	
+	/**
+	 Get the userId from a bet
+
+	 @return the userId
+	 */
+	public function getUserFromBet($id) {
+		$sel = new \Selector('Bet');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['userId'];
+	}
 
 
 	/**
-	 Get the teamId from a bet
+	 Get the second score from a bet
 
 	 @return the teamId
 	 */
@@ -201,7 +677,7 @@ class Database {
 	}
 
 	/**
-	 Get the userId from a bet
+	 Get the first score from a bet
 
 	 @return the userId
 	 */
@@ -428,6 +904,22 @@ class Database {
 
 		return count($result) == 1;
 	}
+	
+	/**
+	 Test whether a specific user exists
+
+	 @param the username to test
+
+	 @return boolean
+	 */
+	public function doesAlternativeUserExist($id) {
+		$sel = new \Selector('AlternativeUser');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+
+		return count($result) == 1;
+	}
 
 	/**
 	 Get the user with a given username
@@ -440,6 +932,34 @@ class Database {
 	public function getUser($username) {
 		$sel = new \Selector('User');
 		$sel->filter([['username', '=', $username]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $this->resultToUsers($result)[0];
+	}
+	
+	
+	/**
+	 Get the alternative user with a given id
+
+	 @param id
+	 @return a User object
+
+	 @exception when no user found with the given name
+	 */
+	public function getAlternativeUser($id) {
+	
+	    $sel = new \Selector('AlternativeUser');
+	    $sel->filter([['id', '=', $id]]);
+	    
+	    $result = $this->select($sel);
+		requireEqCount($result, 1);
+		
+		$userId = $result[0]['userId'];
+	
+		$sel = new \Selector('User');
+		$sel->filter([['id', '=', $userId]]);
 
 		$result = $this->select($sel);
 		requireEqCount($result, 1);
@@ -500,11 +1020,39 @@ class Database {
 	 @return id of the newly added user
 	 */
 	public function registerUser($username, $salt, $hashedPassword, $emailAddress) {
+		if($this->doesUserNameExist($username)){
+			return $this -> getUser($username) -> getId();
+		}else{
+		
 		$this->insert('User', ['username', 'salt', 'password', 'emailAddress'],
 							[$username, $salt, $hashedPassword, $emailAddress]);
-
+	
 		return $this -> getUser($username) -> getId();
+		}
 	}
+	
+	
+	/**
+	 Register a user with a given id
+
+	 @return id of the newly added user
+	 */
+	public function registerAlternativeUser($id, $username, $salt, $hashedPassword, $emailAddress) {
+		if($this->doesAlternativeUserExist($id)){
+			return $this->getAlternativeUser($id)->getId();
+		}else{
+		    $this->insert('User', ['username', 'salt', 'password', 'emailAddress'],
+							    [$username, $salt, $hashedPassword, $emailAddress]);
+	
+		    $userId = $this->getUser($username)->getId();
+		    
+		    $this->insert('AlternativeUser', ['id', 'username', 'emailAddress', 'userId'],
+					        [$id, $username, $emailAddress, $userId]);
+
+		    return $userId;
+		}
+	}
+	
 
 	/**
 	 Get the country with the given name
@@ -2082,7 +2630,8 @@ class Database {
 		$goals = array();
 
 		foreach($result as $goal) {
-			array_push($goals, new Goal($goal['id'], $goal['playerId'], $goal['matchId'], $goal['time'], $this));
+			$teamId = $this->getTeamIdFromGoal($goal['matchId'], $goal['playerId']);
+			array_push($goals, new Goal($goal['id'], $goal['playerId'], $goal['matchId'], $goal['time'], $teamId, $this));
 		}
 
 
@@ -2383,6 +2932,93 @@ class Database {
 		$matches = $this->resultToMatches($result);
 
 		return $matches;	
+	}
+	
+	
+	
+	public function getTeamsInCountry($countryId) {
+		$sel = new \Selector('Team');
+		$sel->filter([['country', '=', $countryId]]);
+		
+		$result = $this->select($sel);
+		
+		return $this->resultToTeams($result);
+	}
+	
+	public function getRefereesInCountry($countryId) {
+		$sel = new \Selector('Referee');
+		$sel->filter([['countryId', '=', $countryId]]);
+		
+		$result = $this->select($sel);
+		
+		return $this->resultToReferees($result);
+	}
+	
+	public function getCoachesInCountry($countryId) {
+		$sel = new \Selector('Coach');
+		$sel->filter([['country', '=', $countryId]]);
+		
+		$result = $this->select($sel);
+		
+		return $this->resultToCoaches($result);
+	}
+	
+	
+	public function getPlayerTeams($playerId) {
+		$sel = new \Selector('PlaysIn');
+		$sel->filter([['playerId', '=', $playerId]]);
+		$sel->join('Team', 'teamId', 'id');
+		
+		$result = $this->select($sel);
+		
+		return $this->resultToTeams($result);
+	}
+	
+	
+	
+	public function getGoalsInMatch($matchId) {
+		$sel = new \Selector('Goal');
+		$sel->filter([['matchId', '=', $matchId]]);
+		
+		$result = $this->select($sel);
+		
+		return $this->resultToGoals($result);
+	}
+	
+	
+	public function getTeamIdFromGoal($matchId, $playerId) {
+		$sel = new \Selector('PlaysMatchInTeam');
+		$sel->filter([['playerId', '=', $playerId]]);
+		$sel->filter([['matchId', '=', $matchId]]);
+		
+		$result = $this->select($sel);
+		
+		if(sizeof($result) > 1) {
+			echo '<pre>';
+			var_dump($result);
+			echo '</pre>';
+			throw new \Exception('Multiple rows for PlaysMatchInTeam');
+		}
+		elseif(sizeof($result) < 1) {
+			//echo "No rows for PlaysMatchInTeam, for matchId $matchId, and playerId $playerId<br>";
+			
+			//If we don't find any rows, we check in which team he is playing
+			$sel = new \Selector('PlaysMatchInTeam');
+			$sel->filter([['matchId', '=', $matchId]]);
+			$sel->join('PlaysIn', 'teamId', 'teamId');
+			$sel->filter([['PlaysIn.playerId', '=', $playerId]]);
+			
+			$result = $this->select($sel);
+			if(sizeof($result) > 0) {
+				return $result[0]['teamId'];
+			}
+			else {
+				return null;
+			}
+			//throw new \Exception("No rows for PlaysMatchInTeam, for matchId $matchId, and playerId $playerId");
+		}
+		
+		return $result[0]['teamId'];
 	}
 
 

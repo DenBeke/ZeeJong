@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `Bet` (
 `matchId` int(11) NOT NULL,
 `score1` int(2),
 `score2` int(2),
-`time` int(3) NOT NULL,
+`time` int(3),
 `userId` int(11) NOT NULL,
 `amount` int(11) NOT NULL CHECK (amount>0),
 PRIMARY KEY (`id`)
@@ -177,6 +177,36 @@ CREATE TABLE IF NOT EXISTS `User` (
 `money` int(11) DEFAULT "0",
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB ;
+',
+
+'
+CREATE TABLE IF NOT EXISTS `Group`(
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`name` varchar(50) NOT NULL,
+`ownerId` int(11) NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB ;
+',
+
+'
+CREATE TABLE IF NOT EXISTS `GroupMembership` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`userId` int(11) NOT NULL,
+`groupId` int(11) NOT NULL,
+`accepted` BOOLEAN,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB ;
+',
+
+'
+CREATE TABLE IF NOT EXISTS `AlternativeUser` (
+`id` varchar(255) NOT NULL,
+`username` varchar(50) NOT NULL,
+`emailAddress` varchar(50) NOT NULL,
+`userId` int(11) NOT NULL,
+PRIMARY KEY (`id`),
+KEY `userId` (`userId`)
+) ENGINE=InnoDB CHARSET=utf8 ;
 '
 );
 

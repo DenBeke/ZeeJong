@@ -1,6 +1,6 @@
 <?php
 
-
+/*
 namespace UnitTest;
 
 
@@ -13,7 +13,7 @@ function divide($a, $b) {
 	if($b == 0) {
 		throw new Exception('Cannot divide by ZERO');
 	}
-	*/
+/
 }
 
 
@@ -70,5 +70,5 @@ class Example extends UnitTest {
 	
 }
 
-
+*/
 ?>
