@@ -10,6 +10,7 @@ namespace Controller {
 	require_once(dirname(__FILE__) . '/../classes/User.php');	// We need the user class file
 	require_once(dirname(__FILE__) . '/../functions.php');
 	require_once(dirname(__FILE__) . '/Controller.php');
+require_once(dirname(__FILE__) . '/../openid.php');
 
 
 	class LoginAlternative extends Controller {
@@ -34,6 +35,60 @@ namespace Controller {
 
 		public function GET($args) {
 			$this->data = $args;
+
+
+		    $openid = new \LightOpenID(SITE_URL);
+		    
+		    $this->loggedIn = false;
+
+		    if(isset($_GET['fblogin'])) {
+
+		        $this->id = $_GET['id'];
+		        $this->name = $_GET['first'];
+		        $this->email = $_GET['email'];
+		        
+		        $this->login();
+		    }
+		    else {
+		        if ($openid->mode) {
+		            if ($openid->mode == 'cancel') {
+		                throw new Exception("User has canceled authentication!");
+		            } elseif($openid->validate()) {
+		                $data = $openid->getAttributes();
+		                $this->email = $data['contact/email'];
+		                
+		                if (array_key_exists('namePerson/first', $data)) {
+		                    $this->name = $data['namePerson/first'];
+		                }
+		                else {
+		                    $this->name = $this->email;
+		                }
+		                
+		                $this->id = $openid->identity;
+		                
+		                $this->login();
+		            }
+		        }
+		        else {
+		            if(isset($_GET['oid'])) {
+		                $oid = $_GET['oid'];
+
+		                $openid->identity = $oid;
+		            
+		                $openid->required = array(
+		                  'namePerson/first',
+		                  'contact/email',
+		                );
+
+		                $openid->returnUrl = SITE_URL . 'login-alternative/';
+						Header('Location:' . $openid->authUrl());
+		            }
+		        }
+		    }
+
+			if($this->loggedIn) {
+				header("refresh:2;url=" . SITE_URL);
+			}
 		}
 
 

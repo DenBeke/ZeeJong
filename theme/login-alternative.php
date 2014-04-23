@@ -7,61 +7,9 @@ Created: February 2014
 
 require_once(dirname(__FILE__) . '/../core/config.php');
 require_once(dirname(__FILE__) . '/../core/openid.php');
-
-
-        $openid = new LightOpenID(SITE_URL);
         
-        $this->loggedIn = false;
-        
-        if(isset($_GET['fblogin'])) {
-
-            $this->id = $_GET['id'];
-            $this->name = $_GET['first'];
-            $this->email = $_GET['email'];
-            
-            $this->login();
-        }
-        else {
-
-            if ($openid->mode) {
-                if ($openid->mode == 'cancel') {
-                    throw new Exception("User has canceled authentication!");
-                } elseif($openid->validate()) {
-                    $data = $openid->getAttributes();
-                    $this->email = $data['contact/email'];
-                    
-                    if (array_key_exists('namePerson/first', $data)) {
-                        $this->name = $data['namePerson/first'];
-                    }
-                    else {
-                        $this->name = $this->email;
-                    }
-                    
-                    $this->id = $openid->identity;
-                    
-                    $this->login();
-                }
-            }
-            else {
-                if(isset($_GET['oid'])) {
-                    $oid = $_GET['oid'];
-
-                    $openid->identity = $oid;
-                
-                    $openid->required = array(
-                      'namePerson/first',
-                      'contact/email',
-                    );
-
-                    $openid->returnUrl = SITE_URL . 'login-alternative/';
-                    header('Location: ' . $openid->authUrl());
-                }
-            }
-        }
 
         if ($this->loggedIn) {
-
-                header("refresh:2;url=" . SITE_URL);
     ?>
                 <div class="container">
                 <h2>Login</h2>
