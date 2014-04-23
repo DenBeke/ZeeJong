@@ -125,6 +125,7 @@ table.goals td:last-child.team-a span {
 
 
 
+
 /* Field *
 *********/
 
@@ -177,6 +178,21 @@ table tr:nth-child(4) td:nth-child(3) {
 	vertical-align: top;
 }*/
 
+
+
+
+/* Player *
+**********/
+
+.image-container {
+	text-align: center;
+}
+
+.image-container img {
+	background-color: #3D6AA2;
+	
+	box-shadow: 0 2px 4px -4px gray;
+}
 
 
 /* Wiki */
