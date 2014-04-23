@@ -25,11 +25,7 @@
 	<script src="<?php echo SITE_URL ?>js/jquery-1.11.0.min.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/script.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/bootstrap.js" type="text/javascript"></script>
-	<script src="<?php echo SITE_URL ?>js/jqplot/jquery.jqplot.js" type="text/javascript"></script>
-	<script src="<?php echo SITE_URL ?>js/jqplot/plugins/jqplot.barRenderer.min.js" type="text/javascript"></script>
-	<script src="<?php echo SITE_URL ?>js/jqplot/plugins/jqplot.cursor.min.js" type="text/javascript"></script>
-	<script src="<?php echo SITE_URL ?>js/jqplot/plugins/jqplot.dateAxisRenderer.min.js" type="text/javascript"></script>
-	<script src="<?php echo SITE_URL ?>js/jqplot/plugins/jqplot.enhancedLegendRenderer.min.js" type="text/javascript"></script>
+	<script src="<?php echo SITE_URL ?>js/hchart/highcharts.js" type="text/javascript"></script>
 	
 	<?php	
 	if($controller->page == 'login' and loggedIn() == true) {
