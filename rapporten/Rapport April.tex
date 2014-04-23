@@ -285,17 +285,81 @@ Iemand?
 
 \subsection{Queries}
 
-\paragraph{Komende wedstrijden binnen bepaalde tijd}
+\paragraph{Accepteren van invite}
 
-  Deze query vraagt de komende wedstrijden binnen een gegeven tijdspanne op, gesorteerd volgens datum.
+  Deze query past de groepslidmaatschappen van de user aan door een nieuwe groep toe te voegen.
 
   \begin{framed}
   \begin{lstlisting}[language=sql]
-  SELECT *
-   FROM `Match`
-   WHERE date >= ? AND
-   ORDER BY date ASC
-   Limit 0,?;
+    UPDATE GroupMembership
+    SET accepted = ?
+    [WHERE id = ?];
+  \end{lstlisting}
+  \end{framed}
+
+\paragraph{User verwijderen uit groep}
+
+  Deze query verwijdert een gegeven user uit een gegeven groep.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+    DELETE 
+    FROM `GroupMembership` 
+    [WHERE id = ? AND 
+    groupId = ?];
+  \end{lstlisting}
+  \end{framed}
+  
+\paragraph{groep verwijderen}
+
+  Deze query verwijdert een gegeven groep.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+    DELETE 
+    FROM `Group` 
+    [WHERE id = ?];
+  \end{lstlisting}
+  \end{framed}  
+  
+\paragraph{Invite intrekken}
+
+  Deze query trekt een gegeven verzonden invite weer in.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+    DELETE 
+    FROM `GroupMembership` 
+    [WHERE id = ? AND 
+    accepted = False];
+  \end{lstlisting}
+  \end{framed}
+  
+\paragraph{Invite accepteren}
+
+  Deze query accepteert een invite van een gegeven user voor een gegeven groep.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+    UPDATE `GroupMembership`
+    SET accepted = True
+    [WHERE id = ? AND 
+    groupId = ?];
+  \end{lstlisting}
+  \end{framed}  
+
+\paragraph{Uitnodigen verzonden door gebruiker}
+
+  Deze query vraagt de uitnodigingen op die verzonden zijn door een gegeven user.
+
+  \begin{framed}
+  \begin{lstlisting}[language=sql]
+    SELECT GroupMembership.id
+		FROM GroupMembership
+		[INNER JOIN `Group`
+		ON GroupMembership.groupId=Group.id]
+		[WHERE Group.ownerId=? AND
+		 GroupMembership.accepted=0]
   \end{lstlisting}
   \end{framed}
 
