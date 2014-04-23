@@ -21,6 +21,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 
 		public function __construct() {
 			$this->theme = 'match.php';
+			
 			$this->title = 'Match - ' . Controller::siteName;
 		}
 
@@ -35,12 +36,21 @@ require_once(dirname(__FILE__) . '/Controller.php');
 				throw new \exception('No match id given');
 				return;
 			}
+			
+			
 
 			global $database;
 			$this->match = $database->getMatchById($args[1]);
 			$this->goals = $database->getGoalsInMatch($this->match->getId());
 
 			$this->title = 'Match - ' . $this->match->getTeamA()->getName() . ' vs ' . $this->match->getTeamB()->getName() . ' - ' . Controller::siteName;
+			
+			if($this->match->getDate() < strtotime(date('d M Y', time()))) {
+				$this->theme = 'match.php';
+			}
+			else {
+				$this->theme = 'match-not-played.php';
+			}
 		}
 
 
