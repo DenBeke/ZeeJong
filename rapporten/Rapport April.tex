@@ -146,7 +146,28 @@
 
 \subsection{API}
 
-Iemand?
+Om het mogelijk te maken om via javascript interactief informatie van de server
+op te halen zijn we begonnen met een api te schrijven.
+
+De api zal antwoorden met json en kan dan eenvoudig in javascript worden gebruikt.
+
+Hier enkele voorbeelden van hoe de api werkt:
+\begin{framed}
+\begin{lstlisting}
+// Returned informatie over alle spelers
+/api/player	
+
+// Returned informatie over speler met id 5
+/api/player?id=5 
+
+// Returned informatie over alle spelers met voornaam Ronaldo
+/api/player?firstname =ronaldo 
+
+// Returned informatie over alle spelers gesorteerd op het aantal gespeelde matchen
+/api/player?sort=match
+... 
+\end{lstlisting}
+\end{framed}
 
 
 \subsection{Parser (GO)}
@@ -176,12 +197,9 @@ Hier ging het om de gebruiker-gerelateerde features: het groepen-systeem waardoo
 
 \subsection{Grafieken}
 
-Timo
-
-
-
-
-pp
+De framework die we gebruikten bleek niet geavanceerd genoeg om bijvoorbeeld te zoomen, ranges te selecteren, etc.\\
+We hebben al veel frameworks geprobeerd maar hebben er nog geen gevonden die volledig voldoet aan onze behoeften.\\
+Het huidige framework is jqplot waarmee we kunnen inzoomen en selecteren welke informatie er getoond moet worden.
 
 
 
