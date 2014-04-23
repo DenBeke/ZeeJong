@@ -42,11 +42,9 @@ $(document).ready(function(){
 		
 		//alert("test" + this.getAttribute("data-id"));
 		
+	
 		
-		$('.active').removeClass('active');
-		$(this).parent('li').addClass('active');
-		
-		$('#news-feed').html("loading...");
+		$('#news-feed').html('<div class="loader-container"><div class="loader"></div>loading</div>');
 		
 		
 		
@@ -55,20 +53,6 @@ $(document).ready(function(){
 		 //Retrieve JSON object and load data	
 		 $.getJSON(jsonUrl, function(data) {
 		 	
-			
-			//Check for exif data, and load the data if needed.
-			
-			
-			//Do action when image is loaded
-			/*
-			$('#lightboxContent #photo').load(function() {
-				
-				$('#overlay .loading').removeClass('active');
-				$('#lightboxContent #photo').fadeIn();
-				
-				
-			});
-			*/
 			
 			
 			//Check for errors

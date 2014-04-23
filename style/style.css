@@ -123,6 +123,11 @@ table.goals td:last-child.team-a span {
 }
 
 
+#news-feed .loader-container {
+	padding: 50px;
+}
+
+
 
 
 
