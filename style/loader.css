@@ -1,0 +1,57 @@
+/*
+Loader animation by Tania LE DONGE
+http://tanialedonge.fr/php/realisation.php?idCrea=12
+
+Changed to fit better in the ZeeJong design
+*/
+
+
+@import url(http://fonts.googleapis.com/css?family=Lato:300);
+
+
+/* -------------- Loader1 -------------- */
+
+
+.loader-container {
+	text-align: center;
+	color: #c3c6c3;
+	font-size: 13px;
+	font-style: italic;
+	font-variant: small-caps;
+}
+
+.loader{
+	position: relative;
+	height: 50px;
+	width: 50px;
+	border-radius: 50px;
+	border: 3px solid rgba(215, 217, 215, 0.75);
+
+	margin: auto;
+
+	-webkit-transform-origin: 50% 50%;
+			transform-origin: 50% 50%;
+	-webkit-animation: loader1 1.5s linear infinite;
+			animation: loader1 1.5s linear infinite;
+}
+
+.loader:after{
+	content: "";
+	position: absolute;
+	top: -5px;
+	left: 23px;
+	width: 11px;
+	height: 11px;
+	border-radius: 10px;
+	background-color: #d8dad8;
+}
+
+@-webkit-keyframes loader1{
+	0%{-webkit-transform:rotate(0deg);}
+	100%{-webkit-transform:rotate(360deg);}
+}
+
+@keyframes loader1{
+	0%{transform:rotate(0deg);}
+	100%{transform:rotate(360deg);}
+}

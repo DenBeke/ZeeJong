@@ -27,55 +27,64 @@ table a {
 
 
 
-/* Style for Charts *
-********************/
-
-canvas{
-	width: 100% !important;
-	height: auto !important;
-}
-
-
-.legend {
-	font-size: 13px;
-}
-
-.legend-item {
-	width: 12px;
-	height: 12px;
-	display: inline-block;
-	border-width: 2px;
-	border-style: solid;
-	margin-left: 10px;
-	margin-right: 2px;
-}
-
-.image-container {
-	text-align: center;
-}
-
-
-
 /* Style for match *
 *************************/
 
 
 table.matches th:nth-child(1),
-table.matches td:nth-child(1) {
+table.matches td:nth-child(1),
+table.goals td:nth-child(1) {
 	text-align: right;
 	width: 45%;
 }
 
+
 table.matches th:nth-child(2),
-table.matches td:nth-child(2) {
+table.matches td:nth-child(2),
+table.goals td:nth-child(2) {
 	text-align: center;
 	width: 10%;
 }
 
 table.matches th:nth-child(3),
-table.matches td:nth-child(3) {
+table.matches td:nth-child(3),
+table.goals td:nth-child(3) {
 	text-align: left;
 	width: 45%;
+}
+
+
+table.goals .football-icon {
+	background-image: url('../img/football.svg');
+	background-size: contain;
+	background-repeat: no-repeat;
+	padding: 10px;
+	display: inline-block;
+	font-size: 0;
+	vertical-align: middle;
+}
+
+
+.football-player {
+	background-image: url('../img/football-player.svg');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: top center;
+	opacity: 0.9;
+	-webkit-transition: 0.5s all;
+	height: 300px;
+}
+
+.football-player h2 {
+	padding-left: 33%;
+}
+
+
+table.goals a {
+	margin: 0;
+	padding: 0;
+	vertical-align: middle;
+	display: inline-block;
 }
 
 
@@ -88,6 +97,32 @@ table.matches td:nth-child(3) {
 .center {
 	text-align: center;
 }
+
+
+table.goals td:first-child.team-b,
+table.goals td:last-child.team-a {
+	font-size: 0;
+}
+
+table.goals td:first-child.team-b span,
+table.goals td:last-child.team-a span {
+	display: none;
+}
+
+
+/* News *
+********/
+
+
+.nav-news {
+	border-bottom-width: 0px !important;
+}
+
+.nav-news li.active {
+	border-bottom: 1px solid #ddd !important;
+}
+
+
 
 
 /* Field *
@@ -141,3 +176,12 @@ table tr:nth-child(4) td:nth-child(2),
 table tr:nth-child(4) td:nth-child(3) {
 	vertical-align: top;
 }*/
+
+
+
+/* Wiki */
+
+.wiki {
+	text-align: justify;
+}
+

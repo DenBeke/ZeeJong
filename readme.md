@@ -23,6 +23,10 @@ directory with your browser.
 Navigate to `yourdomain.com/install` and fill all fields. The script
 will create the database tables and will generate a config file.
 
+You can also install preloaded data. We provide a JSON file contain an archive of competitions.  
+In order to install this, you must run `yourdomain.com/core/importer.php`. This may take some time.  
+*Do this after the installation. Note that the script will empty all tables before loading the sample data.*
+
 
 Authors
 -------

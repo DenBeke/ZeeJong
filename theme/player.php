@@ -16,54 +16,89 @@ Created: February 2014
 				<h2 id="title-player"><?php echo $this->player->getName(); ?></h2>
 			</div>
 			
-			<div class="col-md-10">
 			
 			
-			<ul class="list-group player-meta">
 			
-			  <li class="list-group-item">
-			  	<b>First name</b>: <?php echo $this->player->getFirstName(); ?>
-			  </li>
-			  
-			  <li class="list-group-item">
-			  	<b>Last name</b>: <?php echo $this->player->getLastName(); ?>
-			  </li>
-			  
-			  <li class="list-group-item">
-			  	<b>Nationality</b>: <?php echo $this->player->getCountry()->getName(); ?>
-			  </li>
-			  
-			  
-			  <li class="list-group-item">
-			   	<b>Date of birth</b>: <?php echo date('d M Y',$this->player->getDateOfBirth()); ?>
-			   </li>
-			   
-			   
-			   <li class="list-group-item">
-			   	<b>Position</b>: <?php echo $this->player->getPosition(); ?>
-			   </li>
-			  
 			
-			  <li class="list-group-item">
-			    <span class="badge"><?php echo $this->player->getTotalNumberOfGoals(); ?></span>
-			    Goals
-			  </li>
-			  
-			  <li class="list-group-item">
-			    <span class="badge"><?php echo $this->player->getTotalNumberOfCards(); ?></span>
-			    Yellow Cards
-			  </li>
-			  
-			  <li class="list-group-item">
-			    <span class="badge"><?php echo $this->player->getTotalNumberOfMatches(); ?></span>
-			    Matches Played
-			  </li>
-		
-			  <li class="list-group-item">
-			    <span class="badge"><?php echo $this->player->getTotalNumberOfWonMatches(); ?></span>
-			    Matches Won
-			  </li>	  
-			</ul>
+			<div class="col-md-4">
+			
+			
+				<div class="panel panel-default">
+					
+					<div class="panel-heading">
+						<h3 class="panel-title">Information</h3>
+					</div>
+			
+			
+			
+					<div class="panel-body">
+						
+					
+			
+			
+						<ul class="list-group player-meta">
+						
+						  <li class="list-group-item">
+						  	<b>First name</b>: <?php echo $this->player->getFirstName(); ?>
+						  </li>
+						  
+						  <li class="list-group-item">
+						  	<b>Last name</b>: <?php echo $this->player->getLastName(); ?>
+						  </li>
+						  
+						  <li class="list-group-item">
+						  	<b>Nationality</b>: <a href="<?php echo SITE_URL . 'country/' . $this->player->getCountry()->getId(); ?>"><?php echo $this->player->getCountry()->getName(); ?></a>
+						  </li>
+						  
+						  
+						  <li class="list-group-item">
+						   	<b>Date of birth</b>: <?php echo date('d M Y',$this->player->getDateOfBirth()); ?>
+						   </li>
+						   
+						   
+						   <li class="list-group-item">
+						   	<b>Position</b>: <?php echo $this->player->getPosition(); ?>
+						   </li>
+						  
+						  
+						  <li class="list-group-item">
+						   	<b>Teams</b>:
+						   	<?php
+						   		$count = 0;
+						   		foreach($this->teams as $team) {
+							   		if($count > 0) echo ',';
+							   		$count++;
+							?>
+							<a href="<?php echo SITE_URL . 'team/' . $team->getId(); ?>"><?php echo $team->getName(); ?></a>
+							<?php } ?>
+						   </li>
+						  
+						
+						  <li class="list-group-item">
+						    <span class="badge"><?php echo $this->player->getTotalNumberOfGoals(); ?></span>
+						    Goals
+						  </li>
+						  
+						  <li class="list-group-item">
+						    <span class="badge"><?php echo $this->player->getTotalNumberOfCards(); ?></span>
+						    Yellow Cards
+						  </li>
+						  
+						  <li class="list-group-item">
+						    <span class="badge"><?php echo $this->player->getTotalNumberOfMatches(); ?></span>
+						    Matches Played
+						  </li>
+					
+						  <li class="list-group-item">
+						    <span class="badge"><?php echo $this->player->getTotalNumberOfWonMatches(); ?></span>
+						    Matches Won
+						  </li>	  
+						</ul>
+						
+					</div>
+					
+					
+				</div>
 		
 		</div>
 		
@@ -75,6 +110,30 @@ Created: February 2014
 			
 		
 		</div>
+		
+		
+		
+		<div class="col-md-6">
+			
+			
+			<div class="panel panel-default">
+				
+				<div class="panel-heading">
+					<h3 class="panel-title">Wikipedia</h3>
+				</div>
+				
+				
+				<div class="wiki panel-body" data-wiki="<?php echo SITE_URL . 'core/ajax/wiki-player.php?player=' . $this->player->getId(); ?>">
+					<div class="loader-container">
+						<div class="loader"></div>
+						loading
+					</div>
+				</div>
+				
+			</div>
+			
+			
+		</div>		
 	
 	
 	</div>
@@ -108,6 +167,7 @@ Created: February 2014
 	
 	
 	<?php } ?>
+	
 	
 	
 	

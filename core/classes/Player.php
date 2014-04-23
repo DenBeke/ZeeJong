@@ -149,7 +149,7 @@ class Player implements JsonSerializable {
 		$year = getLatestYear();
 		for($i = 0; $i < sizeof($year)-1; $i++) {
 			
-			$playedMatches[$year[$i]['name']] = $this->db->getTotalNumberOfPlayerMatchesInterval($this->getId(), $year[$i]['timestamp'], $year[$i+1]['timestamp']);
+			$playedMatches[$year[$i]['timestamp']] = $this->db->getTotalNumberOfPlayerMatchesInterval($this->getId(), $year[$i]['timestamp'], $year[$i+1]['timestamp']);
 			
 		}
 		
@@ -164,7 +164,7 @@ class Player implements JsonSerializable {
 		$year = getLatestYear();
 		for($i = 0; $i < sizeof($year)-1; $i++) {
 			
-			$playedMatches[$year[$i]['name']] = $this->db->getTotalMatchesWonByPlayerInterval($this->getId(), $year[$i]['timestamp'], $year[$i+1]['timestamp']);
+			$playedMatches[$year[$i]['timestamp']] = $this->db->getTotalMatchesWonByPlayerInterval($this->getId(), $year[$i]['timestamp'], $year[$i+1]['timestamp']);
 			
 		}
 		
@@ -184,10 +184,10 @@ class Player implements JsonSerializable {
 		$count = 1;
 		foreach ($months as $month => $timestamp) {
 			if($count < sizeof($months)) {
-				$matches[$month] = $this->db->getTotalNumberOfPlayerMatchesInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
-				$matches_won[$month] = $this->db->getTotalMatchesWonByPlayerInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
-				$cards[$month] = $this->db->getTotalCardsOfPlayerInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
-				$goals[$month] = $this->db->getGoalsOfPlayerInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
+				$matches[$timestamp] = $this->db->getTotalNumberOfPlayerMatchesInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
+				$matches_won[$timestamp] = $this->db->getTotalMatchesWonByPlayerInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
+				$cards[$timestamp] = $this->db->getTotalCardsOfPlayerInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
+				$goals[$timestamp] = $this->db->getGoalsOfPlayerInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
 				//var_dump(array_slice($months, $count-1, 1));
 				//echo '<br>';
 			}

@@ -30,7 +30,7 @@ Created: February 2014
 			  </li>
 			  
 			  <li class="list-group-item">
-			  	<b>Nationality</b>: <?php echo $this->referee->getCountry()->getName(); ?>
+			  	<b>Nationality</b>: <a href="<?php echo SITE_URL . 'country/' . $this->referee->getCountry()->getId(); ?>"><?php echo $this->referee->getCountry()->getName(); ?></a>
 			  </li>
 			 
 			   

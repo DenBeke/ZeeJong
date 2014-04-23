@@ -16,17 +16,23 @@ namespace Controller {
 		private $betSuccessMessage;
 		private $betErrorMessage;
 		private $matchId;
+		private $stop;
+		public $title;
 
 		public function __construct() {
 			global $database;
 			$this -> theme = 'placeBet.php';
+			$this -> title = 'Place Bet - ' . Controller::siteName;
+			$this -> stop = False;
 			// Test if logged in
 			if (!isset($_SESSION['userID']) || !isset($_POST['score1']) || !isset($_POST['score2']) || !isset($_POST['money']) || !isset($_POST['matchId'])) {
 				return;
 			}
 			if (!$database -> doesUserExist($_SESSION['userID'])) {
+				$this -> stop = True;
 				return;
 			}
+
 			if (!$_POST['money'] > 0) {
 				$this -> betErrorMessage = $this -> betErrorMessage . "You must bet for more than €0." . "\r\n";
 				$this -> matchId = $_POST['matchId'];
@@ -61,7 +67,10 @@ namespace Controller {
 			global $database;
 			if (!$database -> doesMatchExist($args[1])) {
 				$this -> betErrorMessage = $this -> betErrorMessage . "Match does not exist." . "\r\n";
+				$this -> stop = True;
 				return;
+			}else{
+				$this->stop= False;
 			}
 			$this -> matchId = $args[1];
 		}
@@ -88,6 +97,34 @@ namespace Controller {
 		 */
 		public function getMatchId() {
 			return $this -> matchId;
+		}
+
+		/**
+		 Is bet within time fram
+
+		 @return boolean whether match is already over
+		 */
+		public function matchOver($id) {
+			global $database;
+			if(!$database->doesMatchExist($id)){
+				return True;
+			}
+			$match = $database -> getMatchById($id);
+			if ($match -> getDate() < strtotime(date('d M Y', time())))
+				$this -> betErrorMessage = $this -> betErrorMessage . "You cannot place a bet for a match which is already played." . "\r\n";
+			return $match -> getDate() < strtotime(date('d M Y', time()));
+		}
+
+		/**
+		 Can we continue?
+
+		 @return a boolean indicating whether it's safe to continue
+		 */
+		public function stop() {
+			if(isset($_POST['matchId'])){
+				$this->matchId = $_POST['matchId'];
+			}
+			return $this -> stop || $this -> matchOver($this -> matchId);
 		}
 
 	}
