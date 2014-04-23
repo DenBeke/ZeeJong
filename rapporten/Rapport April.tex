@@ -346,9 +346,9 @@ We hopen dat we geen structurele veranderingen meer moeten doorvoeren.
 
   \begin{framed}
   \begin{lstlisting}[language=sql]
-    UPDATE GroupMembership
-    SET accepted = ?
-    [WHERE id = ?];
+UPDATE GroupMembership
+SET accepted = ?
+[WHERE id = ?];
   \end{lstlisting}
   \end{framed}
 
@@ -358,10 +358,10 @@ We hopen dat we geen structurele veranderingen meer moeten doorvoeren.
 
   \begin{framed}
   \begin{lstlisting}[language=sql]
-    DELETE 
-    FROM `GroupMembership` 
-    [WHERE id = ? AND 
-    groupId = ?];
+DELETE 
+FROM `GroupMembership` 
+[WHERE id = ? AND 
+groupId = ?];
   \end{lstlisting}
   \end{framed}
   
@@ -371,9 +371,9 @@ We hopen dat we geen structurele veranderingen meer moeten doorvoeren.
 
   \begin{framed}
   \begin{lstlisting}[language=sql]
-    DELETE 
-    FROM `Group` 
-    [WHERE id = ?];
+DELETE 
+FROM `Group` 
+[WHERE id = ?];
   \end{lstlisting}
   \end{framed}  
   
@@ -383,10 +383,10 @@ We hopen dat we geen structurele veranderingen meer moeten doorvoeren.
 
   \begin{framed}
   \begin{lstlisting}[language=sql]
-    DELETE 
-    FROM `GroupMembership` 
-    [WHERE id = ? AND 
-    accepted = False];
+DELETE 
+FROM `GroupMembership` 
+[WHERE id = ? AND 
+accepted = False];
   \end{lstlisting}
   \end{framed}
   
@@ -396,10 +396,10 @@ We hopen dat we geen structurele veranderingen meer moeten doorvoeren.
 
   \begin{framed}
   \begin{lstlisting}[language=sql]
-    UPDATE `GroupMembership`
-    SET accepted = True
-    [WHERE id = ? AND 
-    groupId = ?];
+UPDATE `GroupMembership`
+SET accepted = True
+[WHERE id = ? AND 
+groupId = ?];
   \end{lstlisting}
   \end{framed}  
 
@@ -409,12 +409,12 @@ We hopen dat we geen structurele veranderingen meer moeten doorvoeren.
 
   \begin{framed}
   \begin{lstlisting}[language=sql]
-    SELECT GroupMembership.id
-		FROM GroupMembership
-		[INNER JOIN `Group`
-		ON GroupMembership.groupId=Group.id]
-		[WHERE Group.ownerId=? AND
-		 GroupMembership.accepted=0]
+SELECT GroupMembership.id
+	FROM GroupMembership
+	[INNER JOIN `Group`
+	ON GroupMembership.groupId=Group.id]
+	[WHERE Group.ownerId=? AND
+	 GroupMembership.accepted=0]
   \end{lstlisting}
   \end{framed}
 
@@ -425,15 +425,15 @@ We hopen dat we geen structurele veranderingen meer moeten doorvoeren.
 
   \begin{framed}
   \begin{lstlisting}[language=sql]
-  SELECT COUNT(*)
-   FROM `PlaysMatchInTeam`
-   [JOIN `Match` ON `Match`.id = matchId]
-   [JOIN `Score` ON `Score`.id = scoreId]
-   [WHERE playerId = ? AND
-   `Match`.date > ? AND
-   `Match`.date < ? AND
-      ((teamId = `Match`.teamA AND `Score`.teamA > `Score`.teamB) OR
-      (teamID = `Match`.teamB AND `Score`.teamB > `Score`.teamA))];
+SELECT COUNT(*)
+ FROM `PlaysMatchInTeam`
+ [JOIN `Match` ON `Match`.id = matchId]
+ [JOIN `Score` ON `Score`.id = scoreId]
+ [WHERE playerId = ? AND
+ `Match`.date > ? AND
+ `Match`.date < ? AND
+    ((teamId = `Match`.teamA AND `Score`.teamA > `Score`.teamB) OR
+    (teamID = `Match`.teamB AND `Score`.teamB > `Score`.teamA))];
   \end{lstlisting}
   \end{framed}
 
