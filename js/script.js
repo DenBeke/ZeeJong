@@ -7,6 +7,37 @@ Created: February 2014
 
 $(document).ready(function(){
 
+
+
+	$('.wiki').each(function(){
+		
+		var element = this;
+		var jsonUrl = $(this).attr('data-wiki');
+		 	
+		 //Retrieve JSON object and load data	
+		 $.getJSON(jsonUrl, function(data) {	
+			
+			//Check for errors
+			if(data['error'] == null) {
+			
+				//$(this).html(data['wiki']);
+				$(element).html(data['wiki']);
+	
+			}
+			else {
+				
+				$(this).html('Could not load wiki');
+				
+			}
+		
+		});
+	});
+
+
+
+
+
+
 	$('.news-button a').click(function(){
 		
 		//alert("test" + this.getAttribute("data-id"));

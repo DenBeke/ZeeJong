@@ -93,8 +93,8 @@ Created: February 2014
 		
 		<div class="col-md-6">
 			
-			<div class="wiki">
-			<?php echo $this->info; ?>
+			<div class="wiki" data-wiki="<?php echo SITE_URL . 'core/ajax/wiki-player.php?player=' . $this->player->getId(); ?>">
+			Loading information...
 			</div>
 		</div>		
 	
