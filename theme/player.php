@@ -93,9 +93,24 @@ Created: February 2014
 		
 		<div class="col-md-6">
 			
-			<div class="wiki" data-wiki="<?php echo SITE_URL . 'core/ajax/wiki-player.php?player=' . $this->player->getId(); ?>">
-			Loading information...
+			
+			<div class="panel panel-default">
+				
+				<div class="panel-heading">
+					<h3 class="panel-title">Information</h3>
+				</div>
+				
+				
+				<div class="wiki panel-body" data-wiki="<?php echo SITE_URL . 'core/ajax/wiki-player.php?player=' . $this->player->getId(); ?>">
+					<div class="loader-container">
+						<div class="loader"></div>
+						Loading...
+					</div>
+				</div>
+				
 			</div>
+			
+			
 		</div>		
 	
 	

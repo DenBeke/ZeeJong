@@ -20,6 +20,7 @@
 	<link href="<?php echo SITE_URL ?>style/style.css" rel="stylesheet" type="text/css">
 	<link href="<?php echo SITE_URL ?>style/bootstrap.css" rel="stylesheet" type="text/css">
 	<link href="<?php echo SITE_URL ?>style/bootstrap-theme.css" rel="stylesheet" type="text/css">
+	<link href="<?php echo SITE_URL ?>style/loader.css" rel="stylesheet" type="text/css">
 	<link href="<?php echo SITE_URL ?>js/jqplot/jquery.jqplot.css" rel="stylesheet" type="text/css">
 	<script src="<?php echo SITE_URL ?>js/jquery-1.11.0.min.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/script.js" type="text/javascript"></script>
