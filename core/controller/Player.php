@@ -11,12 +11,14 @@ namespace Controller {
 require_once(dirname(__FILE__) . '/Controller.php');
 require_once(dirname(__FILE__) . '/../classes/Player.php');
 require_once(dirname(__FILE__) . '/Error.php');
-
+require_once(dirname(__FILE__) . '/../wiki/wiki.php');
 
 	class Player extends Controller {
 
 		public $player;
 		public $teams;
+		public $info;
+		
 		public $title;
 
 
@@ -40,6 +42,9 @@ require_once(dirname(__FILE__) . '/Error.php');
 			global $database;
 			$this->player = $database->getPlayerById($args[1]);
 			$this->teams = $database->getPlayerTeams($this->player->getId());
+			
+			$wiki = new \Wiki;
+			$this->info = $wiki->getPlayerWiki($this->player->getName());
 
 			$this->title = 'Player - ' . $this->player->getName() . ' - ' . Controller::siteName;
 		}
