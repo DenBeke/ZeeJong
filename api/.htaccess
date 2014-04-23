@@ -1,7 +1,0 @@
-#Url rewriting
-#This turns of the rewrite rules for this subdir
-
-RewriteEngine On 
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . index.php
