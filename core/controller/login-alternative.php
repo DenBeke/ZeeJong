@@ -10,7 +10,7 @@ namespace Controller {
 	require_once(dirname(__FILE__) . '/../classes/User.php');	// We need the user class file
 	require_once(dirname(__FILE__) . '/../functions.php');
 	require_once(dirname(__FILE__) . '/Controller.php');
-require_once(dirname(__FILE__) . '/../openid.php');
+	require_once(dirname(__FILE__) . '/../openid.php');
 
 
 	class LoginAlternative extends Controller {
