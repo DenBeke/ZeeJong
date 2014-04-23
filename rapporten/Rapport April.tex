@@ -410,11 +410,11 @@ groupId = ?];
   \begin{framed}
   \begin{lstlisting}[language=sql]
 SELECT GroupMembership.id
-	FROM GroupMembership
-	[INNER JOIN `Group`
-	ON GroupMembership.groupId=Group.id]
-	[WHERE Group.ownerId=? AND
-	 GroupMembership.accepted=0]
+  FROM GroupMembership
+  [INNER JOIN `Group` ON 
+  GroupMembership.groupId=Group.id]
+  [WHERE Group.ownerId=? AND
+   GroupMembership.accepted=0]
   \end{lstlisting}
   \end{framed}
 
