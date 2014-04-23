@@ -14,12 +14,12 @@ $controller = new \Controller\News;
 
 if(isset($_GET['feed'])) {
 	
-	if(isset($controller->feeds[intval($_GET['feed'])])) {
+	try {
 		
-		$feed = $controller->feeds[intval($_GET['feed'])];
+		$feed = $controller->getFeed(intval($_GET['feed']));
 		$output = [];
 		
-		foreach ($feed['items'] as $item) {
+		foreach ($feed as $item) {
 			$outputItem = [
 				'title' => $item->get_title(),
 				'content' => strip_tags($item->get_content()),
@@ -33,7 +33,7 @@ if(isset($_GET['feed'])) {
 		
 		
 	}
-	else {
+	catch(exception $e) {
 		
 		$output['error'] = 'Feed does not exist';
 		
