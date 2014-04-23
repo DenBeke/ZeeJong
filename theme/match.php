@@ -109,12 +109,14 @@ Created: February 2014
 				<tr class="goal">
 					
 					<td class="<?php echo $gClass; ?>">
-						<?php echo $database->getPlayerById($goal->getPlayerId())->getName(); ?>		
+						<?php echo $database->getPlayerById($goal->getPlayerId())->getName(); ?>
+						<span class="football-icon"></span>
 					</td>
 					
 					<td><span class="badge"><?php echo $goal->getTime(); ?>'</span></td>
 					
 					<td class="<?php echo $gClass; ?>">
+						<span class="football-icon"></span>
 						<?php echo $database->getPlayerById($goal->getPlayerId())->getName(); ?>		
 					</td>
 					
