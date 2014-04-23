@@ -158,8 +158,10 @@ function generateChart($input, $id = 0, $type = 'Bar') {
 			$largestY = 0;
 			foreach($input as $label => $data) {
 		?>
-				series.push({label: '<?php echo $label; ?>'});
-				yValues.push([
+				var serie = {};
+				serie.name = '<?php echo $label; ?>';
+
+				serie.data = [
 					<?php
 						$i = 0;
 						foreach($data as $x => $y) {
@@ -172,42 +174,41 @@ function generateChart($input, $id = 0, $type = 'Bar') {
 							$i++;
 						}
 					?>
-				]);
+				];
+
+				series.push(serie);
 
 		<?php
 			}
 		?>
 	 
-	var plot = $.jqplot(<?php echo $id; ?>, yValues, {
-		seriesDefaults:{
-			showMarker: false,
-		    rendererOptions: {
-				fillToZero: true,
-				smooth: true
-			}
+	$('#<?php echo $id; ?>').highcharts({
+		chart: {
+			type: 'column',
+			zoomType: 'x',
 		},
+
+		title: {
+			text: '',
+		},
+
+		xAxis: {
+			type: 'datetime',
+	
+		},
+
+		yAxis: {
+			min: 0,
+		},
+
+		plotOptions: {
+			column: {
+				pointPadding: 0.2,
+				borderWidth: 0,
+			},
+		},
+
 		series: series,
-		legend: {
-			renderer: $.jqplot.EnhancedLegendRenderer,
-		    show: true,
-		    placement: 'outsideGrid'
-		},
-		axes: {
-				xaxis: {
-					renderer: $.jqplot.DateAxisRenderer,
-					tickOptions: {
-						formatString: '%b-%y'					
-					}
-				},
-				yaxis: {
-					min: 0
-				}
-		},
-		cursor: {
-			show: true,
-			zoom: true,
-			showTooltip: false
-		},
 	});
 
 	</script>
