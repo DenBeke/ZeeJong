@@ -15,7 +15,7 @@ require_once(dirname(__FILE__) . '/../core/openid.php');
                 <h2>Login</h2>
 		
 		        <div class="alert alert-success">
-			        <strong><?php echo $this->loginMessage; ?></strong>
+			        <strong><?php echo $this->loginMessage; ?></strong><br/>
 			        You are successfully logged in!
 		        </div>
     <?php
