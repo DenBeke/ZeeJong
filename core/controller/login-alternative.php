@@ -121,6 +121,14 @@ namespace Controller {
 			else {
 			
 			    if (!$database->doesAlternativeUserExist($this->id)) {
+			    
+			        //Make sure there isn't already an account with this name
+			        if ($database->doesUsernameExist($this->name)) {
+			            $this->loginMessage = 'A user with your name already exists.';
+				        $this->loggedIn = false;
+				        return;
+			        }
+			        
 			        $salt = $this->generateSalt();
 			        $hashedPassword = hashPassword($this->name, $salt);
 			        $database->registerAlternativeUser($this->id, $this->name, $salt, $hashedPassword, $this->email);
