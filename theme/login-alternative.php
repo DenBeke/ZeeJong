@@ -64,19 +64,19 @@ require_once(dirname(__FILE__) . '/../core/openid.php');
 	    <div class="container">
 	    <h2 id="title-login">Login</h2>
 
-        <a onclick="FB.login();"><img src="../img/FacebookLoginButton.png"></img></a>
+        <a onclick="FB.login();"><img src="<?php echo SITE_URL; ?>/img/FacebookLoginButton.png"></img></a>
         <br/>
         <br/>
-        <a href="?oid=https://www.google.com/accounts/o8/id"><img src="../img/Google.png"></img></a>
+        <a href="?oid=https://www.google.com/accounts/o8/id"><img src="<?php echo SITE_URL; ?>/img/Google.png"></img></a>
         <br/>
         <br/>
-        <a href="?oid=https://openid.stackexchange.com"><img src="../img/StackExchange.png"></img></a>
+        <a href="?oid=https://openid.stackexchange.com"><img src="<?php echo SITE_URL; ?>/img/StackExchange.png"></img></a>
         <br/>
         <br/>
-        <a href="?oid=https://me.yahoo.com"><img src="../img/Yahoo.png"></img></a>
+        <a href="?oid=https://me.yahoo.com"><img src="<?php echo SITE_URL; ?>/img/Yahoo.png"></img></a>
         <br/>
         <br/>
-        <a href="?oid=https://username.wordpress.com/"><img src="../img/Wordpress.png"></img></a>
+        <a href="?oid=https://username.wordpress.com/"><img src="<?php echo SITE_URL; ?>/img/Wordpress.png"></img></a>
         <br/>
         <br/>
         <form role="form" action="<?php echo SITE_URL; ?>login-alternative/" method="get">
