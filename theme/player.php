@@ -116,7 +116,7 @@ Created: February 2014
 		<div class="col-md-6">
 			
 			
-			<div class="panel panel-default">
+			<div class="panel panel-default panel-wiki">
 				
 				<div class="panel-heading">
 					<h3 class="panel-title">Wikipedia</h3>

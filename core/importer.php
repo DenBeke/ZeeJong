@@ -6,7 +6,7 @@ parsed by the GO parser.
 Created: April 2014
 */
 
-ini_set('memory_limit', '256M');
+ini_set('memory_limit', '1G');
 
 
 require_once(dirname(__FILE__) . '/database.php');
@@ -174,8 +174,7 @@ $schama = [
 	],
 	
 	
-	//Add Score
-	//Add goals
+	//Add score
 	[
 		'json' => 'Scores',
 		'db' => 'Score',
@@ -188,7 +187,17 @@ $schama = [
 	
 	
 	//Add cards
-
+	[
+		'json' => 'Cards',
+		'db' => 'Cards',
+		'cols' => [
+			'Id' => 'id',
+			'MatchId' => 'matchId',
+			'PlayerId' => 'playerId',
+			'Time' => 'time',
+			'Type' => 'color'
+		]
+	],
 ];
 
 

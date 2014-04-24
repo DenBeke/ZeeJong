@@ -238,10 +238,11 @@ class wikidrain
             $string = str_replace('\'\'\'', '"', $string); //Replaces the ''' around titles to be "
         }
         $string = $this->removeLink($string);
-        $string = preg_replace('/<ref[^>]*>[^<]+<\/ref[^>]*>|\{{(?>[^}]++|}(?!}))\}}|==*[^=]+=*\n|File:(.*?)\n|\[\[|\]]|\n/', '', $string); //Compliments of Jerry [http://unknownoo8.deviantart.com/]
+        $string = preg_replace('/<ref[^>]*>[^<]+<\/ref[^>]*>|\{{(?>[^}]++|}(?!}))\}}|==*[^=]+=*|File:(.*?)|\[\[|\]]|/', '', $string); //Compliments of Jerry [http://unknownoo8.deviantart.com/]
         //|\s{2,}
         $string = str_replace('|', '/', $string); //Makes the wikilinks look better
-        $string = strip_tags($string); //Just in case
+        $string = $this->addParagraphs($string);
+        //$string = strip_tags($string); //Just in case
         return $string;
     }
 
@@ -281,6 +282,11 @@ class wikidrain
                 $startpos = strpos($string, '[[', $startpos);                
             }
         }
+        return $string;
+    }
+
+    private function addParagraphs($string) {
+        $string = str_replace("\n", '<br>', $string);
         return $string;
     }
 }
