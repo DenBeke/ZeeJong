@@ -2709,8 +2709,9 @@ class Database {
 		$cards = array();
 
 		foreach($result as $card) {
+			$teamId = $this->getTeamIdFromCard($card['matchId'], $card['playerId']);
 			array_push($cards, new Card($card['id'], $card['playerId'], $card['matchId'], $card['color'],
-										$card['time'], $this));
+										$card['time'], $teamId, $this));
 		}
 
 
@@ -3020,6 +3021,36 @@ class Database {
 		
 		return $result[0]['teamId'];
 	}
+	
+	
+	
+	public function getTeamIdFromCard($matchId, $playerId) {
+		$sel = new \Selector('PlaysMatchInTeam');
+		$sel->filter([['playerId', '=', $playerId]]);
+		$sel->filter([['matchId', '=', $matchId]]);
+		
+		$result = $this->select($sel);
+		
+		if(sizeof($result) == 1) {
+			return $result[0]['teamId'];
+		}
+		else {
+			return 0;
+		}
+	}
+	
+	
+	
+	public function getCardsInMatch($matchId) {
+		$sel = new \Selector('Cards');
+		$sel->filter([['matchId', '=', $matchId]]);
+		
+		$result = $this->select($sel);
+		
+		return $this->resultToCards($result);
+	}
+	
+	
 
 
 }

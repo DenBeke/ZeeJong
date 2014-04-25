@@ -33,7 +33,8 @@ table a {
 
 table.matches th:nth-child(1),
 table.matches td:nth-child(1),
-table.goals td:nth-child(1) {
+table.goals td:nth-child(1),
+table.cards td:nth-child(1) {
 	text-align: right;
 	width: 45%;
 }
@@ -41,14 +42,16 @@ table.goals td:nth-child(1) {
 
 table.matches th:nth-child(2),
 table.matches td:nth-child(2),
-table.goals td:nth-child(2) {
+table.goals td:nth-child(2),
+table.cards td:nth-child(2) {
 	text-align: center;
 	width: 10%;
 }
 
 table.matches th:nth-child(3),
 table.matches td:nth-child(3),
-table.goals td:nth-child(3) {
+table.goals td:nth-child(3),
+table.cards td:nth-child(3) {
 	text-align: left;
 	width: 45%;
 }
@@ -62,6 +65,26 @@ table.goals .football-icon {
 	display: inline-block;
 	font-size: 0;
 	vertical-align: middle;
+}
+
+
+.card-icon {
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	padding: 10px;
+	display: inline-block;
+	font-size: 0;
+	vertical-align: middle;
+}
+
+
+.yellow {
+	background-image: url('../img/yellow-card.svg');
+}
+
+.red {
+	background-image: url('../img/red-card.svg');
 }
 
 
@@ -100,12 +123,16 @@ table.goals a {
 
 
 table.goals td:first-child.team-b,
-table.goals td:last-child.team-a {
+table.goals td:last-child.team-a,
+table.cards td:first-child.team-b,
+table.cards td:last-child.team-a {
 	font-size: 0;
 }
 
 table.goals td:first-child.team-b span,
-table.goals td:last-child.team-a span {
+table.goals td:last-child.team-a span,
+table.cards td:first-child.team-b span,
+table.cards td:last-child.team-a span {
 	display: none;
 }
 

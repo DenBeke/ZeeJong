@@ -118,6 +118,65 @@ Created: February 2014
 		</div>
 		
 		<?php } ?>
+		
+		
+		
+		
+		
+		<!-- Goals -->
+		
+		<?php if(sizeof($this->cards) > 0) { ?>
+		
+		<div class="col-md-8">
+		
+			<table class="cards table table-striped">
+				<?php foreach($this->cards as $card) {
+				
+				
+					if($card->getTeamId() == $this->match->getTeamA()->getId()) {
+						$gClass = 'team-a';
+					}
+					else {
+						$gClass = 'team-b';
+					}
+					
+					
+					
+					if($card->getColor() == 1) {
+						$color = 'yellow';
+					}
+					else {
+						$color = 'red';
+					}
+				
+				?>
+				<tr class="goal">
+					
+					<td class="<?php echo $gClass; ?>">
+						<a href="<?php echo SITE_URL . 'player/' . $database->getPlayerById($card->getPlayerId())->getId(); ?>"><?php echo $database->getPlayerById($card->getPlayerId())->getName(); ?></a>
+						<span class="card-icon <?php echo $color; ?>"></span>
+					</td>
+					
+					<td><span class="badge"><?php echo $card->getTime(); ?>'</span></td>
+					
+					<td class="<?php echo $gClass; ?>">
+						<span class="card-icon <?php echo $color; ?>"></span>
+						<a href="<?php echo SITE_URL . 'player/' . $database->getPlayerById($card->getPlayerId())->getId(); ?>"><?php echo $database->getPlayerById($card->getPlayerId())->getName(); ?></a>
+					</td>
+					
+				</tr>
+				
+				<?php } ?>
+			</table>
+		
+		</div>
+		
+		<?php } ?>
+		
+		
+		
+		
+		
 	
 	</div>
 	
