@@ -160,7 +160,15 @@ class Match {
 		return $prognose;
 	}
 	
-
+	/**
+	 Get the total amount of money bet on this match
+	 
+	 @return the total amount of money bet on this match
+	 */
+	public function getTotalMoneyBetOn(){
+		return $this->db->getAmountBetOnMatch($this->id);
+	}
+	
 	/**
 	String function
 	@return string
