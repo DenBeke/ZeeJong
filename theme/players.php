@@ -32,7 +32,7 @@ function loadPlayers() {
 			data: get,
 			success: function(data) {
 				$('#loader').fadeOut(100, function() {
-					var html = '<tr><th><a href="#" onclick="toggleOrder();setSort(\'firstname\');loadPlayers();">Name</a></th><th class="center"><a href="#" onclick="toggleOrder();setSort(\'match\');loadPlayers();">Matches</a></th><th class="center">Goals</th></tr>';
+					var html = '<tr><th><a href="#" onclick="toggleOrder();setSort(\'firstname\');loadPlayers();">Name</a></th><th class="center"><a href="#" onclick="toggleOrder();setSort(\'match\');loadPlayers();">Matches</a></th><th class="center"><a href="#" onclick="toggleOrder();setSort(\'goal\');loadPlayers();">Goals</a></th></tr>';
 
 					for(i in data) {
 						html += '<tr>';

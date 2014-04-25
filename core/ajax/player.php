@@ -49,6 +49,13 @@ class Handler extends Controller\Controller {
 					$sel->group('Player.id');
 					$sel->select(['Player.*', 'COUNT(*) as playedMatches']);
 				}
+				elseif($value == 'goal') {
+					$sort = true;
+					$sortColumn = 'goals';
+					$sel->join('Goal', 'id', 'playerId');
+					$sel->group('Player.id');
+					$sel->select(['Player.*', 'COUNT(*) as goals']);
+				}
 				elseif($value == 'firstname') {
 					$sort = true;
 					$sortColumn = 'firstName';
