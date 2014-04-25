@@ -66,7 +66,7 @@ Created: February 2014
 	
 			<div class="image">
 				
-				<img src="<?php echo SITE_URL . 'core/cache/Team-' . $this->team->getId() . '.png' ?>">
+				<img src="<?php echo SITE_URL . 'images/Team-' . $this->team->getId() . '.png' ?>">
 				
 			</div>
 	

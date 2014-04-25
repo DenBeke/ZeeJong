@@ -43,7 +43,7 @@ Created: February 2014
 		<div class="col-md-2 image-container">
 		
 		
-			<img src="<?php echo SITE_URL . 'core/cache/Coach-' . $this->coach->getId() . '.png'; ?>">
+			<img src="<?php echo SITE_URL . 'images/Coach-' . $this->coach->getId() . '.png'; ?>">
 			
 		
 		</div>
