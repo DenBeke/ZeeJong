@@ -2980,6 +2980,7 @@ class Database {
 	public function getGoalsInMatch($matchId) {
 		$sel = new \Selector('Goal');
 		$sel->filter([['matchId', '=', $matchId]]);
+		$sel->order('time', 'ASC');
 		
 		$result = $this->select($sel);
 		
@@ -3044,6 +3045,7 @@ class Database {
 	public function getCardsInMatch($matchId) {
 		$sel = new \Selector('Cards');
 		$sel->filter([['matchId', '=', $matchId]]);
+		$sel->order('time', 'ASC');
 		
 		$result = $this->select($sel);
 		
