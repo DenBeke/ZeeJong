@@ -106,7 +106,7 @@ Created: February 2014
 		<div class="col-md-2 image-container">
 		
 		
-			<img src="<?php echo SITE_URL . 'core/cache/Player-' . $this->player->getId() . '.png'; ?>">
+			<img src="<?php echo SITE_URL . 'images/Player-' . $this->player->getId() . '.png'; ?>">
 			
 		
 		</div>
