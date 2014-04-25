@@ -83,6 +83,8 @@ Created: February 2014
 		
 		<div class="col-md-8">
 		
+			<h4>Goals</h4>
+		
 			<table class="goals table table-striped">
 				<?php foreach($this->goals as $goal) {
 				
@@ -123,11 +125,13 @@ Created: February 2014
 		
 		
 		
-		<!-- Goals -->
+		<!-- Cards -->
 		
 		<?php if(sizeof($this->cards) > 0) { ?>
 		
 		<div class="col-md-8">
+			
+			<h4>Cards</h4>
 		
 			<table class="cards table table-striped">
 				<?php foreach($this->cards as $card) {
