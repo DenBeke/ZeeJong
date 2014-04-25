@@ -620,13 +620,32 @@ class Database {
 	 }
 
 	/**
+	 Get the unhandled bets
+	 @return the id's of the unhandled bets
+	 */
+	 public function getUnhandledBets(){
+	    $sel = new \Selector('Bet');
+		$sel->filter([['handled', '=', False]]);
+
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['id']);
+		}
+
+		return $result2;
+	 }
+
+
+	/**
 	 Add a bet
 	 
 	 @param the id of the match, team, user and money
 	 */
 	 public function addBet($matchId,$score1,$score2,$userId,$amount){
-		$this->insert('Bet', ['matchId', 'score1', 'score2','userId', 'amount'],
-							[$matchId, $score1, $score2, $userId, $amount]);
+		$this->insert('Bet', ['matchId', 'score1', 'score2','userId', 'amount','handled'],
+							[$matchId, $score1, $score2, $userId, $amount,False]);
 							
 	 }
 
@@ -1967,6 +1986,60 @@ class Database {
 
 		return $playsMatchInTeams[0];
 	}
+
+
+	/** 
+	  Get the amount bet on a match
+	  @param the id of the match
+	  @return the total amount of money bet on the match
+	  */
+	  	 public function getAmountBetOnMatch($id){
+	 			
+		//Query
+		$query = "SELECT Bet.amount
+		FROM Bet
+		INNER JOIN `Match`
+		ON Bet.matchId=Match.id
+		WHERE Match.id=?;
+		";		
+		//Prepare statement
+		if(!$statement = $this->link->prepare($query)) {
+			throw new exception('Prepare failed: (' . $this->link->errno . ') ' . $this->link->error);
+		}
+		
+		//Bind parameters
+		if(!$statement->bind_param('i', $id)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		//Store the result in the buffer
+		$statement->store_result();	
+		//Bind return values
+		$statement->bind_result($ids);
+
+
+		$results = array();
+		while($statement->fetch()) {
+			array_push($results, $ids);
+		}
+	
+		$statement->close();
+		
+		$retVal = 0;
+		foreach($results as $result) {
+			$retVal = $retVal + $result;
+		}
+		
+		
+		return $retVal;
+	 }
+
+
 
 
 	public function getTeamInMatch($teamId, $matchId) {
