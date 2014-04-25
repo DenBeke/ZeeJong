@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `Bet` (
 `matchId` int(11) NOT NULL,
 `score1` int(2),
 `score2` int(2),
-`time` int(3),
+`handled` BOOLEAN,
 `userId` int(11) NOT NULL,
 `amount` int(11) NOT NULL CHECK (amount>0),
 PRIMARY KEY (`id`)
