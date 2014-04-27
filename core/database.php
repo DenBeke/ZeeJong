@@ -636,6 +636,44 @@ class Database {
 
 		return $result2;
 	 }
+	 
+	 /**
+	  Get the unhandled bets from a user 
+	  @param the id of the user
+	  @return the unhandled bets from a user
+	  */
+	  public function getUserUnhandledBets($id){
+	    $sel = new \Selector('Bet');
+		$sel->filter([['handled', '=', False]]);
+		$sel->filter([['userId', '=', $id]]);
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['id']);
+		}
+
+		return $result2;
+	 }
+	  
+	  /**
+	  Get the handled bets from a user 
+	  @param the id of the user
+	  @return the handled bets from a user
+	  */
+	  public function getUserHandledBets($id){
+	    $sel = new \Selector('Bet');
+		$sel->filter([['handled', '!=', False]]);
+		$sel->filter([['userId', '=', $id]]);
+		$result = $this->select($sel);
+
+		$result2=array();
+		foreach ($result as $val) {
+			array_push($result2,$val['id']);
+		}
+
+		return $result2;
+	 }
 
 
 	/**
