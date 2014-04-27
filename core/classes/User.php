@@ -152,7 +152,7 @@ class User {
 	 @return the score of the user
 	 */
 	 public function getScore(){
-	 	$bets = $this->d->getUserBets($this->id);
+	 	$bets = $this->d->getUserHandledBets($this->id);
 		$moneyBets=0;
 		foreach($bets as $betId){
 			$moneyBets = $moneyBets + $this->d->getMoneyFromBet($betId);
