@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 `password` varchar(128) NOT NULL,
 `salt` varchar(128) NOT NULL,
 `emailAddress` varchar(50) NOT NULL,
-`money` int(11) DEFAULT "0",
+`money` FLOAT(11) DEFAULT "1000",
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB ;
 ',

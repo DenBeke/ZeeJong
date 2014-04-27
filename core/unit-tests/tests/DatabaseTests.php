@@ -1312,14 +1312,12 @@ class AdvancedBetTest extends UnitTest {
 	private $matchId1;
 	private $score11;
 	private $score12;
-	private $time1;
 	private $userId1;
 	private $amount1;
 	private $id2;
 	private $matchId2;
 	private $score21;
 	private $score22;
-	private $time2;
 	private $userId2;
 	private $amount2;
 	private $db;

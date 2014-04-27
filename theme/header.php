@@ -71,7 +71,9 @@
 				      </li>
 				    <?php
 					if (loggedIn()) {
+
 					?>
+
 					<li><a href="<?php echo SITE_URL; ?>bets">Bets</a></li>
 					
 					
@@ -90,7 +92,8 @@
 				        </ul>
 				        
 				      </li>
-					
+
+					<li><a href="#">€&nbsp;<?php echo $database->getMoney($_SESSION['userID']); ?></a></li>
 					
 					
 					<?php
