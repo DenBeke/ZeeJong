@@ -137,6 +137,15 @@ class User {
 	}
 
 	/**
+	 Get the money the user has
+	 
+	 @return the money the user has
+	 */
+	 public function getMoney(){
+	 	return $this -> d -> getMoney($this -> id);
+	 }
+
+	/**
 	 Remove money from the users' account
 
 	 @param the amount to deduct

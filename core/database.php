@@ -648,6 +648,32 @@ class Database {
 							[$matchId, $score1, $score2, $userId, $amount,False]);
 							
 	 }
+	 
+	 /**
+	 Set a bet with a certain ID to handled
+	 @param the id of the bet to set handled
+	 */
+	public function setBetHandled($id) {
+
+		//Query
+		$query = "
+			UPDATE Bet
+			SET handled = 1
+			WHERE id = ?;
+		";
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		//Bind parameters
+		if (!$statement -> bind_param('i',$id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+
+	}
 
 	/**
 	 Get the matchId from a bet

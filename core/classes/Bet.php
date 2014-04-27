@@ -80,6 +80,21 @@ class Bet {
 	    public function getMoney() {
 	    	return $this->db->getMoneyFromBet($this->id);
 	    }
+		
+		/**
+		 Returns the amount of items the user has bet on
+		 @return an int telling on how many options the user has bet
+		 */
+		 public function howManyItemsBet(){
+		 	$retVal=0;
+			if($this->getScoreA()>=0){
+				$retVal = $retVal +1;
+			}
+			if($this->getScoreB()>=0){
+				$retVal = $retVal +1;
+			}
+			return $retVal;
+		 }
 
     /**
     String function
