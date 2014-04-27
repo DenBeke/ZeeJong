@@ -49,7 +49,12 @@ namespace Controller {
 
 		private function placeBet() {
 			global $database;
+			if ($database -> getMoney($_SESSION['userID']) < $_POST['money']) {
+				$this -> betErrorMessage = $this -> betErrorMessage . "You do not have enough money." . "\r\n";
+				return;
+			}
 			$database -> addBet($_POST['matchId'], $_POST['score1'], $_POST['score2'], $_SESSION['userID'], $_POST['money']);
+			$database -> setMoney($_SESSION['userID'], $database -> getMoney($_SESSION['userID']) - $_POST['money']);
 			$this -> betSuccessMessage = $this -> betSuccessMessage . "Bet was successfully placed." . "\r\n";
 		}
 
@@ -69,8 +74,8 @@ namespace Controller {
 				$this -> betErrorMessage = $this -> betErrorMessage . "Match does not exist." . "\r\n";
 				$this -> stop = True;
 				return;
-			}else{
-				$this->stop= False;
+			} else {
+				$this -> stop = False;
 			}
 			$this -> matchId = $args[1];
 		}
@@ -106,7 +111,7 @@ namespace Controller {
 		 */
 		public function matchOver($id) {
 			global $database;
-			if(!$database->doesMatchExist($id)){
+			if (!$database -> doesMatchExist($id)) {
 				return True;
 			}
 			$match = $database -> getMatchById($id);
@@ -121,8 +126,8 @@ namespace Controller {
 		 @return a boolean indicating whether it's safe to continue
 		 */
 		public function stop() {
-			if(isset($_POST['matchId'])){
-				$this->matchId = $_POST['matchId'];
+			if (isset($_POST['matchId'])) {
+				$this -> matchId = $_POST['matchId'];
 			}
 			return $this -> stop || $this -> matchOver($this -> matchId);
 		}
