@@ -1013,7 +1013,7 @@ class Database {
 	}
 
 	/**
-	 Get the money address the user
+	 Get the money of the user
 
 	 @return the money of the user
 	 */
@@ -1037,6 +1037,53 @@ class Database {
 		$query = "
 			UPDATE User
 			SET money = ?
+			WHERE id = ?;
+		";
+
+		// Test if user exists
+		if(!$this->doesUserExist($id)){
+			throw new exception('User with given ID does not exists');
+		}
+
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		//Bind parameters
+		if (!$statement -> bind_param('ii',$amount, $id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	 }
+
+
+	/**
+	 Get the money won of the user
+
+	 @return the money won of the user
+	 */
+	public function getMoneyWon($id) {
+		$sel = new \Selector('User');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['moneyWon'];
+	}
+
+	/**
+	 Change the amount of money won from the user
+	 
+	 @param the new amount of money won
+	 */
+	 public function setMoneyWon($id,$amount){
+	 	//Query
+		$query = "
+			UPDATE User
+			SET moneyWon = ?
 			WHERE id = ?;
 		";
 
