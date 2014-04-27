@@ -61,7 +61,7 @@ class User {
 		return $this -> id;
 	}
 
-	/**
+	/**player
 	 Get the username of the user
 
 	 @return the username of the user
@@ -137,13 +137,44 @@ class User {
 	}
 
 	/**
+	 Add money to moneyWon
+	 @param the amount of money to add
+	 */
+	public function addMoneyWon($amount) {
+		if ($amount > 0) {
+			$newMoney = $this -> d -> getMoneyWon($this -> id) + $amount;
+			return $this -> d -> setMoneyWon($this -> id, $newMoney);
+		}
+	}
+	
+	/**
+	 Get the score of the user
+	 @return the score of the user
+	 */
+	 public function getScore(){
+	 	$bets = $this->d->getUserBets($this->id);
+		$moneyBets=0;
+		foreach($bets as $betId){
+			$moneyBets = $moneyBets + $this->d->getMoneyFromBet($betId);
+		}
+		if($moneyBets==0){
+			return 0;
+		}
+		return $this -> d -> getMoneyWon($this -> id)/$moneyBets;
+	 }
+	
+	/**
+	 Get the 
+	 */
+
+	/**
 	 Get the money the user has
-	 
+
 	 @return the money the user has
 	 */
-	 public function getMoney(){
-	 	return $this -> d -> getMoney($this -> id);
-	 }
+	public function getMoney() {
+		return $this -> d -> getMoney($this -> id);
+	}
 
 	/**
 	 Remove money from the users' account

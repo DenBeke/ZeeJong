@@ -94,7 +94,7 @@
 				      </li>
 
 					<li><a href="#">€&nbsp;<?php echo $database->getMoney($_SESSION['userID']); ?></a></li>
-					
+					<li><a href="#">Score:&nbsp;<?php $user=new User($_SESSION['userID']);echo number_format((float)$user->getScore(),2,'.','.'); ?></a></li>
 					
 					<?php
 					}

@@ -29,7 +29,7 @@ class BetHandler {
 	// List with bet OBJECTS
 	private $betsToProcess;
 
-	// A map on the matchid with the money players lost on that match
+	// A map on the matchid with the money users lost on that match
 	private $matchesMoneyLost;
 
 	public function __construct() {
@@ -56,7 +56,7 @@ class BetHandler {
 			$match = $this -> d -> getMatchById($bet -> getMatchId());
 			if ($bet -> getScoreA() != $match -> getScore() -> getScoreA()) {
 				// score A was not guessed correctly
-				// Add match + the money the player lost to matches
+				// Add match + the money the user lost to matches
 				if (!isset($this -> matchesMoneyLost[$match -> getId()])) {
 					$this -> matchesMoneyLost[$match -> getId()] = 0;
 				}
@@ -64,7 +64,7 @@ class BetHandler {
 			}
 			if ($bet -> getScoreB() != $match -> getScore() -> getScoreB()) {
 				// score B was not guessed correctly
-				// Add match + the money the player lost to matches
+				// Add match + the money the user lost to matches
 				if (!isset($this -> matchesMoneyLost[$match -> getId()])) {
 					$this -> matchesMoneyLost[$match -> getId()] = 0;
 				}
@@ -78,27 +78,32 @@ class BetHandler {
 		foreach ($this->betsToProcess as $bet) {
 			$match = $this -> d -> getMatchById($bet -> getMatchId());
 			$totalMoney = $match -> getTotalMoneyBetOn();
-			$player = $this -> d -> getPlayerById($bet -> getUserId());
+			$user = new User($bet -> getUserId());
 			if ($bet -> getScoreA() == $match -> getScore() -> getScoreA()) {
 				// Correctly guessed score A
 				// Add bet money itself
-				$player -> addMoney($bet -> getMoney() / $bet -> howManyItemsBet());
+				$user -> addMoney($bet -> getMoney() / $bet -> howManyItemsBet());
+				$user -> addMoneyWon($bet -> getMoney() / $bet -> howManyItemsBet());
 				// Add the money won
 				if (isset($this -> matchesMoneyLost[$match -> getId()])) {
-					$player -> addMoney(($bet -> getMoney() * ($this -> matchesMoneyLost[$match -> getId()] / ($match -> getTotalMoneyBetOn() - $this -> matchesMoneyLost[$match -> getId()]))) / $bet -> howManyItemsBet());
+					$user -> addMoney(($bet -> getMoney() * ($this -> matchesMoneyLost[$match -> getId()] / ($match -> getTotalMoneyBetOn() - $this -> matchesMoneyLost[$match -> getId()]))) / $bet -> howManyItemsBet());
+					$user -> addMoneyWon(($bet -> getMoney() * ($this -> matchesMoneyLost[$match -> getId()] / ($match -> getTotalMoneyBetOn() - $this -> matchesMoneyLost[$match -> getId()]))) / $bet -> howManyItemsBet());
+
 				}
 			}
 			if ($bet -> getScoreB() == $match -> getScore() -> getScoreB()) {
 				// Correctly guessed score B
 				// Add bet money itself
-				$player -> addMoney($bet -> getMoney() / $bet -> howManyItemsBet());
+				$user -> addMoney($bet -> getMoney() / $bet -> howManyItemsBet());
+				$user -> addMoneyWon($bet -> getMoney() / $bet -> howManyItemsBet());
 				// Add the money won
 				if (isset($this -> matchesMoneyLost[$match -> getId()])) {
-					$player -> addMoney(($bet -> getMoney() * ($this -> matchesMoneyLost[$match -> getId()] / ($match -> getTotalMoneyBetOn() - $this -> matchesMoneyLost[$match -> getId()]))) / $bet -> howManyItemsBet());
+					$user -> addMoney(($bet -> getMoney() * ($this -> matchesMoneyLost[$match -> getId()] / ($match -> getTotalMoneyBetOn() - $this -> matchesMoneyLost[$match -> getId()]))) / $bet -> howManyItemsBet());
+					$user -> addMoneyWon(($bet -> getMoney() * ($this -> matchesMoneyLost[$match -> getId()] / ($match -> getTotalMoneyBetOn() - $this -> matchesMoneyLost[$match -> getId()]))) / $bet -> howManyItemsBet());
 				}
 			}
 			// Set bet handled
-			$this->d->setBetHandled($bet->getId());			
+			$this -> d -> setBetHandled($bet -> getId());
 		}
 
 	}
