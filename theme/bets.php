@@ -33,10 +33,9 @@
 		$bet = new Bet($betId,$database);
 	?>
 		<tr>
-			<td><?php echo $database->getMatchById($bet->getMatchId())->getTeamA()->getName() ?></td>
-			<td><span class="badge"><?php  echo $bet->getScoreA()." - ".$bet->getScoreB();?></span></td>
-			<td><?php echo $database->getMatchById($bet->getMatchId())->getTeamB()->getName() ?></td>
-			<td><?php echo "€ ".$bet->getMoney() ?></td>
+			<?php
+			 echo $bet->dataAsString();
+			?>
 		</tr>
 	<?php
 	}

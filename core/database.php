@@ -681,9 +681,9 @@ class Database {
 	 
 	 @param the id of the match, team, user and money
 	 */
-	 public function addBet($matchId,$score1,$score2,$userId,$amount){
-		$this->insert('Bet', ['matchId', 'score1', 'score2','userId', 'amount','handled'],
-							[$matchId, $score1, $score2, $userId, $amount,False]);
+	 public function addBet($matchId,$score1,$score2,$firstGoal,$redCards,$yellowCards,$userId,$amount){
+		$this->insert('Bet', ['matchId', 'score1', 'score2','firstGoal','redCards','yellowCards','userId', 'amount','handled'],
+							[$matchId, $score1, $score2,$firstGoal,$redCards,$yellowCards, $userId, $amount,False]);
 							
 	 }
 	 
@@ -745,9 +745,9 @@ class Database {
 
 
 	/**
-	 Get the second score from a bet
+	 Get the first score from a bet
 
-	 @return the teamId
+	 @return the first score
 	 */
 	public function getScoreAFromBet($id) {
 		$sel = new \Selector('Bet');
@@ -760,9 +760,9 @@ class Database {
 	}
 
 	/**
-	 Get the first score from a bet
+	 Get the second score from a bet
 
-	 @return the userId
+	 @return the second score
 	 */
 	public function getScoreBFromBet($id) {
 		$sel = new \Selector('Bet');
@@ -773,7 +773,52 @@ class Database {
 
 		return $result[0]['score2'];
 	}
+	
+	/**
+	 Get the firstGoal from a bet
 
+	 @return the id of the player that made the first goal
+	 */
+	public function getFirstGoalFromBet($id) {
+		$sel = new \Selector('Bet');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['firstGoal'];
+	}
+	
+	/**
+	 Get the amount of red cards
+
+	 @return the amount of red cards
+	 */
+	public function getRedCardsFromBet($id) {
+		$sel = new \Selector('Bet');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['redCards'];
+	}
+	
+	
+	/**
+	 Get the amount of yellow cards
+
+	 @return the amount of yellow cards
+	 */
+	public function getYellowCardsFromBet($id) {
+		$sel = new \Selector('Bet');
+		$sel->filter([['id', '=', $id]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['yellowCards'];
+	}
 
 	/**
 	 Get the amount of money from a bet
