@@ -38,7 +38,7 @@ namespace Controller {
 				$this -> matchId = $_POST['matchId'];
 			}
 
-			if (!isset($_POST['score1']) && !isset($_POST['score2'])) {
+			if (!isset($_POST['score1']) && !isset($_POST['score2']) && !isset($_POST['firstGoal']) && !isset($_POST['redCards']) && !isset($_POST['yellowCards'])) {
 				$this -> betErrorMessage = $this -> betErrorMessage . "You must bet for at least one parameter." . "\r\n";
 				$this -> matchId = $_POST['matchId'];
 				return;
@@ -58,6 +58,9 @@ namespace Controller {
 
 			$score1 = -1;
 			$score2 = -1;
+			$firstGoal = -1;
+			$redCards = -1;
+			$yellowCards = -1;
 			if (isset($_POST['score1'])) {
 				if ($_POST['score1'] < 0) {
 					$this -> betErrorMessage = $this -> betErrorMessage . "Scores can't be less than 0." . "\r\n";
@@ -74,8 +77,32 @@ namespace Controller {
 				}
 				$score2 = $_POST['score2'];
 			}
+			if (isset($_POST['firstGoal'])) {
+				if ($_POST['firstGoal'] < 0) {
+					$this -> betErrorMessage = $this -> betErrorMessage . "An incorrect player ID was given." . "\r\n";
+					$this -> matchId = $_POST['matchId'];
+					return;
+				}
+				$firstGoal = $_POST['firstGoal'];
+			}
+			if (isset($_POST['yellowCards'])) {
+				if ($_POST['yellowCards'] < 0) {
+					$this -> betErrorMessage = $this -> betErrorMessage . "# yellow cards can't be less than 0." . "\r\n";
+					$this -> matchId = $_POST['matchId'];
+					return;
+				}
+				$yellowCards = $_POST['yellowCards'];
+			}
+			if (isset($_POST['redCards'])) {
+				if ($_POST['redCards'] < 0) {
+					$this -> betErrorMessage = $this -> betErrorMessage . "# red cards can't be less than 0." . "\r\n";
+					$this -> matchId = $_POST['matchId'];
+					return;
+				}
+				$redCards = $_POST['redCards'];
+			}
 
-			$database -> addBet($_POST['matchId'], $score1, $score2, $_SESSION['userID'], $_POST['money']);
+			$database -> addBet($_POST['matchId'], $score1, $score2, $firstGoal, $redCards, $yellowCards, $_SESSION['userID'], $_POST['money']);
 			$database -> setMoney($_SESSION['userID'], $database -> getMoney($_SESSION['userID']) - $_POST['money']);
 			$this -> betSuccessMessage = $this -> betSuccessMessage . "Bet was successfully placed." . "\r\n";
 		}

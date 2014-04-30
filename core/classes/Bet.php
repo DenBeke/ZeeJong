@@ -73,6 +73,33 @@ class Bet {
 	   
 	   
 	   /**
+	   Returns the id of the player that will make the first goal
+	    
+	   @return id of player
+	   */
+	   public function getFirstGoal() {
+	   	return $this->db->getFirstGoalFromBet($this->id);
+	   }
+	   
+	   /**
+	   Returns the red cards that will be handed this game
+	    
+	   @return # red cards
+	   */
+	   public function getRedCards() {
+	   	return $this->db->getRedCardsFromBet($this->id);
+	   }
+	   
+	   /**
+	   Returns the yellow cards that will be handed this game
+	    
+	   @return # yellow cards
+	   */
+	   public function getYellowCards() {
+	   	return $this->db->getYellowCardsFromBet($this->id);
+	   }
+	   
+	   /**
 	    Returns the amount of money the bet contains
 	     
 	    @return amount of money
@@ -93,8 +120,46 @@ class Bet {
 			if($this->getScoreB()>=0){
 				$retVal = $retVal +1;
 			}
+			if($this->getFirstGoal()>=0){
+				$retVal = $retVal +1;
+			}
+			if($this->getRedCards()>=0){
+				$retVal = $retVal +1;
+			}
+			if($this->getYellowCards()>=0){
+				$retVal = $retVal +1;
+			}
 			return $retVal;
 		 }
+
+	/**
+	 Return the bet's data in string version for in a table row so it can be added easily to an existing table
+	 @return the bet's data as a string
+	 */
+	 public function dataAsString(){
+		$output = "";
+		$output = $output."<td>".$this->db->getMatchById($this->getMatchId())->getTeamA()->getName()."</td>";
+		$output = $output."<td><span class='badge'>";
+		if($this->getScoreA()!=-1){
+			$output = $output . $this->getScoreA() . " - ";
+		}else{
+			$output = $output . " / " . " - ";
+		}
+		if($this->getScoreB()!=-1){
+			$output = $output . $this->getScoreB();
+		}else{
+			$output = $output . " / ";
+		}
+		$output = $output."</span></td>";
+		$output = $output."<td>".$this->db->getMatchById($this->getMatchId())->getTeamB()->getName()."</td>";	
+		$output = $output."<td>"."€ ".$this->getMoney()."</td>";
+		
+		
+		
+		
+		return $output;
+	 }
+	 
 
     /**
     String function
