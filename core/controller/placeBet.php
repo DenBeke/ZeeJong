@@ -25,7 +25,7 @@ namespace Controller {
 			$this -> title = 'Place Bet - ' . Controller::siteName;
 			$this -> stop = False;
 			// Test if logged in
-			if (!isset($_SESSION['userID']) || !isset($_POST['score1']) || !isset($_POST['score2']) || !isset($_POST['money']) || !isset($_POST['matchId'])) {
+			if (!isset($_SESSION['userID']) || !isset($_POST['money']) || !isset($_POST['matchId'])) {
 				return;
 			}
 			if (!$database -> doesUserExist($_SESSION['userID'])) {
@@ -37,9 +37,11 @@ namespace Controller {
 				$this -> betErrorMessage = $this -> betErrorMessage . "You must bet for more than €0." . "\r\n";
 				$this -> matchId = $_POST['matchId'];
 			}
-			if ($_POST['score1'] < 0 || $_POST['score2'] < 0) {
-				$this -> betErrorMessage = $this -> betErrorMessage . "Scores can't be less than 0." . "\r\n";
+
+			if (!isset($_POST['score1']) && !isset($_POST['score2'])) {
+				$this -> betErrorMessage = $this -> betErrorMessage . "You must bet for at least one parameter." . "\r\n";
 				$this -> matchId = $_POST['matchId'];
+				return;
 			}
 			if (strlen($this -> betErrorMessage) == 0) {
 				// Safe to place bet
@@ -53,7 +55,27 @@ namespace Controller {
 				$this -> betErrorMessage = $this -> betErrorMessage . "You do not have enough money." . "\r\n";
 				return;
 			}
-			$database -> addBet($_POST['matchId'], $_POST['score1'], $_POST['score2'], $_SESSION['userID'], $_POST['money']);
+
+			$score1 = -1;
+			$score2 = -1;
+			if (isset($_POST['score1'])) {
+				if ($_POST['score1'] < 0) {
+					$this -> betErrorMessage = $this -> betErrorMessage . "Scores can't be less than 0." . "\r\n";
+					$this -> matchId = $_POST['matchId'];
+					return;
+				}
+				$score1 = $_POST['score1'];
+			}
+			if (isset($_POST['score2'])) {
+				if ($_POST['score2'] < 0) {
+					$this -> betErrorMessage = $this -> betErrorMessage . "Scores can't be less than 0." . "\r\n";
+					$this -> matchId = $_POST['matchId'];
+					return;
+				}
+				$score2 = $_POST['score2'];
+			}
+
+			$database -> addBet($_POST['matchId'], $score1, $score2, $_SESSION['userID'], $_POST['money']);
 			$database -> setMoney($_SESSION['userID'], $database -> getMoney($_SESSION['userID']) - $_POST['money']);
 			$this -> betSuccessMessage = $this -> betSuccessMessage . "Bet was successfully placed." . "\r\n";
 		}
