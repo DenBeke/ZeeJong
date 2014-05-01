@@ -152,6 +152,24 @@ class Bet {
 		}
 		$output = $output."</span></td>";
 		$output = $output."<td>".$this->db->getMatchById($this->getMatchId())->getTeamB()->getName()."</td>";	
+		
+		if($this->getFirstGoal()!=-1){
+			$output = $output."<td>". $this->db->getPlayerById($this->getFirstGoal())->getName()."</td>";
+		}else{
+			$output = $output."<td> / </td>";
+		}
+		if($this->getRedCards()!=-1){
+			$output = $output . "<td>".$this->getRedCards()."</td>";
+		}else{
+			$output = $output."<td> / </td>";
+		}
+		
+		if($this->getYellowCards()!=-1){
+			$output = $output . "<td>".$this->getYellowCards()."</td>";
+		}else{
+			$output = $output."<td> / </td>";
+		}
+		
 		$output = $output."<td>"."€ ".$this->getMoney()."</td>";
 		
 		

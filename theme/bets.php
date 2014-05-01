@@ -23,6 +23,9 @@
 			<th>Team 1</th>
 			<th>Score</th>
 			<th>Team 2</th>
+			<th>Player that makes first goal</th>
+			<th># Red Cards</th>
+			<th># Yellow Cards</th>
 			<th>Amount</th>
 		</tr>
 	<?php
