@@ -11,9 +11,9 @@ date_default_timezone_set('Europe/Brussels');
 
 
 require_once(dirname(__FILE__) . '/core/config.php');
-require_once(dirname(__FILE__) . '/core/database.php');	// Require the database file
+require_once(dirname(__FILE__) . '/core/database.php');
 require_once(dirname(__FILE__) . '/core/Selector.php');
-require_once(dirname(__FILE__) . '/core/classes/User.php');	// We need the user class file
+require_once(dirname(__FILE__) . '/core/classes/User.php');
 require_once(dirname(__FILE__) . '/core/functions.php');
 require_once(dirname(__FILE__) . '/core/gluephp/glue.php');
 require_once(dirname(__FILE__) . '/core/controller/login.php');
@@ -41,6 +41,7 @@ require_once(dirname(__FILE__) . '/core/controller/Group.php');
 require_once(dirname(__FILE__) . '/core/controller/InviteUser.php');
 require_once(dirname(__FILE__) . '/core/controller/Invites.php');
 require_once(dirname(__FILE__) . '/core/controller/Page.php');
+require_once(dirname(__FILE__) . '/core/controller/PageEdit.php');
 
 //Create database
 $database = new Database;
@@ -70,7 +71,8 @@ $urls = array(
 	INSTALL_DIR . 'group/(\S+)' => 'Controller\Group',
 	INSTALL_DIR . 'invite-user' => 'Controller\InviteUser',
 	INSTALL_DIR . 'invites' => 'Controller\Invites',
-	INSTALL_DIR . 'page/(\d+)' => 'Controller\Page'
+	INSTALL_DIR . 'page/(\d+)' => 'Controller\Page',
+	INSTALL_DIR . 'page/(\d+)/edit' => 'Controller\PageEdit'
 );
 
 $controller = glue::stick($urls);
