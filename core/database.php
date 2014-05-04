@@ -3237,6 +3237,12 @@ class Database {
 	}
 	
 	
+	
+	public function getPageById($id) {
+		return new Page(1, 'Hello World!', 'Welcome to ZeeJong. This is your first post. Edit or delete it, then start blogging!');
+	}
+	
+	
 
 
 }
