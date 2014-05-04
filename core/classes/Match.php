@@ -122,7 +122,9 @@ class Match {
 		return $this->getTeamB()->getPlayersForMatch($this->id);
 	}
 	
-	
+	public function getFirstScorer() {
+		return $this->db->getFirstScorerInMatch($this->getId());
+	}
 
 	public function getTotalCards() {
 		return $this->db->getTotalCardsInMatch($this->getId());
