@@ -1904,6 +1904,28 @@ class Database {
 		return count($result) == 1;
 	}
 
+	/**
+	 Get first player who made a goal
+
+	 @param matchId The match
+	 @return The first player who made a goal, or null if no goals in match
+	 */
+	public function getFirstScorerInMatch($matchId) {
+		$sel = new \Selector('Goal');
+		$sel->join('Player', 'playerId', 'id');
+		$sel->filter([['matchId', '=', $matchId]]);
+		$sel->select('Player.*');
+		$sel->order('time', 'ASC');
+		$sel->limit(0,1);
+
+		$result = $this->select($sel);
+		if(count($result) !== 1) {
+			return null;
+		}
+
+		return $this->resultToPlayers($result)[0];
+	}
+
 
 	/**
 	 Add a goal to a match
