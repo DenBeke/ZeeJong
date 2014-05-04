@@ -31,7 +31,7 @@
 		</div>
 		<?php
 		}
-		
+
 		else{
 		if(strlen($this->getErrorMessage())>0){
 		// there were errors, let's display them
@@ -63,15 +63,94 @@
 	<div class="col-md-6">
 	
 		<div class="well">
-			<form id="changeSettings" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>place-bet/<?php echo $this->getMatchId()?>">
+			
+			<SCRIPT LANGUAGE="JavaScript">
+				<!--
+				function check1() {
+
+					if (document.betForm.checkScore1.checked) {
+						document.betForm.score1.disabled = false;
+					} else {
+						document.betForm.score1.disabled = true;
+					}
+				}
+
+				function check2() {
+
+					if (document.betForm.checkScore2.checked) {
+						document.betForm.score2.disabled = false;
+					} else {
+						document.betForm.score2.disabled = true;
+					}
+				}
+
+				function check3() {
+
+					if (document.betForm.checkFirstGoal.checked) {
+						document.betForm.firstGoal.disabled = false;
+					} else {
+						document.betForm.firstGoal.disabled = true;
+					}
+				}
+
+				function check4() {
+
+					if (document.betForm.checkRedCards.checked) {
+						document.betForm.redCards.disabled = false;
+					} else {
+						document.betForm.redCards.disabled = true;
+					}
+				}
+
+				function check5() {
+
+					if (document.betForm.checkYellowCards.checked) {
+						document.betForm.yellowCards.disabled = false;
+					} else {
+						document.betForm.yellowCards.disabled = true;
+					}
+				}
+
+				//-->
+			</SCRIPT>
+			<form id="changeSettings" class="form-horizontal" role="form" method="post" name="betForm" action="<?php echo SITE_URL ?>place-bet/<?php echo $this->getMatchId()?>">
+				
 				<input type="hidden" name="matchId" id="matchId" value=<?php echo $this->getMatchId()?> />
+				
+				<b>I want to bet on:</b>
+				<table style="width:200px">
+					<tr>
+  						<td>Score 1</td>
+					  	<td><input type="checkbox" onclick="check1()" name="checkScore1" value="ON"></td>
+					</tr>
+					<tr>
+  						<td>Score 2</td>
+					  	<td><input type="checkbox" onclick="check2()" name="checkScore2" value="ON"></td>
+					</tr>
+					<tr>
+  						<td>Player that makes first goal</td>
+					  	<td><input type="checkbox" onclick="check3()" name="checkFirstGoal" value="ON"></td>
+					</tr>
+					<tr>
+  						<td>Red cards</td>
+					  	<td><input type="checkbox" onclick="check4()" name="checkRedCards" value="ON"></td>
+					</tr>
+					<tr>
+  						<td>Yellow cards</td>
+					  	<td><input type="checkbox" onclick="check5()" name="checkYellowCards" value="ON"></td>
+					</tr>
+
+				</table> 
 				<div class="form-group">
 					<label class="control-label col-sm-4">Score <?php $match = $database -> getMatchById($this->getMatchId());echo $match->getTeamA()->getName() ?></label>
 					<div class="controls col-sm-8">
+						
 						<div class="input-group">
 							<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-arrow-right"></span> </span>
-							<input type="number" class="form-control input-xlarge" id="score1" name="score1" placeholder="">
+							<input type="number" disabled class="form-control input-xlarge" id="score1" name="score1" placeholder="">
+							
 						</div>
+						
 					</div>
 				</div>
 				<div class="form-group">
@@ -79,7 +158,34 @@
 					<div class="controls col-sm-8">
 						<div class="input-group">
 							<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-arrow-right"></span> </span>
-							<input type="number" class="form-control input-xlarge" id="score2" name="score2" placeholder="">
+							<input type="number" disabled class="form-control input-xlarge" id="score2" name="score2" placeholder="">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-4">Player that makes first goal</label>
+					<div class="controls col-sm-8">
+						<div class="input-group">
+							<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-arrow-right"></span> </span>
+							<input type="number" disabled class="form-control input-xlarge" id="firstGoal" name="firstGoal" placeholder="">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-4">Red cards</label>
+					<div class="controls col-sm-8">
+						<div class="input-group">
+							<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-arrow-right"></span> </span>
+							<input type="number" disabled class="form-control input-xlarge" id="redCards" name="redCards" placeholder="">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-4">Yellow cards</label>
+					<div class="controls col-sm-8">
+						<div class="input-group">
+							<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-arrow-right"></span> </span>
+							<input type="number" disabled class="form-control input-xlarge" id="yellowCards" name="yellowCards" placeholder="">
 						</div>
 					</div>
 				</div>

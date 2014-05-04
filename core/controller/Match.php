@@ -18,6 +18,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 		public $goals;
 		public $cards;
 		public $title;
+		public $totalBet;
 
 
 		public function __construct() {
@@ -44,6 +45,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			$this->match = $database->getMatchById($args[1]);
 			$this->goals = $database->getGoalsInMatch($this->match->getId());
 			$this->cards = $database->getCardsInMatch($this->match->getId());
+			$this->totalBet = $database->getAmountBetOnMatch($this->match->getId());
 
 			$this->title = 'Match - ' . $this->match->getTeamA()->getName() . ' vs ' . $this->match->getTeamB()->getName() . ' - ' . Controller::siteName;
 			

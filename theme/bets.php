@@ -23,6 +23,9 @@
 			<th>Team 1</th>
 			<th>Score</th>
 			<th>Team 2</th>
+			<th>Player that makes first goal</th>
+			<th># Red Cards</th>
+			<th># Yellow Cards</th>
 			<th>Amount</th>
 		</tr>
 	<?php
@@ -33,10 +36,9 @@
 		$bet = new Bet($betId,$database);
 	?>
 		<tr>
-			<td><?php echo $database->getMatchById($bet->getMatchId())->getTeamA()->getName() ?></td>
-			<td><span class="badge"><?php  echo $bet->getScoreA()." - ".$bet->getScoreB();?></span></td>
-			<td><?php echo $database->getMatchById($bet->getMatchId())->getTeamB()->getName() ?></td>
-			<td><?php echo "€ ".$bet->getMoney() ?></td>
+			<?php
+			 echo $bet->dataAsString();
+			?>
 		</tr>
 	<?php
 	}
