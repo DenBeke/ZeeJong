@@ -62,7 +62,7 @@
 				        <ul class="dropdown-menu">
 					        
 					        
-					      <?php foreach($database->getAllCompetitions() as $competition) { ?>
+					      <?php foreach($header->competitions as $competition) { ?>
 						      <li><a href="<?php echo SITE_URL . 'competition/' . $competition -> getId(); ?>"><?php echo $competition -> getName(); ?></a></li>
 						  <?php } ?>
 
@@ -85,7 +85,7 @@
 				        	<li> <a href ="<?php echo SITE_URL; ?>create-group">Create a group</a></li>
 					      	<li> <a href ="<?php echo SITE_URL; ?>invite-user">Invite users</a></li>
 					        <li> <a href ="<?php echo SITE_URL; ?>invites">Invites</a></li>
-					      	<?php foreach($database->getUserGroups($_SESSION['userID']) as $groupId) {?>				      		
+					      	<?php foreach($header->userGroups as $groupId) {?>				      		
 						    <li><a href="<?php echo SITE_URL . 'group/' . $database->getGroupName($groupId); ?>"><?php echo $database->getGroupName($groupId); ?></a></li>
 						   	<?php } ?>
 
@@ -93,8 +93,8 @@
 				        
 				      </li>
 
-					<li><a href="#">€&nbsp;<?php echo $database->getMoney($_SESSION['userID']); ?></a></li>
-					<li><a href="#">Score:&nbsp;<?php $user=new User($_SESSION['userID']);echo number_format((float)$user->getScore(),2,'.','.'); ?></a></li>
+					<li><a href="#">€&nbsp;<?php echo $header->money; ?></a></li>
+					<li><a href="#">Score:&nbsp;<?php echo $header->score; ?></a></li>
 					
 					<?php
 					}
