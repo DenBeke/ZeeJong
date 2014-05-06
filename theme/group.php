@@ -5,6 +5,9 @@
  Created March 2014
  */
  ?>
+
+
+
 	<div class="container">
 
 
@@ -103,7 +106,7 @@
 				<?php } ?>
 				</table>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-5">
 				<h2>Bets</h2>
 				<table class="table table-striped">
 				<tr>
@@ -135,6 +138,27 @@
 				
 			</div>
 			
+			
+			<div class="col-md-4">
+				
+				<div id="chatResults" class="well">Chatbox...</div>
+
+				<div class="input-group">
+				  <input type="hidden" id="author" name="author" value="<?php echo user()->getUserName(); ?>">
+				  <input type="text" class="form-control" id="text" name="text" size="100">
+				  <input type="hidden" id="chat-group-id" name="chat-group-id" value="<?php echo $this->groupId; ?>">
+				  <span class="input-group-btn">
+					  <input type="submit" value="Talk!" id="submitter" class="btn btn-default">
+				  </span>
+				</div><!-- /input-group -->
+				
+				
+				
+				
+				
+				
+				
+			</div>
 			
 			
 			
