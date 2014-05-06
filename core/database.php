@@ -2888,6 +2888,18 @@ class Database {
 
 		return $goals;
 	}
+	
+	
+	public function resultToPages($result) {
+		$pages = array();
+		
+		foreach($result as $page) {
+			array_push($pages, new Page($page['id'], $page['title'], $page['content']));
+		}
+		
+		return $pages;
+	}
+	
 
 	public function resultToPlaysIn($result) {
 		$playsIns = array();
@@ -3306,7 +3318,17 @@ class Database {
 	
 	
 	public function getPageById($id) {
-		return new Page(1, 'Hello World!', 'Welcome to ZeeJong. This is your first post. Edit or delete it, then start blogging!');
+		$sel = new \Selector('Pages');
+		$sel->filter([['id', '=', $id]]);
+		
+		$result = $this->select($sel);
+		
+		if(sizeof($result) == 1) {
+			return $this->resultToPages($result)[0];
+		}
+		else {
+			throw new exception("Could not retrieve page");
+		}
 	}
 	
 	
