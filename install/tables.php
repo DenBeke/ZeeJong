@@ -211,7 +211,17 @@ CREATE TABLE IF NOT EXISTS `AlternativeUser` (
 PRIMARY KEY (`id`),
 KEY `userId` (`userId`)
 ) ENGINE=InnoDB CHARSET=utf8 ;
+',
+
 '
+CREATE TABLE IF NOT EXISTS `Pages` (
+`id` int(11) NOT NULL,
+`title` varchar(50) NOT NULL,
+`content` text NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARSET=utf8 ;
+'
+
 );
 
 ?>

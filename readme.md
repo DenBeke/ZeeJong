@@ -36,3 +36,15 @@ Authors
 - Alexander Vanhulle
 - Elias Van Langenhove
 - Bruno Van de Velde
+
+
+Acknowledgments
+---------------
+
+- URL routing: [GluePHP](http://gluephp.com)
+- RSS parser: [SimplePie RSS](http://simplepie.org)
+- Wikipedia information: [Wikipedia](http://wikipedia.org) & [wikidrain](https://github.com/abreksa4/wikidrain)
+- Design framework: [Bootstrap](http://getbootstrap.com)
+- Graphs: [Highcharts](http://www.highcharts.com)
+- OpenID login: [LightOpenID](https://code.google.com/p/lightopenid/)
+- [PHP-Chatbox](https://github.com/MarcinMM/PHP-Chatbox)
