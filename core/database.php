@@ -82,6 +82,14 @@ class Database {
 
 	}
 
+	/**
+	Insert in database.
+	@param table The table to insert into.
+	@param columns The columns.
+	@param values The values to insert into the columns.
+	 
+	@return The id of the inserted data.
+	*/
 	public function insert($table, $columns, $values) {
 		$table = '`' . $table . '`';		
 
@@ -96,6 +104,50 @@ class Database {
 		$statement = $this->getStatement2($query);
 		$statement->execute($values);
 		return $this->con->lastInsertId();
+	}
+
+	/**
+	Update something in database.
+	@param table The table to update.
+	@param colValues An array of the form: [ ['column1', 'value1'], ['column2', 'value2'] ].
+	@param wheres An array of the form: [ ['column1', '=', 'value1'] ].
+	 
+	@exception If the sql is not valid an exception will be thrown.
+
+	@return True if something was updates, false otherwise.
+	*/
+	public function update($table, $colValues, $wheres) {
+		$query = "UPDATE `$table` SET ";
+
+		$columns = [];
+		$values = [];
+		foreach($colValues as &$colValue) {
+			$columns[] = '`' . $colValue[0] . '`=?';
+			$values[] = $colValue[1];
+		}
+
+		$whereClause = [];
+		$whereValues = [];
+		foreach($wheres as &$where) {
+			$whereClause[] = '`' . $where[0] . '`' . $where[1] . '?';
+			$whereValues[] = $where[2];
+		}
+
+		$query .= implode(',', $columns) . ' WHERE ';
+		$query .= ' ' . implode(' AND ', $whereClause);
+
+		echo $query;
+
+		$statement = $this->getStatement2($query);
+		if(!$statement->execute(array_merge($values, $whereValues))) {
+			return false;
+		}
+
+		if($statement->rowCount() !== 0) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public function select($selector) {
