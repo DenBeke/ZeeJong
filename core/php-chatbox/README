@@ -1,0 +1,5 @@
+A simple self-refreshing chatbox in PHP, for those of us stuck in proxy-land. Can be hosted anywhere that can run PHP. 
+Uses jQuery (included), but only for ease of .ajax and DOM addressing, and JSON file format. No DB needed.
+
+Lacks authentication, spam prevention, etc. Heck, it doesn't even have multiple submit protection. Feel free to implement in your own time. ;)
+

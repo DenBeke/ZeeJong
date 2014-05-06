@@ -15,7 +15,7 @@ namespace Controller {
 	class Group extends Controller {
 
 		public $title;
-		private $groupId;
+		public $groupId;
 		private $errorMessage;
 		private $group;
 

@@ -1,0 +1,24 @@
+#chat {
+	margin: 10px auto;
+	background: #EFEFEF;
+	border: 1px solid #AAF;
+	padding: 10px;
+}
+
+#chatResults {
+	height: 250px !important;
+	background-color: red;
+	overflow-y: scroll;
+}
+
+#container {
+	height: 100%;
+}
+
+.chatline {
+	text-decoration: italics;
+}
+
+.author {
+	font-weight: bold;
+}

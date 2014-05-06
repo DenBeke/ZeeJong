@@ -2940,6 +2940,18 @@ class Database {
 
 		return $goals;
 	}
+	
+	
+	public function resultToPages($result) {
+		$pages = array();
+		
+		foreach($result as $page) {
+			array_push($pages, new Page($page['id'], $page['title'], $page['content']));
+		}
+		
+		return $pages;
+	}
+	
 
 	public function resultToPlaysIn($result) {
 		$playsIns = array();
@@ -3353,6 +3365,22 @@ class Database {
 		$result = $this->select($sel);
 		
 		return $this->resultToCards($result);
+	}
+	
+	
+	
+	public function getPageById($id) {
+		$sel = new \Selector('Pages');
+		$sel->filter([['id', '=', $id]]);
+		
+		$result = $this->select($sel);
+		
+		if(sizeof($result) == 1) {
+			return $this->resultToPages($result)[0];
+		}
+		else {
+			throw new exception("Could not retrieve page");
+		}
 	}
 	
 	
