@@ -1,0 +1,26 @@
+#chat {
+	margin: 10px auto;
+	background: #EFEFEF;
+	border: 1px solid #AAF;
+	padding: 10px;
+  	position: absolute;
+	bottom: 0px;
+  	height: 70px;
+}
+
+#chatResults {
+	margin-bottom: 150px;
+	overflow-y: scroll;
+}
+
+#container {
+	height: 100%;
+}
+
+.chatline {
+	text-decoration: italics;
+}
+
+.author {
+	font-weight: bold;
+}

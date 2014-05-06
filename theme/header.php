@@ -22,11 +22,13 @@
 	<link href="<?php echo SITE_URL ?>style/bootstrap-theme.css" rel="stylesheet" type="text/css">
 	<link href="<?php echo SITE_URL ?>style/loader.css" rel="stylesheet" type="text/css">
 	<link href="<?php echo SITE_URL ?>js/jqplot/jquery.jqplot.css" rel="stylesheet" type="text/css">
+	<link href="<?php echo SITE_URL ?>style/chatbox.css" rel="stylesheet" type="text/css">
 	<script src="<?php echo SITE_URL ?>js/jquery-1.11.0.min.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/script.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/bootstrap.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/hchart/highcharts.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/tinymce/js/tinymce/tinymce.min.js" type="text/javascript"></script>
+	<script src="<?php echo SITE_URL ?>js/chatbox.php" type="text/javascript"></script>
 	
 	<?php	
 	if($controller->page == 'login' and loggedIn() == true) {
