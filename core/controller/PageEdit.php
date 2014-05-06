@@ -8,7 +8,7 @@ Created February 2014
 
 namespace Controller {
 
-require_once(dirname(__FILE__) . '/../Classes/Page.php');
+require_once(dirname(__FILE__) . '/../classes/Page.php');
 require_once(dirname(__FILE__) . '/Controller.php');
 
 
