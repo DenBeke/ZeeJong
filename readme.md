@@ -47,3 +47,4 @@ Acknowledgments
 - Design framework: [Bootstrap](http://getbootstrap.com)
 - Graphs: [Highcharts](http://www.highcharts.com)
 - OpenID login: [LightOpenID](https://code.google.com/p/lightopenid/)
+- [PHP-Chatbox](https://github.com/MarcinMM/PHP-Chatbox)
