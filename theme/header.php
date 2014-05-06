@@ -26,6 +26,7 @@
 	<script src="<?php echo SITE_URL ?>js/script.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/bootstrap.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/hchart/highcharts.js" type="text/javascript"></script>
+	<script src="<?php echo SITE_URL ?>js/tinymce/js/tinymce/tinymce.min.js" type="text/javascript"></script>
 	
 	<?php	
 	if($controller->page == 'login' and loggedIn() == true) {
@@ -34,6 +35,13 @@
 	<?php
 	}
 	?>
+	
+	<script type="text/javascript">
+	tinymce.init({
+		selector: "textarea"
+	 });
+	</script>
+	
 	
 
 </head>
