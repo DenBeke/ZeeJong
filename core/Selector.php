@@ -9,6 +9,7 @@ class Selector {
 	private $select = ['*'];
 	private $values = [];
 	private $group = [];
+	private $rawFilters = [];
 
 	private $joins = [];
 
@@ -36,6 +37,12 @@ class Selector {
 
 
 		array_push($this->filters, $f);
+
+		return $this;
+	}
+
+	public function rawFilter($f) {
+		$this->rawFilters = array_merge($this->rawFilters, $f);
 
 		return $this;
 	}
@@ -129,7 +136,7 @@ class Selector {
 			$sql .= '`' . $this->joins[0][0] . '`' . '.' . $this->joins[0][2];
 		}
 
-		if(count($this->filters) > 0) {
+		if(count($this->filters) > 0 || count($this->rawFilters) > 0) {
 			$sql .= ' WHERE';
 		}
 
@@ -158,6 +165,22 @@ class Selector {
 			$sql .= ')';
 
 			if(end($this->filters) !== $filter) {
+				$sql .= ' AND';
+			}
+		}
+
+		if(count($this->filters) > 0 && count($this->rawFilters) > 0) {
+			$sql .= ' AND ';
+		}
+
+		foreach($this->rawFilters as &$filter) {
+			$sql .= ' (';
+
+			$sql .= $filter;
+
+			$sql .= ')';
+
+			if(end($this->rawFilters) !== $filter) {
 				$sql .= ' AND';
 			}
 		}
