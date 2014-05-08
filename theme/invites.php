@@ -28,10 +28,9 @@ if(!loggedIn()){
 		</tr>
 
 		<?php
-		global $database;
 		$invites = $this->getInvites();
 		foreach($invites as $inviteId) {
-		$membership = new GroupMembership($inviteId,$database);
+		$membership = new GroupMembership($inviteId);
 		?>
 		<tr>
 			<form id="acceptInvite" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>invites">			
@@ -56,14 +55,13 @@ if(!loggedIn()){
 			<th>Withdraw</th>
 		</tr>
 		<?php
-		global $database;
 		$sentInvites = $this->getSentInvites();
 		foreach($sentInvites as $inviteId) {
-		$membership = new GroupMembership($inviteId,$database);
+		$membership = new GroupMembership($inviteId);
 		?>
 		<tr>
 			<form id="withdrawInvite" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>invites">			
-			<td><?php echo $database->getUserName($membership->getUserId()) ?></td>
+			<td><?php echo $membership->getUserName() ?></td>
 			<td><?php echo $membership->getGroupName() ?></td>
 			<input type="hidden" name="inviteId" id="inviteId" value=<?php echo $inviteId?> />
 			<input type="hidden" name="withdraw" id="withdraw" value="True" />
