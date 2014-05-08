@@ -166,6 +166,20 @@ class Database {
 
 		return $results;
 	}
+
+	public function selectRaw($sql, $values) {
+		$statement = $this->getStatement2($sql);
+		$statement->setFetchMode(PDO::FETCH_ASSOC);
+
+		$statement->execute($values);
+
+		$results = [];
+		while($result = $statement->fetch()) {
+			array_push($results, $result);
+		}
+
+		return $results;
+	}
 	
 	
 	
@@ -3122,6 +3136,27 @@ class Database {
 	}
 
 
+	/**
+	Returns the matches without a bet for a player.
+	
+	@param userId The user.
+	@param future How many seconds from today to look for.
+
+	@return The matches without a bet from the user.
+	*/
+	public function getUnbetMatches($userId, $future) {
+		$date = new DateTime();
+		$today = $date->getTimestamp();
+
+		$query = "
+			SELECT * FROM `Match` WHERE NOT EXISTS (
+				SELECT * FROM Bet WHERE Bet.matchId = `Match`.id AND Bet.userId = ?
+			) AND `Match`.date >= ? AND `Match`.date <= ?
+		";
+
+		$result = $this->selectRaw($query, [$userId, $today, $today + $future]);
+		return $this->resultToMatches($result);
+	}
 
 	/**
 	Returns amount of matches won by a team
