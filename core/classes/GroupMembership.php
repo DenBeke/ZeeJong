@@ -20,8 +20,9 @@ class GroupMembership {
 
 	@param id The ID of the groupMembership
 	*/
-	public function __construct($id, &$db) {
-		$this->db = &$db;
+	public function __construct($id) {
+		global $database;
+		$this->db = $database;
 		$this->id = $id;
 
 	}
@@ -60,6 +61,15 @@ class GroupMembership {
 	  */
 	  public function getUserId(){
 	  	return $this->db->getUserIdFromMembership($this->id);
+	  }
+	  
+	  /**
+	  Returns the username
+	  
+	  @return the userName
+	  */
+	  public function getUserName(){
+	  	return $this->db->getUserName($this->getUserId());
 	  }
 	 
 	 
