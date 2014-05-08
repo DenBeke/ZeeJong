@@ -313,5 +313,15 @@ Created: February 2014
 	
 	</div>
 	
+	
+	<p>
+		<?php generateTweetButton() ?>
+	</p>
+	
+	<p>
+		<?php generateLikeButton(SITE_URL . 'match/' . $this->match->getId()); ?>
+	</p>
+	
+	
 
 </div>
