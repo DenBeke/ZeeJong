@@ -129,7 +129,15 @@ class Match {
 	public function getTotalCards() {
 		return $this->db->getTotalCardsInMatch($this->getId());
 	}
-
+	
+	public function getTotalYellowCards(){
+		return $this->db->getTotalYellowCardsInMatch($this->id);
+	}
+	
+	public function getTotalRedCards(){
+		return $this->db->getTotalYellowCardsInMatch($this->id);
+	}
+	
 	public function getPrognose() {
 		$teamATotal = $this->db->getTotalMatchesPlayedByTeam($this->getTeamAId());
 		$teamAWins = $this->db->getTotalMatchesWonByTeam($this->getTeamAId());
@@ -170,6 +178,7 @@ class Match {
 	public function getTotalMoneyBetOn(){
 		return $this->db->getAmountBetOnMatch($this->id);
 	}
+	
 	
 	/**
 	String function
