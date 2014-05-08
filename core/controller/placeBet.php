@@ -55,6 +55,10 @@ namespace Controller {
 				$this -> betErrorMessage = $this -> betErrorMessage . "You do not have enough money." . "\r\n";
 				return;
 			}
+			if($_POST['money']<=0){
+				$this -> betErrorMessage = $this -> betErrorMessage . "You cannot bet less or equal than €0." . "\r\n";
+				return;
+			}
 
 			$score1 = -1;
 			$score2 = -1;
