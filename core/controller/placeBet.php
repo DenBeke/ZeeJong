@@ -9,6 +9,8 @@ namespace Controller {
 	require_once (dirname(__FILE__) . '/../database.php');
 	// Require the database file
 	require_once (dirname(__FILE__) . '/Controller.php');
+	require_once (dirname(__FILE__) . '/../classes/Player.php');
+	// We need the player class file
 
 	class placeBet extends Controller {
 
@@ -140,6 +142,19 @@ namespace Controller {
 		public function getErrorMessage() {
 			return $this -> betErrorMessage;
 		}
+
+		/**
+		 Get the ID's of the players that play in this match
+		 @return an array containing the ID's of the players
+		 */
+		 public function getPlayers(){
+		 	global $database;
+			$match = $database->getMatchById($this->matchId);
+			$p1= $database->getPlayersInTeam($match->getTeamAId());
+			$p2 = $database->getPlayersInTeam($match->getTeamBId());
+			$retval = array_merge($p1,$p2);
+			return $retval;
+		 }
 
 		/**
 		 Get the success message
