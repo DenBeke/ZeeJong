@@ -3268,6 +3268,33 @@ class Database {
 		return $result[0]['COUNT(*)'];
 	}
 	
+	public function getTotalRedCardsInMatch($matchId) {
+		$sel = new \Selector('Cards');
+		$sel->filter([['matchId', '=', $matchId]]);
+		$sel->filter([['color', '=', 1]]);
+		$sel->count();
+
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Could not count total cards in match ' . $matchId);
+		}
+
+		return $result[0]['COUNT(*)'];
+	}
+	
+	public function getTotalYellowCardsInMatch($matchId) {
+		$sel = new \Selector('Cards');
+		$sel->filter([['matchId', '=', $matchId]]);
+		$sel->filter([['color', '=', 0]]);
+		$sel->count();
+
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Could not count total cards in match ' . $matchId);
+		}
+
+		return $result[0]['COUNT(*)'];
+	}
 	
 	
 	
