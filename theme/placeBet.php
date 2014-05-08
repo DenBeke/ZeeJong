@@ -162,15 +162,32 @@
 						</div>
 					</div>
 				</div>
+			
 				<div class="form-group">
-					<label class="control-label col-sm-4">Player that makes first goal</label>
-					<div class="controls col-sm-8">
-						<div class="input-group">
-							<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-arrow-right"></span> </span>
-							<input type="number" disabled class="form-control input-xlarge" id="firstGoal" name="firstGoal" placeholder="">
-						</div>
+				<label class="control-label col-sm-4">Player that makes first goal</label>
+				<div class="controls col-sm-8">
+					<div class="input-group">
+						<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-user"></span> </span>
+						<select class="form-control" name="firstGoal",id="firstGoal" disabled>
+							<?php
+	
+							
+							foreach($this->getPlayers() as $player){
+								?>
+									<option value="<?php echo $player->getId() ?>"><?php echo $player->getName() ?></option>
+								<?php
+								}
+
+							?>
+						</select>
 					</div>
 				</div>
+			    </div>
+				
+				
+				
+				
+				
 				<div class="form-group">
 					<label class="control-label col-sm-4">Red cards</label>
 					<div class="controls col-sm-8">

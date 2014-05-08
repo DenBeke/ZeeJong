@@ -1780,6 +1780,8 @@ class Database {
 
 		return $coacheses[0];
 	}
+	
+
 
 	/**
 	 Add a team to the database
