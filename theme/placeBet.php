@@ -14,7 +14,6 @@
 		
 		
 		<?php
-		global $database;
 		if(!loggedIn()){
 		// User is not logged in
 	
@@ -142,7 +141,7 @@
 
 				</table> 
 				<div class="form-group">
-					<label class="control-label col-sm-4">Score <?php $match = $database -> getMatchById($this->getMatchId());echo $match->getTeamA()->getName() ?></label>
+					<label class="control-label col-sm-4">Score <?php echo $this->getMatch()->getTeamA()->getName() ?></label>
 					<div class="controls col-sm-8">
 						
 						<div class="input-group">
@@ -154,7 +153,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-4">Score <?php $match = $database -> getMatchById($this->getMatchId());echo $match->getTeamB()->getName() ?></label>
+					<label class="control-label col-sm-4">Score <?php $this->getMatch()->getTeamB()->getName() ?></label>
 					<div class="controls col-sm-8">
 						<div class="input-group">
 							<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-arrow-right"></span> </span>
@@ -162,15 +161,32 @@
 						</div>
 					</div>
 				</div>
+			
 				<div class="form-group">
-					<label class="control-label col-sm-4">Player that makes first goal</label>
-					<div class="controls col-sm-8">
-						<div class="input-group">
-							<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-arrow-right"></span> </span>
-							<input type="number" disabled class="form-control input-xlarge" id="firstGoal" name="firstGoal" placeholder="">
-						</div>
+				<label class="control-label col-sm-4">Player that makes first goal</label>
+				<div class="controls col-sm-8">
+					<div class="input-group">
+						<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-user"></span> </span>
+						<select class="form-control" name="firstGoal",id="firstGoal" disabled>
+							<?php
+	
+							
+							foreach($this->getPlayers() as $player){
+								?>
+									<option value="<?php echo $player->getId() ?>"><?php echo $player->getName() ?></option>
+								<?php
+								}
+
+							?>
+						</select>
 					</div>
 				</div>
+			    </div>
+				
+				
+				
+				
+				
 				<div class="form-group">
 					<label class="control-label col-sm-4">Red cards</label>
 					<div class="controls col-sm-8">
@@ -229,18 +245,16 @@
 				<ul class="list-group">
 					
 					<li class="list-group-item">
-						<?php  $match = $database -> getMatchById($this -> getMatchId());
-						echo $match -> getTeamA() -> getName() . ' vs ' . $match -> getTeamB() -> getName();
- ?>
+						<?php  echo $this->getMatch() -> getTeamA() -> getName() . ' vs ' . $this->getMatch() -> getTeamB() -> getName();?>
 					</li>
 					
 					<li class="list-group-item">
-						Date: <?php echo date('d-m-Y', $match -> getDate()); ?>
+						Date: <?php echo date('d-m-Y', $this->getMatch() -> getDate()); ?>
 					</li>
 					
 					<li class="list-group-item">
 						Prognose: 
-						<?php $prognose = $match->getPrognose();
+						<?php $prognose = $this->getMatch()->getPrognose();
 						echo $prognose[0] . '-' . $prognose[1]?>
 					</li>
 					

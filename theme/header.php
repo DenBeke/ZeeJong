@@ -86,17 +86,15 @@
 
 					<li><a href="<?php echo SITE_URL; ?>bets">Bets</a></li>
 
-
-
-
 					  <li class="dropdown">
 				        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Groups <b class="caret"></b></a>
 				        <ul class="dropdown-menu">
 				        	<li> <a href ="<?php echo SITE_URL; ?>create-group">Create a group</a></li>
 					      	<li> <a href ="<?php echo SITE_URL; ?>invite-user">Invite users</a></li>
 					        <li> <a href ="<?php echo SITE_URL; ?>invites">Invites</a></li>
-						<?php foreach($header->userGroups as $groupId) {?>
-						    <li><a href="<?php echo SITE_URL . 'group/' . $database->getGroupName($groupId); ?>"><?php echo $database->getGroupName($groupId); ?></a></li>
+
+					      	<?php foreach($header->userGroupNames as $groupName) {?>				      		
+						    <li><a href="<?php echo SITE_URL . 'group/' . $groupName; ?>"><?php echo $groupName; ?></a></li>
 						   	<?php } ?>
 
 				        </ul>

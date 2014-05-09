@@ -9,6 +9,8 @@ namespace Controller {
 	require_once (dirname(__FILE__) . '/../database.php');
 	// Require the database file
 	require_once (dirname(__FILE__) . '/Controller.php');
+	require_once (dirname(__FILE__) . '/../classes/Player.php');
+	// We need the player class file
 
 	class placeBet extends Controller {
 
@@ -17,6 +19,7 @@ namespace Controller {
 		private $betErrorMessage;
 		private $matchId;
 		private $stop;
+		private $match;
 		public $title;
 
 		public function __construct() {
@@ -28,6 +31,7 @@ namespace Controller {
 			if (!isset($_SESSION['userID']) || !isset($_POST['money']) || !isset($_POST['matchId'])) {
 				return;
 			}
+			$this->match = $database->getMatchById($_POST['matchId']);
 			if (!$database -> doesUserExist($_SESSION['userID'])) {
 				$this -> stop = True;
 				return;
@@ -36,13 +40,16 @@ namespace Controller {
 			if (!$_POST['money'] > 0) {
 				$this -> betErrorMessage = $this -> betErrorMessage . "You must bet for more than €0." . "\r\n";
 				$this -> matchId = $_POST['matchId'];
+				$this->match = $database->getMatchById($this->matchId);
 			}
 
 			if (!isset($_POST['score1']) && !isset($_POST['score2']) && !isset($_POST['firstGoal']) && !isset($_POST['redCards']) && !isset($_POST['yellowCards'])) {
 				$this -> betErrorMessage = $this -> betErrorMessage . "You must bet for at least one parameter." . "\r\n";
 				$this -> matchId = $_POST['matchId'];
+				$this->match = $database->getMatchById($this->matchId);
 				return;
 			}
+			
 			if (strlen($this -> betErrorMessage) == 0) {
 				// Safe to place bet
 				$this -> placeBet();
@@ -53,6 +60,10 @@ namespace Controller {
 			global $database;
 			if ($database -> getMoney($_SESSION['userID']) < $_POST['money']) {
 				$this -> betErrorMessage = $this -> betErrorMessage . "You do not have enough money." . "\r\n";
+				return;
+			}
+			if($_POST['money']<=0){
+				$this -> betErrorMessage = $this -> betErrorMessage . "You cannot bet less or equal than €0." . "\r\n";
 				return;
 			}
 
@@ -127,6 +138,7 @@ namespace Controller {
 				$this -> stop = False;
 			}
 			$this -> matchId = $args[1];
+			$this->match = $database->getMatchById($this->matchId);
 		}
 
 		/**
@@ -136,6 +148,19 @@ namespace Controller {
 		public function getErrorMessage() {
 			return $this -> betErrorMessage;
 		}
+
+		/**
+		 Get the ID's of the players that play in this match
+		 @return an array containing the ID's of the players
+		 */
+		 public function getPlayers(){
+		 	global $database;
+			$match = $database->getMatchById($this->matchId);
+			$p1= $database->getPlayersInTeam($match->getTeamAId());
+			$p2 = $database->getPlayersInTeam($match->getTeamBId());
+			$retval = array_merge($p1,$p2);
+			return $retval;
+		 }
 
 		/**
 		 Get the success message
@@ -152,6 +177,15 @@ namespace Controller {
 		public function getMatchId() {
 			return $this -> matchId;
 		}
+		
+		/**
+		 Get the match
+		 @return the match object
+		 */
+		public function getMatch() {
+			return $this -> match;
+		}
+		
 
 		/**
 		 Is bet within time fram
