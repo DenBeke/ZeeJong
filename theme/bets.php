@@ -29,11 +29,9 @@
 			<th>Amount</th>
 		</tr>
 	<?php
-
-		global $database;
 		$bets = $this->getBets();
 		foreach($bets as $betId) {
-		$bet = new Bet($betId,$database);
+		$bet = new Bet($betId);
 	?>
 		<tr>
 			<?php

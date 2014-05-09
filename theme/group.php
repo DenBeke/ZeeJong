@@ -9,13 +9,7 @@
 
 
 	<div class="container">
-
-
-		
-		
-		
 		<?php
-		global $database;
 		if(!loggedIn()){
 		// User is not logged in
 	
@@ -117,11 +111,11 @@
 					<th>Amount</th>
 				</tr>
 			<?php
-		
+			// Heel dit zal opnieuw gemaakt worden, dus heeft geen zin om nu $database weg te doen
 				global $database;
 				$bets = $this->getGroup()->getBets();
 				foreach($bets as $betId) {
-				$bet = new Bet($betId,$database);
+				$bet = new Bet($betId);
 			?>
 				<tr>
 					<td><?php echo $database->getUserName($bet->getUserId())?></td>
@@ -135,7 +129,7 @@
 			}
 			?>
 		</table>
-				
+		
 			</div>
 			
 			
