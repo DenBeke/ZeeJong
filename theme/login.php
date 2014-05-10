@@ -124,7 +124,7 @@ require_once(dirname(__FILE__) . '/../core/openid.php');
 			<div class="btn-group">
 			<a class="dropdown-toggle" type="button" data-toggle="dropdown" id="openid">OpenId Provider</a>
 			  <ul class="dropdown-menu">
-				<form role="form" action="<?php echo SITE_URL; ?>login-alternative/" method="get">
+				<form role="form" action="<?php echo SITE_URL; ?>login/" method="get">
 					 <div class="form-group">
 						<input name="oid" class="form-control" type="text" placeholder="OpenID Provider" id="provider" data-stopPropagation="true">
 				
