@@ -265,6 +265,7 @@ div.panel-wiki:hover .wiki {
 	vertical-align: middle;
 	margin: 5px;
 	text-align: left;
+	cursor: pointer;
 }
 
 .social-buttons .btn-group {
