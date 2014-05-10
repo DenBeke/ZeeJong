@@ -258,6 +258,27 @@ div.panel-wiki:hover .wiki {
 	background-image: url('../img/social-buttons.png');
 	background-repeat: no-repeat;
 	font-size: 0;
+	vertical-align: middle;
+}
+
+.social-buttons .btn-group {
+	padding: 0;
+	margin: 0;
+}
+
+
+.social-buttons .dropdown-menu .form-group {
+	padding: 0;
+	margin: 0;
+}
+
+.social-buttons .dropdown-menu {
+	padding: 5px;
+}
+
+.social-buttons .dropdown-menu button {
+	margin-top: 5px;
+	width: 100%;
 }
 
 
@@ -275,5 +296,9 @@ div.panel-wiki:hover .wiki {
 
 .social-buttons #wordpress {
 	background-position: -190px -469px !important;
+}
+
+.social-buttons #openid {
+	background-position: -422px -391px !important;
 }
 

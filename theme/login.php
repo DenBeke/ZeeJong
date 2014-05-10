@@ -120,17 +120,24 @@ require_once(dirname(__FILE__) . '/../core/openid.php');
 			
 			<a id="wordpress" href="?oid=https://username.wordpress.com/">Wordpress</a>
 
+
+			<div class="btn-group">
+			<a class="dropdown-toggle" type="button" data-toggle="dropdown" id="openid">OpenId Provider</a>
+			  <ul class="dropdown-menu">
+				<form role="form" action="<?php echo SITE_URL; ?>login-alternative/" method="get">
+					 <div class="form-group">
+						<input name="oid" class="form-control" type="text" placeholder="OpenID Provider" id="provider" data-stopPropagation="true">
+				
+						<button type="submit" class="btn btn-default">Login</button>
+					</div>
+				</form>
+			  </ul>
+			</div>
+
 			
 		</div>
 
 
-        <form role="form" action="<?php echo SITE_URL; ?>login-alternative/" method="get">
-			 <div class="form-group">
-				<input name="oid" class="form-control" type="text" placeholder="OpenID Provider" id="provider">
-
-				<button type="submit" class="btn btn-default">Login</button>
-			</div>
-		</form>
 
 	</div>
 
