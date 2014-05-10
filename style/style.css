@@ -251,6 +251,10 @@ div.panel-wiki:hover .wiki {
 /* Login *
 *********/
 
+.social-buttons {
+	text-align: center;
+}
+
 .social-buttons a {
 	display: inline-block;
 	width: 188px;
@@ -259,6 +263,8 @@ div.panel-wiki:hover .wiki {
 	background-repeat: no-repeat;
 	font-size: 0;
 	vertical-align: middle;
+	margin: 5px;
+	text-align: left;
 }
 
 .social-buttons .btn-group {
