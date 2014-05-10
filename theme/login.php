@@ -107,23 +107,23 @@ require_once(dirname(__FILE__) . '/../core/openid.php');
 
 		</form>
 
-		<br/>
-        <br/>
-		<a, onclick="FB.login();"><img src="<?php echo SITE_URL; ?>/img/FacebookLoginButton.png"></img></a>
-        <br/>
-        <br/>
-        <a href="?oid=https://www.google.com/accounts/o8/id"><img src="<?php echo SITE_URL; ?>/img/Google.png"></img></a>
-        <br/>
-        <br/>
-        <a href="?oid=https://openid.stackexchange.com"><img src="<?php echo SITE_URL; ?>/img/StackExchange.png"></img></a>
-        <br/>
-        <br/>
-        <a href="?oid=https://me.yahoo.com"><img src="<?php echo SITE_URL; ?>/img/Yahoo.png"></img></a>
-        <br/>
-        <br/>
-        <a href="?oid=https://username.wordpress.com/"><img src="<?php echo SITE_URL; ?>/img/Wordpress.png"></img></a>
-        <br/>
-        <br/>
+
+		<div class="social-buttons">
+			
+			<a id="facebook" onclick="FB.login();">Facebook</a>
+			
+			<a id="google" href="?oid=https://www.google.com/accounts/o8/id">Google+</a>
+			
+			<!-- <a href="?oid=https://openid.stackexchange.com"><img src="<?php echo SITE_URL; ?>/img/StackExchange.png"></img></a> -->
+			
+			<a id="yahoo" href="?oid=https://me.yahoo.com">Yahoo</a>
+			
+			<a id="wordpress" href="?oid=https://username.wordpress.com/">Wordpress</a>
+
+			
+		</div>
+
+
         <form role="form" action="<?php echo SITE_URL; ?>login-alternative/" method="get">
 			 <div class="form-group">
 				<input name="oid" class="form-control" type="text" placeholder="OpenID Provider" id="provider">

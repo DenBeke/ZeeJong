@@ -245,3 +245,35 @@ table tr:nth-child(4) td:nth-child(3) {
 div.panel-wiki:hover .wiki {
 	max-height: 1000px;
 }
+
+
+
+/* Login *
+*********/
+
+.social-buttons a {
+	display: inline-block;
+	width: 188px;
+	height: 34px;
+	background-image: url('../img/social-buttons.png');
+	background-repeat: no-repeat;
+	font-size: 0;
+}
+
+
+.social-buttons #facebook {
+	background-position: -190px -157px !important;
+}
+
+.social-buttons #google {
+	background-position: -190px -313px !important;
+}
+
+.social-buttons #yahoo {
+	background-position: -190px -547px !important;
+}
+
+.social-buttons #wordpress {
+	background-position: -190px -469px !important;
+}
+
