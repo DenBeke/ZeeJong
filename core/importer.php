@@ -118,7 +118,8 @@ $schama = [
 			'Season' => 'tournamentId',
 			'Referee' => 'refereeID',
 			'Date' => 'date',
-			'Score' => 'scoreID'
+			'Score' => 'scoreID',
+			'FinalType' => 'type'
 		]
 	],
 	

@@ -78,6 +78,7 @@ CREATE TABLE IF NOT EXISTS `Match` (
 `refereeId` int(11),
 `date` int NOT NULL,
 `scoreId` int(11),
+`type` varchar(50),
 PRIMARY KEY (`id`),
 KEY `teamA` (`teamA`,`teamB`),
 KEY `tournamentId` (`tournamentId`,`refereeId`)
