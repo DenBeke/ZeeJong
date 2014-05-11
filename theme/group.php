@@ -135,7 +135,14 @@
 			
 			<div class="col-md-4">
 				
-				<div id="chatResults" class="well">Chatbox...</div>
+				<div id="chatResults" class="well">
+					
+					<div class="loader-container">
+						<div class="loader"></div>
+						loading chat
+					</div>
+					
+				</div>
 
 				<div class="input-group">
 				  <input type="hidden" id="author" name="author" value="<?php echo user()->getUserName(); ?>">
