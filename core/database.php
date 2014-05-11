@@ -136,8 +136,6 @@ class Database {
 		$query .= implode(',', $columns) . ' WHERE ';
 		$query .= ' ' . implode(' AND ', $whereClause);
 
-		echo $query;
-
 		$statement = $this->getStatement2($query);
 		if(!$statement->execute(array_merge($values, $whereValues))) {
 			return false;
@@ -3445,6 +3443,20 @@ class Database {
 		else {
 			throw new exception("Could not retrieve page");
 		}
+	}
+	
+	
+	
+	public function savePage($id, $title, $content) {
+		
+		try {
+			$this->getPageById($id);
+			$this->update('Pages', [['title', $title], ['content', $content]], [['id', '=', $id]] );
+		}
+		catch (exception $e) {
+			//Insert
+		}
+		
 	}
 	
 	
