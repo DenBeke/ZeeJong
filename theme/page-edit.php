@@ -15,7 +15,7 @@ Created: February 2014
 	<div class="well">
 		
 	
-		<form action="" method="post" role="form" class="form form-horizontal">
+		<form action="<?php echo SITE_URL . 'page/' . $this->page->getId() . '/edit'; ?>" method="post" role="form" class="form form-horizontal">
 			
 			
 				<div class="form-group">
@@ -24,7 +24,7 @@ Created: February 2014
 					<label class="control-label col-sm-2">Title</label>
 					
 					<div class="col-sm-10">
-						<input type="text" class="form-control input-xlarge" value="<?php echo $this->page->getTitle(); ?>">
+						<input name="title" type="text" class="form-control input-xlarge" value="<?php echo $this->page->getTitle(); ?>">
 					</div>
 				
 				</div>
@@ -38,7 +38,7 @@ Created: February 2014
 					<label class="control-label col-sm-2">Content</label>
 					
 					<div class="col-sm-10">
-						<textarea class="form-control input-xlarge" rows="10"><?php echo $this->page->getContent(); ?></textarea>
+						<textarea name="content" class="form-control input-xlarge" rows="10"><?php echo $this->page->getContent(); ?></textarea>
 					</div>
 				
 				</div>

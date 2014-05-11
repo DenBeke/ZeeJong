@@ -42,6 +42,26 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			
 			
 		}
+		
+		
+		
+		public function POST($args) {
+			
+			if(!isset($args[1])) {
+				throw new \exception('No page id given');
+				return;
+			}
+			
+			if(!isset($_POST['title']) or !isset($_POST['content'])) {
+				throw new exception("No title or content given");
+			}
+			
+			global $database;
+			$database->savePage($args[1], $_POST['title'], $_POST['content']);
+			$this->page = $database->getPageById($args[1]);
+			
+			
+		}
 
 
 	}
