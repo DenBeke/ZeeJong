@@ -3448,6 +3448,19 @@ class Database {
 	}
 	
 	
+	
+	
+	public function getAllUsers() {
+		
+		$sel = new \Selector('User');
+		
+		$result = $this->select($sel);
+		
+		return $this->resultToUsers($result);
+
+		
+	}
+	
 
 
 }
