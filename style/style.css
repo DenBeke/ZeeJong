@@ -25,6 +25,13 @@ table a {
 }
 
 
+.final-type {
+	padding-top: 20px !important;
+	font-size: 0.95em;
+	text-align: center !important;
+	font-weight: bold;
+}
+
 
 
 /* Style for match *

@@ -28,8 +28,32 @@ Created: February 2014
 	
 	
 		<?php
-		foreach($this->tournament->getMatches(0) as $match) { 
+		foreach($this->tournament->getMatches(0) as $type => $matches) { 
+			
+			if(sizeof($matches) == 0) {
+				continue;
+			}
+			
 		?>
+		
+		
+		<tr>
+			<td colspan="3" class="final-type">
+				<?php echo $type; ?>
+			</td>
+		</tr>
+		
+		
+		<?php
+		
+			foreach ($matches as $match) {
+		
+			
+		
+		
+		?>
+		
+		
 	
 		<tr>
 			
@@ -59,6 +83,9 @@ Created: February 2014
 	
 	
 		<?php
+			}
+		
+		
 		} //end foreach
 		?>
 	
