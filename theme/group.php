@@ -148,7 +148,7 @@
 					foreach ($bets as $betId) {
 						$bet = new Bet($betId);?>
 						<tr>
-							
+							<td><?php echo $bet->getUserName() ?></td>
 							<?php echo $bet -> dataHiddenAsString();?>
 						</tr>
 						
@@ -180,6 +180,7 @@
 						$bet = new Bet($betId);
 						?>
 						<tr>
+						<td><?php echo $bet->getUserName() ?></td>
 						<?php echo $bet -> dataAsColouredString();?>
 						</tr>
 					<?php
