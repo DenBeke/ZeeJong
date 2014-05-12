@@ -153,7 +153,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-4">Score <?php $this->getMatch()->getTeamB()->getName() ?></label>
+					<label class="control-label col-sm-4">Score <?php echo $this->getMatch()->getTeamB()->getName() ?></label>
 					<div class="controls col-sm-8">
 						<div class="input-group">
 							<span class="add-on input-group-addon"> <span class="glyphicon glyphicon-arrow-right"></span> </span>
