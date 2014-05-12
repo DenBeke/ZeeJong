@@ -41,7 +41,7 @@
 			
 			<div class="col-md-12">
 			<div class=top-left><div class=badge><h1><?php echo $this->getGroup()->getName() ?></h1></div></div>
-			<div class="col-md-3">
+			<div class="col-md-5">
 				<h2>Members</h2>
 				<table class="table table-striped">
 					<tr>
@@ -100,37 +100,6 @@
 				<?php } ?>
 				</table>
 			</div>
-			<div class="col-md-5">
-				<h2>Bets</h2>
-				<table class="table table-striped">
-				<tr>
-					<th>Made by</th>
-					<th>Team 1</th>
-					<th>Score</th>
-					<th>Team 2</th>
-					<th>Amount</th>
-				</tr>
-			<?php
-			// Heel dit zal opnieuw gemaakt worden, dus heeft geen zin om nu $database weg te doen
-				global $database;
-				$bets = $this->getGroup()->getBets();
-				foreach($bets as $betId) {
-				$bet = new Bet($betId);
-			?>
-				<tr>
-					<td><?php echo $database->getUserName($bet->getUserId())?></td>
-					<td><?php echo $database->getMatchById($bet->getMatchId())->getTeamA()->getName() ?></td>
-					<td><span class="badge"><?php  echo $bet -> getScoreA() . " - " . $bet -> getScoreB(); ?></span></td>
-					<td><?php echo $database->getMatchById($bet->getMatchId())->getTeamB()->getName() ?></td>
-					<td><?php echo "€ ".$bet->getMoney() ?></td>
-				</tr>
-			<?php
-
-			}
-			?>
-		</table>
-		
-			</div>
 			
 			
 			<div class="col-md-4">
@@ -145,9 +114,9 @@
 				</div>
 
 				<div class="input-group">
-				  <input type="hidden" id="author" name="author" value="<?php echo user()->getUserName(); ?>">
+				  <input type="hidden" id="author" name="author" value="<?php echo user() -> getUserName(); ?>">
 				  <input type="text" class="form-control" id="text" name="text" size="100">
-				  <input type="hidden" id="chat-group-id" name="chat-group-id" value="<?php echo $this->groupId; ?>">
+				  <input type="hidden" id="chat-group-id" name="chat-group-id" value="<?php echo $this -> groupId; ?>">
 				  <span class="input-group-btn">
 					  <input type="submit" value="Talk!" id="submitter" class="btn btn-default">
 				  </span>
@@ -160,6 +129,36 @@
 				
 				
 			</div>
+			
+			<div class="col-md-12">
+				<h2>Bets</h2>
+				<table class="table table-striped">
+				<tr>
+					<th>Made by</th>
+					<th>Team 1</th>
+					<th>Score</th>
+					<th>Team 2</th>
+					<th>Player that makes first goal</th>
+					<th># Red Cards</th>
+					<th># Yellow Cards</th>
+					<th>Amount</th>
+				</tr>
+					<?php
+					// Heel dit zal opnieuw gemaakt worden, dus heeft geen zin om nu $database weg te doen
+					global $database;
+					$bets = $this -> getGroup() -> getBets();
+					foreach ($bets as $betId) {
+						$bet = new Bet($betId);
+						echo $bet -> dataHiddenAsString();
+		
+					}
+					?>
+				</table>
+		
+			</div>
+			
+			
+			
 			
 			
 			
