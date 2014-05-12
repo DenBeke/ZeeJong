@@ -103,7 +103,7 @@ Created: February 2014
 					
 					<td class="<?php echo $gClass; ?>">
 						<span class="football-icon"></span>
-						<a href="<?php echo SITE_URL . 'player/' . $database->getPlayerById($goal->getPlayerId()); ?>">
+						<a href="<?php echo SITE_URL . 'player/' . $database->getPlayerById($goal->getPlayerId())->getId(); ?>">
 							<?php echo $database->getPlayerById($goal->getPlayerId())->getName(); ?>
 						</a>	
 					</td>
