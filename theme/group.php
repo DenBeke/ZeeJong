@@ -46,6 +46,8 @@
 				<table class="table table-striped">
 					<tr>
 						<th>Name</th>
+						<th>Score</th>
+						<th>Money</th>
 						<th>Action</th>
 					</tr>
 				<?php		
@@ -54,6 +56,9 @@
 				$user = new User($memberId); ?>
 				<tr>
 				<td><?php echo $user->getUserName() ?></td>
+				<td><?php echo number_format((float)$user->getScore(),2,'.','.'); ?></td>
+				<td><?php echo $user->getMoney()?></td>
+				
 				<?php if($this->getGroup()->isUserOwner($_SESSION['userID'])&&!$this->getGroup()->isUserOwner($memberId)){
 							?>
 						
