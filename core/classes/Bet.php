@@ -1,5 +1,6 @@
 <?php
 require_once (dirname(__FILE__) . '/../database.php');
+require_once(dirname(__FILE__) . '/Match.php');
 
 /**
  @brief Class containing a bet
@@ -43,6 +44,14 @@ class Bet {
 	public function getMatchId() {
 		return $this -> db -> getMatchFromBet($this -> id);
 	}
+
+	/**
+	 Returns the Match object
+	 @return Match object
+	 */
+	 public function getMatch(){
+	 	return $this->db->getMatchById($this->getMatchId());
+	 }
 
 	/**
 	 Returns the User ID
@@ -224,6 +233,72 @@ class Bet {
 		$output = $output . "<td>" . "€ " . $this -> getMoney() . "</td>";
 		return $output;
 	}
+
+	/**
+	 Return the data as a table row string with correct data coloured green
+	 
+	 @return a table row string with the data, if correct, then coloured green
+	 */
+	 public function dataAsColouredString(){
+	 	$output = "<td>".$this->getUserName()."</td>";
+		$output = $output . "<td>" . $this -> db -> getMatchById($this -> getMatchId()) -> getTeamA() -> getName() . "</td>";
+		$output = $output . "<td><span class='badge'>";
+		$match = $this->getMatch();
+		if ($this -> getScoreA() != -1) {
+			if($this->getScoreA()==$match->getScore()->getScoreA()){
+				$output = $output. "<font color='green'>" . $this->getScoreA()."</font>"." - ";
+			}else{			
+				$output = $output. "<font color='red'>" . $this->getScoreA()."</font>"." - ";
+			}
+		} else {
+			$output = $output . " / " . " - ";
+		}
+		if ($this -> getScoreB() != -1) {
+			if($this->getScoreB()==$match->getScore()->getScoreB()){
+				$output = $output. "<font color='green'>" . $this->getScoreB()."</font>";
+			}else{			
+				$output = $output. "<font color='red'>" . $this->getScoreB()."</font>";
+			}
+		} else {
+			$output = $output . " / ";
+		}
+		$output = $output . "</span></td>";
+		$output = $output . "<td>" . $this -> db -> getMatchById($this -> getMatchId()) -> getTeamB() -> getName() . "</td>";
+
+		if ($this -> getFirstGoal() != -1) {
+			if($this->getFirstGoal() == $match->getFirstScorer()->getId()){
+				$output = $output . "<td>" ."<font color='green'>" . $this -> db -> getPlayerById($this -> getFirstGoal()) -> getName() ."</font>". "</td>";
+			}else{
+				$output = $output . "<td>" ."<font color='red'>" . $this -> db -> getPlayerById($this -> getFirstGoal()) -> getName() ."</font>". "</td>";
+			}
+		} else {
+			$output = $output . "<td> / </td>";
+		}
+		if ($this -> getRedCards() != -1) {
+			if($this->getRedCards() == $match->getTotalRedCards()){
+				$output = $output . "<td>"."<font color='green'>" . $this -> getRedCards() ."</font>". "</td>";
+			}else{
+				$output = $output . "<td>"."<font color='red'>" . $this -> getRedCards() ."</font>". "</td>";
+			}
+			
+		} else {
+			$output = $output . "<td> / </td>";
+		}
+
+		if ($this -> getYellowCards() != -1) {
+			if($this->getYellowCards() == $match->getTotalYellowCards()){
+				$output = $output . "<td>"."<font color='green'>" . $this -> getYellowCards() ."</font>". "</td>";
+			}else{
+				$output = $output . "<td>"."<font color='red'>" . $this -> getYellowCards() ."</font>". "</td>";
+			}
+			
+		} else {
+			$output = $output . "<td> / </td>";
+		}
+
+		$output = $output . "<td>" . "€ " . $this -> getMoney() . "</td>";
+		return $output;
+	 }
 
 	/**
 	 String function
