@@ -7,7 +7,6 @@
 
 #chatResults {
 	height: 250px !important;
-	background-color: red;
 	overflow-y: scroll;
 }
 

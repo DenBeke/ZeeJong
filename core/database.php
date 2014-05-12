@@ -2882,12 +2882,31 @@ class Database {
 	@return matches
 	*/
 	public function getMatchesInTournament($tournamentId) {
-		$sel = new \Selector('Match');
-		$sel->filter([['tournamentId', '=', $tournamentId]]);
+		
+		$matches = [];
+		
+		/*
+		if finalType != "" && finalType != "Final" && finalType != "Semi-finals" &&
+			finalType != "3rd Place Final" && finalType != "Quarter-finals" &&
+			finalType != "16th Finals" && finalType != "Final replay" {
+			log.Printf("Found unknown final type: %s", finalType)
+			finalType = "";
+		}
+		*/
+		foreach(['Final', 'Semi-finals', '3rd Place Final', 'Quarter-finals', '16th Finals', 'Final replay', ''] as $type) {
+			
+			$sel = new \Selector('Match');
+			$sel->filter([['tournamentId', '=', $tournamentId]]);
+			$sel->filter([['type', '=', $type]]);
+	
+			$result = $this->select($sel);
+			
+			$matches[$type] = $this->resultToMatches($result); 
+		
+		}
+		
 
-		$result = $this->select($sel);
-
-		return $this->resultToMatches($result);
+		return $matches;
 	}
 
 	public function resultToCompetitions($result) {
