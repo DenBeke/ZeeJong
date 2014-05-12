@@ -197,7 +197,7 @@ class Bet {
 	 @return a string with table rows consisting of the bet while hiding its data
 	 */
 	public function dataHiddenAsString() {
-		$output = "<td>".$this->getUserName()."</td>";
+		$output = "";
 		$output = $output . "<td>" . $this -> db -> getMatchById($this -> getMatchId()) -> getTeamA() -> getName() . "</td>";
 		$output = $output . "<td><span class='badge'>";
 		if ($this -> getScoreA() != -1) {
@@ -240,7 +240,7 @@ class Bet {
 	 @return a table row string with the data, if correct, then coloured green
 	 */
 	 public function dataAsColouredString(){
-	 	$output = "<td>".$this->getUserName()."</td>";
+	 	$output = "";
 		$output = $output . "<td>" . $this -> db -> getMatchById($this -> getMatchId()) -> getTeamA() -> getName() . "</td>";
 		$output = $output . "<td><span class='badge'>";
 		$match = $this->getMatch();

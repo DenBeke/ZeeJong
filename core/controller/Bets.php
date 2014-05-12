@@ -16,6 +16,8 @@ namespace Controller {
 		private $template = 'bets.php';
 		public $bet;
 		public $title;
+		private $unhandledbets;
+		private $handledbets;
 
 		/**
 		 Render the template part of the view
@@ -45,28 +47,40 @@ namespace Controller {
 			if(!$database -> doesUserExist($_SESSION['userID'])){
 				return;
 			}
-		}
-
-		/*
-		 Get an array consisting of the bet ID's
-
-		 @return an array with the bet ID's for the current user
-		 */
-		public function getBets() {
 			global $database;
-			return $database -> getUserBets($_SESSION['userID']);
-
+			$this->unhandledbets = $database -> getUserUnhandledBets($_SESSION['userID']);
+			$this->handledbets = $database -> getUserHandledBets($_SESSION['userID']);
 		}
 
 		/*
+		 Get an array consisting of the handled bet ID's
+
+		 @return an array with the handled bet ID's for the current user
+		 */
+		public function getHandledBets() {
+			return $this->handledbets;
+		}
+		
+		/*
+		 Get an array consisting of the unhandled bet ID's
+
+		 @return an array with the unhandled bet ID's for the current user
+		 */
+		public function getUnhandledBets() {
+			return $this->unhandledbets;
+		}
+		
+
+/*
+		
 		 Get the amount of bets the user made
 
 		 @return an int representing the amount of bets
-		 */
+		 
 		public function getAmountOfBets() {
 			return count($this -> getBets());
 		}
-
+*/
 	}
 
 }

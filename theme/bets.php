@@ -17,7 +17,7 @@
 	<?php
 	}else{
 	?>
-	<h2>Your bets</h2>
+	<h2>Your unhandled bets</h2>
 	<table class="table table-striped">
 		<tr>
 			<th>Team 1</th>
@@ -29,7 +29,7 @@
 			<th>Amount</th>
 		</tr>
 	<?php
-		$bets = $this->getBets();
+		$bets = $this->getUnhandledBets();
 		foreach($bets as $betId) {
 		$bet = new Bet($betId);
 	?>
@@ -40,8 +40,34 @@
 		</tr>
 	<?php
 	}
+	?>
+	</table>
+		
+	<h2>Bets - History</h2>
+	<table class="table table-striped">
+		<tr>
+			<th>Team 1</th>
+			<th>Score</th>
+			<th>Team 2</th>
+			<th>Player that makes first goal</th>
+			<th># Red Cards</th>
+			<th># Yellow Cards</th>
+			<th>Amount</th>
+		</tr>
+	<?php
+		$bets = $this->getHandledBets();
+		foreach($bets as $betId) {
+		$bet = new Bet($betId);
+	?>
+		<tr>
+			<?php
+			 echo $bet->dataAsColouredString();
+			?>
+		</tr>
+	<?php
+	}
 	}
 	?>
-		</table>
+	</table>
 </div>
 
