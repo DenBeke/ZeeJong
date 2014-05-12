@@ -22,8 +22,7 @@ class Bet {
 	@param id The ID of the bet
 	*/
 	public function __construct($id) {
-		global $database;
-		$this->db = $database;
+		$this->db = new Database();
 		$this->id = $id;
 
 	}

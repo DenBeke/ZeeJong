@@ -3269,7 +3269,7 @@ class Database {
 	public function getTotalRedCardsInMatch($matchId) {
 		$sel = new \Selector('Cards');
 		$sel->filter([['matchId', '=', $matchId]]);
-		$sel->filter([['color', '=', 1]]);
+		$sel->filter([['color', '=', 2]]);
 		$sel->count();
 
 		$result = $this->select($sel);
@@ -3283,7 +3283,7 @@ class Database {
 	public function getTotalYellowCardsInMatch($matchId) {
 		$sel = new \Selector('Cards');
 		$sel->filter([['matchId', '=', $matchId]]);
-		$sel->filter([['color', '=', 0]]);
+		$sel->filter([['color', '=', 1]]);
 		$sel->count();
 
 		$result = $this->select($sel);

@@ -135,7 +135,7 @@ class Match {
 	}
 	
 	public function getTotalRedCards(){
-		return $this->db->getTotalYellowCardsInMatch($this->id);
+		return $this->db->getTotalRedCardsInMatch($this->id);
 	}
 	
 	public function getPrognose() {
