@@ -86,6 +86,34 @@ class Group {
 	}
 
 	/**
+	 Get the handled bets of all users
+
+	 @return an array with the ID's of the handled bets of the users in the group
+	 */
+	public function getHandledBets() {
+		$retAr = array();
+		foreach ($this->getMembers() as $member) {
+			$memberBets = $this -> db -> getUserHandledBets($member);
+			$retAr = array_merge($retAr, $memberBets);
+		}
+		return $retAr;
+	}
+	
+	/**
+	 Get the unhandled bets of all users
+
+	 @return an array with the ID's of the unhandled bets of the users in the group
+	 */
+	public function getUnhandledBets() {
+		$retAr = array();
+		foreach ($this->getMembers() as $member) {
+			$memberBets = $this -> db -> getUserUnhandledBets($member);
+			$retAr = array_merge($retAr, $memberBets);
+		}
+		return $retAr;
+	}
+
+	/**
 	 String function
 
 	 @return string

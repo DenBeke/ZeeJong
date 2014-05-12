@@ -144,13 +144,45 @@
 					<th>Amount</th>
 				</tr>
 					<?php
+					$bets = $this -> getGroup() -> getUnhandledBets();
+					foreach ($bets as $betId) {
+						$bet = new Bet($betId);?>
+						<tr>
+							
+							<?php echo $bet -> dataHiddenAsString();?>
+						</tr>
+						
+		
+					<?php }
+					?>
+				</table>
+		
+			</div>
+			
+			
+			<div class="col-md-12">
+				<h2>Bets - History</h2>
+				<table class="table table-striped">
+				<tr>
+					<th>Made by</th>
+					<th>Team 1</th>
+					<th>Score</th>
+					<th>Team 2</th>
+					<th>Player that makes first goal</th>
+					<th># Red Cards</th>
+					<th># Yellow Cards</th>
+					<th>Amount</th>
+				</tr>
+					<?php
 					// Heel dit zal opnieuw gemaakt worden, dus heeft geen zin om nu $database weg te doen
-					global $database;
-					$bets = $this -> getGroup() -> getBets();
+					$bets = $this -> getGroup() -> getHandledbets();
 					foreach ($bets as $betId) {
 						$bet = new Bet($betId);
-						echo $bet -> dataHiddenAsString();
-		
+						?>
+						<tr>
+						<?php echo $bet -> dataAsColouredString();?>
+						</tr>
+					<?php
 					}
 					?>
 				</table>
