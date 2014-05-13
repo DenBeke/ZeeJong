@@ -2921,8 +2921,6 @@ class Database {
 			    FROM `Match`
 			    JOIN `Score` ON `Match`.scoreId = `Score`.id
 			    WHERE `Match`.teamA = ?
-			    ORDER BY `Match`.date DESC
-			    LIMIT 0,?
 			  )
 			  UNION
 			  (
@@ -2930,8 +2928,6 @@ class Database {
 			    FROM `Match`
 			    JOIN `Score` ON `Match`.scoreId = `Score`.id
 			    WHERE `Match`.teamB = ?
-			    ORDER BY `Match`.date DESC
-			    LIMIT 0,?
 			  )
 			) AS Temp)
 			ORDER BY date DESC
@@ -2940,7 +2936,7 @@ class Database {
 		
 		$statement = $this->getStatement($query);
 	
-		if(!$statement->bind_param('iiiii', $teamId, $amountOfMatches, $teamId, $amountOfMatches, $amountOfMatches)){
+		if(!$statement->bind_param('iii', $teamId, $teamId, $amountOfMatches)){
 			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
 		}
 		
@@ -2955,6 +2951,52 @@ class Database {
 		$result = [];
 		while ($statement->fetch()) {
 		    array_push($result, ['our' => $ourScore, 'opponent' => $opponentScore]);
+		}
+		
+		return $result;
+	}
+	
+	
+	public function getLatestMatchesBetweenTeams($teamIdA, $teamIdB, $amountOfMatches)
+	{
+	    $query = "
+	        SELECT scoreTeamA, scoreTeamB FROM
+			((
+			  (
+			    SELECT `Score`.teamA AS scoreTeamA, `Score`.teamB as scoreTeamB, date
+			    FROM `Match`
+			    JOIN `Score` ON `Match`.scoreId = `Score`.id
+			    WHERE `Match`.teamA = ? AND `Match`.teamB = ?
+			  )
+			  UNION
+			  (
+			    SELECT `Score`.teamB AS scoreTeamA, `Score`.teamA as scoreTeamB, date
+			    FROM `Match`
+			    JOIN `Score` ON `Match`.scoreId = `Score`.id
+			    WHERE `Match`.teamB = ? AND `Match`.teamA = ?
+			  )
+			) AS Temp)
+			ORDER BY date DESC
+			LIMIT 0,?
+		";
+		
+		$statement = $this->getStatement($query);
+	
+		if(!$statement->bind_param('iiiii', $teamIdA, $teamIdB, $teamIdA, $teamIdB, $amountOfMatches)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		$statement->store_result();
+		
+		$statement->bind_result($scoreTeamA, $scoreTeamB);
+
+		$result = [];
+		while ($statement->fetch()) {
+		    array_push($result, ['A' => $scoreTeamA, 'B' => $scoreTeamB]);
 		}
 		
 		return $result;
