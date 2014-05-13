@@ -94,6 +94,12 @@ table.goals .football-icon {
 	background-image: url('../img/red-card.svg');
 }
 
+.yellow-red {
+	background-image: url('../img/red-card.svg'), url('../img/yellow-card.svg');
+	background-position: right, left;
+	//background-color: green;
+}
+
 
 .football-player {
 	background-image: url('../img/football-player.svg');
@@ -315,4 +321,20 @@ div.panel-wiki:hover .wiki {
 .social-buttons #openid {
 	background-position: -422px -391px !important;
 }
+
+
+
+/* Admin *
+*********/
+
+.competitions h5 {
+	cursor: pointer;
+}
+
+.hidden-content {
+	display: none;
+}
+
+
+
 
