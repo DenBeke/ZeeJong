@@ -46,9 +46,15 @@ require_once(dirname(__FILE__) . '/core/controller/Header.php');
 require_once(dirname(__FILE__) . '/core/controller/Admin.php');
 require_once(dirname(__FILE__) . '/core/controller/AdminDashboard.php');
 
-//Create database
-$database = new Database;
 
+//Create database
+try {
+	$database = new Database;
+}
+catch (exception $e) {
+	echo '<h2>Database Error</h2>';
+	die;
+}
 
 $urls = array(
 	'ERROR' => 'Controller\Error',
@@ -84,7 +90,6 @@ $urls = array(
 //and handles all possible database errors
 try {
 	$controller = glue::stick($urls);
-	$header = new \Controller\Header;
 }
 //Whenever an error occurs, the controller
 //becomes the Error Controller
@@ -92,20 +97,36 @@ catch (exception $e) {
 	$controller = new \Controller\Error;
 }
 
-$navigator = new Controller\Navigator;
 
 
 
 
-//Include the header template
-include(dirname(__FILE__) . '/theme/header.php');
+//Load the header controller
+try {
+	
+	
+	//Make navigator controller
+	$navigator = new Controller\Navigator;
+	
+	
+	//Make header controller
+	$header = new \Controller\Header;
+
+	//Include the header template
+	include(dirname(__FILE__) . '/theme/header.php');
 
 
-//Include the theme part
-$controller->template();
+	//Include the theme part
+	$controller->template();
+	
+	
+	//Include the footer template
+	include(dirname(__FILE__) . '/theme/footer.php');
+	
+}
 
-
-//Include the footer template
-include(dirname(__FILE__) . '/theme/footer.php');
+catch (exception $e) {
+	echo '<h2>Fatal Error</h2>';
+}
 
 ?>
