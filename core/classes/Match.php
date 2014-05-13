@@ -139,34 +139,61 @@ class Match {
 	}
 	
 	public function getPrognose() {
-		$teamATotal = $this->db->getTotalMatchesPlayedByTeam($this->getTeamAId());
-		$teamAWins = $this->db->getTotalMatchesWonByTeam($this->getTeamAId());
+	
+	    $matchesWonByTeamA[0] = $this->db->getLatestWonMatches($this->getTeamAId(), 30);
+	    $matchesWonByTeamA[1] = $this->db->getLatestWonMatches($this->getTeamAId(), 10);
+	    $matchesWonByTeamA[2] = $this->db->getLatestWonMatches($this->getTeamAId(), 3);
 
-		$teamARatio = 0;
-		if($teamAWins !== 0) {
-			$teamARatio = $teamATotal / $teamAWins;
-		}
+	    $matchesWonByTeamB[0] = $this->db->getLatestWonMatches($this->getTeamBId(), 30);
+	    $matchesWonByTeamB[1] = $this->db->getLatestWonMatches($this->getTeamBId(), 10);
+	    $matchesWonByTeamB[2] = $this->db->getLatestWonMatches($this->getTeamBId(), 3);
+	    
+	    $earlierScoreTeamA = array();
+	    $earlierScoreTeamB = array();
+	    for ($i = 0; $i < 3; $i++) {
+	        $earlierScoreTeamA[$i]['our'] = 0;
+	        $earlierScoreTeamA[$i]['opponent'] = 0;
+	        $earlierScoreTeamB[$i]['our'] = 0;
+	        $earlierScoreTeamB[$i]['opponent'] = 0;
+	        
+	        foreach ($matchesWonByTeamA[$i] as $matchesWon) {
+	            $earlierScoreTeamA[$i]['our'] += $matchesWon['our'];
+	            $earlierScoreTeamA[$i]['opponent'] += $matchesWon['opponent'];
+	        }
+	        foreach ($matchesWonByTeamB[$i] as $matchesWon) {
+	            $earlierScoreTeamB[$i]['our'] += $matchesWon['our'];
+	            $earlierScoreTeamB[$i]['opponent'] += $matchesWon['opponent'];
+	        }
+	        
+	        if (sizeof($matchesWonByTeamA[$i]) > 0) {
+	            $earlierScoreTeamA[$i]['our'] /= sizeof($matchesWonByTeamA[$i]);
+	            $earlierScoreTeamA[$i]['opponent'] /= sizeof($matchesWonByTeamA[$i]);
+	        }
+	        else {
+	            $earlierScoreTeamA[$i]['our'] = 0;
+	            $earlierScoreTeamA[$i]['opponent'] = 0;
+	        }
+	        
+	        if (sizeof($matchesWonByTeamB[$i]) > 0) {
+	            $earlierScoreTeamB[$i]['our'] /= sizeof($matchesWonByTeamB[$i]);
+	            $earlierScoreTeamB[$i]['opponent'] /= sizeof($matchesWonByTeamB[$i]);
+	        }
+	        else {
+	            $earlierScoreTeamB[$i]['our'] = 0;
+	            $earlierScoreTeamB[$i]['opponent'] = 0;
+	        }
+	    }
 
-		$teamBTotal = $this->db->getTotalMatchesPlayedByTeam($this->getTeamBId());
-		$teamBWins = $this->db->getTotalMatchesWonByTeam($this->getTeamBId());
-
-		$teamBRatio = 0;
-		if($teamBWins !== 0) {
-			$teamBRatio = $teamBTotal / $teamBWins;
-		}
-
-		$maxTotal = max($teamATotal, $teamBTotal, 1);
-		$teamARatio *= $teamATotal / $maxTotal;
-		$teamBRatio *= $teamBTotal / $maxTotal;
-
-		$prognose = array(0, 0);
-		
-		if($teamARatio > $teamBRatio) {
-			$prognose[0] = 1;
-		} else if($teamBRatio > $teamARatio) {
-			$prognose[1] = 1;
-		}
-
+	    $scoreTeamA = 0.34 * ($earlierScoreTeamA[2]['our'] + $earlierScoreTeamB[2]['opponent'])
+	                + 0.12 * ($earlierScoreTeamA[1]['our'] + $earlierScoreTeamB[1]['opponent'])
+	                + 0.04 * ($earlierScoreTeamA[0]['our'] + $earlierScoreTeamB[0]['opponent']);
+	    
+	    $scoreTeamB = 0.34 * ($earlierScoreTeamB[2]['our'] + $earlierScoreTeamA[2]['opponent'])
+	                + 0.12 * ($earlierScoreTeamB[1]['our'] + $earlierScoreTeamA[1]['opponent'])
+	                + 0.04 * ($earlierScoreTeamB[0]['our'] + $earlierScoreTeamA[0]['opponent']);
+	    
+	    $prognose = array(round($scoreTeamA), round($scoreTeamB));
+	    
 		return $prognose;
 	}
 	
