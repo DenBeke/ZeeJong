@@ -2908,6 +2908,58 @@ class Database {
 
 		return $matches;
 	}
+	
+	
+	
+	public function getLatestWonMatches($teamId, $amountOfMatches)
+	{
+	    $query = "
+	        SELECT ourScore, opponentScore FROM
+			((
+			  (
+			    SELECT `Score`.teamA AS ourScore, `Score`.teamB as opponentScore, date
+			    FROM `Match`
+			    JOIN `Score` ON `Match`.scoreId = `Score`.id
+			    WHERE `Match`.teamA = ?
+			    ORDER BY `Match`.date DESC
+			    LIMIT 0,?
+			  )
+			  UNION
+			  (
+			    SELECT `Score`.teamB AS ourScore, `Score`.teamA as opponentScore, date
+			    FROM `Match`
+			    JOIN `Score` ON `Match`.scoreId = `Score`.id
+			    WHERE `Match`.teamB = ?
+			    ORDER BY `Match`.date DESC
+			    LIMIT 0,?
+			  )
+			) AS Temp)
+			ORDER BY date DESC
+			LIMIT 0,?
+		";
+		
+		$statement = $this->getStatement($query);
+	
+		if(!$statement->bind_param('iiiii', $teamId, $amountOfMatches, $teamId, $amountOfMatches, $amountOfMatches)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+		
+		$statement->store_result();
+		
+		$statement->bind_result($ourScore, $opponentScore);
+
+		$result = [];
+		while ($statement->fetch()) {
+		    array_push($result, ['our' => $ourScore, 'opponent' => $opponentScore]);
+		}
+		
+		return $result;
+	}
+	
 
 	public function resultToCompetitions($result) {
 		$competitions = array();
