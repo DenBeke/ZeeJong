@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 
 	class AdminDashboard extends Controller {
 
-		public $page = 'admindashboard';
+		public $page = 'admin-dashboard';
 		public $coach;
 		public $title;
 
