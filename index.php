@@ -43,6 +43,8 @@ require_once(dirname(__FILE__) . '/core/controller/Invites.php');
 require_once(dirname(__FILE__) . '/core/controller/Page.php');
 require_once(dirname(__FILE__) . '/core/controller/PageEdit.php');
 require_once(dirname(__FILE__) . '/core/controller/Header.php');
+require_once(dirname(__FILE__) . '/core/controller/Admin.php');
+require_once(dirname(__FILE__) . '/core/controller/AdminDashboard.php');
 
 //Create database
 $database = new Database;
@@ -72,7 +74,9 @@ $urls = array(
 	INSTALL_DIR . 'invite-user' => 'Controller\InviteUser',
 	INSTALL_DIR . 'invites' => 'Controller\Invites',
 	INSTALL_DIR . 'page/(\d+)' => 'Controller\Page',
-	INSTALL_DIR . 'page/(\d+)/edit' => 'Controller\PageEdit'
+	INSTALL_DIR . 'page/(\d+)/edit' => 'Controller\PageEdit',
+	INSTALL_DIR . 'admin' => 'Controller\Admin',
+	INSTALL_DIR . 'admin/dashboard' => 'Controller\AdminDashboard'
 );
 
 
