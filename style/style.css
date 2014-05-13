@@ -322,3 +322,19 @@ div.panel-wiki:hover .wiki {
 	background-position: -422px -391px !important;
 }
 
+
+
+/* Admin *
+*********/
+
+.competitions h5 {
+	cursor: pointer;
+}
+
+.hidden-content {
+	display: none;
+}
+
+
+
+

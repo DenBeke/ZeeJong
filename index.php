@@ -45,6 +45,7 @@ require_once(dirname(__FILE__) . '/core/controller/PageEdit.php');
 require_once(dirname(__FILE__) . '/core/controller/Header.php');
 require_once(dirname(__FILE__) . '/core/controller/Admin.php');
 require_once(dirname(__FILE__) . '/core/controller/AdminDashboard.php');
+require_once(dirname(__FILE__) . '/core/controller/AdminMatches.php');
 
 
 //Create database
@@ -82,7 +83,8 @@ $urls = array(
 	INSTALL_DIR . 'page/(\d+)' => 'Controller\Page',
 	INSTALL_DIR . 'page/(\d+)/edit' => 'Controller\PageEdit',
 	INSTALL_DIR . 'admin' => 'Controller\Admin',
-	INSTALL_DIR . 'admin/dashboard' => 'Controller\AdminDashboard'
+	INSTALL_DIR . 'admin/dashboard' => 'Controller\AdminDashboard',
+	INSTALL_DIR . 'admin/matches' => 'Controller\AdminMatches'
 );
 
 

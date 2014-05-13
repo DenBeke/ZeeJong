@@ -32,6 +32,26 @@ $(document).ready(function(){
 		
 		});
 	});
+	
+	
+	
+	$('.hidden-click').click(function(){
+		
+		
+		if ($(this).next('.hidden-content').hasClass('open')) {
+			$(this).next('.hidden-content').hide();
+			$(this).next('.hidden-content').removeClass('open');
+		}
+		else {
+			$(this).next('.hidden-content').show();
+			$(this).next('.hidden-content').addClass('open');
+		}	
+		
+		
+		
+	
+	
+	});
 
 
 
