@@ -145,8 +145,11 @@ Created: February 2014
 					if($card->getColor() == 1) {
 						$color = 'yellow';
 					}
-					else {
+					else if($card->getColor() == 2) {
 						$color = 'red';
+					}
+					else {
+						$color = 'yellow-red';
 					}
 				
 				?>
