@@ -148,6 +148,10 @@ class Match {
 	    $matchesWonByTeamB[1] = $this->db->getLatestWonMatches($this->getTeamBId(), 10);
 	    $matchesWonByTeamB[2] = $this->db->getLatestWonMatches($this->getTeamBId(), 3);
 	    
+	    $matchesBetweenTeams[0] = $this->db->getLatestMatchesBetweenTeams($this->getTeamAId(), $this->getTeamBId(), 5);
+	    $matchesBetweenTeams[1] = $this->db->getLatestMatchesBetweenTeams($this->getTeamAId(), $this->getTeamBId(), 3);
+	    $matchesBetweenTeams[2] = $this->db->getLatestMatchesBetweenTeams($this->getTeamAId(), $this->getTeamBId(), 1);
+	    
 	    $earlierScoreTeamA = array();
 	    $earlierScoreTeamB = array();
 	    for ($i = 0; $i < 3; $i++) {
@@ -155,43 +159,36 @@ class Match {
 	        $earlierScoreTeamA[$i]['opponent'] = 0;
 	        $earlierScoreTeamB[$i]['our'] = 0;
 	        $earlierScoreTeamB[$i]['opponent'] = 0;
+	        $earlierScoreBetweenTeams[$i]['A'] = 0;
+	        $earlierScoreBetweenTeams[$i]['B'] = 0;
 	        
 	        foreach ($matchesWonByTeamA[$i] as $matchesWon) {
-	            $earlierScoreTeamA[$i]['our'] += $matchesWon['our'];
-	            $earlierScoreTeamA[$i]['opponent'] += $matchesWon['opponent'];
+	            $earlierScoreTeamA[$i]['our'] += $matchesWon['our'] / sizeof($matchesWonByTeamA[$i]);
+	            $earlierScoreTeamA[$i]['opponent'] += $matchesWon['opponent'] / sizeof($matchesWonByTeamA[$i]);
 	        }
 	        foreach ($matchesWonByTeamB[$i] as $matchesWon) {
-	            $earlierScoreTeamB[$i]['our'] += $matchesWon['our'];
-	            $earlierScoreTeamB[$i]['opponent'] += $matchesWon['opponent'];
+	            $earlierScoreTeamB[$i]['our'] += $matchesWon['our'] / sizeof($matchesWonByTeamB[$i]);
+	            $earlierScoreTeamB[$i]['opponent'] += $matchesWon['opponent'] / sizeof($matchesWonByTeamB[$i]);
+	        }
+	        foreach ($matchesBetweenTeams[$i] as $match) {
+	            $earlierScoreBetweenTeams[$i]['A'] += $match['A'] / sizeof($matchesBetweenTeams[$i]);
+	            $earlierScoreBetweenTeams[$i]['B'] += $match['B'] / sizeof($matchesBetweenTeams[$i]);
 	        }
 	        
-	        if (sizeof($matchesWonByTeamA[$i]) > 0) {
-	            $earlierScoreTeamA[$i]['our'] /= sizeof($matchesWonByTeamA[$i]);
-	            $earlierScoreTeamA[$i]['opponent'] /= sizeof($matchesWonByTeamA[$i]);
-	        }
-	        else {
-	            $earlierScoreTeamA[$i]['our'] = 0;
-	            $earlierScoreTeamA[$i]['opponent'] = 0;
-	        }
-	        
-	        if (sizeof($matchesWonByTeamB[$i]) > 0) {
-	            $earlierScoreTeamB[$i]['our'] /= sizeof($matchesWonByTeamB[$i]);
-	            $earlierScoreTeamB[$i]['opponent'] /= sizeof($matchesWonByTeamB[$i]);
-	        }
-	        else {
-	            $earlierScoreTeamB[$i]['our'] = 0;
-	            $earlierScoreTeamB[$i]['opponent'] = 0;
+	        if (sizeof($matchesBetweenTeams[$i]) == 0) {
+	            $earlierScoreBetweenTeams[$i]['A'] = $earlierScoreTeamA[$i]['our'];
+	            $earlierScoreBetweenTeams[$i]['B'] = $earlierScoreTeamB[$i]['our'];
 	        }
 	    }
 
-	    $scoreTeamA = 0.34 * ($earlierScoreTeamA[2]['our'] + $earlierScoreTeamB[2]['opponent'])
-	                + 0.12 * ($earlierScoreTeamA[1]['our'] + $earlierScoreTeamB[1]['opponent'])
-	                + 0.04 * ($earlierScoreTeamA[0]['our'] + $earlierScoreTeamB[0]['opponent']);
+	    $scoreTeamA =  0.60 * ($earlierScoreTeamA[2]['our'] + $earlierScoreTeamB[2]['opponent'] + $earlierScoreBetweenTeams[2]['A']) / 3
+	                 + 0.30 * ($earlierScoreTeamA[1]['our'] + $earlierScoreTeamB[1]['opponent'] + $earlierScoreBetweenTeams[1]['A']) / 3
+	                 + 0.10 * ($earlierScoreTeamA[0]['our'] + $earlierScoreTeamB[0]['opponent'] + $earlierScoreBetweenTeams[0]['A']) / 3;
 	    
-	    $scoreTeamB = 0.34 * ($earlierScoreTeamB[2]['our'] + $earlierScoreTeamA[2]['opponent'])
-	                + 0.12 * ($earlierScoreTeamB[1]['our'] + $earlierScoreTeamA[1]['opponent'])
-	                + 0.04 * ($earlierScoreTeamB[0]['our'] + $earlierScoreTeamA[0]['opponent']);
-	    
+	    $scoreTeamB =  0.60 * ($earlierScoreTeamB[2]['our'] + $earlierScoreTeamA[2]['opponent'] + $earlierScoreBetweenTeams[2]['B']) / 3
+	                 + 0.30 * ($earlierScoreTeamB[1]['our'] + $earlierScoreTeamA[1]['opponent'] + $earlierScoreBetweenTeams[1]['B']) / 3
+	                 + 0.10 * ($earlierScoreTeamB[0]['our'] + $earlierScoreTeamA[0]['opponent'] + $earlierScoreBetweenTeams[0]['B']) / 3;
+
 	    $prognose = array(round($scoreTeamA), round($scoreTeamB));
 	    
 		return $prognose;
