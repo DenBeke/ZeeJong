@@ -6,6 +6,10 @@ Created: February 2014
 */
 ?>
 
+<?php include(dirname(__FILE__) . '/admin.php'); ?>
+
+<p></p>
+
 
 <div class="container">
 
