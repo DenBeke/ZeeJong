@@ -38,7 +38,7 @@ Created: February 2014
 		
 		
 		<tr>
-			<td colspan="3" class="final-type">
+			<td colspan="5" class="final-type">
 				<?php echo $type; ?>
 			</td>
 		</tr>
@@ -77,6 +77,16 @@ Created: February 2014
 					<?php echo $match->getTeamB()->getName(); ?>
 				</a>
 			</td>
+			
+			
+			<td class="admin-only">
+				<a href="" class="btn-xs btn btn-default">Edit</a>
+			</td>
+			
+			<td class="admin-only">
+				<a href="" class="btn-xs btn btn-default">Delete</a>
+			</td>
+			
 		</tr>
 	
 	</tr>

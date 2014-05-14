@@ -45,14 +45,27 @@ $(document).ready(function(){
 		else {
 			$(this).next('.hidden-content').show();
 			$(this).next('.hidden-content').addClass('open');
-		}	
+		}		
+	
+	});
+	
+	
+	
+	
+	$('.tournament-click').click(function() {
 		
-		
-		
+		var url = $(this).next('.hidden-content').attr('data-url');
+		$(this).next('.hidden-content').load(url + ' table.matches');
+	
+	
+		$('table.matches', this).each(function(){
+			
+			$(this).append('<td>Hello World!</td>');
+			
+		});
 	
 	
 	});
-
 
 
 
