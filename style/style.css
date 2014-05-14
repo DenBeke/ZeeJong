@@ -327,7 +327,7 @@ div.panel-wiki:hover .wiki {
 /* Admin *
 *********/
 
-.competitions h5 {
+.hidden-click {
 	cursor: pointer;
 }
 

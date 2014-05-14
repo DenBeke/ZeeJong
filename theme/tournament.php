@@ -80,11 +80,11 @@ Created: February 2014
 			
 			
 			<td class="admin-only">
-				<a href="" class="btn-xs btn btn-default">Edit</a>
+				<a href="<?php echo SITE_URL . 'admin/match/' . $match->getId() . '/edit'; ?>" class="btn-xs btn btn-default">Edit</a>
 			</td>
 			
 			<td class="admin-only">
-				<a href="" class="btn-xs btn btn-default">Delete</a>
+				<a href="<?php echo SITE_URL . 'admin/match/' . $match->getId() . '/delete'; ?>" class="btn-xs btn btn-default">Delete</a>
 			</td>
 			
 		</tr>
