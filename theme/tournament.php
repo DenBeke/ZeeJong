@@ -24,6 +24,9 @@ Created: February 2014
 			
 			<th>Team B</th>
 			
+			
+			<th colspan="2" class="admin-only"></th>
+			
 		</thead>
 	
 	
@@ -38,8 +41,10 @@ Created: February 2014
 		
 		
 		<tr>
-			<td colspan="5" class="final-type">
+			<td colspan="3" class="final-type">
 				<?php echo $type; ?>
+			</td>
+			<td colspan="2" class="admin-only">
 			</td>
 		</tr>
 		
