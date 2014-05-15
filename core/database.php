@@ -901,6 +901,62 @@ class Database {
 
 
 	/**
+	 Make a user admin
+	 
+	 @param user id
+	 */
+	 public function makeAdmin($Id){
+	 	//Query
+		$query = "
+			UPDATE User
+			SET admin = ?
+			WHERE id = ?;
+		";
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		$ok = 1;
+		//Bind parameters
+		if (!$statement -> bind_param('ii', $ok, $Id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		
+	 }
+	 
+	 
+	 /**
+	 Remove admin
+	 
+	 @param user id
+	 */
+	 public function removeAdmin($Id){
+	 	//Query
+		$query = "
+			UPDATE User
+			SET admin = ?
+			WHERE id = ?;
+		";
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		$ok = 0;
+		//Bind parameters
+		if (!$statement -> bind_param('ii', $ok, $Id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		
+	 }
+
+
+	/**
 	 Get the username of the user
 
 	 @return the username of the user
