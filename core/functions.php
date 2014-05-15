@@ -226,7 +226,12 @@ function generateTweetButton() {
 }
 
 
+function getCountryFlag($country) {
 
+    $country = explode(' ', $country);
+    $country = implode('_', $country);
+    return '<img src=' . SITE_URL . 'img/Flags/Tiny/' . $country . '.png /> ';
+}
 
 
 
