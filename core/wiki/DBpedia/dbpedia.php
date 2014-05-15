@@ -7,6 +7,9 @@
  *
  */
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // autoloader
 function __autoload($class_name) {
    if(preg_match('~^.*ExtractorTest.*$~',$class_name)) require_once ('test/tests/ExtractorTests/'.$class_name.'.php');
