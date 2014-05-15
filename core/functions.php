@@ -244,7 +244,7 @@ function getCountryFlag($country) {
 
     $country = explode(' ', $country);
     $country = implode('_', $country);
-    return '<img src=' . SITE_URL . 'img/Flags/Tiny/' . $country . '.png /> ';
+    return '<span class="country-flag" style="background-image: url(' . SITE_URL . 'img/Flags/Small/' . $country . '.png);"></span>';
 }
 
 
