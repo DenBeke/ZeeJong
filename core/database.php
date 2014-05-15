@@ -900,6 +900,77 @@ class Database {
 	}
 
 
+	/*
+	 Is a user admin
+	 @param the id of the user
+	 @return a boolean indicating whether a user is an admin
+	 */
+	 public function isAdmin($id){
+	 	$sel = new \Selector('User');
+	 	$sel->filter([['id', '=', $id]]);
+		$sel->filter([['admin', '=', 1]]);
+		$result = $this->select($sel);
+
+		return count($result) == 1;
+	 }
+
+
+	/**
+	 Make a user admin
+	 
+	 @param user id
+	 */
+	 public function makeAdmin($Id){
+	 	//Query
+		$query = "
+			UPDATE User
+			SET admin = ?
+			WHERE id = ?;
+		";
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		$ok = 1;
+		//Bind parameters
+		if (!$statement -> bind_param('ii', $ok, $Id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		
+	 }
+	 
+	 
+	 /**
+	 Remove admin
+	 
+	 @param user id
+	 */
+	 public function removeAdmin($Id){
+	 	//Query
+		$query = "
+			UPDATE User
+			SET admin = ?
+			WHERE id = ?;
+		";
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		$ok = 0;
+		//Bind parameters
+		if (!$statement -> bind_param('ii', $ok, $Id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		
+	 }
+
+
 	/**
 	 Get the username of the user
 

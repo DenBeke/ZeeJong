@@ -56,6 +56,16 @@ function handleSubmit()
 	if(isset($_POST['password'])) {
 		$password = trim($_POST['password']);
 	}
+	
+	if(!isset($_POST['adminUsername'])){
+		throw new Exception('No admin username given');
+	}
+	if(!isset($_POST['adminEmail'])){
+		throw new Exception('No admin email address given');
+	}
+	if(!isset($_POST['adminPassword'])){
+		throw new Exception('No admin password given');
+	}
 
 	buildDatabase($host, (int)$port, $database, $username, $password);
 
@@ -79,6 +89,12 @@ function handleSubmit()
 
 	fwrite($fh, '?>');
 	fclose($fh);
+	require_once (dirname(__FILE__) . '../../core/database.php');
+	$database = new Database;
+	$salt = uniqid(rand(0, 1000000));
+	$hashedPassword = hash('sha256', $_POST['adminPassword'] . $salt);
+	$id = $database->registerUser($_POST['adminUsername'], $salt, $hashedPassword, $_POST['adminEmail']);
+	$database->makeAdmin($id);
 }
 
 ?>

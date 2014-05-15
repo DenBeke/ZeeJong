@@ -15,5 +15,13 @@
 		
 	</fieldset>
 	
+	<fieldset class="pure-group">
+		
+		<input type="text" name="adminUsername" class="pure-input-1-2" placeholder="Admin Username" required="required">
+		<input type="email" name="adminEmail" class="pure-input-1-2" placeholder="Admin Email" required="required">
+		<input type="password" name="adminPassword" class="pure-input-1-2" placeholder="Admin Password" required="required">
+		
+	</fieldset>
+	
 	<input type="submit" name="submit" value="Submit" class="pure-button pure-input-1-2 pure-button-primary">
 </form>
