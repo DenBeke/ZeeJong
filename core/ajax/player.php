@@ -5,6 +5,10 @@ require_once(dirname(__FILE__) . '/../config.php');
 require_once(dirname(__FILE__) . '/../Selector.php');
 require_once(dirname(__FILE__) . '/../controller/Controller.php');
 
+function addWildcards($s) {
+	return '%' . $s . '%';
+}
+
 class Handler extends Controller\Controller {
 	private $result = [];
 
@@ -64,6 +68,22 @@ class Handler extends Controller\Controller {
 
 			case 'order':
 				$sortOrder = $value;
+				break;
+
+			case 'search':
+				$value = str_replace('%', '\%', $value);
+				$value = str_replace('[', '\[', $value);
+				$value = str_replace(']', '\]', $value);
+				$value = str_replace('_', '\_', $value);
+
+				$value = explode(' ', $value);
+				$filters = [];
+				foreach($value as $term) {
+					$filters[] = ['Player.firstname','LIKE ', $term];
+					$filters[] = ['Player.lastname','LIKE ', $term];
+				}
+
+				$sel->filter($filters);
 				break;
 			}
 		}
