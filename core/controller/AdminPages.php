@@ -1,0 +1,34 @@
+<?php
+/*
+Admin Controller
+
+Created February 2014
+*/
+
+
+namespace Controller {
+
+require_once(dirname(__FILE__) . '/Controller.php');
+
+
+	class AdminPages extends Controller {
+
+		public $page = 'admin-pages';
+		public $coach;
+		public $title;
+		public $pages;
+
+
+		public function __construct() {
+			$this->theme = 'admin-pages.php';
+			$this->title = 'Admin - Pages - ' . Controller::siteName;
+			
+			global $database;
+			$this->pages = $database->getAllPages();
+		}
+
+	}
+
+}
+
+?>
