@@ -142,6 +142,213 @@ class Wiki {
 	}		
 }
 
+function getInfoboxJsonUrl($term)
+{
+   $format = 'json';
+
+   $query = 
+   "PREFIX dbpedia: <http://dbpedia.org/resource/>
+	PREFIX dbpprop: <http://dbpedia.org/property/>
+
+	SELECT ?property ?value 
+	WHERE {
+  	dbpedia:Maarten_Stekelenburg ?property ?value
+  	filter( strstarts(str(?property),str(dbpprop:)) )
+	}";
+
+   $searchUrl = 'http://dbpedia.org/sparql?'
+      .'query='.urlencode($query)
+      .'&format='.$format;
+
+   return $searchUrl;
+}
+
+function getImgAndAbstract($term) {
+
+   $format = 'json';
+
+   $query =
+   "PREFIX dbp: <http://dbpedia.org/resource/>
+   PREFIX dbp2: <http://dbpedia.org/ontology/>
+   PREFIX dbp3: <http://dbpedia.org/property/>
+ 
+   SELECT *
+   WHERE {
+      dbp:".$term." dbp2:abstract ?abstract .
+      dbp:".$term." dbp2:thumbnail ?img .
+      dbp:".$term." dbp3:* ?properties .
+      FILTER langMatches(lang(?abstract), 'en')
+   }";
+
+   $searchUrl = 'http://dbpedia.org/sparql?'
+      .'query='.urlencode($query)
+      .'&format='.$format;
+
+   return $searchUrl;   
+}
+
+function request($url){
+ 
+   // is curl installed?
+   if (!function_exists('curl_init')){
+      die('CURL is not installed!');
+   }
+   
+   // get curl handle
+   $ch= curl_init();
+
+   // set request url
+   curl_setopt($ch,
+      CURLOPT_URL,
+      $url);
+
+   // return response, don't print/echo
+   curl_setopt($ch,
+      CURLOPT_RETURNTRANSFER,
+      true);
+ 
+   /*
+   Here you find more options for curl:
+   http://www.php.net/curl_setopt
+   */    
+
+   $response = curl_exec($ch);
+   
+   curl_close($ch);
+   
+   return $response;
+}
+
+
+function printArray($array, $spaces = "") {
+   $retValue = "";
+   
+   if(is_array($array))
+   { 
+      $spaces = $spaces
+         ."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+      $retValue = $retValue."<br/>";
+
+      foreach(array_keys($array) as $key)
+      {
+         $retValue = $retValue.$spaces
+            ."<strong>".$key."</strong>"
+            .printArray($array[$key],
+               $spaces);
+      }    
+      $spaces = substr($spaces, 0, -30);
+   }
+   else $retValue =
+      $retValue." - ".$array."<br/>";
+   
+   return $retValue;
+}
+
+
+function getReducedArrayImgAndAbstract($array) {
+
+
+   $reducedArray = $array["results"]["bindings"];
+   $newArray = [
+      "abstract" => [$reducedArray[0]["abstract"]["value"]],
+      "img" => [$reducedArray[0]["img"]["value"]]
+   ];
+
+
+
+   return $newArray;
+
+}
+
+function getReducedArrayProp($array) {
+
+
+   $reducedArray = $array["results"]["bindings"];
+   $newArray = [];
+
+   foreach ($reducedArray as $property) {
+
+      $propName = substr($property["property"]["value"], 28);
+      $propValue = $property["value"]["value"];
+      if(array_key_exists($propName, $newArray)) {
+
+         $newArray[$propName][] = removeLink($propValue);
+      }
+      else {
+
+         $newArray[$propName] = [removeLink($propValue)];
+      }
+      
+   }
+
+   return $newArray;
+
+}
+
+function removeLink($link) {
+
+   $index = strpos($link, "/");
+   while($index !== false) {
+
+      $link = substr($link, $index+1);
+      $index = strpos($link, "/");
+   }
+
+   $newLink = "";
+
+   for($i = 0; $i < strlen($link); $i++) {
+
+         if($link[$i] == "_") {
+            $newLink = $newLink . " ";
+         }
+         else {
+            $newLink = $newLink . $link[$i];
+         }
+      }
+
+   return $newLink;
+}
+
+private function searchCorrectArticleName($article) {
+
+	$searchLocation = $this->site . "http://en.wikipedia.org/w/index.php?search=";
+	for($i = 0; $i < strlen($this->article); $i++) {
+
+		if($this->article[$i] == '_') {
+
+			$searchLocation = $searchLocation . "+";
+		} 
+
+		else {
+
+			$searchLocation = $searchLocation . $this->article[$i];
+		}
+	}
+
+	$html = $this->loadPage($searchLocation);
+
+	$searchResults = $html->find('.mw-search-results' , 0);
+	$searchResultElement = $searchResults->first_child()->first_child()->first_child();
+	$this->article = $searchResultElement->getAttribute('title');
+}
+
+
+function getWiki($player) {
+
+   $result = getReducedArrayProp(json_decode(request(getInfoboxJsonUrl("Maarten_Stekelenburg")), true)) + 
+   getReducedArrayImgAndAbstract(json_decode(request(getImgAndAbstract("Maarten_Stekelenburg")), true));
+   foreach ($result as $key => $propList) {
+      echo $key, " => ";
+      foreach($propList as $prop) {
+
+         echo " ".$prop." ";
+      }
+      echo "<br>";
+   }   
+   return $result;
+}
+
 
 
 ?>
