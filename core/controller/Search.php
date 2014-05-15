@@ -16,7 +16,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 
 		public function __construct() {
 			$this->theme = 'search.php';
-			$this->title = 'Search';
+			$this->title = 'Search - ' . Controller::siteName;
 		}
 
 
