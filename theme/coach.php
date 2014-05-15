@@ -31,7 +31,7 @@ Created: February 2014
 			  </li>
 			  
 			  <li class="list-group-item">
-			  	<b>Nationality</b>: <a href="<?php echo SITE_URL . 'country/' . $this->coach->getCountry()->getId(); ?>"><?php echo $this->coach->getCountry()->getName(); ?></a>
+			  	<b>Nationality</b>: <?php echo getCountryFlag($this->coach->getCountry()->getName()); ?><a href="<?php echo SITE_URL . 'country/' . $this->coach->getCountry()->getId(); ?>"><?php echo $this->coach->getCountry()->getName(); ?></a>
 			  </li>
 			 
 			   

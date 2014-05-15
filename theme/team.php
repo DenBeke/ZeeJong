@@ -114,7 +114,7 @@ Created: February 2014
 						<tr>
 						
 							<td>
-								<a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a>
+								<?php echo getCountryFlag($player->getCountry()->getName()); ?><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a>
 							</td>
 							
 						
