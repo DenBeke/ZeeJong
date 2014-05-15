@@ -3709,6 +3709,169 @@ class Database {
 		return $this->resultToPages($result);
 
 	}
+	
+	
+	
+	
+	public function countCompetitions() {
+			
+		$sel = new \Selector('Competition');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting competitions');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	public function countTournaments() {
+			
+		$sel = new \Selector('Tournament');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting tournaments');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	public function countMatches() {
+			
+		$sel = new \Selector('Match');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting matches');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	
+	
+	
+	public function countTeams() {
+			
+		$sel = new \Selector('Team');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting teams');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+	}
+	
+	
+	public function countPlayers() {
+			
+		$sel = new \Selector('Player');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting players');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	
+	
+	public function countReferees() {
+			
+		$sel = new \Selector('Referee');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting referees');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	
+	public function countCoaches() {
+			
+		$sel = new \Selector('Coaches');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting coaches');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	
+	public function countUsers() {
+			
+		$sel = new \Selector('User');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting users');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	
+	public function countGroups() {
+			
+		$sel = new \Selector('Group');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting groups');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	public function countBets() {
+			
+		$sel = new \Selector('Bet');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting bets');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	
 
 
 }
