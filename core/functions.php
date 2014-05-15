@@ -244,7 +244,15 @@ function getCountryFlag($country) {
 
     $country = explode(' ', $country);
     $country = implode('_', $country);
-    return '<span class="country-flag" style="background-image: url(' . SITE_URL . 'img/Flags/Small/' . $country . '.png);"></span>';
+    
+    
+    $src = 'img/Flags/Small/' . $country . '.png';
+    if (!file_exists($src)) {
+    		$src = 'img/Flags/Small/Unknown.png';
+    }
+    
+    return '<span class="country-flag" style="background-image: url(' . SITE_URL . $src . ');"></span>';
+
 }
 
 
