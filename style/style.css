@@ -372,3 +372,9 @@ div.panel-wiki:hover .wiki {
 }
 
 
+/* Search *
+**********/
+#search-results {
+	padding-left: 0px;
+}
+
