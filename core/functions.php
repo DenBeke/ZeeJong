@@ -35,6 +35,20 @@ function loggedIn() {
 	}
 }
 
+/**
+ Check if admin
+ */
+ function isAdmin() {
+ 	global $database;
+ 	if(!isset($_SESSION['userID'])){
+		return false;
+	}
+	if(!$database->isAdmin($_SESSION['userID'])){
+		return false;
+	}
+	return true;
+ }
+
 
 
 function user() {

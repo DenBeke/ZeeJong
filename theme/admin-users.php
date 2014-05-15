@@ -1,6 +1,11 @@
 <?php include(dirname(__FILE__) . '/admin.php'); ?>
 
 
+<?php
+
+if(isAdmin()){
+?>
+
 <div class="container">
 <div class="col-md-5">
 <h3>Ban a user</h3>
@@ -79,3 +84,5 @@
 
 </div>
 </div>
+
+<?php } ?>

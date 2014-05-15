@@ -900,6 +900,21 @@ class Database {
 	}
 
 
+	/*
+	 Is a user admin
+	 @param the id of the user
+	 @return a boolean indicating whether a user is an admin
+	 */
+	 public function isAdmin($id){
+	 	$sel = new \Selector('User');
+	 	$sel->filter([['id', '=', $id]]);
+		$sel->filter([['admin', '=', 1]]);
+		$result = $this->select($sel);
+
+		return count($result) == 1;
+	 }
+
+
 	/**
 	 Make a user admin
 	 
