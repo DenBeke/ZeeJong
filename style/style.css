@@ -378,3 +378,25 @@ div.panel-wiki:hover .wiki {
 	padding-left: 0px;
 }
 
+
+
+
+
+/* Footer *
+**********/
+
+#footer {
+	vertical-align: middle;
+}
+
+#footer ul,
+#footer .copyright {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#footer .copyright {
+	padding-right: 10px;
+}
+
+
