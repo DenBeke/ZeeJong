@@ -220,7 +220,7 @@ Created: February 2014
 						    ?>
 						     <tr>
 						     	<td><?php if($player->number > 0) echo $player->number; ?></td>
-						     	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
+						     	<td><?php echo getCountryFlag($player->getCountry()->getName()); ?><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
 						     </tr>
 						     
 						     <?php
@@ -285,7 +285,7 @@ Created: February 2014
 						    
 						     <tr>
 						     	<td><?php if($player->number > 0) echo $player->number; ?></td>
-						     	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
+						     	<td><?php echo getCountryFlag($player->getCountry()->getName()); ?><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
 						     </tr>
 						     
 						     <?php
