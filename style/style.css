@@ -335,6 +335,23 @@ div.panel-wiki:hover .wiki {
 	display: none;
 }
 
+.admin-only {
+	font-size: 0;
+	padding: 0 !important;
+	margin: 0 !important;
+}
 
+.admin-only a {
+	display: none;
+}
+
+.competitions .admin-only {
+	font-size: 1em;
+	padding: 8px !important;
+}
+
+.competitions .admin-only a {
+	display: block;
+}
 
 
