@@ -33,6 +33,23 @@ table a {
 }
 
 
+.country-flag {
+	background-size: contain;
+	background-position: center 35%;
+	background-repeat: no-repeat;
+	padding: 10px;
+	margin-right: 5px;
+	display: inline-block;
+	font-size: 0;
+	vertical-align: middle;
+	opacity: 0.9;
+}
+
+.country-flag:hover {
+	opacity: 1;
+}
+
+
 
 /* Style for match *
 *************************/

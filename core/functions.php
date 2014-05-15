@@ -244,7 +244,17 @@ function getCountryFlag($country) {
 
     $country = explode(' ', $country);
     $country = implode('_', $country);
-    return '<img src=' . SITE_URL . 'img/Flags/Tiny/' . $country . '.png /> ';
+    
+    $country = str_replace('\'', '', $country);
+    $country = str_replace('&#39;', '', $country);
+    
+    $src = 'img/Flags/Small/' . $country . '.png';
+    if (!file_exists($src)) {
+    		$src = 'img/Flags/Small/Unknown.png';
+    }
+    
+    return '<span class="country-flag" style="background-image: url(' . SITE_URL . $src . ');"></span>';
+
 }
 
 
