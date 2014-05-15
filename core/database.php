@@ -985,6 +985,21 @@ class Database {
 
 		return $result[0]['username'];
 	}
+	
+	/**
+	 Get the id of the user
+
+	 @return the id of the user
+	 */
+	public function getUserId($name) {
+		$sel = new \Selector('User');
+		$sel->filter([['username', '=', $name]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['id'];
+	}
 
 	/**
 	 Get the hashed password of the user
@@ -1135,6 +1150,33 @@ class Database {
 
 	}
 
+
+
+	/**
+	 Remove a user with the given id
+
+	 @param id
+	*/
+	public function removeUser($id) {
+
+		//Query
+		$query = "
+			DELETE FROM `User` WHERE id = ?;
+		";
+
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if (!$statement -> bind_param('i', $id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+	}
 
 	/**
 	 Test whether a specific username exists
