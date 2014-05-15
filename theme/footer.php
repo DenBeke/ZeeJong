@@ -13,8 +13,16 @@ Created: February 2014
 	  	
 	  	<hr />
 	  
-		<p class="muted credit">&copy;2014 ZeeJong Betting System</p>
+		<p class="muted credit col-md-3">&copy;2014 ZeeJong Betting System</p>
+		
+		
+		<ul class="nav nav-pills col-md-9">
+		   <li class=""><a href="<?php echo SITE_URL . 'admin'; ?>">Admin</a></li>
+		 </ul>
+		
 	  </div>
+	  
+	  
 	</div>
 
 </body>
