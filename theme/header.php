@@ -117,6 +117,7 @@
 
 						<div class="navbar-form navbar-right form-group">
 
+						    <a href="<?php echo SITE_URL; ?>search" class="btn btn-default">Search</a>
 						    <a href="<?php echo SITE_URL; ?>login/" class="btn btn-default">Login</a>
 							<a href="<?php echo SITE_URL; ?>register" class="btn btn-default">Register</a>
 
