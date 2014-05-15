@@ -1,4 +1,8 @@
-<?php include(dirname(__FILE__) . '/admin.php'); ?>
+<?php include(dirname(__FILE__) . '/admin.php'); 
+
+
+if(isAdmin()){
+?>
 
 <div class="container">
 
@@ -216,3 +220,5 @@
 	
 	
 </div>
+
+<?php } ?>
