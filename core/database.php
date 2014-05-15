@@ -3687,7 +3687,6 @@ class Database {
 	
 	
 	
-	
 	public function getAllUsers() {
 		
 		$sel = new \Selector('User');
