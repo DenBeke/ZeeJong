@@ -3586,6 +3586,16 @@ class Database {
 		
 	}
 	
+	
+	public function getAllPages() {
+		
+		$sel = new \Selector('Pages');
+		
+		$result = $this->select($sel);
+
+		return $this->resultToPages($result);
+
+	}
 
 
 }
