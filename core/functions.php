@@ -35,6 +35,20 @@ function loggedIn() {
 	}
 }
 
+/**
+ Check if admin
+ */
+ function isAdmin() {
+ 	global $database;
+ 	if(!isset($_SESSION['userID'])){
+		return false;
+	}
+	if(!$database->isAdmin($_SESSION['userID'])){
+		return false;
+	}
+	return true;
+ }
+
 
 
 function user() {
@@ -226,7 +240,12 @@ function generateTweetButton() {
 }
 
 
+function getCountryFlag($country) {
 
+    $country = explode(' ', $country);
+    $country = implode('_', $country);
+    return '<img src=' . SITE_URL . 'img/Flags/Tiny/' . $country . '.png /> ';
+}
 
 
 
