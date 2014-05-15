@@ -372,6 +372,16 @@ div.panel-wiki:hover .wiki {
 }
 
 
+.admin-page-title {
+	display: inline;
+}
+
+.admin-page-edit {
+	text-align: right !important;
+	padding-right: 0 !important;
+}
+
+
 /* Search *
 **********/
 #search-results {
