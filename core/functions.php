@@ -244,7 +244,13 @@ function getCountryFlag($country) {
 
     $country = explode(' ', $country);
     $country = implode('_', $country);
-    return '<img src=' . SITE_URL . 'img/Flags/Tiny/' . $country . '.png /> ';
+    
+    $src = 'img/Flags/Tiny/' . $country . '.png';
+    if (!file_exists($src)) {
+        $src = 'img/Flags/Tiny/Unknown.png';
+    }
+    
+    return '<img src=' . SITE_URL . $src . ' /> ';
 }
 
 
