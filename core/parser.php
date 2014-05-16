@@ -9,7 +9,7 @@ Created: February 2014
 require_once( dirname(__FILE__) . '/simple_html_dom.php' );
 require_once( dirname(__FILE__) . '/database.php' );
 require_once( dirname(__FILE__) . '/classes/Card.php' );
-
+require_once( dirname(__FILE__) . '/betHandler.php' );
 
 /**
 @brief Class for parsing the archives.
@@ -736,5 +736,9 @@ set_time_limit(0);
 $p = new Parser;
 $p->parse();
 
+
+$betHandler = new BetHandler;
+$betHandler -> genBetsToProcess();
+$betHandler -> processBets();
 
 ?>
