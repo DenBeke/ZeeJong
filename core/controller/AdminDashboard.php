@@ -31,6 +31,11 @@ require_once(dirname(__FILE__) . '/Controller.php');
 		public $bets;
 		public $users;
 		public $groups;
+		
+		public $cards;
+		public $yellowCards;
+		public $redCards;
+		public $yellowTwoCards;
 
 
 		public function __construct() {
@@ -51,6 +56,11 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			$this->users = $database->countUsers();
 			$this->bets = $database->countBets();
 			$this->groups = $database->countGroups();
+			
+			$this->cards = $database->countCards();
+			$this->yellowCards = $database->countYellowCards();
+			$this->redCards = $database->countRedCards();
+			$this->yellowTwoCards = $database->countYellowTwoCards();
 			
 			
 		}

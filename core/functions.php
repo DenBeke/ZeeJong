@@ -208,6 +208,26 @@ function getAllMonths($begin, $end = NULL) {
 
 
 
+function getDaysOfWeek() {
+
+
+	$begin = strtotime(date('d M Y', time()) . " - 1 week");
+	$end = time();
+
+	$month = strtotime(date('Y-m-d',strtotime("-1 day", $begin)));
+	$months = array();
+
+	while($month <= $end) {
+		 $months[date('d M Y', strtotime("+1 day", $month))] = $month = strtotime(date('Y-m-d',strtotime("+1 day", $month)));
+	}
+
+	return $months;
+}
+
+
+
+
+
 
 function generateLikeButton($url) {
 	?>

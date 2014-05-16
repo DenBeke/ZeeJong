@@ -3870,6 +3870,70 @@ class Database {
 		
 	}
 	
+
+	
+	public function countCards() {
+			
+		$sel = new \Selector('Cards');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting cards');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	
+	public function countYellowCards() {
+			
+		$sel = new \Selector('Cards');
+		$sel->filter([['color', '=', 1]]);
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting cards');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+	}
+	
+	
+	public function countRedCards() {
+			
+		$sel = new \Selector('Cards');
+		$sel->filter([['color', '=', 2]]);
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting cards');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+	}
+	
+	
+	public function countYellowTwoCards() {
+			
+		$sel = new \Selector('Cards');
+		$sel->filter([['color', '=', 3]]);
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting cards');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+	}
 	
 
 
