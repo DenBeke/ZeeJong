@@ -27,6 +27,7 @@
 	<script src="<?php echo SITE_URL ?>js/script.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/bootstrap.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/hchart/highcharts.js" type="text/javascript"></script>
+	<script src="<?php echo SITE_URL ?>js/hchart/modules/funnel.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/tinymce/js/tinymce/tinymce.min.js" type="text/javascript"></script>
 	<script src="<?php echo SITE_URL ?>js/chatbox.php" type="text/javascript"></script>
 
@@ -117,6 +118,7 @@
 
 						<div class="navbar-form navbar-right form-group">
 
+						    <a href="<?php echo SITE_URL; ?>search" class="btn btn-default">Search</a>
 						    <a href="<?php echo SITE_URL; ?>login/" class="btn btn-default">Login</a>
 							<a href="<?php echo SITE_URL; ?>register" class="btn btn-default">Register</a>
 
@@ -131,6 +133,7 @@
 
 
 						<form class="navbar-form pull-right" id="login">
+							<a href="<?php echo SITE_URL; ?>search" class="btn btn-default">Search</a>
 							<a href="<?php echo SITE_URL; ?>config-panel" class="btn btn-default"><?php echo user() -> getUserName(); ?></a>
 							<a href="<?php echo SITE_URL; ?>core/logout.php" class="btn btn-default">Logout</a>
 						</form>

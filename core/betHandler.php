@@ -133,9 +133,5 @@ class BetHandler {
 	}
 
 }
-
-$betHandler = new BetHandler;
-$betHandler -> genBetsToProcess();
-$betHandler -> processBets();
 ?>
 

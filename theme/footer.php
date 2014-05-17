@@ -13,8 +13,25 @@ Created: February 2014
 	  	
 	  	<hr />
 	  
-		<p class="muted credit">&copy;2014 ZeeJong Betting System</p>
+		<div class="copyright">&copy;2014 ZeeJong Betting System</div>
+		
+		<?php if(isAdmin()) { ?>
+		<ul class="nav nav-pills">
+		   <li class=""><a href="<?php echo SITE_URL . 'admin'; ?>">Admin</a></li>
+		   
+		   <?php foreach($header->pages as $page) { ?>
+		   
+		   <li class=""><a href="<?php echo SITE_URL . 'page/' . $page->getId(); ?>"><?php echo $page->getTitle(); ?></a></li>
+		   
+		   <?php } ?>
+		   
+		   
+		 </ul>
+		 <?php } ?>
+		
 	  </div>
+	  
+	  
 	</div>
 
 </body>

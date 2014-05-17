@@ -1,5 +1,9 @@
 <?php include(dirname(__FILE__) . '/admin.php'); ?>
 
+<?php
+if(isAdmin()){
+?>
+
 <p></p>
 
 <div class="container">
@@ -17,7 +21,37 @@
 		
 		<div class="hidden-content panel-body">
 			
-			
+			<?php foreach($this->pages as $page) { ?>
+				
+				<div class="panel panel-default">
+					
+					<div class="panel-heading hidden-click">
+					
+						<h3 class="panel-title admin-page-title"><?php echo $page->getTitle(); ?></h3>
+
+						
+						<div class="col-md-2 pull-right admin-page-edit">
+						
+							<a href="<?php echo SITE_URL . 'page/' . $page->getId() . '/edit'; ?>" class="btn-xs btn btn-primary">Edit</a>
+							
+							<a href="" class="btn-xs btn btn-danger">Delete</a>
+							
+						</div>
+							
+						
+					</div>
+					
+					
+					<div class="hidden-content panel-body">
+						
+						<?php echo $page->getContent(); ?>
+						
+					</div>
+					
+					
+				</div>
+				
+			<?php } ?>
 											
 		</div>
 		
@@ -151,3 +185,5 @@
 	
 	
 </div>
+
+<?php } ?>

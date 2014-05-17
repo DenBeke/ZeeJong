@@ -6,7 +6,10 @@ Created: February 2014
 */
 ?>
 
-<?php include(dirname(__FILE__) . '/admin.php'); ?>
+<?php include(dirname(__FILE__) . '/admin.php'); 
+
+if(isAdmin()){
+?>
 
 <p></p>
 
@@ -332,3 +335,5 @@ Created: February 2014
 
 
 </div>
+
+<?php } ?>

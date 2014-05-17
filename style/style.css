@@ -33,6 +33,23 @@ table a {
 }
 
 
+.country-flag {
+	background-size: contain;
+	background-position: center 35%;
+	background-repeat: no-repeat;
+	padding: 10px;
+	margin-right: 5px;
+	display: inline-block;
+	font-size: 0;
+	vertical-align: middle;
+	opacity: 0.9;
+}
+
+.country-flag:hover {
+	opacity: 1;
+}
+
+
 
 /* Style for match *
 *************************/
@@ -352,6 +369,44 @@ div.panel-wiki:hover .wiki {
 
 .competitions .admin-only a {
 	display: block;
+}
+
+
+.admin-page-title {
+	display: inline;
+}
+
+.admin-page-edit {
+	text-align: right !important;
+	padding-right: 0 !important;
+}
+
+
+/* Search *
+**********/
+#search-results {
+	padding-left: 0px;
+}
+
+
+
+
+
+/* Footer *
+**********/
+
+#footer {
+	vertical-align: middle;
+}
+
+#footer ul,
+#footer .copyright {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#footer .copyright {
+	padding-right: 10px;
 }
 
 
