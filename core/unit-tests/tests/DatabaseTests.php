@@ -1339,8 +1339,8 @@ class AdvancedBetTest extends UnitTest {
 		$this->userId2 ="2";
 		$this->amount2 = "200";
 		
-		$this->db->addBet($this->matchId1,$this->score11,$this->score12,$this->userId1,$this->amount1);
-		$this->db->addBet($this->matchId2,$this->score21,$this->score22,$this->userId2,$this->amount2);
+		$this->db->addBet($this->matchId1,$this->score11,$this->score12,-1,-1,-1,$this->userId1,$this->amount1);
+		$this->db->addBet($this->matchId2,$this->score21,$this->score22,-1,-1,-1,$this->userId2,$this->amount2);
 
 		$betsUser1 = $this->db->getUserBets($this->userId1);
 		$betsUser2 = $this->db->getUserBets($this->userId2);
@@ -1364,5 +1364,60 @@ class AdvancedBetTest extends UnitTest {
 	}
 }
 
+
+class AdvancedGroupTest extends UnitTest {
+	private $name;
+	private $owner;
+	private $db;
+	private $groupId;
+	public function __construct() {
+		$db = new \Database(DB_HOST, DB_USER, DB_PASS, "TestDB");
+		$this->db = $db;
+		$this->name = "TEST";
+		$this->owner = 1;
+		$this->groupId = $this->db->addGroup($this->name,$this->owner);		
+	}
+	public function basicGetters(){
+		$this->REQUIRE_TRUE($this->db->doesGroupNameExist($this->name));
+		$this->REQUIRE_TRUE($this->db->doesGroupExist($this->groupId));
+	}
+	public function remove(){
+		$this->db->removeGroup($this->groupId);
+		$this->REQUIRE_FALSE($this->db->doesGroupExist($this->groupId));
+	}
+}
+
+class AdvancedGroupMembershipTest extends UnitTest {
+	private $name;
+	private $ownerId;
+	private $memberId;
+	private $db;
+	private $groupId;
+	public function __construct() {
+		$db = new \Database(DB_HOST, DB_USER, DB_PASS, "TestDB");
+		$this->db = $db;
+		$this->name = "TEST";
+		$this->ownerId = 1;
+		$this->memberId = 2;
+		$this->groupId = $this->db->addGroup($this->name,$this->ownerId);	
+		$this->db->addGroupMembership($this->ownerId, $this->groupId);	
+		$this->db->acceptMembership($this->ownerId,$this->groupId);
+	}
+	public function testOwnerMember(){
+		$this->REQUIRE_TRUE($this->db->isUserMemberOfGroup($this->ownerId,$this->groupId));
+	}
+	public function sendAnInvite(){
+		$this->db->addGroupMembership($this->memberId, $this->groupId);
+	}
+	public function acceptInvite(){
+		$this->REQUIRE_FALSE($this->db->isUserMemberOfGroup($this->memberId,$this->groupId));
+		$this->db->acceptMembership($this->memberId,$this->groupId);
+		$this->REQUIRE_TRUE($this->db->isUserMemberOfGroup($this->memberId,$this->groupId));
+	}
+	public function removeUser(){
+		$this->db->removeUserFromGroup($this->memberId, $this->groupId);
+		$this->REQUIRE_FALSE($this->db->isUserMemberOfGroup($this->memberId,$this->groupId));
+	}
+}
 
 ?>

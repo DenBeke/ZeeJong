@@ -1,10 +1,19 @@
-<?php include(dirname(__FILE__) . '/admin.php'); ?>
+<?php include(dirname(__FILE__) . '/admin.php'); 
+
+if(isAdmin()){
+?>
 
 <div class="container">
 
 
 	<div class="col-md-6">
-		<div id="graph-bets"></div>
+		<div id="graph-goals-cards"></div>
+	</div>
+	
+	
+	
+	<div class="col-md-6">
+		<div id="graph-competitions"></div>
 	</div>
 	
 	
@@ -22,54 +31,49 @@
 	</div>
 	
 	
-	<div class="col-md-6">
-		<div id="graph-competitions"></div>
-	</div>
-	
-	
 	
 	<script>
 		
 		
 		$(function () {
-			$('#graph-bets').highcharts({
+		
+			$('#graph-goals-cards').highcharts({
 				chart: {
-					type: 'areaspline'
+					type: 'funnel',
+					marginRight: 100
 				},
 				title: {
-					text: 'Latest Bets'
-				},
-				xAxis: {
-					categories: [
-						'Monday',
-						'Tuesday',
-						'Wednesday',
-						'Thursday',
-						'Friday',
-						'Saturday',
-						'Sunday'
-					],
-				},
-				yAxis: {
-					title: {
-						text: 'Bets'
-					}
-				},
-				tooltip: {
-					shared: true,
-					valueSuffix: ' units'
-				},
-				credits: {
-					enabled: false
+					text: 'Cards',
+					x: -50
 				},
 				plotOptions: {
-					areaspline: {
-						fillOpacity: 0.5
+					series: {
+						dataLabels: {
+							enabled: true,
+							format: '<b>{point.name}</b> ({point.y:,.0f})',
+							color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+							softConnector: true
+						},
+						neckWidth: '30%',
+						neckHeight: '25%'
+		
+						//-- Other available options
+						// height: pixels or percent
+						// width: pixels or percent
 					}
 				},
+				legend: {
+					enabled: false
+				},
 				series: [{
-					name: 'Bets',
-					data: [3, 4, 3, 5, 4, 10, 12]
+					name: 'Cards',
+					data: [
+						['Matches',   <?php echo $this->matches ?>],
+						['Cards', <?php echo $this->cards ?>],
+						['Yellow Cards',    <?php echo $this->yellowCards ?>],
+						['Second Yellow Cards', <?php echo $this->yellowTwoCards ?>],
+						['Red Cards',    <?php echo $this->redCards ?>],
+					]
 				}]
 			});
 		});
@@ -82,45 +86,37 @@
 		$(function () {
 			$('#graph-users').highcharts({
 				chart: {
-					type: 'areaspline'
+					plotBackgroundColor: null,
+					plotBorderWidth: null,
+					plotShadow: false
 				},
 				title: {
-					text: 'Registered Users'
-				},
-				xAxis: {
-					categories: [
-						'November',
-						'December',
-						'January',
-						'February',
-						'March',
-						'April',
-						'May'
-					],
-				},
-				yAxis: {
-					title: {
-						text: 'Users'
-					}
+					text: 'Users'
 				},
 				tooltip: {
-					shared: true,
-					valueSuffix: ' units'
-				},
-				credits: {
-					enabled: false
+					pointFormat: '{series.name}: <b>{point.y}</b>'
 				},
 				plotOptions: {
-					areaspline: {
-						fillOpacity: 0.5
+					pie: {
+						allowPointSelect: true,
+						cursor: 'pointer',
+						dataLabels: {
+							enabled: true,
+							format: '<b>{point.name}</b>: {point.y}',
+							style: {
+								color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+							}
+						}
 					}
 				},
 				series: [{
-					name: 'Users',
-					data: [500, 600, 690, 730, 812, 964, 1024],
-				}, {
-					name: 'Groups',
-					data: [50, 48, 53, 90, 91, 101, 123]
+					type: 'pie',
+					name: 'Total',
+					data: [
+						['Users',   <?php echo $this->users ?>],
+						['Groups',       <?php echo $this->groups ?>],
+						['Total Bets',    <?php echo $this->bets ?>]
+					]
 				}]
 			});
 		});
@@ -158,16 +154,20 @@
 				},
 				series: [{
 					type: 'pie',
-					name: 'Browser share',
+					name: 'Total',
 					data: [
-						['Players',   49785],
-						['Coaches',       1231],
-						['Referees',    1244],
-						['Teams',     1519],
+						['Players',   <?php echo $this->players ?>],
+						['Coaches',       <?php echo $this->coaches ?>],
+						['Referees',    <?php echo $this->referees ?>],
+						['Teams',     <?php echo $this->teams ?>],
 					]
 				}]
 			});
 		});
+		
+		
+		
+		
 		
 		
 		
@@ -175,44 +175,43 @@
 		
 			$('#graph-competitions').highcharts({
 				chart: {
-					plotBackgroundColor: null,
-					plotBorderWidth: null,
-					plotShadow: false
+					type: 'pyramid',
+					marginRight: 100
 				},
 				title: {
-					text: 'Teams & People'
-				},
-				tooltip: {
-					pointFormat: '{series.name}: <b>{point.y}</b>'
+					text: 'Competitions',
+					x: -50
 				},
 				plotOptions: {
-					pie: {
-						allowPointSelect: true,
-						cursor: 'pointer',
+					series: {
 						dataLabels: {
 							enabled: true,
-							format: '<b>{point.name}</b>: {point.y}',
-							style: {
-								color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-							}
+							format: '<b>{point.name}</b> ({point.y:,.0f})',
+							color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+							softConnector: true
 						}
 					}
 				},
+				legend: {
+					enabled: false
+				},
 				series: [{
-					type: 'pie',
-					name: 'Browser share',
+					name: 'Total',
 					data: [
-						['Competitions',   22],
-						['Tournament',       463],
-						['Matches',    6136]
+						['Matches',    <?php echo $this->matches ?>],
+						['Tournaments',   <?php echo $this->tournaments ?>],
+						['Competitions',   <?php echo $this->competitions ?>],
 					]
 				}]
 			});
-			
 		});
+		
+		
 		
 	</script>
 	
 	
 	
 </div>
+
+<?php } ?>

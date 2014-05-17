@@ -900,6 +900,77 @@ class Database {
 	}
 
 
+	/*
+	 Is a user admin
+	 @param the id of the user
+	 @return a boolean indicating whether a user is an admin
+	 */
+	 public function isAdmin($id){
+	 	$sel = new \Selector('User');
+	 	$sel->filter([['id', '=', $id]]);
+		$sel->filter([['admin', '=', 1]]);
+		$result = $this->select($sel);
+
+		return count($result) == 1;
+	 }
+
+
+	/**
+	 Make a user admin
+	 
+	 @param user id
+	 */
+	 public function makeAdmin($Id){
+	 	//Query
+		$query = "
+			UPDATE User
+			SET admin = ?
+			WHERE id = ?;
+		";
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		$ok = 1;
+		//Bind parameters
+		if (!$statement -> bind_param('ii', $ok, $Id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		
+	 }
+	 
+	 
+	 /**
+	 Remove admin
+	 
+	 @param user id
+	 */
+	 public function removeAdmin($Id){
+	 	//Query
+		$query = "
+			UPDATE User
+			SET admin = ?
+			WHERE id = ?;
+		";
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+		$ok = 0;
+		//Bind parameters
+		if (!$statement -> bind_param('ii', $ok, $Id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+		
+	 }
+
+
 	/**
 	 Get the username of the user
 
@@ -913,6 +984,21 @@ class Database {
 		requireEqCount($result, 1);
 
 		return $result[0]['username'];
+	}
+	
+	/**
+	 Get the id of the user
+
+	 @return the id of the user
+	 */
+	public function getUserId($name) {
+		$sel = new \Selector('User');
+		$sel->filter([['username', '=', $name]]);
+
+		$result = $this->select($sel);
+		requireEqCount($result, 1);
+
+		return $result[0]['id'];
 	}
 
 	/**
@@ -1064,6 +1150,33 @@ class Database {
 
 	}
 
+
+
+	/**
+	 Remove a user with the given id
+
+	 @param id
+	*/
+	public function removeUser($id) {
+
+		//Query
+		$query = "
+			DELETE FROM `User` WHERE id = ?;
+		";
+
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if (!$statement -> bind_param('i', $id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+	}
 
 	/**
 	 Test whether a specific username exists
@@ -3574,7 +3687,6 @@ class Database {
 	
 	
 	
-	
 	public function getAllUsers() {
 		
 		$sel = new \Selector('User');
@@ -3596,6 +3708,233 @@ class Database {
 		return $this->resultToPages($result);
 
 	}
+	
+	
+	
+	
+	public function countCompetitions() {
+			
+		$sel = new \Selector('Competition');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting competitions');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	public function countTournaments() {
+			
+		$sel = new \Selector('Tournament');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting tournaments');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	public function countMatches() {
+			
+		$sel = new \Selector('Match');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting matches');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	
+	
+	
+	public function countTeams() {
+			
+		$sel = new \Selector('Team');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting teams');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+	}
+	
+	
+	public function countPlayers() {
+			
+		$sel = new \Selector('Player');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting players');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	
+	
+	public function countReferees() {
+			
+		$sel = new \Selector('Referee');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting referees');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	
+	public function countCoaches() {
+			
+		$sel = new \Selector('Coaches');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting coaches');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	
+	public function countUsers() {
+			
+		$sel = new \Selector('User');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting users');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	
+	public function countGroups() {
+			
+		$sel = new \Selector('Group');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting groups');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	public function countBets() {
+			
+		$sel = new \Selector('Bet');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting bets');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+
+	
+	public function countCards() {
+			
+		$sel = new \Selector('Cards');
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting cards');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+		
+	}
+	
+	
+	public function countYellowCards() {
+			
+		$sel = new \Selector('Cards');
+		$sel->filter([['color', '=', 1]]);
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting cards');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+	}
+	
+	
+	public function countRedCards() {
+			
+		$sel = new \Selector('Cards');
+		$sel->filter([['color', '=', 2]]);
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting cards');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+	}
+	
+	
+	public function countYellowTwoCards() {
+			
+		$sel = new \Selector('Cards');
+		$sel->filter([['color', '=', 3]]);
+		$sel->count();
+	
+		$result = $this->select($sel);
+		if(count($result) != 1) {
+			throw new exception('Error while counting cards');
+		}
+	
+		return $result[0]['COUNT(*)'];
+		
+	}
+	
 
 
 }

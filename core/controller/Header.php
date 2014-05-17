@@ -18,12 +18,14 @@ require_once(dirname(__FILE__) . '/Controller.php');
 		public $userGroups;
 		public $money;
 		public $score;
+		public $pages;
 		
 		
 	
 		public function __construct() {
 			global $database;
 			$this->competitions = $database->getAllCompetitions();
+			$this->pages = $database->getAllPages();
 			
 			if(loggedIn()) {
 			
