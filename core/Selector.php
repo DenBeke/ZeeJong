@@ -26,7 +26,7 @@ class Selector {
 			}
 
 			foreach($column[2] as &$value) {
-				if($column[1] == 'IS NOT NULL') {
+				if (($column[1] == 'IS NOT NULL') || ($column[1] == 'IS NULL')) {
 					continue;
 				}
 
@@ -148,7 +148,7 @@ class Selector {
 				foreach($column[2] as &$orValue) {
 					$sql .= ' ' . $column[0] . ' ' . $column[1];
 
-					if($column[1] != 'IS NOT NULL') {
+					if (($column[1] != 'IS NOT NULL') && ($column[1] != 'IS NULL')) {
 						$sql .= '?';	
 					}
 
