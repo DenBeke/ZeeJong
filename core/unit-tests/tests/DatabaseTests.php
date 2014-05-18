@@ -1168,14 +1168,28 @@ class AdvancedTournamentTest extends UnitTest {
 
 		$db = new \Database(DB_HOST, DB_USER, DB_PASS, "TestDB");
 		$this->db = $db;		
+
 	}
 
 	public function getMatches() {
 	
+		echo totalMatches($this->db->getTournamentById(1)->getMatches(0));
 		$this->REQUIRE_EQUAL(count($this->db->getTournamentById(1)->getMatches(0)), 3);
 		$this->REQUIRE_EQUAL(count($this->db->getTournamentById(2)->getMatches(0)), 1);
 		$this->REQUIRE_EQUAL(count($this->db->getTournamentById(3)->getMatches(0)), 0);		
 		$this->REQUIRE_EQUAL(count($this->db->getTournamentById(4)->getMatches(0)), 0);		
+	}
+
+	public function totalMatches($matches) {
+		echo "?";
+		$total = 0;
+		foreach($matches as $matchlist) {
+
+			echo sizeof($matchlist);
+			$total += sizeof($matchlist);
+		}
+
+		return $total;
 	}
 }
 
