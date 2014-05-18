@@ -22,7 +22,8 @@ div.container h2 {
 	text-align: center;
 }
 
-div.container .pure-form .pure-input-1-2 {
+div.container .pure-form .pure-input-1-2,
+.pure-button {
 	width: 100%;
 	box-sizing: border-box;
 }
@@ -41,3 +42,9 @@ p.notice.ok {
 p.notice.error {
 	background-color: rgb(202, 60, 60);
 }
+
+
+table {
+	width: 100%;
+}
+
