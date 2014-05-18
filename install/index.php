@@ -101,7 +101,7 @@ function handleSubmit()
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Install script</title>
+		<title>ZeeJong Installation</title>
 		
 		<link href="style.css" rel="stylesheet" type="text/css">
 		<link href="pure-min.css" rel="stylesheet" type="text/css">
@@ -110,12 +110,23 @@ function handleSubmit()
 	<body>
 
 	<div class="container">
-	<h2>Install Soccer Management System</h2>
+	<h2>Install ZeeJong</h2>
 	<?php
 		if(isset($_POST['submit'])) {
 			try {
 				handleSubmit();
 				echo '<p class="notice ok">The database was successfully initialized. Please remove the installation directory for security reasons.</p>';
+				?>
+				<div class="pure-g">
+				
+					<div class="pure-u-11-24"><a href="<?php echo substr(get_base_url(), 0, strlen(get_base_url()) - strlen('install') ); ?>" class="pure-button pure-button-primary">View site</a></div>
+					<div class="pure-u-1-12"></div>
+					<div class="pure-u-11-24"><a href="importer.php" class="pure-button pure-button-primary">Import data</a></div>
+				
+				</div>
+				<?php
+				
+				
 			} catch(Exception $e) {
 				echo '<p class="notice error">' . $e->getMessage() .  '</p>';
 				include 'form.tpl.php';
