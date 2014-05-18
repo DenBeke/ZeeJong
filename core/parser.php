@@ -523,27 +523,26 @@ class Parser {
 				//Find out if the match has been played already or not
 				$colonPos = strpos(trim($scoreOrTime), ' : ');
 				$minusPos = strpos(trim($scoreOrTime), ' - ');
-				if ($colonPos == $minusPos) {
-					throw new Exception('Failed to parse time or score of match');
-				}
+				if ($colonPos != $minusPos) {
 
-				if ($colonPos != false) {
-					$this->database->addMatch($teamIdA, $teamIdB, -1, -1, null, $date, $tournamentId);
-				}
-				else {
-				// 174 vs 457 (5004)
-					try {
-						$matchId = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId)->getId();
+				    if ($colonPos != false) {
+					    $this->database->addMatch($teamIdA, $teamIdB, -1, -1, null, $date, $tournamentId);
+				    }
+				    else {
+
+					    try {
+						    $matchId = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId)->getId();
 						
-						//If no exception gets thrown then the match was already in the database
-						$this->database->removeMatch($matchId);
-					}
-					catch (Exception $e) {
-					}
+						    //If no exception gets thrown then the match was already in the database
+						    $this->database->removeMatch($matchId);
+					    }
+					    catch (Exception $e) {
+					    }
 
-					//Add the match
-					$matchUrl = $row->find('.score-time a', 0)->href;
-					$this->parseMatch('http://int.soccerway.com' . $matchUrl);
+					    //Add the match
+					    $matchUrl = $row->find('.score-time a', 0)->href;
+					    $this->parseMatch('http://int.soccerway.com' . $matchUrl);
+				    }
 				}
 			}
 		}
