@@ -459,7 +459,6 @@ class Parser {
 						$this->database->removeMatch($matchId);
 					}
 					catch (Exception $e) {
-						echo 'Exception: ' . $e . '<br>';
 					}
 
 					//Add the match
