@@ -38,7 +38,7 @@ Authors
 - Bruno Van de Velde
 
 
-Acknowledgments
+Acknowledgements
 ---------------
 
 - URL routing: [GluePHP](http://gluephp.com)
