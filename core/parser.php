@@ -76,11 +76,91 @@ class Parser {
 					'archiveUrl' => 'http://int.soccerway.com/national/belgium/pro-league/c24/archive/?ICID=PL_3N_07',
 					'url' => 'http://int.soccerway.com/national/belgium/pro-league/20132014/regular-season/r21451/?ICID=HP_POP_11'
 				),
+				
+				'be-sec' => array(
+					'name' => 'Second Division',
+					'url' => 'http://int.soccerway.com/national/belgium/second-division/20132014/regular-season/r21592/'
+				),
 
 				'bundesliga' => array(
 					'name' => 'Bundesliga',
 					'archiveUrl' => 'http://int.soccerway.com/national/germany/bundesliga/c9/archive/?ICID=PL_3N_07',
 					'url' => 'http://int.soccerway.com/national/germany/bundesliga/20132014/regular-season/r21344/?ICID=SN_01_02'
+				),
+				
+				'premier' => array(
+					'name' => 'Premier League',
+					'url' => 'http://int.soccerway.com/national/england/premier-league/20132014/regular-season/r21322/'
+				),
+				
+				'eredivisie' => array(
+					'name' => 'Eredivisie',
+					'url' => 'http://int.soccerway.com/national/netherlands/eredivisie/20132014/regular-season/r21384/'
+				),
+				
+				'it-serie-a' => array(
+					'name' => 'Serie A',
+					'url' => 'http://int.soccerway.com/national/italy/serie-a/20132014/regular-season/r21388/?ICID=SN_01_03'
+				),
+				
+				'primera' => array(
+					'name' => 'Primera División',
+					'url' => 'http://int.soccerway.com/national/spain/primera-division/20132014/regular-season/r21879/?ICID=SN_01_04'
+				),
+				
+				'ligue-1' => array(
+					'name' => 'Ligue 1',
+					'url' => 'http://int.soccerway.com/national/france/ligue-1/20132014/regular-season/r21342/?ICID=TN_02_01_05'
+				),
+				
+				'süper-lig' => array(
+					'name' => 'Süper Lig',
+					'url' => 'http://int.soccerway.com/national/turkey/super-lig/20132014/regular-season/r21433/?ICID=SN_01_07'
+				),
+				
+				'primeira' => array(
+					'name' => 'Primeira Liga',
+					'url' => 'http://int.soccerway.com/national/portugal/portuguese-liga-/20132014/regular-season/r21831/?ICID=TN_02_01_08'
+				),
+				
+				'championship' => array(
+					'name' => 'Championship',
+					'url' => 'http://int.soccerway.com/national/england/championship/20132014/regular-season/r21389/'
+				),
+				
+				'br-serie-a' => array(
+					'name' => 'Serie A',
+					'url' => 'http://int.soccerway.com/national/brazil/serie-a/2014/regular-season/r24110/?ICID=TN_02_01_10'
+				),
+				
+				'africa' => array(
+					'name' => 'Africa Cup of Nations',
+					'url' => 'http://int.soccerway.com/international/africa/africa-cup-of-nations/2014/group-stage/r19328/'
+				),
+				
+				'russia' => array(
+					'name' => 'Russia Premier League',
+					'url' => 'http://int.soccerway.com/national/russia/premier-league/20132014/regular-season/r21457/'
+				),
+				
+				'usa' => array(
+					'name' => 'Major League Soccer',
+					'url' => 'http://int.soccerway.com/national/united-states/mls/2014/regular-season/r23603/'
+				),
+				
+				'chinese' => array(
+					'name' => 'Chinese Super League',
+					'url' => 'http://int.soccerway.com/national/china-pr/csl/2014/regular-season/r23926/'
+				),
+				
+				'afc' => array(
+					'name' => 'AFC Champions League',
+					'url' => 'http://int.soccerway.com/international/asia/afc-champions-league/2014/group-stage/r23286/'
+				),
+				
+				'caf' => array(
+					'name' => 'CAF Champions League',
+					'url' => 'http://int.soccerway.com/international/africa/caf-champions-league/2014/group-stage/r23522/'
 				)
 			);
 	}
