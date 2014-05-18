@@ -217,7 +217,7 @@ KEY `userId` (`userId`)
 
 '
 CREATE TABLE IF NOT EXISTS `Pages` (
-`id` int(11) NOT NULL,
+`id` int(11) NOT NULL AUTO_INCREMENT,
 `title` varchar(50) NOT NULL,
 `content` text NOT NULL,
 PRIMARY KEY (`id`)

@@ -3667,6 +3667,32 @@ class Database {
 	}
 	
 	
+	public function addPage($title, $content) {
+	
+		try {
+			return $this -> getPage($title, $content) -> getId();
+
+		} catch (exception $e) {
+		}
+
+		return $this->insert('Pages', ['title', 'content'], [$title, $content]);
+	}
+	
+	
+	public function getPage($title, $content) {
+	    $sel = new \Selector('Pages');
+		$sel->filter([['title', '=', $title]]);
+		$sel->filter([['content', '=', $content]]);
+		
+		$result = $this->select($sel);
+		
+		if(sizeof($result) == 1) {
+			return $this->resultToPages($result)[0];
+		}
+		else {
+			throw new exception("Could not retrieve page");
+		}
+	}
 	
 	public function getPageById($id) {
 		$sel = new \Selector('Pages');
