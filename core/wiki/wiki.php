@@ -142,5 +142,21 @@ class Wiki {
 }
 
 
+function getWiki($player) {
+
+   $result = getReducedArrayProp(json_decode(request(getInfoboxJsonUrl("Maarten_Stekelenburg")), true)) + 
+   getReducedArrayImgAndAbstract(json_decode(request(getImgAndAbstract("Maarten_Stekelenburg")), true));
+   foreach ($result as $key => $propList) {
+      echo $key, " => ";
+      foreach($propList as $prop) {
+
+         echo " ".$prop." ";
+      }
+      echo "<br>";
+   }   
+   return $result;
+}
+
+
 
 ?>

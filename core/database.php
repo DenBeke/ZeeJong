@@ -152,6 +152,7 @@ class Database {
 		//echo "<pre>";
 		//print_r($selector->sql());
 		//echo "</pre>";
+
 		$statement = $this->getStatement2($selector->sql());
 		$statement->setFetchMode(PDO::FETCH_ASSOC);
 
@@ -161,7 +162,6 @@ class Database {
 		while($result = $statement->fetch()) {
 			array_push($results, $result);
 		}
-
 		return $results;
 	}
 
@@ -3006,18 +3006,29 @@ class Database {
 			finalType = "";
 		}
 		*/
+/*
+
 		foreach(['Final', 'Semi-finals', '3rd Place Final', 'Quarter-finals', '16th Finals', 'Final replay', ''] as $type) {
 			
+
 			$sel = new \Selector('Match');
 			$sel->filter([['tournamentId', '=', $tournamentId]]);
 			$sel->filter([['type', '=', $type]]);
-	
+
 			$result = $this->select($sel);
 			
 			$matches[$type] = $this->resultToMatches($result); 
-		
+			
 		}
-		
+*/
+
+		//This code is temporary. The previous code can be uncommented when addMatch has been adapted.
+		$sel = new \Selector('Match');
+		$sel->filter([['tournamentId', '=', $tournamentId]]);
+
+		$result = $this->select($sel);
+
+		$matches = $result;
 
 		return $matches;
 	}
