@@ -3539,6 +3539,7 @@ class Database {
 
 		$sel = new \Selector('Match');
 		$sel->filter([['date', '>=', $time]]);
+		$sel->filter([['scoreId', 'IS NULL', '']]);
 		$sel->order('date', 'ASC');
 		$sel->limit(0, $limit);
 
