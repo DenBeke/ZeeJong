@@ -553,6 +553,84 @@ if(isAdmin()){
 
 
 
+<div id="add-card" class="lightbox">
+
+	<div class="lightbox-content">
+
+
+		<h3>Add card</h3>		
+
+
+
+		<form class="form-horizontal" role="form">
+
+		  <div class="form-group">
+			<label for="inputEmail3" class="col-sm-2 control-label">Player</label>
+			<div class="col-sm-10">
+
+				<select name="carlist" form="carform" class="form-control">
+					<optgroup label="<?php echo $this->match->getTeamA()->getName() ?>">
+						<?php
+						foreach($this->match->getTeamA()->getPlayers() as $player) { 
+						?>
+						<option value="<?php echo $player->getId(); ?>"><?php echo $player->getName(); ?></option>
+						<?php } ?>
+					</optgroup>
+
+					<optgroup label="<?php echo $this->match->getTeamB()->getName() ?>">
+						<?php
+						foreach($this->match->getTeamB()->getPlayers() as $player) { 
+						?>
+						<option value="<?php echo $player->getId(); ?>"><?php echo $player->getName(); ?></option>
+						<?php } ?>
+					</optgroup>
+
+
+				</select>
+
+
+			</div>
+		  </div>
+		  
+		  
+		  <div class="form-group">
+		   	<label for="inputPassword3" class="col-sm-2 control-label">Type</label>
+		   	<div class="col-sm-10">
+		   	  <select name="carlist" form="carform" class="form-control">
+		   	    <option value="1">Yelow card</option>
+		   	    <option value="2">Red card</option>
+		   	    <option value="3">Second yellow card</option>
+		   	  </select>
+		   	</div>
+		    </div>
+
+
+			<div class="form-group">
+				<label for="inputPassword3" class="col-sm-2 control-label">Time</label>
+				<div class="col-sm-10">
+				  <input type="text" class="form-control" id="score" placeholder="60">
+				</div>
+			 </div>
+			
+
+		  <div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+			  <button type="submit" class="btn btn-default">Add</button>
+			</div>
+		  </div>
+		</form>
+
+
+
+	</div>
+
+</div>
+
+
+
+
+
+
 
 
 
