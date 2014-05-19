@@ -2999,19 +2999,29 @@ class Database {
 		$sel = new \Selector('Match');
 		$sel->filter([['tournamentId', '=', $tournamentId]]);
 		$result = $this->select($sel);
-		
+
 		$matchList = $this->resultToMatches($result);
-		
-		$typeParts = ['Final', 'Semi', '3', 'Quart', '8', '16', '32'];
+
+		$typeParts = ['32', '16', '8', 'Quart', '3', 'Semi', 'Final'];
 
 		$matches = [];
+		$tempMatchListIn = $matchList;
+		$tempMatchListOut = [];
 		foreach ($typeParts as $part) {
-		    foreach ($matchList as $match) {
-		        if (strpos($match->getType(), $part) !== FALSE) {
-		            $matches[$match->getType()] = [];
+		    foreach ($tempMatchListIn as $match) {
+		        if ($match->getType() != '') {
+		            if (strpos($match->getType(), $part) !== FALSE) {
+		                $matches[$match->getType()] = [];
+		            }
+		            else {
+		                $tempMatchListOut[] = $match;
+		            }
 		        }
 		    }
+		    $tempMatchListIn = $tempMatchListOut;
 		}
+
+		$matches = array_reverse($matches);
 
 		foreach ($matchList as $match) {
 		    $matches[$match->getType()][] = $match;
