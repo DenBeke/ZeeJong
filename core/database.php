@@ -3002,7 +3002,17 @@ class Database {
 		
 		$matchList = $this->resultToMatches($result);
 		
+		$typeParts = ['Final', 'Semi', '3', 'Quart', '8', '16', '32'];
+
 		$matches = [];
+		foreach ($typeParts as $part) {
+		    foreach ($matchList as $match) {
+		        if (strpos($match->getType(), $part) !== FALSE) {
+		            $matches[$match->getType()] = [];
+		        }
+		    }
+		}
+
 		foreach ($matchList as $match) {
 		    $matches[$match->getType()][] = $match;
 		}
