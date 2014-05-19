@@ -44,6 +44,7 @@ Acknowledgments
 - URL routing: [GluePHP](http://gluephp.com)
 - RSS parser: [SimplePie RSS](http://simplepie.org)
 - Wikipedia information: [Wikipedia](http://wikipedia.org) & [wikidrain](https://github.com/abreksa4/wikidrain)
+- Wikipedia info-box: [DBpedia](http://dbpedia.org/About)
 - Design framework: [Bootstrap](http://getbootstrap.com)
 - Graphs: [Highcharts](http://www.highcharts.com)
 - OpenID login: [LightOpenID](https://code.google.com/p/lightopenid/)
