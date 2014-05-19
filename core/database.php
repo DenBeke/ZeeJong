@@ -2188,7 +2188,7 @@ class Database {
 
 	 @return id of the newly added match or id of existing
 	 */
-	public function addMatch($teamA, $teamB, $scoreA, $scoreB, $refereeId, $date, $tournamentId) {
+	public function addMatch($teamA, $teamB, $scoreA, $scoreB, $refereeId, $date, $tournamentId, $type = '') {
 
 		//Check if the match isn't already in the database
 		try {
@@ -2208,8 +2208,8 @@ class Database {
 		if (($scoreA != -1) and ($scoreB != -1))
 			$scoreId = $this -> addScore($scoreA, $scoreB);
 
-		return $this->insert('Match', ['teamA', 'teamB', 'tournamentId', 'refereeId', 'date', 'scoreId'],
-									[$teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId]);
+		return $this->insert('Match', ['teamA', 'teamB', 'tournamentId', 'refereeId', 'date', 'scoreId', 'type'],
+									[$teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId, $type]);
 	}
 
 	public function getMatch($teamA, $teamB, $date, $tournamentId) {
@@ -3006,7 +3006,7 @@ class Database {
 			finalType = "";
 		}
 		*/
-/*
+
 
 		foreach(['Final', 'Semi-finals', '3rd Place Final', 'Quarter-finals', '16th Finals', 'Final replay', ''] as $type) {
 			
@@ -3020,15 +3020,6 @@ class Database {
 			$matches[$type] = $this->resultToMatches($result); 
 			
 		}
-*/
-
-		//This code is temporary. The previous code can be uncommented when addMatch has been adapted.
-		$sel = new \Selector('Match');
-		$sel->filter([['tournamentId', '=', $tournamentId]]);
-
-		$result = $this->select($sel);
-
-		$matches = $result;
 
 		return $matches;
 	}
