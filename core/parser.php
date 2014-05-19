@@ -76,11 +76,91 @@ class Parser {
 					'archiveUrl' => 'http://int.soccerway.com/national/belgium/pro-league/c24/archive/?ICID=PL_3N_07',
 					'url' => 'http://int.soccerway.com/national/belgium/pro-league/20132014/regular-season/r21451/?ICID=HP_POP_11'
 				),
+				
+				'be-sec' => array(
+					'name' => 'Second Division',
+					'url' => 'http://int.soccerway.com/national/belgium/second-division/20132014/regular-season/r21592/'
+				),
 
 				'bundesliga' => array(
 					'name' => 'Bundesliga',
 					'archiveUrl' => 'http://int.soccerway.com/national/germany/bundesliga/c9/archive/?ICID=PL_3N_07',
 					'url' => 'http://int.soccerway.com/national/germany/bundesliga/20132014/regular-season/r21344/?ICID=SN_01_02'
+				),
+				
+				'premier' => array(
+					'name' => 'Premier League',
+					'url' => 'http://int.soccerway.com/national/england/premier-league/20132014/regular-season/r21322/'
+				),
+				
+				'eredivisie' => array(
+					'name' => 'Eredivisie',
+					'url' => 'http://int.soccerway.com/national/netherlands/eredivisie/20132014/regular-season/r21384/'
+				),
+				
+				'it-serie-a' => array(
+					'name' => 'Serie A',
+					'url' => 'http://int.soccerway.com/national/italy/serie-a/20132014/regular-season/r21388/?ICID=SN_01_03'
+				),
+				
+				'primera' => array(
+					'name' => 'Primera División',
+					'url' => 'http://int.soccerway.com/national/spain/primera-division/20132014/regular-season/r21879/?ICID=SN_01_04'
+				),
+				
+				'ligue-1' => array(
+					'name' => 'Ligue 1',
+					'url' => 'http://int.soccerway.com/national/france/ligue-1/20132014/regular-season/r21342/?ICID=TN_02_01_05'
+				),
+				
+				'süper-lig' => array(
+					'name' => 'Süper Lig',
+					'url' => 'http://int.soccerway.com/national/turkey/super-lig/20132014/regular-season/r21433/?ICID=SN_01_07'
+				),
+				
+				'primeira' => array(
+					'name' => 'Primeira Liga',
+					'url' => 'http://int.soccerway.com/national/portugal/portuguese-liga-/20132014/regular-season/r21831/?ICID=TN_02_01_08'
+				),
+				
+				'championship' => array(
+					'name' => 'Championship',
+					'url' => 'http://int.soccerway.com/national/england/championship/20132014/regular-season/r21389/'
+				),
+				
+				'br-serie-a' => array(
+					'name' => 'Serie A',
+					'url' => 'http://int.soccerway.com/national/brazil/serie-a/2014/regular-season/r24110/?ICID=TN_02_01_10'
+				),
+				
+				'africa' => array(
+					'name' => 'Africa Cup of Nations',
+					'url' => 'http://int.soccerway.com/international/africa/africa-cup-of-nations/2014/group-stage/r19328/'
+				),
+				
+				'russia' => array(
+					'name' => 'Russia Premier League',
+					'url' => 'http://int.soccerway.com/national/russia/premier-league/20132014/regular-season/r21457/'
+				),
+				
+				'usa' => array(
+					'name' => 'Major League Soccer',
+					'url' => 'http://int.soccerway.com/national/united-states/mls/2014/regular-season/r23603/'
+				),
+				
+				'chinese' => array(
+					'name' => 'Chinese Super League',
+					'url' => 'http://int.soccerway.com/national/china-pr/csl/2014/regular-season/r23926/'
+				),
+				
+				'afc' => array(
+					'name' => 'AFC Champions League',
+					'url' => 'http://int.soccerway.com/international/asia/afc-champions-league/2014/group-stage/r23286/'
+				),
+				
+				'caf' => array(
+					'name' => 'CAF Champions League',
+					'url' => 'http://int.soccerway.com/international/africa/caf-champions-league/2014/group-stage/r23522/'
 				)
 			);
 	}
@@ -190,12 +270,12 @@ class Parser {
 
 			$urls = array();
 			if (sizeof($parts) == 1) {
-			    $urls[] = 'http://int.soccerway.com' . $tournamentUrl;
+				$urls[] = 'http://int.soccerway.com' . $tournamentUrl;
 			}
 			else {
-			    foreach ($parts as $part) {
-				    $urls[] = 'http://int.soccerway.com' . $part->href . 'matches/';
-			    }
+				foreach ($parts as $part) {
+					$urls[] = 'http://int.soccerway.com' . $part->href . 'matches/';
+				}
 			}
 
 			foreach ($urls as $url) {
@@ -400,73 +480,69 @@ class Parser {
 	@param url of the competition
 	*/
 	private function parseNewMatches($url) {
-
-		$html = $this->loadPage($url);
+	
+		$paramPos = strpos($url, '?');
+		if ($paramPos == FALSE) {
+			$html = $this->loadPage($url . 'matches/');
+		}
+		else {
+			$html = $this->loadPage(substr($url, 0, $paramPos) . 'matches/' . substr($url, $paramPos));
+		}
 
 		$competitionId = $this->database->addCompetition($this->competition);
 
-		$urls = array();
-		$parts = $html->find('.level-1', 0)->find('.leaf a');
-		foreach ($parts as $part) {
-			$urls[] = 'http://int.soccerway.com' . $part->href . 'matches/';
-		}
+		//Find the tournament
+		$this->tournament = $html->find('.level-1 a', 0)->plaintext;
+		$tournamentId = $this->database->addTournament($this->tournament, $competitionId);
 
-		foreach ($urls as $url) {
+		//Loop over all matches
+		$rows = $html->find('.table-container .matches tr');
+		foreach ($rows as $row) {
 
-			//Find the tournament
-			$this->tournament = $html->find('.level-1 a', 0)->plaintext;
-			$tournamentId = $this->database->addTournament($this->tournament, $competitionId);
+			//Some results are not matches and should be skipped
+			$date = $row->find('.date', 0);
+			if ((is_object($date)) && ($date->tag == 'td')) {
 
-			//Loop over all matches
-			$rows = $html->find('.table-container .matches tr');
-			foreach ($rows as $row) {
+				//Convert the date in something that strtotime understands
+				$date = $date->plaintext;
+				$date = explode('/', $date);
+				$date[2] = '20' . $date[2];
+				$date = implode('-', $date);
 
-				//Some results are not matches and should be skipped
-				$date = $row->find('.date', 0);
-				if ((is_object($date)) && ($date->tag == 'td')) {
+				$date = strtotime($date);
 
-					//Convert the date in something that strtotime understands
-					$date = $date->plaintext;
-					$date = explode('/', $date);
-					$date[2] = '20' . $date[2];
-					$date = implode('-', $date);
+				//Read the information about the match
+				$teamA = $row->find('.team-a a', 0);
+				$teamB = $row->find('.team-b a', 0);
+				$scoreOrTime = $row->find('.score-time', 0)->plaintext;
 
-					$date = strtotime($date);
+				//Parse the team pages
+				$teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
+				$teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
+				
+				//Find out if the match has been played already or not
+				$colonPos = strpos(trim($scoreOrTime), ' : ');
+				$minusPos = strpos(trim($scoreOrTime), ' - ');
+				if ($colonPos != $minusPos) {
 
-					//Read the information about the match
-					$teamA = $row->find('.team-a a', 0);
-					$teamB = $row->find('.team-b a', 0);
-					$scoreOrTime = $row->find('.score-time', 0)->plaintext;
+				    if ($colonPos != false) {
+					    $this->database->addMatch($teamIdA, $teamIdB, -1, -1, null, $date, $tournamentId);
+				    }
+				    else {
 
-					//Parse the team pages
-					$teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
-					$teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
+					    try {
+						    $matchId = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId)->getId();
+						
+						    //If no exception gets thrown then the match was already in the database
+						    $this->database->removeMatch($matchId);
+					    }
+					    catch (Exception $e) {
+					    }
 
-					//Find out if the match has been played already or not
-					$colonPos = strpos(trim($scoreOrTime), ' : ');
-					$minusPos = strpos(trim($scoreOrTime), ' - ');
-					if ($colonPos == $minusPos) {
-						throw new Exception('Failed to parse time or score of match');
-					}
-
-					if ($colonPos != false) {
-						$this->database->addMatch($teamIdA, $teamIdB, 0, -1, -1, $date, $tournamentId);
-					}
-					else {
-
-						try {
-							$matchId = $this->database->getMatch($teamIdA, $teamIdB, null, $date, $tournamentId);
-
-							//If no exception gets thrown then the match was already in the database
-							$this->database->removeMatch($matchId);
-						}
-						catch (Exception $e) {
-						}
-
-						//Add the match
-						$matchUrl = $row->find('.score-time a', 0)->href;
-						$this->parseMatch('http://int.soccerway.com' . $matchUrl);
-					}
+					    //Add the match
+					    $matchUrl = $row->find('.score-time a', 0)->href;
+					    $this->parseMatch('http://int.soccerway.com' . $matchUrl);
+				    }
 				}
 			}
 		}
