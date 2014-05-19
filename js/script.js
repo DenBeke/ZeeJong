@@ -134,5 +134,34 @@ $(document).ready(function(){
 	
 	
 	
+	
+	
+	$('.lightbox-click').click(function(){
+		
+		var lightboxId = $(this).attr('data-id');
+		$('#' + lightboxId).css('display', 'block');
+		
+	
+	});
+	
+	
+	$('.lightbox').click(function(){
+		
+		$('.lightbox').css('display', 'none');
+		
+	
+	});
+	
+	
+	$(function() {
+		$(".lightbox-content").on("click", function(e) {
+			e.stopPropagation();
+		});
+	});
+	
+	
+	
+	
+	
 
 });

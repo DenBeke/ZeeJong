@@ -1,0 +1,7 @@
+#Url rewriting
+#This turns of the rewrite rules for this subdir
+RewriteEngine Off
+
+#Increase upload limit
+php_value upload_max_filesize 128M
+php_value post_max_size 128M
