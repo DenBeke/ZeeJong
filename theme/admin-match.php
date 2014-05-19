@@ -86,7 +86,7 @@ if(isAdmin()){
 
 		<div class="col-md-8">
 
-			<h4>Goals</h4>
+			<h4>Goals <a class="btn-xs btn btn-primary lightbox-click" data-id="add-goal">Add goal</a></h4>
 
 			<table class="goals table table-striped">
 				<?php foreach($this->goals as $goal) {
@@ -134,7 +134,7 @@ if(isAdmin()){
 
 		<div class="col-md-8">
 
-			<h4>Cards</h4>
+			<h4>Cards <a class="btn-xs btn btn-primary lightbox-click" data-id="add-card">Add card</a></h4>
 
 			<table class="cards table table-striped">
 				<?php foreach($this->cards as $card) {
@@ -219,6 +219,7 @@ if(isAdmin()){
 							<tr>
 								<th>#</th>
 								<th>Name</th>
+								<th></th>
 							</tr>
 
 
@@ -228,6 +229,7 @@ if(isAdmin()){
 							 <tr>
 							 	<td><?php if($player->number > 0) echo $player->number; ?></td>
 							 	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
+							 	<td><a href="" class="btn-xs btn btn-danger">Delete</a></td>
 							 </tr>
 
 							 <?php
@@ -283,6 +285,7 @@ if(isAdmin()){
 							<tr>
 								<th>#</th>
 								<th>Name</th>
+								<th></th>
 							</tr>
 
 
@@ -293,6 +296,7 @@ if(isAdmin()){
 							 <tr>
 							 	<td><?php if($player->number > 0) echo $player->number; ?></td>
 							 	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
+							 	<td><a href="" class="btn-xs btn btn-danger">Delete</a></td>
 							 </tr>
 
 							 <?php
@@ -408,7 +412,7 @@ if(isAdmin()){
 		  <div class="form-group">
 		 	<label for="inputPassword3" class="col-sm-2 control-label">Number</label>
 		 	<div class="col-sm-10">
-		 	  <input type="text" class="form-control" id="score" placeholder="2-1">
+		 	  <input type="text" class="form-control" id="score" placeholder="1">
 		 	</div>
 		  </div>
 
@@ -461,7 +465,73 @@ if(isAdmin()){
 		  <div class="form-group">
 		 	<label for="inputPassword3" class="col-sm-2 control-label">Number</label>
 		 	<div class="col-sm-10">
-		 	  <input type="text" class="form-control" id="score" placeholder="2-1">
+		 	  <input type="text" class="form-control" id="score" placeholder="1">
+		 	</div>
+		  </div>
+
+
+		  <div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+			  <button type="submit" class="btn btn-default">Add</button>
+			</div>
+		  </div>
+		</form>
+
+
+
+	</div>
+
+</div>
+
+
+
+
+
+
+<div id="add-goal" class="lightbox">
+
+	<div class="lightbox-content">
+
+
+		<h3>Add goal</h3>		
+
+
+
+		<form class="form-horizontal" role="form">
+
+		  <div class="form-group">
+			<label for="inputEmail3" class="col-sm-2 control-label">Player</label>
+			<div class="col-sm-10">
+
+				<select name="carlist" form="carform" class="form-control">
+					<optgroup label="<?php echo $this->match->getTeamA()->getName() ?>">
+					    <?php
+					    foreach($this->match->getTeamA()->getPlayers() as $player) { 
+					    ?>
+					    <option value="<?php echo $player->getId(); ?>"><?php echo $player->getName(); ?></option>
+					    <?php } ?>
+					</optgroup>
+					
+					<optgroup label="<?php echo $this->match->getTeamB()->getName() ?>">
+						<?php
+						foreach($this->match->getTeamB()->getPlayers() as $player) { 
+						?>
+						<option value="<?php echo $player->getId(); ?>"><?php echo $player->getName(); ?></option>
+						<?php } ?>
+					</optgroup>
+					
+		
+				</select>
+
+
+			</div>
+		  </div>
+
+
+		  <div class="form-group">
+		 	<label for="inputPassword3" class="col-sm-2 control-label">Time</label>
+		 	<div class="col-sm-10">
+		 	  <input type="text" class="form-control" id="score" placeholder="60">
 		 	</div>
 		  </div>
 
