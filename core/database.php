@@ -2998,17 +2998,17 @@ class Database {
 		
 		$matches = [];
 		
-		/*
-		if finalType != "" && finalType != "Final" && finalType != "Semi-finals" &&
-			finalType != "3rd Place Final" && finalType != "Quarter-finals" &&
-			finalType != "16th Finals" && finalType != "Final replay" {
-			log.Printf("Found unknown final type: %s", finalType)
-			finalType = "";
-		}
-		*/
+		$types = ["Final", "Finals", "Final replay", "Play-offs - Final", "Conference - Finals", "Europe League Play-offs - Finals", "Play Offs UEFA Final",
+				 	"Semi-finals", "Play-offs - Semi-finals", "Conference - Semi-finals", "Europa League Play-offs - Semi-finals",
+					"3rd Place Final",
+					"Quarter-finals", "Quarter-finals Replays",
+					"8th Finals",
+					"16th Finals",
+					"32th Finals",
+					""];
 
 
-		foreach(['Final', 'Semi-finals', '3rd Place Final', 'Quarter-finals', '16th Finals', 'Final replay', ''] as $type) {
+		foreach($types as $type) {
 			
 
 			$sel = new \Selector('Match');
