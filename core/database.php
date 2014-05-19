@@ -3163,7 +3163,7 @@ class Database {
 
 		foreach($result as $match) {
 			array_push($matches, new Match($match['id'], $match['teamA'], $match['teamB'],
-						$match['tournamentId'], $match['refereeId'], $match['date'], $match['scoreId'],
+						$match['tournamentId'], $match['refereeId'], $match['date'], $match['scoreId'], $match['type'],
 						$this));
 		}
 
