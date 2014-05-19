@@ -34,7 +34,7 @@ class Match {
 	Constructor
 	@param id
 	*/
-	public function __construct($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId, &$db) {
+	public function __construct($id, $teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId, $type, &$db) {
 		$this->id = $id;
 		$this->teamA = $teamA;
 		$this->teamB = $teamB;
@@ -42,6 +42,7 @@ class Match {
 		$this->refereeId = $refereeId;
 		$this->date = $date;
 		$this->scoreId = $scoreId;
+		$this->type = $type;
 		$this->db = &$db;		
 	}
 
@@ -113,6 +114,9 @@ class Match {
 		return $this->date;
 	}
 	
+	public function getType() {
+	    return $this->type;
+	}
 	
 	public function getPlayersTeamA() {
 		return $this->getTeamA()->getPlayersForMatch($this->id);
