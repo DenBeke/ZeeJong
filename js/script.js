@@ -139,7 +139,7 @@ $(document).ready(function(){
 	$('.lightbox-click').click(function(){
 		
 		var lightboxId = $(this).attr('data-id');
-		$('#' + lightboxId).css('display', 'block');
+		$('#' + lightboxId).fadeIn();
 		
 	
 	});
