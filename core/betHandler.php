@@ -32,13 +32,34 @@ class BetHandler {
 	// A map on the matchid with the money users lost on that match
 	private $matchesMoneyLost;
 
+	// A counter with how many bets were processed
+	private $betsProcessed;
+
+	// A counter with the amount of money that was distributed to the winners
+	private $moneyDistributed;
+
+	// A counter with the amount of parameters that was bet on
+	private $parametersBetOn;
+
+	// A counter with the amount of money that was lost on all bets processed
+	private $moneyLostInTotal;
+
+	/**
+	 * Constructor of the betHandler class
+	 */
 	public function __construct() {
 		$this -> d = new Database();
 		$this -> betList = $this -> d -> getUnhandledBets();
 		$this -> betsToProcess = array();
 		$this -> matchesMoneyLost = array();
+		$this -> betsProcessed = 0;
+		$this -> moneyDistributed = 0;
+		$this -> parametersBetOn = 0;
 	}
 
+	/**
+	 * Generate a list of bets to process
+	 */
 	public function genBetsToProcess() {
 		foreach ($this->betList as $betId) {
 			$bet = new Bet($betId);
@@ -50,6 +71,9 @@ class BetHandler {
 		}
 	}
 
+	/**
+	 * Add the money lost for a certain bet on a certain match
+	 */
 	private function addMoneyLost($bet, $match) {
 		if (!isset($this -> matchesMoneyLost[$match -> getId()])) {
 			$this -> matchesMoneyLost[$match -> getId()] = 0;
@@ -61,16 +85,22 @@ class BetHandler {
 		// Add bet money itself
 		$user -> addMoney($bet -> getMoney() / $bet -> howManyItemsBet());
 		$user -> addMoneyWon($bet -> getMoney() / $bet -> howManyItemsBet());
+		$this -> moneyDistributed = $this -> moneyDistributed + $bet -> getMoney() / $bet -> howManyItemsBet();
 		// Add the money won
 		if (isset($this -> matchesMoneyLost[$match -> getId()])) {
 			$user -> addMoney(($bet -> getMoney() * ($this -> matchesMoneyLost[$match -> getId()] / ($match -> getTotalMoneyBetOn() - $this -> matchesMoneyLost[$match -> getId()]))) / $bet -> howManyItemsBet());
 			$user -> addMoneyWon(($bet -> getMoney() * ($this -> matchesMoneyLost[$match -> getId()] / ($match -> getTotalMoneyBetOn() - $this -> matchesMoneyLost[$match -> getId()]))) / $bet -> howManyItemsBet());
+			$this -> moneyDistributed = $this -> moneyDistributed + ($bet -> getMoney() * ($this -> matchesMoneyLost[$match -> getId()] / ($match -> getTotalMoneyBetOn() - $this -> matchesMoneyLost[$match -> getId()]))) / $bet -> howManyItemsBet();
 		}
 	}
 
+	/**
+	 * Process the list of unhandled bets (which can be handled now)
+	 */
 	public function processBets() {
 		foreach ($this->betsToProcess as $bet) {
 			$match = $this -> d -> getMatchById($bet -> getMatchId());
+			$this -> parametersBetOn = $this -> parametersBetOn + $bet -> howManyItemsBet();
 			if ($bet -> getScoreA() != $match -> getScore() -> getScoreA() && $bet -> getScoreA() != -1) {
 				// score A was not guessed correctly
 				$this -> addMoneyLost($bet, $match);
@@ -128,8 +158,30 @@ class BetHandler {
 
 			// Set bet handled
 			$this -> d -> setBetHandled($bet -> getId());
+			$this -> betsProcessed = $this -> betsProcessed + 1;
 		}
 
+	}
+
+	/**
+	 * Get the amount of bets processed
+	 */
+	public function getBetsProcessed() {
+		return $this -> betsProcessed;
+	}
+
+	/**
+	 * Get the total amount of money distributed
+	 */
+	public function getMoneyDistributed() {
+		return $this -> moneyDistributed;
+	}
+
+	/**
+	 * Get the total amount of parameters bet on
+	 */
+	public function getParametersBetOn() {
+		return $this -> parametersBetOn;
 	}
 
 }
