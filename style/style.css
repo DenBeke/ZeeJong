@@ -140,6 +140,14 @@ table.goals a {
 	display: inline-block;
 }
 
+table.goals td.button a {
+	padding: 1px 5px !important;
+	font-size: 12px !important;
+	line-height: 1.5;
+	border-radius: 3px;
+	display: block;
+}
+
 
 .bet-button-container {
 	text-align: center;
@@ -152,17 +160,17 @@ table.goals a {
 }
 
 
-table.goals td:first-child.team-b,
-table.goals td:last-child.team-a,
-table.cards td:first-child.team-b,
-table.cards td:last-child.team-a {
+table.goals td:nth-child(1).team-b,
+table.goals td:nth-child(3).team-a,
+table.cards td:nth-child(1).team-b,
+table.cards td:nth-child(3).team-a {
 	font-size: 0;
 }
 
-table.goals td:first-child.team-b span,
-table.goals td:last-child.team-a span,
-table.cards td:first-child.team-b span,
-table.cards td:last-child.team-a span {
+table.goals td:nth-child(1).team-b span,
+table.goals td:nth-child(3).team-a span,
+table.cards td:nth-child(1).team-b span,
+table.cards td:nth-child(3).team-a span {
 	display: none;
 }
 
