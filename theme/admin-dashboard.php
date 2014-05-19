@@ -3,32 +3,29 @@
 if(isAdmin()){
 ?>
 
-<div class="container">
-
-
-	<div class="col-md-6">
-		<div id="graph-goals-cards"></div>
-	</div>
+<div class="container">	
 	
 	
-	
+		
 	<div class="col-md-6">
 		<div id="graph-competitions"></div>
 	</div>
 	
+	<div class="col-md-6">
+		<div id="graph-persons"></div>
+	</div>
 	
+	<div class="col-md-6">
+		<div id="graph-goals-cards"></div>
+	</div>
+
 	
 	<div class="col-md-6">
 		<div id="graph-users"></div>
 	</div>
 	
-	
-	
-	
-	
-	<div class="col-md-6">
-		<div id="graph-persons"></div>
-	</div>
+
+
 	
 	
 	
