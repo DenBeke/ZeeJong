@@ -516,6 +516,10 @@ class Parser {
 				$teamB = $row->find('.team-b a', 0);
 				$scoreOrTime = $row->find('.score-time', 0)->plaintext;
 
+				if (!isset($teamA) || !isset($teamB) || !isset($scoreOrTime)) {
+				    continue;
+				}
+
 				//Parse the team pages
 				$teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
 				$teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
