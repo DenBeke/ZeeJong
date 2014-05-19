@@ -318,7 +318,7 @@ class Parser {
 
 	@param url of the match
 	*/
-	private function parseMatch($url) {
+	private function parseMatch($url, $type = '') {
 
 
 		try {
@@ -354,7 +354,7 @@ class Parser {
 
 			//Add the match to the database
 			$date = strtotime($html->find('.middle .details dd', 1)->plaintext);
-			$matchId = $this->database->addMatch($teamIdA, $teamIdB, $scoreA, $scoreB, $refereeId, $date, $tournamentId);
+			$matchId = $this->database->addMatch($teamIdA, $teamIdB, $scoreA, $scoreB, $refereeId, $date, $tournamentId, $type);
 
 			echo "match: $matchId<br>";
 
@@ -499,9 +499,8 @@ class Parser {
 		$html->clear();
 
 		foreach ($urls as $url) {
-		
+
 		    $html = $this->loadPage($url);
-		    echo "$url<br>";
 
 		    $competitionId = $this->database->addCompetition($this->competition);
 
@@ -510,56 +509,73 @@ class Parser {
 		    $tournamentId = $this->database->addTournament($this->tournament, $competitionId);
 
 		    //Loop over all matches
-		    $rows = $html->find('.table-container .matches tr');
-		    foreach ($rows as $row) {
+		    $blocksFound = true;
+		    $blocks = $html->find('div.block_competition_matches_full-wrapper');
+		    if (sizeof($blocks) == 0) {
+		        $blocks = [$html];
+		        $blocksFound = false;
+		    }
+		    foreach ($blocks as $block) {
+		    
+		        $type = '';
+		        if ($blocksFound) {
+		            $typeTag = $block->find('h2');
+		            if (sizeof($typeTag) == 1) {
+		                $type = $typeTag[0]->plaintext;
+		            }
+		        }
+		    
+		        $rows = $block->find('.table-container .matches tr');
+		        foreach ($rows as $row) {
 
-			    //Some results are not matches and should be skipped
-			    $date = $row->find('.date', 0);
-			    if ((is_object($date)) && ($date->tag == 'td')) {
+			        //Some results are not matches and should be skipped
+			        $date = $row->find('.date', 0);
+			        if ((is_object($date)) && ($date->tag == 'td')) {
 
-				    //Convert the date in something that strtotime understands
-				    $date = $date->plaintext;
-				    $date = explode('/', $date);
-				    $date[2] = '20' . $date[2];
-				    $date = implode('-', $date);
+				        //Convert the date in something that strtotime understands
+				        $date = $date->plaintext;
+				        $date = explode('/', $date);
+				        $date[2] = '20' . $date[2];
+				        $date = implode('-', $date);
 
-				    $date = strtotime($date);
+				        $date = strtotime($date);
 
-				    //Read the information about the match
-				    $teamA = $row->find('.team-a a', 0);
-				    $teamB = $row->find('.team-b a', 0);
-				    $scoreOrTime = $row->find('.score-time', 0)->plaintext;
+				        //Read the information about the match
+				        $teamA = $row->find('.team-a a', 0);
+				        $teamB = $row->find('.team-b a', 0);
+				        $scoreOrTime = $row->find('.score-time', 0)->plaintext;
 
-				    if (!isset($teamA) || !isset($teamB) || !isset($scoreOrTime)) {
-				        continue;
-				    }
-
-				    //Parse the team pages
-				    $teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
-				    $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
-				
-				    //Find out if the match has been played already or not
-				    $colonPos = strpos(trim($scoreOrTime), ' : ');
-				    $minusPos = strpos(trim($scoreOrTime), ' - ');
-				    if ($colonPos != $minusPos) {
-
-				        if ($colonPos != false) {
-					        $this->database->addMatch($teamIdA, $teamIdB, -1, -1, null, $date, $tournamentId);
+				        if (!isset($teamA) || !isset($teamB) || !isset($scoreOrTime)) {
+				            continue;
 				        }
-				        else {
 
-					        try {
-						        $matchId = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId)->getId();
+				        //Parse the team pages
+				        $teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
+				        $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
+				
+				        //Find out if the match has been played already or not
+				        $colonPos = strpos(trim($scoreOrTime), ' : ');
+				        $minusPos = strpos(trim($scoreOrTime), ' - ');
+				        if ($colonPos != $minusPos) {
+
+				            if ($colonPos != false) {
+					            $this->database->addMatch($teamIdA, $teamIdB, -1, -1, null, $date, $tournamentId, $type);
+				            }
+				            else {
+
+					            try {
+						            $matchId = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId)->getId();
 						
-						        //If no exception gets thrown then the match was already in the database
-						        $this->database->removeMatch($matchId);
-					        }
-					        catch (Exception $e) {
-					        }
+						            //If no exception gets thrown then the match was already in the database
+						            $this->database->removeMatch($matchId);
+					            }
+					            catch (Exception $e) {
+					            }
 
-					        //Add the match
-					        $matchUrl = $row->find('.score-time a', 0)->href;
-					        $this->parseMatch('http://int.soccerway.com' . $matchUrl);
+					            //Add the match
+					            $matchUrl = $row->find('.score-time a', 0)->href;
+					            $this->parseMatch('http://int.soccerway.com' . $matchUrl, $type);
+				            }
 				        }
 				    }
 			    }
