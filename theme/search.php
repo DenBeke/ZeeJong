@@ -8,6 +8,13 @@ Created: May 2014
 
 <script>
 var players = [];
+var teams = [];
+
+function clear() {
+	players = [];
+	teams = [];
+	$('#search-results').html('');
+}
 
 function addPlayers() {
 	var html = '';
@@ -19,7 +26,20 @@ function addPlayers() {
 		html += '</li>';
 	}
 
-	$('#search-results').html(html);
+	$('#search-results').append(html);
+}
+
+function addTeams() {
+	var html = '';
+	for(i in teams) {
+		html += '<li class="teams-result">';
+		html += '<a href="<?php echo SITE_URL; ?>team/' + teams[i].id + '">';
+		html += teams[i].name;
+		html += '</a>';
+		html += '</li>';
+	}
+
+	$('#search-results').append(html);
 }
 
 function loadPlayers(term) {
@@ -38,11 +58,29 @@ function loadPlayers(term) {
 	});
 }
 
+function loadTeams(term) {
+	$('#loader').fadeIn(100, function() {
+		$.ajax({
+			dataType: "json",
+			url: '<?php echo SITE_URL; ?>core/ajax/team.php',
+			data: {'name': term},
+			success: function(data) {
+				$('#loader').fadeOut(100, function() {
+					teams = data;
+					addTeams();
+				});
+			}
+		});
+	});
+}
+
 $(document).ready(function(){
 	$('#search-form :checkbox').change(function(e) {
 		if(this.checked) {
 			if(this.value == 'players') {
 				addPlayers();
+			} else if(this.value == 'teams') {
+				addTeams();
 			}
 		} else {
 			$('.' + this.value + '-result').remove();
@@ -50,10 +88,14 @@ $(document).ready(function(){
 	});
 
 	$('#submit').click(function(e) {
+		clear();
+
 		$('#search-form :checkbox').each(function(index) {
 			if(this.checked) {
 				if(this.value == 'players') {
 					loadPlayers($('#term').val());
+				} else if(this.value == 'teams') {
+					loadTeams($('#term').val());
 				}
 			}
 		});
