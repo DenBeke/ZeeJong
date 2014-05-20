@@ -70,7 +70,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 		
 		    global $database;
 		
-		    $months = getAllMonths($database->getFirstMatchDate());
+		    $months = getAllMonths(strtotime(date('Y', time()) . '- 5 years'));
 		    $matches = [];
 
 		    $count = 1;
