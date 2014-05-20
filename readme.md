@@ -27,6 +27,9 @@ You can also install preloaded data. We provide a JSON file contain an archive o
 In order to install this, you must run `yourdomain.com/core/importer.php`. This may take some time.  
 *Do this after the installation. Note that the script will empty all tables before loading the sample data.*
 
+To find and update new matches, you have to run the parser at `yourdomain.com/core/parser.php`.
+Doing this with a cron job every night, will make sure that your data stays up to date and that bets are processed fully automatically on a daily basis.
+
 
 Authors
 -------
