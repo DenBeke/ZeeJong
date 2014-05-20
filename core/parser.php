@@ -169,7 +169,7 @@ class Parser {
 	/**
 	Parse the competitions to fill in new data.
 	*/
-	public function parse($ttl = 3600) {
+	public function parse($ttl = 7200) {
 
 		$this->ttl = $ttl;
 
@@ -234,15 +234,13 @@ class Parser {
 	*/
 	private function parseMatch($url, $type = '') {
 
-
 		try {
-
-
-			$html = $this->loadPage($url);
 
 			//Add the competition and tournament to the database
 			$competitionId = $this->database->addCompetition($this->competition);
 			$tournamentId = $this->database->addTournament($this->tournament, $competitionId);
+
+			$html = $this->loadPage($url);
 
 			//Find the referee
 			if(is_object($html->find('.referee', 0))) {
@@ -396,6 +394,11 @@ class Parser {
 	private function parseNewMatches($original_url) {
 	
 	    $html = $this->loadPage($original_url);
+	    
+	    $competitionId = $this->database->addCompetition($this->competition);
+
+	    $this->tournament = $html->find('.level-1 a', 0)->plaintext;
+	    $tournamentId = $this->database->addTournament($this->tournament, $competitionId);
 	
 	    $urls = array();
 		$parts = $html->find('.level-1', 0)->find('.leaf a');
@@ -430,12 +433,6 @@ class Parser {
 			catch (Exception $e) {
 			    echo 'Exception: Failed to load ' . $url . '<br>';
 			}
-
-		    $competitionId = $this->database->addCompetition($this->competition);
-
-		    //Find the tournament
-		    $this->tournament = $html->find('.level-1 a', 0)->plaintext;
-		    $tournamentId = $this->database->addTournament($this->tournament, $competitionId);
 
 		    //Loop over all matches
 		    $blocksFound = true;
@@ -488,10 +485,15 @@ class Parser {
 				        if ($colonPos != $minusPos) {
 
 				            if ($colonPos != false) {
-				                $teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
-				                $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
-				                
-					            $this->database->addMatch($teamIdA, $teamIdB, -1, -1, null, $date, $tournamentId, $type);
+				                try {
+				                    $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId);
+				                }
+				                catch (Exception $e) {
+				                    $teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
+				                    $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
+				                    
+					                $this->database->addMatch($teamIdA, $teamIdB, -1, -1, null, $date, $tournamentId, $type);
+					            }
 				            }
 				            else {
 
