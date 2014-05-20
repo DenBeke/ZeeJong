@@ -94,6 +94,7 @@ $urls = array(
 	INSTALL_DIR . 'admin/match/(\d+)/(\S+)/(\d+)' => 'Controller\AdminMatch',
 	INSTALL_DIR . 'admin/pages' => 'Controller\AdminPages',
 	INSTALL_DIR . 'admin/pages/analytics' => 'Controller\AdminPages',
+	INSTALL_DIR . 'admin/pages/delete/(\d+)' => 'Controller\AdminPages',
 	INSTALL_DIR . 'admin/users' => 'Controller\AdminUsers',
 	INSTALL_DIR . 'search' => 'Controller\Search',
 	INSTALL_DIR . 'admin/update-bets' => 'Controller\AdminUpdateBets'

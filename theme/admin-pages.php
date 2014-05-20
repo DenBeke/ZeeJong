@@ -33,8 +33,8 @@ if(isAdmin()){
 						<div class="col-md-2 pull-right admin-page-edit">
 						
 							<a href="<?php echo SITE_URL . 'page/' . $page->getId() . '/edit'; ?>" class="btn-xs btn btn-primary">Edit</a>
-							
-							<a href="" class="btn-xs btn btn-danger">Delete</a>
+
+							<a href="<?php echo SITE_URL . 'admin/pages/delete/' . $page->getId(); ?>" class="btn-xs btn btn-danger">Delete</a>
 							
 						</div>
 							
