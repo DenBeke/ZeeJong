@@ -1751,6 +1751,23 @@ class Database {
 
 		return $referees[0];
 	}
+	
+	
+	public function changeMatchReferee($matchId, $refereeId) {
+	    
+	    $query = "UPDATE `Match` SET refereeId = ? WHERE id = ?";
+
+		$statement = $this->getStatement($query);
+		
+		if (!$statement -> bind_param('ii', $refereeId, $matchId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
+	
 
 	/**
 	 Add a new coach to the database
@@ -1831,6 +1848,23 @@ class Database {
 
 		return $coaches[0];
 	}
+
+
+    public function changeMatchCoach($matchId, $teamId, $coachId) {
+	    
+	    $query = "UPDATE `Coaches` SET coachId = ? WHERE matchId = ? AND teamId = ?";
+
+		$statement = $this->getStatement($query);
+		
+		if (!$statement -> bind_param('ii', $coachId, $matchId, $teamId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
+	
 
 	/**
 	 Add a coaching relation to the database
