@@ -78,6 +78,11 @@ require_once(dirname(__FILE__) . '/Controller.php');
 					$this->addPlayer();
 					break;
 					
+				case "delete-player":
+				case "delete-player/":
+					$this->deletePlayer($args[3]);
+					break;
+					
 			}
 			
 			
@@ -174,6 +179,16 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			
 			global $database;
 			$database->addPlayerToMatch($_POST['player-list'], $this->match->getId(), $_POST['team-id'], $number);
+			
+			//Refresh match
+			$this->match = $database->getMatchById($this->match->getId());	
+		}
+		
+		
+		private function deletePlayer($playerId) {
+			
+			global $database;
+			$database->removePlayerFromMatch($playerId, $this->match->getId()); 
 			
 			//Refresh match
 			$this->match = $database->getMatchById($this->match->getId());	

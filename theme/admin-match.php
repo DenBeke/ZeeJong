@@ -238,7 +238,7 @@ if(isAdmin()){
 							 <tr>
 							 	<td><?php if($player->number > 0) echo $player->number; ?></td>
 							 	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
-							 	<td><a href="" class="btn-xs btn btn-danger">Delete</a></td>
+							 	<td><a href="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/delete-player/' . $player->getId(); ?>" class="btn-xs btn btn-danger">Delete</a></td>
 							 </tr>
 
 							 <?php
@@ -305,7 +305,7 @@ if(isAdmin()){
 							 <tr>
 							 	<td><?php if($player->number > 0) echo $player->number; ?></td>
 							 	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
-							 	<td><a href="" class="btn-xs btn btn-danger">Delete</a></td>
+							 	<td><a href="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/delete-player/' . $player->getId(); ?>" class="btn-xs btn btn-danger">Delete</a></td>
 							 </tr>
 
 							 <?php
