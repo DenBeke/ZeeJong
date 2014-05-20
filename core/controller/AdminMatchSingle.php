@@ -88,6 +88,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 				case "delete":
 				case "delete/":
 					$database->removeMatch($args[1]);
+					header('Location:' . SITE_URL . 'admin/matches');
 					break;
 					
 					
