@@ -64,6 +64,25 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			
 			
 		}
+		
+		
+		public function getTotalMatchesStats() {
+		
+		    global $database;
+		
+		    $months = getAllMonths(strtotime(date('Y', time()) . '- 5 years'));
+		    $matches = [];
+
+		    $count = 1;
+		    foreach ($months as $month => $timestamp) {
+			    if($count < sizeof($months)) {
+				    $matches[$timestamp] = $database->getTotalNumberOfMatchesInInterval(array_values($months)[$count-1], array_values($months)[$count]);
+			    }
+			    $count++;
+		    }
+		    
+		    return ['Matches' => $matches];
+		}
 
 	}
 
