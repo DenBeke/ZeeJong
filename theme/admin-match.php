@@ -401,11 +401,14 @@ if(isAdmin()){
 
 		<form class="form-horizontal" role="form">
 		  
+		  
+		  <input name="team-id" type="hidden" value="<?php echo $this->match->getTeamA()->getID(); ?>">
+		  
 		  <div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">Player</label>
 			<div class="col-sm-10">
 			
-				<select name="carlist" form="carform" class="form-control">
+				<select name="player-list" form="carform" class="form-control">
 				  <?php
 				  foreach($this->match->getTeamA()->getPlayers() as $player) { 
 				  ?>
@@ -454,11 +457,13 @@ if(isAdmin()){
 
 		<form class="form-horizontal" role="form">
 
+			<input name="team-id" type="hidden" value="<?php echo $this->match->getTeamB()->getID(); ?>">
+
 		  <div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">Player</label>
 			<div class="col-sm-10">
 
-				<select name="carlist" form="carform" class="form-control">
+				<select name="player-list" form="carform" class="form-control">
 				  <?php
 				  foreach($this->match->getTeamB()->getPlayers() as $player) { 
 				  ?>
@@ -506,13 +511,13 @@ if(isAdmin()){
 
 
 
-		<form class="form-horizontal" role="form">
+		<form class="form-horizontal" role="form" method="POST" action="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/add-goal/'; ?>">
 
 		  <div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">Player</label>
 			<div class="col-sm-10">
 
-				<select name="carlist" form="carform" class="form-control">
+				<select name="player-list" class="form-control">
 					<optgroup label="<?php echo $this->match->getTeamA()->getName() ?>">
 					    <?php
 					    foreach($this->match->getTeamA()->getPlayers() as $player) { 
@@ -540,7 +545,7 @@ if(isAdmin()){
 		  <div class="form-group">
 		 	<label for="inputPassword3" class="col-sm-2 control-label">Time</label>
 		 	<div class="col-sm-10">
-		 	  <input type="text" class="form-control" id="score" placeholder="60">
+		 	  <input type="text" class="form-control" id="name" name="time" placeholder="60">
 		 	</div>
 		  </div>
 
@@ -577,7 +582,7 @@ if(isAdmin()){
 			<label for="inputEmail3" class="col-sm-2 control-label">Player</label>
 			<div class="col-sm-10">
 
-				<select name="carlist" form="carform" class="form-control">
+				<select name="player-list" class="form-control">
 					<optgroup label="<?php echo $this->match->getTeamA()->getName() ?>">
 						<?php
 						foreach($this->match->getTeamA()->getPlayers() as $player) { 
@@ -605,7 +610,7 @@ if(isAdmin()){
 		  <div class="form-group">
 		   	<label for="inputPassword3" class="col-sm-2 control-label">Type</label>
 		   	<div class="col-sm-10">
-		   	  <select name="carlist" form="carform" class="form-control">
+		   	  <select name="card-list" form="carform" class="form-control">
 		   	    <option value="1">Yelow card</option>
 		   	    <option value="2">Red card</option>
 		   	    <option value="3">Second yellow card</option>
