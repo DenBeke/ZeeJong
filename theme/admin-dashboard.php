@@ -207,7 +207,10 @@ if(isAdmin()){
 		
 	</script>
 	
-	<div class="col-md-12"><br><?php generateChart($this->getTotalMatchesStats(), 0, 'line'); ?></div>
+	<div class="container"><p></p></div>
+	
+	<h4 class="center">Total Matches</h4>
+	<div class="col-md-12"><br><?php generateChart($this->getTotalMatchesStats(), 0, 'area'); ?></div>
 	
 </div>
 
