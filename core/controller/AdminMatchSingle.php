@@ -205,6 +205,12 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			if(isset($_POST['date'])) {
 				$database->changeMatchDate($this->match->getId(), strtotime($_POST['date']));
 			}
+			if(isset($_POST['score'])) {
+				
+				$scoreRaw = explode('-', $_POST['score'])
+				
+				$database->changeMatchScore($this->match->getId(), $scoreRaw[0], $scoreRaw[1]) ;
+			}
 			
 			//Refresh match
 			$this->match = $database->getMatchById($this->match->getId());
