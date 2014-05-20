@@ -11,12 +11,10 @@ Created: February 2014
 if(isAdmin()){
 ?>
 
-<p></p>
-
-
 <div class="container">
 
 	<h2 id="title-match"><?php echo $this->match->getTeamA()->getName() ?> - <?php echo $this->match->getTeamB()->getName() ?></h2>
+<a href="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/delete'; ?>" class="btn-xs btn btn-danger title-btn">Delete</a>
 
 
 
