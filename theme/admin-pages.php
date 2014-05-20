@@ -141,7 +141,7 @@ if(isAdmin()){
 			<div class="well">
 	
 	
-				<form action="" method="post" role="form" class="form form-horizontal">
+				<form class="form-horizontal form" role="form" method="POST" action="<?php echo SITE_URL . 'admin/pages/analytics'; ?>">
 					
 						
 						
@@ -151,7 +151,7 @@ if(isAdmin()){
 							<label class="control-label col-sm-2">Analytics</label>
 							
 							<div class="col-sm-10">
-								<textarea name="content" class="form-control input-xlarge" rows="10"></textarea>
+								<textarea name="analytics" class="form-control input-xlarge" rows="10"></textarea>
 							</div>
 						
 						</div>
