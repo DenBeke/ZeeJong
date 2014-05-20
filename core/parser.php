@@ -411,7 +411,13 @@ class Parser {
 		}
 		
 		if (sizeof($urls) < 2) {
-		    $urls = [$original_url];
+		    $paramPos = strpos($original_url, '?');
+		    if ($paramPos == FALSE) {
+			    $urls = [$original_url . 'matches/'];
+		    }
+		    else {
+		        $urls = [substr($original_url, 0, $paramPos) . 'matches/' . substr($original_url, $paramPos)];
+		    }
 		}
 		
 		$html->clear();
