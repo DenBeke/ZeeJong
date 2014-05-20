@@ -207,7 +207,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			}
 			if(isset($_POST['score'])) {
 				
-				$scoreRaw = explode('-', $_POST['score'])
+				$scoreRaw = explode('-', $_POST['score']);
 				
 				$database->changeMatchScore($this->match->getId(), $scoreRaw[0], $scoreRaw[1]) ;
 			}
