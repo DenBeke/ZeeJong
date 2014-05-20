@@ -2995,30 +2995,36 @@ class Database {
 	@return matches
 	*/
 	public function getMatchesInTournament($tournamentId) {
-		
+
+		$sel = new \Selector('Match');
+		$sel->filter([['tournamentId', '=', $tournamentId]]);
+		$result = $this->select($sel);
+
+		$matchList = $this->resultToMatches($result);
+
+		$typeParts = ['32', '16', '8', 'Quart', '3', 'Semi', 'Final'];
+
 		$matches = [];
-		
-		$types = ["Final", "Finals", "Final replay", "Play-offs - Final", "Conference - Finals", "Europe League Play-offs - Finals", "Play Offs UEFA Final",
-				 	"Semi-finals", "Play-offs - Semi-finals", "Conference - Semi-finals", "Europa League Play-offs - Semi-finals",
-					"3rd Place Final",
-					"Quarter-finals", "Quarter-finals Replays",
-					"8th Finals",
-					"16th Finals",
-					"32th Finals",
-					""];
+		$tempMatchListIn = $matchList;
+		$tempMatchListOut = [];
+		foreach ($typeParts as $part) {
+		    foreach ($tempMatchListIn as $match) {
+		        if ($match->getType() != '') {
+		            if (strpos($match->getType(), $part) !== FALSE) {
+		                $matches[$match->getType()] = [];
+		            }
+		            else {
+		                $tempMatchListOut[] = $match;
+		            }
+		        }
+		    }
+		    $tempMatchListIn = $tempMatchListOut;
+		}
 
+		$matches = array_reverse($matches);
 
-		foreach($types as $type) {
-			
-
-			$sel = new \Selector('Match');
-			$sel->filter([['tournamentId', '=', $tournamentId]]);
-			$sel->filter([['type', '=', $type]]);
-
-			$result = $this->select($sel);
-			
-			$matches[$type] = $this->resultToMatches($result); 
-			
+		foreach ($matchList as $match) {
+		    $matches[$match->getType()][] = $match;
 		}
 
 		return $matches;
