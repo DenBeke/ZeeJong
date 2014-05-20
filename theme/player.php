@@ -144,7 +144,7 @@ Created: February 2014
 		<h3>Matches Played Last Year</h3>
 	
 		<?php
-		generateChart(['Matches' => $this->player->getPlayedMatchesStats(), 'Matches won' => $this->player->getWonMatchesStats()], $this->player->getId()+1, 'Bar');		
+		generateChart(['Matches' => $this->player->getPlayedMatchesStats(), 'Matches won' => $this->player->getWonMatchesStats()], $this->player->getId()+1, 'column');		
 		?>
 	
 	</div>
@@ -159,7 +159,7 @@ Created: February 2014
 	
 		<h3>Overall Stats</h3>	
 		
-		<?php generateChart($this->player->getOveralStats(), 1, 'Line'); ?>
+		<?php generateChart($this->player->getOveralStats(), 1, 'column'); ?>
 		
 		
 	

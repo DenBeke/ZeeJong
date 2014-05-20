@@ -207,7 +207,10 @@ if(isAdmin()){
 		
 	</script>
 	
+	<div class="container"><p></p></div>
 	
+	<h4 class="center">Total Matches (last 5 years)</h4>
+	<div class="col-md-12"><br><?php generateChart($this->getTotalMatchesStats(), 0, 'areaspline'); ?></div>
 	
 </div>
 
