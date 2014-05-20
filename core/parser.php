@@ -479,8 +479,8 @@ class Parser {
 				        }
 
 				        //Parse the team pages
-				        $teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
-				        $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
+				        $teamIdA = $this->parseTeamFast('http://int.soccerway.com' . $teamA->href);
+				        $teamIdB = $this->parseTeamFast('http://int.soccerway.com' . $teamB->href);
 				
 				        //Find out if the match has been played already or not
 				        $colonPos = strpos(trim($scoreOrTime), ' : ');
@@ -488,14 +488,22 @@ class Parser {
 				        if ($colonPos != $minusPos) {
 
 				            if ($colonPos != false) {
+				                $teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
+				                $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
+				                
 					            $this->database->addMatch($teamIdA, $teamIdB, -1, -1, null, $date, $tournamentId, $type);
 				            }
 				            else {
 
 					            try {
-						            $matchId = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId)->getId();
+						            $match = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId);
+						            
+						            //There is no need to parse the match again if it had a score already
+						            if ($match->getScoreId() != null) {
+						                continue;
+						            }
 						
-						            //If no exception gets thrown then the match was already in the database
+						            $matchId = $match->getId();
 						            $this->database->removeMatch($matchId);
 					            }
 					            catch (Exception $e) {
@@ -531,11 +539,11 @@ class Parser {
 		$countryId = $this->database->addCountry($country);
 		$refereeId = $this->database->addReferee($firstName, $lastName, $countryId);
 
-		if (file_exists('cache/Referee-' . $refereeId . '.png') == FALSE)
+		if (file_exists('../images/Referee-' . $refereeId . '.png') == FALSE)
 		{
 			$imageUrl = $html->find('.content .yui-u img', 0)->src;
 			$image = file_get_contents($imageUrl);
-			file_put_contents('cache/Referee-' . $refereeId . '.png', $image);
+			file_put_contents('../images/Referee-' . $refereeId . '.png', $image);
 		}
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
@@ -607,11 +615,11 @@ class Parser {
 		$countryId = $this->database->addCountry($country);
 		$playerId = $this->database->addPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position);
 
-		if (file_exists('cache/Player-' . $playerId . '.png') == FALSE)
+		if (file_exists('../images/Player-' . $playerId . '.png') == FALSE)
 		{
 			$imageUrl = $html->find('.content .yui-u img', 0)->src;
 			$image = file_get_contents($imageUrl);
-			file_put_contents('cache/Player-' . $playerId . '.png', $image);
+			file_put_contents('../images/Player-' . $playerId . '.png', $image);
 		}
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
@@ -636,16 +644,35 @@ class Parser {
 		$countryId = $this->database->addCountry($country);
 		$coachId = $this->database->addCoach($firstName, $lastName, $countryId);
 
-		if (file_exists('cache/Coach-' . $coachId . '.png') == FALSE)
+		if (file_exists('../images/Coach-' . $coachId . '.png') == FALSE)
 		{
 			$imageUrl = $html->find('.content .yui-u img', 0)->src;
 			$image = file_get_contents($imageUrl);
-			file_put_contents('cache/Coach-' . $coachId . '.png', $image);
+			file_put_contents('../images/Coach-' . $coachId . '.png', $image);
 		}
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 
 		return $coachId;
+	}
+	
+	
+	/**
+	Parse the team just to get its id
+
+	@return id of the team
+	*/
+	private function parseTeamFast($url) {
+
+		$html = $this->loadPage($url);
+
+		$name = $html->find('#subheading h1', 0)->plaintext;
+		$countryId = $this->findTeamCountry($html);
+
+		$id = $this->database->addTeam($name, $countryId);
+
+		$html->clear();
+		return $id;
 	}
 
 
@@ -664,10 +691,11 @@ class Parser {
 		$id = $this->database->addTeam($name, $countryId);
 
 		if ((array_key_exists($name, $this->teams) == FALSE) || ($this->teams[$name] == FALSE)) {
-
-			$imageUrl = $html->find('.content .logo img', 0)->src;
-			$image = file_get_contents($imageUrl);
-			file_put_contents('cache/Team-' . $id . '.png', $image);
+		    if (!file_exists('../images/Team-' . $id . '.png')) {
+			    $imageUrl = $html->find('.content .logo img', 0)->src;
+			    $image = file_get_contents($imageUrl);
+			    file_put_contents('../images/Team-' . $id . '.png', $image);
+			}
 
 			$this->parsePlayersInTeams($html, $id);
 			$this->teams[$name] = TRUE;
