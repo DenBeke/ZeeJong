@@ -3006,6 +3006,31 @@ class Database {
 	
 		return $amount;
 	}
+	
+	
+	public function getTotalNumberOfMatchesInInterval($min, $max) {
+
+		$query =  'SELECT COUNT(*) FROM `Match` WHERE date > ? AND date < ?';
+
+		$statement = $this->getStatement($query);
+
+		if (!$statement -> bind_param('ii', $min, $max)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		$statement->bind_result($amount);
+
+		while ($statement->fetch()) {
+		}
+
+		$statement->reset();
+
+		return $amount;
+	}
 
 
 	public function getPlayersWithMostMatches($start, $end) {
@@ -3610,6 +3635,22 @@ class Database {
 		$sel->filter([['playerId', '=', $playerId]]);
 		$sel->join('Match', 'matchId', 'id');
 		$sel->order('date', $order);
+		$sel->select('`Match`.date');
+		
+		$result = $this->select($sel);
+		
+		if(count($result) >= 1) {
+			return $result[0]['date'];
+		}
+		else {
+			return NULL;
+		}
+	}
+	
+	public function getFirstMatchDate() {
+
+		$sel = new \Selector('Match');
+		$sel->order('date', 'ASC');
 		$sel->select('`Match`.date');
 		
 		$result = $this->select($sel);
