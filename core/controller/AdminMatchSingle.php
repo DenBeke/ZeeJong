@@ -84,6 +84,11 @@ require_once(dirname(__FILE__) . '/Controller.php');
 				case "delete-player/":
 					$this->deletePlayer($args[3]);
 					break;
+
+				case "delete":
+				case "delete/":
+					$database->removeMatch($args[1]);
+					break;
 					
 					
 			}
