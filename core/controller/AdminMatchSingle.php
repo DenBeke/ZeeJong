@@ -50,7 +50,9 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			
 			switch ($args[2]) {
 			
-				case "edit":
+				case "edit-meta":
+				case "edit-meta/":
+					$this->editMeta();
 					break;
 				
 				case "add-goal":
@@ -82,6 +84,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 				case "delete-player/":
 					$this->deletePlayer($args[3]);
 					break;
+					
 					
 			}
 			
@@ -192,6 +195,19 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			
 			//Refresh match
 			$this->match = $database->getMatchById($this->match->getId());	
+		}
+		
+		
+		private function editMeta() {
+			
+			global $database;
+			
+			if(isset($_POST['date'])) {
+				$database->changeMatchDate($this->match->getId(), strtotime($_POST['date']));
+			}
+			
+			//Refresh match
+			$this->match = $database->getMatchById($this->match->getId());
 		}
 		
 		
