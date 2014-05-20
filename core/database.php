@@ -2393,6 +2393,22 @@ class Database {
 
 		return $playsMatchInTeams[0];
 	}
+	
+	
+	public function changeMatchDate($matchId, $date) {
+	    
+	    $query = "UPDATE `Match` SET date = ? WHERE id = ?";
+
+		$statement = $this->getStatement($query);
+		
+		if (!$statement -> bind_param('ii', $date, $matchId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
 
 
 	/** 
