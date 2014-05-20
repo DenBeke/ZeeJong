@@ -38,7 +38,8 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			}
 			if(!isset($args[2])) {
 				throw new \exception('No action given');
-			}			
+			}
+		
 			
 			global $database;
 			$this->match = $database->getMatchById($args[1]);
@@ -46,12 +47,48 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			$this->cards = $database->getCardsInMatch($this->match->getId());
 			$this->totalBet = $database->getAmountBetOnMatch($this->match->getId());
 			
+			
+			switch ($args[2]) {
+			
+				case "edit":
+					break;
+				
+				case "add-goal";	
+				case "add-goal/";
+					$this->addGoal();
+					break;
+					
+			}
+			
+			
 			$this->title = 'Admin - Match - ' . $this->match->getTeamA()->getName() . ' vs ' . $this->match->getTeamB()->getName() . ' - ' . Controller::siteName;
 
 			
 			
 			
 		}
+		
+		
+		
+		private function addGoal() {
+			
+			if(!isset($_POST['player-list'])) {
+				throw new \exception('No player id given for goal');
+			}
+			
+			if(!isset($_POST['time'])) {
+				throw new \exception('No time given for goal');
+			}
+			
+			global $database;
+			$database->addGoal($_POST['player-list'], $_POST['time'], $this->match->getId());
+			
+			//Refresh goals
+			$this->goals = $database->getGoalsInMatch($this->match->getId());
+			
+		}
+		
+		
 
 
 	}
