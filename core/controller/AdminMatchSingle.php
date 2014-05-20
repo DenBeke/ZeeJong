@@ -32,6 +32,10 @@ require_once(dirname(__FILE__) . '/Controller.php');
 		@param params
 		*/
 		public function GET($args) {
+			if(!isAdmin()) {
+				$this->theme = 'error.php';
+				return;
+			}
 
 			if(!isset($args[1])) {
 				throw new \exception('No match id given');
