@@ -185,24 +185,6 @@ class Parser {
 
 
 	/**
-	Parse the archive and store the data.
-	*/
-	public function parseArchive($ttl = 0) {
-
-		$this->ttl = $ttl;
-
-		//Loop through competition and parse the competitions
-		foreach ($this->competitions as $competition) {
-
-			$this->competition = $competition['name'];
-
-			echo '<em>Parsing: ' . $competition['name'] . '</em><br>';
-			$this->parseCompetitionInArchive($competition['archiveUrl']);
-		}
-	}
-
-
-	/**
 	Load a page, but take the one from the cache when already loaded.
 
 	@param url of the page
@@ -242,74 +224,6 @@ class Parser {
 		}
 
 		return str_get_html($page);
-	}
-
-
-	/**
-	Parse the competitions in the archive and store the data.
-
-	@param url of the competition
-	*/
-	private function parseCompetitionInArchive($url) {
-
-		$html = $this->loadPage($url);
-
-		//Find all tournaments
-		foreach($html->find('.season a') as $element) {
-
-			$tournamentName = $element->plaintext;
-			$tournamentUrl = $element->href;
-
-			$this->tournament = $tournamentName;
-
-			echo "<h2>$tournamentName</h2>";
-
-			$next_html = $this->loadPage('http://int.soccerway.com' . $tournamentUrl);
-			$parts = $next_html->find('.level-1', 0)->find('.leaf a');
-			$next_html->clear();
-
-			$urls = array();
-			if (sizeof($parts) == 1) {
-				$urls[] = 'http://int.soccerway.com' . $tournamentUrl;
-			}
-			else {
-				foreach ($parts as $part) {
-					$urls[] = 'http://int.soccerway.com' . $part->href . 'matches/';
-				}
-			}
-
-			foreach ($urls as $url) {
-				echo $url . '<br>';
-				$this->parseTournamentInArchive($url);
-			}
-		}
-
-		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
-	}
-
-
-	/**
-	Parse the tournaments in the archive and store the data.
-
-	@param url of the tournament
-	*/
-	private function parseTournamentInArchive($url) {
-
-		$html = $this->loadPage($url);
-
-		//Find all matches
-		foreach($html->find('.match') as $element) {
-
-			$scoreUrl = $element->find('.score a', 0);
-			if (is_object($scoreUrl) == FALSE) {
-				continue;
-			}
-
-			$this->parseMatch('http://int.soccerway.com' . $scoreUrl->href);
-		}
-
-		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
-
 	}
 
 
