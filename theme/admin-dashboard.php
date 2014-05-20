@@ -207,7 +207,7 @@ if(isAdmin()){
 		
 	</script>
 	
-	<div class="col-md-12"><br><?php generateChart($this->getTotalMatchesStats(), 100, 'Line'); ?></div>
+	<div class="col-md-12"><br><?php generateChart($this->getTotalMatchesStats(), 0, 'line'); ?></div>
 	
 </div>
 
