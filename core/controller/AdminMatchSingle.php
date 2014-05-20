@@ -63,6 +63,11 @@ require_once(dirname(__FILE__) . '/Controller.php');
 					$this->addCard();
 					break;
 					
+				case "delete-goal":
+				case "delete-goal/":
+					$this->deleteGoal($args[3]);
+					break;
+					
 			}
 			
 			
@@ -113,6 +118,17 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			
 			//Refresh cards
 			$this->cards = $database->getCardsInMatch($this->match->getId());
+			
+		}
+		
+		
+		private function deleteGoal($id) {
+			
+			global $database;
+			$database->deleteGoal($id);
+			
+			//Refresh goals
+			$this->goals = $database->getGoalsInMatch($this->match->getId());
 			
 		}
 		
