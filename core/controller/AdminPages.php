@@ -24,6 +24,8 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			$this->title = 'Admin - Pages - ' . Controller::siteName;
 			
 			$this->createPage();
+			$this->addAnalytics();
+			
 			
 			global $database;
 			$this->pages = $database->getAllPages();
@@ -38,6 +40,14 @@ require_once(dirname(__FILE__) . '/Controller.php');
 		        $database->addPage($_POST['title'], $_POST['content']);
 		    }
 		}
+		
+		
+		private function addAnalytics() {
+			if( isset($_POST['analytics'])) {
+				\saveAnalytics($_POST['analytics']);
+			}
+		}
+		
 	}
 
 }
