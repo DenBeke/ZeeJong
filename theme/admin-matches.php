@@ -3,6 +3,17 @@
 if(isAdmin()){
 ?>
 
+<script>
+function deleteMatch(elem, id) {
+	$.ajax({
+		url: "<?php echo SITE_URL . 'admin/match/" + id + "/delete'; ?>",
+		success: function() {
+			$(elem).parent().parent().remove();
+		}
+	});
+}
+</script>
+
 <p></p>
 
 <div class="container">
