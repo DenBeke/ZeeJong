@@ -496,6 +496,10 @@ class Parser {
 		    }
 		}
 		
+		if (sizeof($urls) < 2) {
+		    $urls = [$original_url];
+		}
+		
 		$html->clear();
 
 		foreach ($urls as $url) {
@@ -504,12 +508,7 @@ class Parser {
 				$html = $this->loadPage($url);
 			}
 			catch (Exception $e) {
-				if (sizeof($urls) > 1) {
-					continue;
-				}
-				else {
-					$html = $this->loadPage($original_url);
-				}
+			    echo 'Exception: Failed to load ' . $url . '<br>';
 			}
 
 		    $competitionId = $this->database->addCompetition($this->competition);
