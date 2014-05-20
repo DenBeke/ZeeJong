@@ -2413,7 +2413,7 @@ class Database {
 	
 	public function changeMatchScore($matchId, $scoreTeamA, $scoreTeamB) {
 	
-	    $scoreId = addScore($scoreTeamA, $scoreTeamB)
+	    $scoreId = addScore($scoreTeamA, $scoreTeamB);
 	    
 	    $query = "UPDATE `Match` SET scoreId = ? WHERE id = ?";
 
