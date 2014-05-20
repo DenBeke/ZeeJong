@@ -73,6 +73,11 @@ require_once(dirname(__FILE__) . '/Controller.php');
 					$this->deleteCard($args[3]);
 					break;
 					
+				case "add-player":
+				case "add-player/":
+					$this->addPlayer();
+					break;
+					
 			}
 			
 			
@@ -146,6 +151,32 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			//Refresh cards
 			$this->cards = $database->getCardsInMatch($this->match->getId());
 			
+		}
+		
+		
+		
+		private function addPlayer() {
+			
+			if(!isset($_POST['player-list'])) {
+				throw new \exception('No player id given');
+			}
+			
+			if(!isset($_POST['team-id'])) {
+				throw new \exception('No team-id given');
+			}
+			
+			if(!isset($_POST['number'])) {
+				$number = -1;
+			}
+			else {
+				$number = $_POST['number'];
+			}
+			
+			global $database;
+			$database->addPlayerToMatch($_POST['player-list'], $this->match->getId(), $_POST['team-id'], $number);
+			
+			//Refresh match
+			$this->match = $database->getMatchById($this->match->getId());	
 		}
 		
 		
