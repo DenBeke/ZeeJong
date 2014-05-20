@@ -279,7 +279,17 @@ function getCountryFlag($country) {
 
 
 function saveAnalytics($string) {
-    file_put_contents('analytics.html', $string);
+    file_put_contents( dirname(__FILE__) . '/analytics.html', $string);
+}
+
+function getAnalytics() {
+	
+	if(file_exists(dirname(__FILE__) . '/analytics.html')) {
+		return file_get_contents( dirname(__FILE__) . '/analytics.html');	
+	}
+	else {
+		return '';
+	}
 }
 
 

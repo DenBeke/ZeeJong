@@ -148,10 +148,10 @@ if(isAdmin()){
 						<div class="form-group">
 							
 						
-							<label class="control-label col-sm-2">Analytics</label>
+							<label class="control-label col-sm-2">Analytics<br><em>(don't forget the <code>&lt;script&gt;</code> tags)</em></label>
 							
 							<div class="col-sm-10">
-								<textarea name="analytics" class="form-control input-xlarge" rows="10"></textarea>
+								<textarea name="analytics" class="form-control input-xlarge" rows="10"><?php echo getAnalytics(); ?></textarea>
 							</div>
 						
 						</div>

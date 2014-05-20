@@ -33,6 +33,11 @@ Created: February 2014
 	  
 	  
 	</div>
+	
+	
+	
+	<?php echo getAnalytics(); ?>
+	
 
 </body>
 </html>
