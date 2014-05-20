@@ -53,9 +53,14 @@ require_once(dirname(__FILE__) . '/Controller.php');
 				case "edit":
 					break;
 				
-				case "add-goal";	
-				case "add-goal/";
+				case "add-goal":
+				case "add-goal/":
 					$this->addGoal();
+					break;
+					
+				case "add-card":
+				case "add-card/":
+					$this->addCard();
 					break;
 					
 			}
@@ -85,6 +90,29 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			
 			//Refresh goals
 			$this->goals = $database->getGoalsInMatch($this->match->getId());
+			
+		}
+		
+		
+		private function addCard() {
+			
+			if(!isset($_POST['player-list'])) {
+				throw new \exception('No player id given for card');
+			}
+			
+			if(!isset($_POST['time'])) {
+				throw new \exception('No time given for card');
+			}
+			
+			if(!isset($_POST['type'])) {
+				throw new \exception('No type given for card');
+			}
+			
+			global $database;
+			$database->addFoulCard($_POST['player-list'], $this->match->getId(), $_POST['time'], $_POST['type']);
+			
+			//Refresh cards
+			$this->cards = $database->getCardsInMatch($this->match->getId());
 			
 		}
 		
