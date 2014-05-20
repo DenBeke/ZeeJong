@@ -2409,6 +2409,24 @@ class Database {
 			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
 	}
+	
+	
+	public function changeMatchScore($matchId, $scoreTeamA, $scoreTeamB) {
+	
+	    $scoreId = addScore($scoreTeamA, $scoreTeamB)
+	    
+	    $query = "UPDATE `Match` SET scoreId = ? WHERE id = ?";
+
+		$statement = $this->getStatement($query);
+		
+		if (!$statement -> bind_param('ii', $scoreId, $matchId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
 
 
 	/** 
