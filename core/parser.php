@@ -500,7 +500,17 @@ class Parser {
 
 		foreach ($urls as $url) {
 
-		    $html = $this->loadPage($url);
+			try {
+				$html = $this->loadPage($url);
+			}
+			catch (Exception $e) {
+				if (sizeof($urls) > 1) {
+					continue;
+				}
+				else {
+					$html = $this->loadPage($original_url);
+				}
+			}
 
 		    $competitionId = $this->database->addCompetition($this->competition);
 
