@@ -91,6 +91,7 @@ $urls = array(
 	INSTALL_DIR . 'admin/dashboard' => 'Controller\AdminDashboard',
 	INSTALL_DIR . 'admin/matches' => 'Controller\AdminMatches',
 	INSTALL_DIR . 'admin/match/(\d+)/(\S+)' => 'Controller\AdminMatch',
+	INSTALL_DIR . 'admin/match/(\d+)/(\S+)/(\d+)' => 'Controller\AdminMatch',
 	INSTALL_DIR . 'admin/pages' => 'Controller\AdminPages',
 	INSTALL_DIR . 'admin/users' => 'Controller\AdminUsers',
 	INSTALL_DIR . 'search' => 'Controller\Search',

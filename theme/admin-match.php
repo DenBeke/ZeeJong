@@ -116,7 +116,7 @@ if(isAdmin()){
 					</td>
 					
 					
-					<td class="button"><a href="" class="btn-xs btn btn-danger">Delete</a></td>
+					<td class="button"><a href="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/delete-goal/' . $goal->getId(); ?>" class="btn-xs btn btn-danger">Delete</a></td>
 					
 					
 					
