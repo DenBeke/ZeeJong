@@ -64,7 +64,7 @@ if(isAdmin()){
 								<a href="<?php echo SITE_URL . 'referee/' . $this->match->getReferee()->getId(); ?>"><?php echo $this->match->getReferee()->getName(); ?></a>
 							<?php } else { ?>
 								Not found
-							<?php } ?>
+							<?php } ?> <a class="btn-xs btn btn-primary lightbox-click" data-id="">Edit</a>
 					  	</li>
 					</ul>
 
@@ -259,7 +259,7 @@ if(isAdmin()){
 							<a href="<?php echo SITE_URL . 'coach/' . $coach->getId(); ?>"><?php echo $coach->getName(); ?></a>
 						<?php } else { ?>
 							Not found
-						<?php } ?>
+						<?php } ?> <a class="btn-xs btn btn-primary lightbox-click" data-id="">Edit</a>
 				</div>
 
 
@@ -326,7 +326,7 @@ if(isAdmin()){
 							<a href="<?php echo SITE_URL . 'coach/' . $coach->getId(); ?>"><?php echo $coach->getName(); ?></a>
 						<?php } else { ?>
 							Not found
-						<?php } ?>
+						<?php } ?> <a class="btn-xs btn btn-primary lightbox-click" data-id="">Edit</a>
 				</div>
 
 
