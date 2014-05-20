@@ -159,7 +159,7 @@ Created: February 2014
 	
 		<h3>Overall Stats</h3>	
 		
-		<?php generateChart($this->player->getOveralStats(), 1, 'line'); ?>
+		<?php generateChart($this->player->getOveralStats(), 1, 'column'); ?>
 		
 		
 	
