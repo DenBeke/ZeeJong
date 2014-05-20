@@ -193,6 +193,20 @@ class Match {
 	                 + 0.30 * ($earlierScoreTeamB[1]['our'] + $earlierScoreTeamA[1]['opponent'] + $earlierScoreBetweenTeams[1]['B']) / 3
 	                 + 0.10 * ($earlierScoreTeamB[0]['our'] + $earlierScoreTeamA[0]['opponent'] + $earlierScoreBetweenTeams[0]['B']) / 3;
 
+        if ($scoreTeamA < 2 && $scoreTeamA > 1.35) {
+            $scoreTeamA = 2;
+        }
+        if ($scoreTeamA < 0.65) {
+            $scoreTeamA = 0;
+        }
+
+        if ($scoreTeamB < 2 && $scoreTeamB > 1.35) {
+            $scoreTeamB = 2;
+        }
+        if ($scoreTeamB < 0.65) {
+            $scoreTeamB = 0;
+        }
+
 	    $prognose = array(round($scoreTeamA), round($scoreTeamB));
 	    
 		return $prognose;
