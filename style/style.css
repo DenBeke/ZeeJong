@@ -395,9 +395,9 @@ div.panel-wiki:hover .wiki {
 	display: inline-block;
 }
 
-#delete-match {
-	margin-bottom: 12px;
-	margin-left: 20px;
+.title-btn {
+	margin-bottom: 12px !important;
+	margin-left: 20px !important;
 }
 
 
