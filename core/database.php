@@ -2042,6 +2042,22 @@ class Database {
 		}
 	}
 	
+	
+	public function removePlayerFromMatch($playerId, $matchId) {
+	
+	    $query = "DELETE FROM `PlaysMatchInTeam` WHERE playerId = ? AND matchId = ?";
+
+		$statement = $this->getStatement($query);
+		
+		if (!$statement -> bind_param('ii', $playerId, $matchId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
+	
 
 	/**
 	 Check if a player exists with a given ID
