@@ -26,10 +26,24 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			$this->createPage();
 			$this->addAnalytics();
 			
-			
 			global $database;
 			$this->pages = $database->getAllPages();
 		}
+		
+		
+		
+		public function GET($args) {
+			
+			if(isset($args[1])) {
+				global $database;
+				$database->deletePage($args[1]);
+				
+				//Refresh pages
+				$this->pages = $database->getAllPages();
+			}
+			
+		}
+		
 		
 		
 		private function createPage()
