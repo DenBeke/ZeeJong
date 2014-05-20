@@ -278,5 +278,9 @@ function getCountryFlag($country) {
 }
 
 
+function saveAnalytics($string) {
+    file_put_contents('analytics.html', $string);
+}
+
 
 ?>
