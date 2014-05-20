@@ -359,17 +359,17 @@ if(isAdmin()){
 	
 	
 	
-		<form class="form-horizontal" role="form">
+		<form class="form-horizontal" role="form" method="POST" action="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/edit-meta/'; ?>">
 		  <div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">Date</label>
 			<div class="col-sm-10">
-			  <input type="text" class="form-control" id="date" placeholder="02-11-1994">
+			  <input type="text" class="form-control" id="date" name="date" placeholder="02-11-1994">
 			</div>
 		  </div>
 		  <div class="form-group">
 			<label for="inputPassword3" class="col-sm-2 control-label">Score</label>
 			<div class="col-sm-10">
-			  <input type="text" class="form-control" id="score" placeholder="2-1">
+			  <input type="text" class="form-control" id="score" name="score" placeholder="2-1">
 			</div>
 		  </div>
 		 
