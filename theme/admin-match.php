@@ -181,7 +181,7 @@ if(isAdmin()){
 						<a href="<?php echo SITE_URL . 'player/' . $database->getPlayerById($card->getPlayerId())->getId(); ?>"><?php echo $database->getPlayerById($card->getPlayerId())->getName(); ?></a>
 					</td>
 					
-					<td class="button"><a href="" class="btn-xs btn btn-danger">Delete</a></td>
+					<td class="button"><a href="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/delete-card/' . $card->getId(); ?>" class="btn-xs btn btn-danger">Delete</a></td>
 
 				</tr>
 
