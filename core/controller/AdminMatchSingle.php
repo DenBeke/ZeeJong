@@ -32,6 +32,10 @@ require_once(dirname(__FILE__) . '/Controller.php');
 		@param params
 		*/
 		public function GET($args) {
+			if(!isAdmin()) {
+				$this->theme = 'error.php';
+				return;
+			}
 
 			if(!isset($args[1])) {
 				throw new \exception('No match id given');
@@ -83,6 +87,12 @@ require_once(dirname(__FILE__) . '/Controller.php');
 				case "delete-player":
 				case "delete-player/":
 					$this->deletePlayer($args[3]);
+					break;
+
+				case "delete":
+				case "delete/":
+					$database->removeMatch($args[1]);
+					header('Location:' . SITE_URL . 'admin/matches');
 					break;
 					
 					
@@ -208,8 +218,9 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			if(isset($_POST['score'])) {
 				
 				$scoreRaw = explode('-', $_POST['score']);
-				
-				$database->changeMatchScore($this->match->getId(), $scoreRaw[0], $scoreRaw[1]) ;
+				if(count($scoreRaw) === 2) {
+					$database->changeMatchScore($this->match->getId(), $scoreRaw[0], $scoreRaw[1]);
+				}
 			}
 			
 			//Refresh match

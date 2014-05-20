@@ -89,7 +89,7 @@ Created: February 2014
 			</td>
 			
 			<td class="admin-only">
-				<a href="<?php echo SITE_URL . 'admin/match/' . $match->getId() . '/delete'; ?>" class="btn-xs btn btn-danger">Delete</a>
+				<a href="<?php echo SITE_URL . 'admin/match/' . $match->getId() . '/delete'; ?>" onclick="deleteMatch(this, <?php echo $match->getId(); ?>); return false;" class="btn-xs btn btn-danger">Delete</a>
 			</td>
 			
 		</tr>

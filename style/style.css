@@ -389,6 +389,17 @@ div.panel-wiki:hover .wiki {
 	padding-right: 0 !important;
 }
 
+/* Admin match *
+***************/
+#title-match {
+	display: inline-block;
+}
+
+.title-btn {
+	margin-bottom: 12px !important;
+	margin-left: 20px !important;
+}
+
 
 /* Search *
 **********/
