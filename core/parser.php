@@ -479,8 +479,8 @@ class Parser {
 				        }
 
 				        //Parse the team pages
-				        $teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
-				        $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
+				        $teamIdA = $this->parseTeamFast('http://int.soccerway.com' . $teamA->href);
+				        $teamIdB = $this->parseTeamFast('http://int.soccerway.com' . $teamB->href);
 				
 				        //Find out if the match has been played already or not
 				        $colonPos = strpos(trim($scoreOrTime), ' : ');
@@ -488,14 +488,22 @@ class Parser {
 				        if ($colonPos != $minusPos) {
 
 				            if ($colonPos != false) {
+				                $teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
+				                $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
+				                
 					            $this->database->addMatch($teamIdA, $teamIdB, -1, -1, null, $date, $tournamentId, $type);
 				            }
 				            else {
 
 					            try {
-						            $matchId = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId)->getId();
+						            $match = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId);
+						            
+						            //There is no need to parse the match again if it had a score already
+						            if ($match->getScoreId() != null) {
+						                continue;
+						            }
 						
-						            //If no exception gets thrown then the match was already in the database
+						            $matchId = $match->getId();
 						            $this->database->removeMatch($matchId);
 					            }
 					            catch (Exception $e) {
@@ -647,6 +655,25 @@ class Parser {
 
 		return $coachId;
 	}
+	
+	
+	/**
+	Parse the team just to get its id
+
+	@return id of the team
+	*/
+	private function parseTeamFast($url) {
+
+		$html = $this->loadPage($url);
+
+		$name = $html->find('#subheading h1', 0)->plaintext;
+		$countryId = $this->findTeamCountry($html);
+
+		$id = $this->database->addTeam($name, $countryId);
+
+		$html->clear();
+		return $id;
+	}
 
 
 	/**
@@ -664,10 +691,11 @@ class Parser {
 		$id = $this->database->addTeam($name, $countryId);
 
 		if ((array_key_exists($name, $this->teams) == FALSE) || ($this->teams[$name] == FALSE)) {
-
-			$imageUrl = $html->find('.content .logo img', 0)->src;
-			$image = file_get_contents($imageUrl);
-			file_put_contents('cache/Team-' . $id . '.png', $image);
+		    if (!file_exists('cache/Team-' . $id . '.png')) {
+			    $imageUrl = $html->find('.content .logo img', 0)->src;
+			    $image = file_get_contents($imageUrl);
+			    file_put_contents('cache/Team-' . $id . '.png', $image);
+			}
 
 			$this->parsePlayersInTeams($html, $id);
 			$this->teams[$name] = TRUE;
