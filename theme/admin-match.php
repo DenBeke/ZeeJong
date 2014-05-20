@@ -399,7 +399,7 @@ if(isAdmin()){
 
 
 
-		<form class="form-horizontal" role="form">
+		<form class="form-horizontal" role="form" method="POST" action="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/add-player/'; ?>">
 		  
 		  
 		  <input name="team-id" type="hidden" value="<?php echo $this->match->getTeamA()->getID(); ?>">
@@ -408,7 +408,7 @@ if(isAdmin()){
 			<label for="inputEmail3" class="col-sm-2 control-label">Player</label>
 			<div class="col-sm-10">
 			
-				<select name="player-list" form="carform" class="form-control">
+				<select name="player-list" class="form-control">
 				  <?php
 				  foreach($this->match->getTeamA()->getPlayers() as $player) { 
 				  ?>
@@ -424,7 +424,7 @@ if(isAdmin()){
 		  <div class="form-group">
 		 	<label for="inputPassword3" class="col-sm-2 control-label">Number</label>
 		 	<div class="col-sm-10">
-		 	  <input type="text" class="form-control" id="score" placeholder="1">
+		 	  <input type="text" class="form-control" id="score" name="number" placeholder="1">
 		 	</div>
 		  </div>
 
@@ -455,7 +455,7 @@ if(isAdmin()){
 
 
 
-		<form class="form-horizontal" role="form">
+		<form class="form-horizontal" role="form" method="POST" action="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/add-player/'; ?>">
 
 			<input name="team-id" type="hidden" value="<?php echo $this->match->getTeamB()->getID(); ?>">
 
@@ -463,7 +463,7 @@ if(isAdmin()){
 			<label for="inputEmail3" class="col-sm-2 control-label">Player</label>
 			<div class="col-sm-10">
 
-				<select name="player-list" form="carform" class="form-control">
+				<select name="player-list" class="form-control">
 				  <?php
 				  foreach($this->match->getTeamB()->getPlayers() as $player) { 
 				  ?>
@@ -479,7 +479,7 @@ if(isAdmin()){
 		  <div class="form-group">
 		 	<label for="inputPassword3" class="col-sm-2 control-label">Number</label>
 		 	<div class="col-sm-10">
-		 	  <input type="text" class="form-control" id="score" placeholder="1">
+		 	  <input type="text" class="form-control" id="score" name="number" placeholder="1">
 		 	</div>
 		  </div>
 
