@@ -2025,6 +2025,23 @@ class Database {
 
 		return $players[0];
 	}
+	
+	
+	public function deletePlayer($id) {
+
+		$query = "DELETE FROM `Player` WHERE id = ?";
+
+		$statement = $this->getStatement($query);
+		
+		if (!$statement -> bind_param('i', $id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
+	
 
 	/**
 	 Check if a player exists with a given ID
@@ -2174,6 +2191,23 @@ class Database {
 
 		return $goals[0];
 	}
+	
+	
+	public function deleteGoal($id) {
+
+		$query = "DELETE FROM `Goal` WHERE id = ?";
+
+		$statement = $this->getStatement($query);
+		
+		if (!$statement -> bind_param('i', $id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
+	
 
 	/**
 	 Add a new match to the database
@@ -2610,6 +2644,23 @@ class Database {
 
 		return $cards[0];
 	}
+	
+	
+	public function deleteFoulCard($id) {
+
+		$query = "DELETE FROM `Cards` WHERE id = ?";
+
+		$statement = $this->getStatement($query);
+
+		if (!$statement -> bind_param('i', $id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
+	
 
 	/**
 	 Add a new score to the database
@@ -3720,6 +3771,21 @@ class Database {
 		
 	}
 	
+	
+	public function deletePage($id) {
+
+		$query = "DELETE FROM `Pages` WHERE id = ?";
+
+		$statement = $this->getStatement($query);
+
+		if (!$statement -> bind_param('i', $id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
 	
 	
 	public function getAllUsers() {
