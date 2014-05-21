@@ -1,6 +1,6 @@
 <?php
 /*
-Admin Controller
+Admin Dashboard Controller
 
 Created February 2014
 */

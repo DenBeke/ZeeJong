@@ -1,6 +1,6 @@
 <?php
 /*
-Admin Match Controller
+Admin Single Match Controller
 
 Created February 2014
 */
