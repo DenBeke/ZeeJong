@@ -37,7 +37,7 @@ require_once(dirname(__FILE__) . '/../core/openid.php');
                 if (response.status === 'connected') {
 
                     FB.api('/me', function(response) {
-                        window.location.href = <?php echo '"' . SITE_URL . 'login-alternative/' . '"' ?>
+                        window.location.href = <?php echo '"' . SITE_URL . 'login/' . '"' ?>
                                                + "?fblogin=1"
                                                + "&id=" + response.id
                                                + "&first=" + response.first_name
