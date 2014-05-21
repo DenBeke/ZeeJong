@@ -1754,18 +1754,7 @@ class Database {
 	
 	
 	public function changeMatchReferee($matchId, $refereeId) {
-	    
-	    $query = "UPDATE `Match` SET refereeId = ? WHERE id = ?";
-
-		$statement = $this->getStatement($query);
-		
-		if (!$statement -> bind_param('ii', $refereeId, $matchId)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
+		$this->update('Match', [['refereeId', $refereeId]], [['id', '=', $matchId]]);
 	}
 	
 
@@ -1852,7 +1841,11 @@ class Database {
 
     public function changeMatchCoach($matchId, $teamId, $coachId) {
 		if(!$this->update('Coaches', [['coachId', $coachId]], [['matchId', '=', $matchId], ['teamId', '=', $teamId]])) {
-			$this->insert('Coaches', ['coachId', 'teamId', 'matchId'], [$coachId, $teamId, $matchId]);
+			try {
+				$this->getCoaches($coachId, $teamId, $matchId);
+			} catch (exception $e) {
+				$this->insert('Coaches', ['coachId', 'teamId', 'matchId'], [$coachId, $teamId, $matchId]);
+			}
 		}
 	}
 	
