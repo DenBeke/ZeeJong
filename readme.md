@@ -64,3 +64,4 @@ Acknowledgements
 - Graphs: [Highcharts](http://www.highcharts.com)
 - OpenID login: [LightOpenID](https://code.google.com/p/lightopenid/)
 - Chat: [PHP-Chatbox](https://github.com/MarcinMM/PHP-Chatbox)
+- Country flags: [Free Country Flags by Gang of the Coconuts](http://www.free-country-flags.com)
