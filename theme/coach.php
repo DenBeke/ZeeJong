@@ -51,5 +51,16 @@ Created: February 2014
 	
 	</div>
 	
+	<?php if($this->coach->getTotalMatches() != 0) { ?>
+
+	<div class="col-md-12">
+	
+		<h3>Overall Stats</h3>	
+		
+		<?php generateChart($this->coach->getOverallStats(), 1, 'Line'); ?>
+		
+	</div>	
+
+	<?php } ?>
 
 </div>
