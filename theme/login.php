@@ -25,6 +25,33 @@ require_once(dirname(__FILE__) . '/../core/openid.php');
 	?>
 
 	<script>
+	    var facebookAllowed = false;
+	    var facebookReady = false;
+	    var facebookResponse;
+	    
+	    function facebookStartLogin() {
+	        facebookAllowed = true;
+	        
+	        if (!facebookReady) {
+	            FB.login();
+	        }
+	        else {
+	            facebookLogin();
+	        }
+	    }
+	    
+	    function facebookLogin() {
+	        if (facebookAllowed && facebookReady) {
+	            FB.api('/me', function(response) {
+                    window.location.href = <?php echo '"' . SITE_URL . 'login/' . '"' ?>
+                                           + "?fblogin=1"
+                                           + "&id=" + response.id
+                                           + "&first=" + response.first_name
+                                           + "&email=" + response.email;
+                });
+            }
+	    }
+	
         window.fbAsyncInit = function() {
             FB.init({
               appId      : '673221049405018',
@@ -35,14 +62,13 @@ require_once(dirname(__FILE__) . '/../core/openid.php');
 
             FB.Event.subscribe('auth.authResponseChange', function(response) {
                 if (response.status === 'connected') {
-
-                    FB.api('/me', function(response) {
-                        window.location.href = <?php echo '"' . SITE_URL . 'login-alternative/' . '"' ?>
-                                               + "?fblogin=1"
-                                               + "&id=" + response.id
-                                               + "&first=" + response.first_name
-                                               + "&email=" + response.email;
-                    });
+                
+                    facebookReady = true;
+                    facebookResponse = response;
+                    
+                    if (facebookAllowed) {
+                        facebookLogin();
+                    }
                 }
             });
         };
@@ -110,7 +136,7 @@ require_once(dirname(__FILE__) . '/../core/openid.php');
 
 		<div class="social-buttons">
 			
-			<a id="facebook" onclick="FB.login();">Facebook</a>
+			<a id="facebook" onclick="facebookStartLogin();">Facebook</a>
 			
 			<a id="google" href="?oid=https://www.google.com/accounts/o8/id">Google+</a>
 			
