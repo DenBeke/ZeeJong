@@ -1,6 +1,6 @@
 <?php
 /*
-Admin Controller
+Admin Matches Controller
 
 Created February 2014
 */

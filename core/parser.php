@@ -78,7 +78,7 @@ class Parser {
 				),
 				
 				'be-sec' => array(
-					'name' => 'Second Division',
+					'name' => 'Belgium Second Division',
 					'url' => 'http://int.soccerway.com/national/belgium/second-division/20132014/regular-season/r21592/'
 				),
 
