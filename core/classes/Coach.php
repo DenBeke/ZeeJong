@@ -12,7 +12,7 @@ The class contains the following information:
 - name
 - country
 */
-class Coach {
+class Coach implements JsonSerializable {
 	private $id;
 	private $firstName;
 	private $lastName;
@@ -82,7 +82,7 @@ class Coach {
 
 	public function getOverallStats() {
 		
-		$months = getAllMonths($this->db->getMatchDateBorder($this->getId(), true), $this->db->getMatchDateBorder($this->getId(), false));
+		$months = getAllMonths($this->db->getMatchDateBorder($this->getId(), true), $this->db->getMatchDateBorderCoach($this->getId(), false));
 		$matches = [];
 		$matches_won = [];
 		
@@ -125,6 +125,15 @@ class Coach {
 	*/
 	public function __toString() {
 		return "ID: $this->id";
+	}
+
+	public function jsonSerialize() {
+		return [
+			'id' => $this->id,
+			'firstName' => $this->firstName,
+			'lastName' => $this->lastName,
+			'countryId' => $this->country
+		];
 	}
 
 }

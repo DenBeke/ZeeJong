@@ -141,7 +141,7 @@ class Database {
 			return false;
 		}
 
-		if($statement->rowCount() !== 0) {
+		if($statement->rowCount() !== 1) {
 			return false;
 		}
 
@@ -1751,6 +1751,12 @@ class Database {
 
 		return $referees[0];
 	}
+	
+	
+	public function changeMatchReferee($matchId, $refereeId) {
+		$this->update('Match', [['refereeId', $refereeId]], [['id', '=', $matchId]]);
+	}
+	
 
 	/**
 	 Add a new coach to the database
@@ -1831,6 +1837,18 @@ class Database {
 
 		return $coaches[0];
 	}
+
+
+    public function changeMatchCoach($matchId, $teamId, $coachId) {
+		if(!$this->update('Coaches', [['coachId', $coachId]], [['matchId', '=', $matchId], ['teamId', '=', $teamId]])) {
+			try {
+				$this->getCoaches($coachId, $teamId, $matchId);
+			} catch (exception $e) {
+				$this->insert('Coaches', ['coachId', 'teamId', 'matchId'], [$coachId, $teamId, $matchId]);
+			}
+		}
+	}
+	
 
 	/**
 	 Add a coaching relation to the database
@@ -2025,6 +2043,39 @@ class Database {
 
 		return $players[0];
 	}
+	
+	
+	public function deletePlayer($id) {
+
+		$query = "DELETE FROM `Player` WHERE id = ?";
+
+		$statement = $this->getStatement($query);
+		
+		if (!$statement -> bind_param('i', $id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
+	
+	
+	public function removePlayerFromMatch($playerId, $matchId) {
+	
+	    $query = "DELETE FROM `PlaysMatchInTeam` WHERE playerId = ? AND matchId = ?";
+
+		$statement = $this->getStatement($query);
+		
+		if (!$statement -> bind_param('ii', $playerId, $matchId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
+	
 
 	/**
 	 Check if a player exists with a given ID
@@ -2174,6 +2225,23 @@ class Database {
 
 		return $goals[0];
 	}
+	
+	
+	public function deleteGoal($id) {
+
+		$query = "DELETE FROM `Goal` WHERE id = ?";
+
+		$statement = $this->getStatement($query);
+		
+		if (!$statement -> bind_param('i', $id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
+	
 
 	/**
 	 Add a new match to the database
@@ -2188,7 +2256,7 @@ class Database {
 
 	 @return id of the newly added match or id of existing
 	 */
-	public function addMatch($teamA, $teamB, $scoreA, $scoreB, $refereeId, $date, $tournamentId) {
+	public function addMatch($teamA, $teamB, $scoreA, $scoreB, $refereeId, $date, $tournamentId, $type = '') {
 
 		//Check if the match isn't already in the database
 		try {
@@ -2208,8 +2276,8 @@ class Database {
 		if (($scoreA != -1) and ($scoreB != -1))
 			$scoreId = $this -> addScore($scoreA, $scoreB);
 
-		return $this->insert('Match', ['teamA', 'teamB', 'tournamentId', 'refereeId', 'date', 'scoreId'],
-									[$teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId]);
+		return $this->insert('Match', ['teamA', 'teamB', 'tournamentId', 'refereeId', 'date', 'scoreId', 'type'],
+									[$teamA, $teamB, $tournamentId, $refereeId, $date, $scoreId, $type]);
 	}
 
 	public function getMatch($teamA, $teamB, $date, $tournamentId) {
@@ -2342,6 +2410,40 @@ class Database {
 		requireEqCount($playsMatchInTeams, 1);
 
 		return $playsMatchInTeams[0];
+	}
+	
+	
+	public function changeMatchDate($matchId, $date) {
+	    
+	    $query = "UPDATE `Match` SET date = ? WHERE id = ?";
+
+		$statement = $this->getStatement($query);
+		
+		if (!$statement -> bind_param('ii', $date, $matchId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
+	
+	
+	public function changeMatchScore($matchId, $scoreTeamA, $scoreTeamB) {
+	
+	    $scoreId = $this->addScore($scoreTeamA, $scoreTeamB);
+	    
+	    $query = "UPDATE `Match` SET scoreId = ? WHERE id = ?";
+
+		$statement = $this->getStatement($query);
+		
+		if (!$statement -> bind_param('ii', $scoreId, $matchId)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
 	}
 
 
@@ -2610,6 +2712,23 @@ class Database {
 
 		return $cards[0];
 	}
+	
+	
+	public function deleteFoulCard($id) {
+
+		$query = "DELETE FROM `Cards` WHERE id = ?";
+
+		$statement = $this->getStatement($query);
+
+		if (!$statement -> bind_param('i', $id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
+	
 
 	/**
 	 Add a new score to the database
@@ -3066,6 +3185,31 @@ class Database {
 	
 		return $amount;
 	}
+	
+	
+	public function getTotalNumberOfMatchesInInterval($min, $max) {
+
+		$query =  'SELECT COUNT(*) FROM `Match` WHERE date > ? AND date < ?';
+
+		$statement = $this->getStatement($query);
+
+		if (!$statement -> bind_param('ii', $min, $max)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		$statement->bind_result($amount);
+
+		while ($statement->fetch()) {
+		}
+
+		$statement->reset();
+
+		return $amount;
+	}
 
 
 	public function getPlayersWithMostMatches($start, $end) {
@@ -3190,40 +3334,37 @@ class Database {
 	@return matches
 	*/
 	public function getMatchesInTournament($tournamentId) {
-		
-		$matches = [];
-		
-		/*
-		if finalType != "" && finalType != "Final" && finalType != "Semi-finals" &&
-			finalType != "3rd Place Final" && finalType != "Quarter-finals" &&
-			finalType != "16th Finals" && finalType != "Final replay" {
-			log.Printf("Found unknown final type: %s", finalType)
-			finalType = "";
-		}
-		*/
-/*
 
-		foreach(['Final', 'Semi-finals', '3rd Place Final', 'Quarter-finals', '16th Finals', 'Final replay', ''] as $type) {
-			
-
-			$sel = new \Selector('Match');
-			$sel->filter([['tournamentId', '=', $tournamentId]]);
-			$sel->filter([['type', '=', $type]]);
-
-			$result = $this->select($sel);
-			
-			$matches[$type] = $this->resultToMatches($result); 
-			
-		}
-*/
-
-		//This code is temporary. The previous code can be uncommented when addMatch has been adapted.
 		$sel = new \Selector('Match');
 		$sel->filter([['tournamentId', '=', $tournamentId]]);
-
 		$result = $this->select($sel);
 
-		$matches = $result;
+		$matchList = $this->resultToMatches($result);
+
+		$typeParts = ['32', '16', '8', 'Quart', '3', 'Semi', 'Final'];
+
+		$matches = [];
+		$tempMatchListIn = $matchList;
+		$tempMatchListOut = [];
+		foreach ($typeParts as $part) {
+		    foreach ($tempMatchListIn as $match) {
+		        if ($match->getType() != '') {
+		            if (strpos($match->getType(), $part) !== FALSE) {
+		                $matches[$match->getType()] = [];
+		            }
+		            else {
+		                $tempMatchListOut[] = $match;
+		            }
+		        }
+		    }
+		    $tempMatchListIn = $tempMatchListOut;
+		}
+
+		$matches = array_reverse($matches);
+
+		foreach ($matchList as $match) {
+		    $matches[$match->getType()][] = $match;
+		}
 
 		return $matches;
 	}
@@ -3367,7 +3508,7 @@ class Database {
 
 		foreach($result as $match) {
 			array_push($matches, new Match($match['id'], $match['teamA'], $match['teamB'],
-						$match['tournamentId'], $match['refereeId'], $match['date'], $match['scoreId'],
+						$match['tournamentId'], $match['refereeId'], $match['date'], $match['scoreId'], $match['type'],
 						$this));
 		}
 
@@ -3702,9 +3843,42 @@ class Database {
 		else {
 			return NULL;
 		}
+	}	
+
+	public function getMatchDateBorderReferee($refereeId, $first) {
+		$order = ($first ? 'ASC' : 'DESC');		
+
+		$sel = new \Selector('Match');
+		$sel->filter([['refereeId', '=', $refereeId]]);
+		$sel->order('date', $order);
+		$sel->select('`Match`.date');
+		
+		$result = $this->select($sel);
+		
+		if(count($result) >= 1) {
+			return $result[0]['date'];
+		}
+		else {
+			return NULL;
+		}
+	}		
+			
+	public function getFirstMatchDate() {
+
+		$sel = new \Selector('Match');
+		$sel->order('date', 'ASC');
+		$sel->select('`Match`.date');
+		
+		$result = $this->select($sel);
+		
+		if(count($result) >= 1) {
+			return $result[0]['date'];
+		}
+		else {
+			return NULL;
+		}
 	}
 
-		
 	public function getTotalCardsInMatch($matchId) {
 		$sel = new \Selector('Cards');
 		$sel->filter([['matchId', '=', $matchId]]);
@@ -3754,6 +3928,7 @@ class Database {
 
 		$sel = new \Selector('Match');
 		$sel->filter([['date', '>=', $time]]);
+		$sel->filter([['scoreId', 'IS NULL', '']]);
 		$sel->order('date', 'ASC');
 		$sel->limit(0, $limit);
 
@@ -3882,6 +4057,32 @@ class Database {
 	}
 	
 	
+	public function addPage($title, $content) {
+	
+		try {
+			return $this -> getPage($title, $content) -> getId();
+
+		} catch (exception $e) {
+		}
+
+		return $this->insert('Pages', ['title', 'content'], [$title, $content]);
+	}
+	
+	
+	public function getPage($title, $content) {
+	    $sel = new \Selector('Pages');
+		$sel->filter([['title', '=', $title]]);
+		$sel->filter([['content', '=', $content]]);
+		
+		$result = $this->select($sel);
+		
+		if(sizeof($result) == 1) {
+			return $this->resultToPages($result)[0];
+		}
+		else {
+			throw new exception("Could not retrieve page");
+		}
+	}
 	
 	public function getPageById($id) {
 		$sel = new \Selector('Pages');
@@ -3911,6 +4112,21 @@ class Database {
 		
 	}
 	
+	
+	public function deletePage($id) {
+
+		$query = "DELETE FROM `Pages` WHERE id = ?";
+
+		$statement = $this->getStatement($query);
+
+		if (!$statement -> bind_param('i', $id)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+	}
 	
 	
 	public function getAllUsers() {

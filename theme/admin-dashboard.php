@@ -3,32 +3,29 @@
 if(isAdmin()){
 ?>
 
-<div class="container">
-
-
-	<div class="col-md-6">
-		<div id="graph-goals-cards"></div>
-	</div>
+<div class="container">	
 	
 	
-	
+		
 	<div class="col-md-6">
 		<div id="graph-competitions"></div>
 	</div>
 	
+	<div class="col-md-6">
+		<div id="graph-persons"></div>
+	</div>
 	
+	<div class="col-md-6">
+		<div id="graph-goals-cards"></div>
+	</div>
+
 	
 	<div class="col-md-6">
 		<div id="graph-users"></div>
 	</div>
 	
-	
-	
-	
-	
-	<div class="col-md-6">
-		<div id="graph-persons"></div>
-	</div>
+
+
 	
 	
 	
@@ -210,7 +207,10 @@ if(isAdmin()){
 		
 	</script>
 	
+	<div class="container"><p></p></div>
 	
+	<h4 class="center">Total Matches (last 5 years)</h4>
+	<div class="col-md-12"><br><?php generateChart($this->getTotalMatchesStats(), 0, 'areaspline'); ?></div>
 	
 </div>
 

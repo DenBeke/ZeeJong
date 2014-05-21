@@ -41,11 +41,11 @@ Created: February 2014
           	foreach ($this->events as $match) {
 				?>
 				<tr>
-						<td><?php echo $match->getTeamA()->getName(); ?></td>
+						<td><a href="<?php echo SITE_URL . 'team/' . $match->getTeamA()->getId(); ?>"><?php echo $match->getTeamA()->getName(); ?></a></td>
 						
 						<td><a href="<?php echo SITE_URL . 'match/' . $match->getId(0); ?>"><span class="badge"><?php try { echo $match->getScore(); } catch(exception $e) { echo date('d-m-Y', $match->getDate()); } ?></span></a></td>
 						
-						<td><?php echo $match->getTeamB()->getName(); ?></td>
+						<td><a href="<?php echo SITE_URL . 'team/' . $match->getTeamB()->getId(); ?>"><?php echo $match->getTeamB()->getName(); ?></a></td>
 				</tr>
 				<?php
 			}

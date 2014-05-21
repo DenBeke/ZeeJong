@@ -38,7 +38,7 @@ Created: February 2014
 					<label class="control-label col-sm-2">Content</label>
 					
 					<div class="col-sm-10">
-						<textarea name="content" class="form-control input-xlarge" rows="10"><?php echo $this->page->getContent(); ?></textarea>
+						<textarea name="content" class="form-control input-xlarge editor" rows="10"><?php echo $this->page->getContent(); ?></textarea>
 					</div>
 				
 				</div>
