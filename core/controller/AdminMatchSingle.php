@@ -63,6 +63,11 @@ require_once(dirname(__FILE__) . '/Controller.php');
 				case "edit-coach/":
 					$this->editCoach();
 					break;
+
+				case "edit-referee":
+				case "edit-referee/":
+					$this->editReferee();
+					break;
 				
 				case "add-goal":
 				case "add-goal/":
@@ -247,6 +252,24 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			$teamId = $_POST['teamId'];
 
 			$database->changeMatchCoach($this->match->getId(), $teamId, $coachId);
+
+			//Refresh match
+			$this->match = $database->getMatchById($this->match->getId());
+		}
+
+		private function editReferee() {
+			global $database;
+
+			if(!isset($_POST['refereeId'])) {
+				return;
+			}
+
+			$refereeId = $_POST['refereeId'];
+
+			$database->changeMatchReferee($this->match->getId(), $refereeId);
+
+			//Refresh match
+			$this->match = $database->getMatchById($this->match->getId());
 		}
 		
 		

@@ -34,6 +34,24 @@ if(isAdmin()){
 			}
 		});
 	}
+
+	function searchReferees() {
+		$.ajax({
+			dataType: "json",
+			url: '<?php echo SITE_URL; ?>core/ajax/referee.php',
+			data: {'search': $('#referee-name').val()},
+			success: function(data) {
+				var html = '';
+				for(var i in data) {
+					html += '<option value="' + data[i].id + '">';
+					html += data[i].firstName + ' ' + data[i].lastName;
+					html += '</option>';
+				}
+
+				$('#referee-list').html(html);
+			}
+		});
+	}
 </script>
 
 <div class="container">
@@ -87,7 +105,7 @@ if(isAdmin()){
 								<a href="<?php echo SITE_URL . 'referee/' . $this->match->getReferee()->getId(); ?>"><?php echo $this->match->getReferee()->getName(); ?></a>
 							<?php } else { ?>
 								Not found
-							<?php } ?> <a class="btn-xs btn btn-primary lightbox-click" data-id="">Edit</a>
+							<?php } ?> <a class="btn-xs btn btn-primary lightbox-click" data-id="edit-referee">Edit</a>
 					  	</li>
 					</ul>
 
@@ -100,7 +118,37 @@ if(isAdmin()){
 
 		</div>
 
+		<div id="edit-referee" class="lightbox">
+			<div class="lightbox-content">
+				<h3>Edit referee</h3>		
+				<form class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/edit-referee/'; ?>">
+				  <div class="form-group">
+				 	<label for="inputPassword3" class="col-sm-2 control-label">Name</label>
+				 	<div class="col-sm-6">
+				 	  <input type="text" class="form-control" id="referee-name" placeholder="">
+				 	</div>
+				 	<div class="col-sm-4">
+					  <button type="submit" onclick="searchReferees(); return false;" class="btn btn-default">Search</button>
+				 	</div>
+				  </div>
 
+				  <div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Referees</label>
+					<div class="col-sm-10">
+						<select id="referee-list" class="form-control" name="refereeId">
+						</select>
+					</div>
+				  </div>
+
+
+				  <div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+					  <button type="submit" class="btn btn-default">Update</button>
+					</div>
+				  </div>
+				</form>
+			</div>
+		</div>
 
 
 		<!-- Goals -->
