@@ -80,9 +80,31 @@ class Coach {
 	}
 
 
+	public function getOverallStats() {
+		
+		$months = getAllMonths($this->db->getMatchDateBorder($this->getId(), true), $this->db->getMatchDateBorder($this->getId(), false));
+		$matches = [];
+		$matches_won = [];
+		
+		$count = 1;
+		foreach ($months as $month => $timestamp) {
+			if($count < sizeof($months)) {
+				$matches[$timestamp] = $this->db->getTotalNumberOfMatchesCoachedInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
+				$matches_won[$timestamp] = $this->db->getTotalMatchesWonAsCoachInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
+				//var_dump(array_slice($months, $count-1, 1));
+				//echo '<br>';
+			}
+			$count++;
+		}
+		
+		
+		return ['Matches' => $matches, 'Matches won' => $matches_won];
+		
+	}
+
 
 	public function getTotalMatches() {
-		
+		return $this->db->getTotalNumberOfMatchesCoached($this->id);
 	}
 	
 	

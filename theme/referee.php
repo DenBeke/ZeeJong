@@ -50,5 +50,18 @@ Created: February 2014
 	
 	</div>
 
+	<?php if($this->referee->getTotalMatches() != 0) { ?>
+
+	<div class="col-md-12">
+	
+		<h3>Overall Stats</h3>	
+		
+		<?php generateChart($this->referee->getOverallStats(), 1, 'Line'); ?>
+		
+		
+	
+	</div>	
+
+	<?php } ?>
 
 </div>
