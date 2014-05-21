@@ -47,7 +47,7 @@ Created: February 2014
 						  </li>
 						  
 						  <li class="list-group-item">
-						  	<b>Nationality</b>: <?php echo getCountryFlag($this->player->getCountry()->getName());?> <?php echo $this->player->getCountry()->getName(); ?></a>
+						  	<b>Nationality</b>: <?php echo getCountryFlag($this->player->getCountry()->getName());?> <a href="<?php echo SITE_URL . 'country/' . $this->player->getCountry()->getId(); ?>"><?php echo $this->player->getCountry()->getName(); ?></a>
 						  </li>
 						  
 						  
