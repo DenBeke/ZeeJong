@@ -58,6 +58,11 @@ require_once(dirname(__FILE__) . '/Controller.php');
 				case "edit-meta/":
 					$this->editMeta();
 					break;
+
+				case "edit-coach":
+				case "edit-coach/":
+					$this->editCoach();
+					break;
 				
 				case "add-goal":
 				case "add-goal/":
@@ -225,6 +230,23 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			
 			//Refresh match
 			$this->match = $database->getMatchById($this->match->getId());
+		}
+
+		private function editCoach() {
+			global $database;
+
+			if(!isset($_POST['coachId'])) {
+				return;
+			}
+
+			if(!isset($_POST['teamId'])) {
+				return;
+			}
+
+			$coachId = $_POST['coachId'];
+			$teamId = $_POST['teamId'];
+
+			$database->changeMatchCoach($this->match->getId(), $teamId, $coachId);
 		}
 		
 		

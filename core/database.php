@@ -1856,7 +1856,7 @@ class Database {
 
 		$statement = $this->getStatement($query);
 		
-		if (!$statement -> bind_param('ii', $coachId, $matchId, $teamId)) {
+		if (!$statement -> bind_param('iii', $coachId, $matchId, $teamId)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
 		}
 
