@@ -56,7 +56,7 @@ Created: February 2014
 	
 		<h3>Overall Stats</h3>	
 		
-		<?php generateChart($this->referee->getOverallStats(), 1, 'Line'); ?>
+		<?php generateChart($this->referee->getOverallStats(), 1, 'column'); ?>
 		
 		
 	

@@ -12,7 +12,7 @@ The class contains the following information:
 - name
 - country
 */
-class Team {
+class Team implements JsonSerializable {
 	private $id;
 	private $name;
 	private $countryId;
@@ -91,6 +91,14 @@ class Team {
 	*/
 	public function __toString() {
 		return "ID: $this->id";
+	}
+
+	public function jsonSerialize() {
+		return [
+			'id' => $this->id,
+			'name' => $this->name,
+			'countryId' => $this->countryId
+		];
 	}
 
 }

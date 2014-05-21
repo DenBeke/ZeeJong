@@ -109,7 +109,7 @@ function getLatestYear() {
 
 
 
-function generateChart($input, $id = 0, $type = 'Bar') {
+function generateChart($input, $id = 0, $type = 'column') {
 	?>
 
 	<div id="<?php echo $id; ?>" style="width: 100%; height: 300px;">
@@ -153,7 +153,7 @@ function generateChart($input, $id = 0, $type = 'Bar') {
 	 
 	$('#<?php echo $id; ?>').highcharts({
 		chart: {
-			type: 'column',
+			type: <?php echo '"' . $type . '"' ?>,
 			zoomType: 'x',
 		},
 
@@ -277,6 +277,20 @@ function getCountryFlag($country) {
 
 }
 
+
+function saveAnalytics($string) {
+    file_put_contents( dirname(__FILE__) . '/analytics.html', $string);
+}
+
+function getAnalytics() {
+	
+	if(file_exists(dirname(__FILE__) . '/analytics.html')) {
+		return file_get_contents( dirname(__FILE__) . '/analytics.html');	
+	}
+	else {
+		return '';
+	}
+}
 
 
 ?>

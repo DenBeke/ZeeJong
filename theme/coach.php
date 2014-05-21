@@ -57,7 +57,7 @@ Created: February 2014
 	
 		<h3>Overall Stats</h3>	
 		
-		<?php generateChart($this->coach->getOverallStats(), 1, 'Line'); ?>
+		<?php generateChart($this->coach->getOverallStats(), 1, 'column'); ?>
 		
 	</div>	
 

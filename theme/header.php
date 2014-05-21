@@ -94,6 +94,7 @@
 					      	<li> <a href ="<?php echo SITE_URL; ?>invite-user">Invite users</a></li>
 					        <li> <a href ="<?php echo SITE_URL; ?>invites">Invites</a></li>
 
+							<?php if(sizeof($header->userGroupNames) > 0) { ?><li class="divider"></li><?php } ?>
 					      	<?php foreach($header->userGroupNames as $groupName) {?>				      		
 						    <li><a href="<?php echo SITE_URL . 'group/' . $groupName; ?>"><?php echo $groupName; ?></a></li>
 						   	<?php } ?>
