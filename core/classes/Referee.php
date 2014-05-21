@@ -12,7 +12,7 @@ The class contains the following information:
 - name
 - country
 */
-class Referee {
+class Referee implements JsonSerializable {
 	private $id;
 	private $firstName;
 	private $lastName;
@@ -97,6 +97,15 @@ class Referee {
 	*/
 	public function __toString() {
 		return "ID: $this->id";
+	}
+
+	public function jsonSerialize() {
+		return [
+			'id' => $this->id,
+			'firstName' => $this->firstName,
+			'lastName' => $this->lastName,
+			'countryId' => $this->countryId
+		];
 	}
 
 }
