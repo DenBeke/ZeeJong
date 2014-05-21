@@ -54,7 +54,7 @@ Authors
 
 
 Acknowledgements
----------------
+----------------
 
 - URL routing: [GluePHP](http://gluephp.com)
 - RSS parser: [SimplePie RSS](http://simplepie.org)
