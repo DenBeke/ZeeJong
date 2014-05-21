@@ -141,7 +141,7 @@ class Database {
 			return false;
 		}
 
-		if($statement->rowCount() !== 0) {
+		if($statement->rowCount() !== 1) {
 			return false;
 		}
 
@@ -1851,17 +1851,8 @@ class Database {
 
 
     public function changeMatchCoach($matchId, $teamId, $coachId) {
-	    
-	    $query = "UPDATE `Coaches` SET coachId = ? WHERE matchId = ? AND teamId = ?";
-
-		$statement = $this->getStatement($query);
-		
-		if (!$statement -> bind_param('iii', $coachId, $matchId, $teamId)) {
-			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
-		}
-
-		if (!$statement -> execute()) {
-			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		if(!$this->update('Coaches', [['coachId', $coachId]], [['matchId', '=', $matchId], ['teamId', '=', $teamId]])) {
+			$this->insert('Coaches', ['coachId', 'teamId', 'matchId'], [$coachId, $teamId, $matchId]);
 		}
 	}
 	
