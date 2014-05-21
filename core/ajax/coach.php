@@ -71,8 +71,8 @@ class Handler extends Controller\Controller {
 				$value = explode(' ', $value);
 				$filters = [];
 				foreach($value as $term) {
-					$filters[] = ['Coach.firstname','LIKE ', $term];
-					$filters[] = ['Coach.lastname','LIKE ', $term];
+					$filters[] = ['Coach.firstname','LIKE ', '%' . $term . '%'];
+					$filters[] = ['Coach.lastname','LIKE ', '%' . $term . '%'];
 				}
 
 				$sel->filter($filters);
