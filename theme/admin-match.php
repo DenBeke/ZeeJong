@@ -153,7 +153,6 @@ if(isAdmin()){
 
         <!-- Goals -->
 
-        <?php if(sizeof($this->goals) > 0) { ?>
 
         <div class="col-md-8">
 
@@ -200,15 +199,12 @@ if(isAdmin()){
 
         </div>
 
-        <?php } ?>
 
 
 
 
 
         <!-- Cards -->
-
-        <?php if(sizeof($this->cards) > 0) { ?>
 
         <div class="col-md-8">
 
@@ -260,8 +256,6 @@ if(isAdmin()){
             </table>
 
         </div>
-
-        <?php } ?>
 
 
 
@@ -467,13 +461,13 @@ if(isAdmin()){
           <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">Date</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="date" name="date" placeholder="02-11-1994">
+              <input type="text" class="form-control" id="date" name="date" placeholder="02-11-1994" value="<?php echo date('d-m-Y', $this->match->getDate()); ?>">
             </div>
           </div>
           <div class="form-group">
             <label for="inputPassword3" class="col-sm-2 control-label">Score</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="score" name="score" placeholder="2-1">
+              <input type="text" class="form-control" id="score" name="score" placeholder="2-1" value="<?php try { echo $this->match->getScore(); } catch(exception $e) {} ?>">
             </div>
           </div>
 
@@ -624,7 +618,7 @@ if(isAdmin()){
                 <select name="player-list" class="form-control">
                     <optgroup label="<?php echo $this->match->getTeamA()->getName() ?>">
                         <?php
-                        foreach($this->match->getTeamA()->getPlayers() as $player) {
+                        foreach($this->match->getPlayersTeamA() as $player) {
                         ?>
                         <option value="<?php echo $player->getId(); ?>"><?php echo $player->getName(); ?></option>
                         <?php } ?>
@@ -632,7 +626,7 @@ if(isAdmin()){
 
                     <optgroup label="<?php echo $this->match->getTeamB()->getName() ?>">
                         <?php
-                        foreach($this->match->getTeamB()->getPlayers() as $player) {
+                        foreach($this->match->getPlayersTeamB() as $player) {
                         ?>
                         <option value="<?php echo $player->getId(); ?>"><?php echo $player->getName(); ?></option>
                         <?php } ?>
