@@ -14,6 +14,10 @@ require(dirname(__FILE__) . '/database.php');
 
 function sendMail($subject, $to, $from, $message) {
 
+    if($from == '') {
+        return;
+    }
+
     if( mail("$to",$subject,$message,"From: $from\r\nContent-Type: text/html; charset=ISO-8859-1\r\n") ) {
         echo "From: $from<br>To: $to<br>Subject: $subject<br>Message: $message";   
     }
