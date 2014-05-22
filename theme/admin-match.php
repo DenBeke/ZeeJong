@@ -11,12 +11,53 @@ Created: February 2014
 if(isAdmin()){
 ?>
 
-<p></p>
+<script>
+	function setTeamCoach(teamId) {
+		$('#selected-team-coach').val(teamId);
+	}
 
+
+	function searchCoaches() {
+		$.ajax({
+			dataType: "json",
+			url: '<?php echo SITE_URL; ?>core/ajax/coach.php',
+			data: {'search': $('#coach-name').val()},
+			success: function(data) {
+				var html = '';
+				for(var i in data) {
+					html += '<option value="' + data[i].id + '">';
+					html += data[i].firstName + ' ' + data[i].lastName;
+					html += '</option>';
+				}
+
+				$('#coach-list').html(html);
+			}
+		});
+	}
+
+	function searchReferees() {
+		$.ajax({
+			dataType: "json",
+			url: '<?php echo SITE_URL; ?>core/ajax/referee.php',
+			data: {'search': $('#referee-name').val()},
+			success: function(data) {
+				var html = '';
+				for(var i in data) {
+					html += '<option value="' + data[i].id + '">';
+					html += data[i].firstName + ' ' + data[i].lastName;
+					html += '</option>';
+				}
+
+				$('#referee-list').html(html);
+			}
+		});
+	}
+</script>
 
 <div class="container">
 
 	<h2 id="title-match"><?php echo $this->match->getTeamA()->getName() ?> - <?php echo $this->match->getTeamB()->getName() ?></h2>
+<a href="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/delete'; ?>" class="btn-xs btn btn-danger title-btn">Delete</a>
 
 
 
@@ -64,7 +105,7 @@ if(isAdmin()){
 								<a href="<?php echo SITE_URL . 'referee/' . $this->match->getReferee()->getId(); ?>"><?php echo $this->match->getReferee()->getName(); ?></a>
 							<?php } else { ?>
 								Not found
-							<?php } ?>
+							<?php } ?> <a class="btn-xs btn btn-primary lightbox-click" data-id="edit-referee">Edit</a>
 					  	</li>
 					</ul>
 
@@ -77,7 +118,37 @@ if(isAdmin()){
 
 		</div>
 
+		<div id="edit-referee" class="lightbox">
+			<div class="lightbox-content">
+				<h3>Edit referee</h3>		
+				<form class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/edit-referee/'; ?>">
+				  <div class="form-group">
+				 	<label for="inputPassword3" class="col-sm-2 control-label">Name</label>
+				 	<div class="col-sm-6">
+				 	  <input type="text" class="form-control" id="referee-name" placeholder="">
+				 	</div>
+				 	<div class="col-sm-4">
+					  <button type="submit" onclick="searchReferees(); return false;" class="btn btn-default">Search</button>
+				 	</div>
+				  </div>
 
+				  <div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Referees</label>
+					<div class="col-sm-10">
+						<select id="referee-list" class="form-control" name="refereeId">
+						</select>
+					</div>
+				  </div>
+
+
+				  <div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+					  <button type="submit" class="btn btn-default">Update</button>
+					</div>
+				  </div>
+				</form>
+			</div>
+		</div>
 
 
 		<!-- Goals -->
@@ -116,7 +187,7 @@ if(isAdmin()){
 					</td>
 					
 					
-					<td class="button"><a href="" class="btn-xs btn btn-danger">Delete</a></td>
+					<td class="button"><a href="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/delete-goal/' . $goal->getId(); ?>" class="btn-xs btn btn-danger">Delete</a></td>
 					
 					
 					
@@ -181,7 +252,7 @@ if(isAdmin()){
 						<a href="<?php echo SITE_URL . 'player/' . $database->getPlayerById($card->getPlayerId())->getId(); ?>"><?php echo $database->getPlayerById($card->getPlayerId())->getName(); ?></a>
 					</td>
 					
-					<td class="button"><a href="" class="btn-xs btn btn-danger">Delete</a></td>
+					<td class="button"><a href="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/delete-card/' . $card->getId(); ?>" class="btn-xs btn btn-danger">Delete</a></td>
 
 				</tr>
 
@@ -238,7 +309,7 @@ if(isAdmin()){
 							 <tr>
 							 	<td><?php if($player->number > 0) echo $player->number; ?></td>
 							 	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
-							 	<td><a href="" class="btn-xs btn btn-danger">Delete</a></td>
+							 	<td><a href="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/delete-player/' . $player->getId(); ?>" class="btn-xs btn btn-danger">Delete</a></td>
 							 </tr>
 
 							 <?php
@@ -259,7 +330,7 @@ if(isAdmin()){
 							<a href="<?php echo SITE_URL . 'coach/' . $coach->getId(); ?>"><?php echo $coach->getName(); ?></a>
 						<?php } else { ?>
 							Not found
-						<?php } ?>
+						<?php } ?> <a onclick="setTeamCoach(<?php echo $this->match->getTeamAId(); ?>);" class="btn-xs btn btn-primary lightbox-click" data-id="edit-coach">Edit</a>
 				</div>
 
 
@@ -305,7 +376,7 @@ if(isAdmin()){
 							 <tr>
 							 	<td><?php if($player->number > 0) echo $player->number; ?></td>
 							 	<td><a href="<?php echo SITE_URL . 'player/' . $player->getId(); ?>"><?php echo $player->getName(); ?></a></td>
-							 	<td><a href="" class="btn-xs btn btn-danger">Delete</a></td>
+							 	<td><a href="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/delete-player/' . $player->getId(); ?>" class="btn-xs btn btn-danger">Delete</a></td>
 							 </tr>
 
 							 <?php
@@ -326,7 +397,40 @@ if(isAdmin()){
 							<a href="<?php echo SITE_URL . 'coach/' . $coach->getId(); ?>"><?php echo $coach->getName(); ?></a>
 						<?php } else { ?>
 							Not found
-						<?php } ?>
+						<?php } ?> <a onclick="setTeamCoach(<?php echo $this->match->getTeamBId(); ?>);" class="btn-xs btn btn-primary lightbox-click" data-id="edit-coach">Edit</a>
+				</div>
+
+				<div id="edit-coach" class="lightbox">
+					<div class="lightbox-content">
+						<h3>Edit coach</h3>		
+						<form class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/edit-coach/'; ?>">
+							<input type="hidden" id="selected-team-coach" name="teamId">
+						  <div class="form-group">
+						 	<label for="inputPassword3" class="col-sm-2 control-label">Name</label>
+						 	<div class="col-sm-6">
+						 	  <input type="text" class="form-control" id="coach-name" placeholder="">
+						 	</div>
+						 	<div class="col-sm-4">
+							  <button type="submit" onclick="searchCoaches(); return false;" class="btn btn-default">Search</button>
+						 	</div>
+						  </div>
+
+						  <div class="form-group">
+							<label for="inputEmail3" class="col-sm-2 control-label">Coaches</label>
+							<div class="col-sm-10">
+								<select id="coach-list" class="form-control" name="coachId">
+								</select>
+							</div>
+						  </div>
+
+
+						  <div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+							  <button type="submit" class="btn btn-default">Update</button>
+							</div>
+						  </div>
+						</form>
+					</div>
 				</div>
 
 
@@ -359,17 +463,17 @@ if(isAdmin()){
 	
 	
 	
-		<form class="form-horizontal" role="form">
+		<form class="form-horizontal" role="form" method="POST" action="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/edit-meta/'; ?>">
 		  <div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">Date</label>
 			<div class="col-sm-10">
-			  <input type="text" class="form-control" id="date" placeholder="02-11-1994">
+			  <input type="text" class="form-control" id="date" name="date" placeholder="02-11-1994">
 			</div>
 		  </div>
 		  <div class="form-group">
 			<label for="inputPassword3" class="col-sm-2 control-label">Score</label>
 			<div class="col-sm-10">
-			  <input type="text" class="form-control" id="score" placeholder="2-1">
+			  <input type="text" class="form-control" id="score" name="score" placeholder="2-1">
 			</div>
 		  </div>
 		 
@@ -399,13 +503,16 @@ if(isAdmin()){
 
 
 
-		<form class="form-horizontal" role="form">
+		<form class="form-horizontal" role="form" method="POST" action="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/add-player/'; ?>">
+		  
+		  
+		  <input name="team-id" type="hidden" value="<?php echo $this->match->getTeamA()->getID(); ?>">
 		  
 		  <div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">Player</label>
 			<div class="col-sm-10">
 			
-				<select name="carlist" form="carform" class="form-control">
+				<select name="player-list" class="form-control">
 				  <?php
 				  foreach($this->match->getTeamA()->getPlayers() as $player) { 
 				  ?>
@@ -421,7 +528,7 @@ if(isAdmin()){
 		  <div class="form-group">
 		 	<label for="inputPassword3" class="col-sm-2 control-label">Number</label>
 		 	<div class="col-sm-10">
-		 	  <input type="text" class="form-control" id="score" placeholder="1">
+		 	  <input type="text" class="form-control" id="score" name="number" placeholder="1">
 		 	</div>
 		  </div>
 
@@ -452,13 +559,15 @@ if(isAdmin()){
 
 
 
-		<form class="form-horizontal" role="form">
+		<form class="form-horizontal" role="form" method="POST" action="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/add-player/'; ?>">
+
+			<input name="team-id" type="hidden" value="<?php echo $this->match->getTeamB()->getID(); ?>">
 
 		  <div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">Player</label>
 			<div class="col-sm-10">
 
-				<select name="carlist" form="carform" class="form-control">
+				<select name="player-list" class="form-control">
 				  <?php
 				  foreach($this->match->getTeamB()->getPlayers() as $player) { 
 				  ?>
@@ -474,7 +583,7 @@ if(isAdmin()){
 		  <div class="form-group">
 		 	<label for="inputPassword3" class="col-sm-2 control-label">Number</label>
 		 	<div class="col-sm-10">
-		 	  <input type="text" class="form-control" id="score" placeholder="1">
+		 	  <input type="text" class="form-control" id="score" name="number" placeholder="1">
 		 	</div>
 		  </div>
 
@@ -506,13 +615,13 @@ if(isAdmin()){
 
 
 
-		<form class="form-horizontal" role="form">
+		<form class="form-horizontal" role="form" method="POST" action="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/add-goal/'; ?>">
 
 		  <div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">Player</label>
 			<div class="col-sm-10">
 
-				<select name="carlist" form="carform" class="form-control">
+				<select name="player-list" class="form-control">
 					<optgroup label="<?php echo $this->match->getTeamA()->getName() ?>">
 					    <?php
 					    foreach($this->match->getTeamA()->getPlayers() as $player) { 
@@ -540,7 +649,7 @@ if(isAdmin()){
 		  <div class="form-group">
 		 	<label for="inputPassword3" class="col-sm-2 control-label">Time</label>
 		 	<div class="col-sm-10">
-		 	  <input type="text" class="form-control" id="score" placeholder="60">
+		 	  <input type="text" class="form-control" id="name" name="time" placeholder="60">
 		 	</div>
 		  </div>
 
@@ -571,13 +680,13 @@ if(isAdmin()){
 
 
 
-		<form class="form-horizontal" role="form">
+		<form class="form-horizontal" role="form" method="POST" action="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/add-card/'; ?>">
 
 		  <div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">Player</label>
 			<div class="col-sm-10">
 
-				<select name="carlist" form="carform" class="form-control">
+				<select name="player-list" class="form-control">
 					<optgroup label="<?php echo $this->match->getTeamA()->getName() ?>">
 						<?php
 						foreach($this->match->getTeamA()->getPlayers() as $player) { 
@@ -605,7 +714,7 @@ if(isAdmin()){
 		  <div class="form-group">
 		   	<label for="inputPassword3" class="col-sm-2 control-label">Type</label>
 		   	<div class="col-sm-10">
-		   	  <select name="carlist" form="carform" class="form-control">
+		   	  <select name="type" class="form-control">
 		   	    <option value="1">Yelow card</option>
 		   	    <option value="2">Red card</option>
 		   	    <option value="3">Second yellow card</option>
@@ -617,7 +726,7 @@ if(isAdmin()){
 			<div class="form-group">
 				<label for="inputPassword3" class="col-sm-2 control-label">Time</label>
 				<div class="col-sm-10">
-				  <input type="text" class="form-control" id="score" placeholder="60">
+				  <input type="text" name="time" class="form-control" id="score" placeholder="60">
 				</div>
 			 </div>
 			

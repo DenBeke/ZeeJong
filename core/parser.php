@@ -78,7 +78,7 @@ class Parser {
 				),
 				
 				'be-sec' => array(
-					'name' => 'Second Division',
+					'name' => 'Belgium Second Division',
 					'url' => 'http://int.soccerway.com/national/belgium/second-division/20132014/regular-season/r21592/'
 				),
 
@@ -169,7 +169,7 @@ class Parser {
 	/**
 	Parse the competitions to fill in new data.
 	*/
-	public function parse($ttl = 3600) {
+	public function parse($ttl = 7200) {
 
 		$this->ttl = $ttl;
 
@@ -180,24 +180,6 @@ class Parser {
 
 			echo '<em>Parsing: ' . $competition['name'] . '</em><br>';
 			$this->parseNewMatches($competition['url']);
-		}
-	}
-
-
-	/**
-	Parse the archive and store the data.
-	*/
-	public function parseArchive($ttl = 0) {
-
-		$this->ttl = $ttl;
-
-		//Loop through competition and parse the competitions
-		foreach ($this->competitions as $competition) {
-
-			$this->competition = $competition['name'];
-
-			echo '<em>Parsing: ' . $competition['name'] . '</em><br>';
-			$this->parseCompetitionInArchive($competition['archiveUrl']);
 		}
 	}
 
@@ -246,89 +228,19 @@ class Parser {
 
 
 	/**
-	Parse the competitions in the archive and store the data.
-
-	@param url of the competition
-	*/
-	private function parseCompetitionInArchive($url) {
-
-		$html = $this->loadPage($url);
-
-		//Find all tournaments
-		foreach($html->find('.season a') as $element) {
-
-			$tournamentName = $element->plaintext;
-			$tournamentUrl = $element->href;
-
-			$this->tournament = $tournamentName;
-
-			echo "<h2>$tournamentName</h2>";
-
-			$next_html = $this->loadPage('http://int.soccerway.com' . $tournamentUrl);
-			$parts = $next_html->find('.level-1', 0)->find('.leaf a');
-			$next_html->clear();
-
-			$urls = array();
-			if (sizeof($parts) == 1) {
-				$urls[] = 'http://int.soccerway.com' . $tournamentUrl;
-			}
-			else {
-				foreach ($parts as $part) {
-					$urls[] = 'http://int.soccerway.com' . $part->href . 'matches/';
-				}
-			}
-
-			foreach ($urls as $url) {
-				echo $url . '<br>';
-				$this->parseTournamentInArchive($url);
-			}
-		}
-
-		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
-	}
-
-
-	/**
-	Parse the tournaments in the archive and store the data.
-
-	@param url of the tournament
-	*/
-	private function parseTournamentInArchive($url) {
-
-		$html = $this->loadPage($url);
-
-		//Find all matches
-		foreach($html->find('.match') as $element) {
-
-			$scoreUrl = $element->find('.score a', 0);
-			if (is_object($scoreUrl) == FALSE) {
-				continue;
-			}
-
-			$this->parseMatch('http://int.soccerway.com' . $scoreUrl->href);
-		}
-
-		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
-
-	}
-
-
-	/**
 	Parse the match in the archive and store the data.
 
 	@param url of the match
 	*/
 	private function parseMatch($url, $type = '') {
 
-
 		try {
-
-
-			$html = $this->loadPage($url);
 
 			//Add the competition and tournament to the database
 			$competitionId = $this->database->addCompetition($this->competition);
 			$tournamentId = $this->database->addTournament($this->tournament, $competitionId);
+
+			$html = $this->loadPage($url);
 
 			//Find the referee
 			if(is_object($html->find('.referee', 0))) {
@@ -482,6 +394,11 @@ class Parser {
 	private function parseNewMatches($original_url) {
 	
 	    $html = $this->loadPage($original_url);
+	    
+	    $competitionId = $this->database->addCompetition($this->competition);
+
+	    $this->tournament = $html->find('.level-1 a', 0)->plaintext;
+	    $tournamentId = $this->database->addTournament($this->tournament, $competitionId);
 	
 	    $urls = array();
 		$parts = $html->find('.level-1', 0)->find('.leaf a');
@@ -496,17 +413,26 @@ class Parser {
 		    }
 		}
 		
+		if (sizeof($urls) < 2) {
+		    $paramPos = strpos($original_url, '?');
+		    if ($paramPos == FALSE) {
+			    $urls = [$original_url . 'matches/'];
+		    }
+		    else {
+		        $urls = [substr($original_url, 0, $paramPos) . 'matches/' . substr($original_url, $paramPos)];
+		    }
+		}
+		
 		$html->clear();
 
 		foreach ($urls as $url) {
 
-		    $html = $this->loadPage($url);
-
-		    $competitionId = $this->database->addCompetition($this->competition);
-
-		    //Find the tournament
-		    $this->tournament = $html->find('.level-1 a', 0)->plaintext;
-		    $tournamentId = $this->database->addTournament($this->tournament, $competitionId);
+			try {
+				$html = $this->loadPage($url);
+			}
+			catch (Exception $e) {
+			    echo 'Exception: Failed to load ' . $url . '<br>';
+			}
 
 		    //Loop over all matches
 		    $blocksFound = true;
@@ -550,8 +476,8 @@ class Parser {
 				        }
 
 				        //Parse the team pages
-				        $teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
-				        $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
+				        $teamIdA = $this->parseTeamFast('http://int.soccerway.com' . $teamA->href);
+				        $teamIdB = $this->parseTeamFast('http://int.soccerway.com' . $teamB->href);
 				
 				        //Find out if the match has been played already or not
 				        $colonPos = strpos(trim($scoreOrTime), ' : ');
@@ -559,14 +485,27 @@ class Parser {
 				        if ($colonPos != $minusPos) {
 
 				            if ($colonPos != false) {
-					            $this->database->addMatch($teamIdA, $teamIdB, -1, -1, null, $date, $tournamentId, $type);
+				                try {
+				                    $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId);
+				                }
+				                catch (Exception $e) {
+				                    $teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
+				                    $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
+				                    
+					                $this->database->addMatch($teamIdA, $teamIdB, -1, -1, null, $date, $tournamentId, $type);
+					            }
 				            }
 				            else {
 
 					            try {
-						            $matchId = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId)->getId();
+						            $match = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId);
+						            
+						            //There is no need to parse the match again if it had a score already
+						            if ($match->getScoreId() != null) {
+						                continue;
+						            }
 						
-						            //If no exception gets thrown then the match was already in the database
+						            $matchId = $match->getId();
 						            $this->database->removeMatch($matchId);
 					            }
 					            catch (Exception $e) {
@@ -602,11 +541,11 @@ class Parser {
 		$countryId = $this->database->addCountry($country);
 		$refereeId = $this->database->addReferee($firstName, $lastName, $countryId);
 
-		if (file_exists('cache/Referee-' . $refereeId . '.png') == FALSE)
+		if (file_exists('../images/Referee-' . $refereeId . '.png') == FALSE)
 		{
 			$imageUrl = $html->find('.content .yui-u img', 0)->src;
 			$image = file_get_contents($imageUrl);
-			file_put_contents('cache/Referee-' . $refereeId . '.png', $image);
+			file_put_contents('../images/Referee-' . $refereeId . '.png', $image);
 		}
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
@@ -678,11 +617,11 @@ class Parser {
 		$countryId = $this->database->addCountry($country);
 		$playerId = $this->database->addPlayer($firstName, $lastName, $countryId, $dateOfBirth, $height, $weight, $position);
 
-		if (file_exists('cache/Player-' . $playerId . '.png') == FALSE)
+		if (file_exists('../images/Player-' . $playerId . '.png') == FALSE)
 		{
 			$imageUrl = $html->find('.content .yui-u img', 0)->src;
 			$image = file_get_contents($imageUrl);
-			file_put_contents('cache/Player-' . $playerId . '.png', $image);
+			file_put_contents('../images/Player-' . $playerId . '.png', $image);
 		}
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
@@ -707,16 +646,35 @@ class Parser {
 		$countryId = $this->database->addCountry($country);
 		$coachId = $this->database->addCoach($firstName, $lastName, $countryId);
 
-		if (file_exists('cache/Coach-' . $coachId . '.png') == FALSE)
+		if (file_exists('../images/Coach-' . $coachId . '.png') == FALSE)
 		{
 			$imageUrl = $html->find('.content .yui-u img', 0)->src;
 			$image = file_get_contents($imageUrl);
-			file_put_contents('cache/Coach-' . $coachId . '.png', $image);
+			file_put_contents('../images/Coach-' . $coachId . '.png', $image);
 		}
 
 		$html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
 
 		return $coachId;
+	}
+	
+	
+	/**
+	Parse the team just to get its id
+
+	@return id of the team
+	*/
+	private function parseTeamFast($url) {
+
+		$html = $this->loadPage($url);
+
+		$name = $html->find('#subheading h1', 0)->plaintext;
+		$countryId = $this->findTeamCountry($html);
+
+		$id = $this->database->addTeam($name, $countryId);
+
+		$html->clear();
+		return $id;
 	}
 
 
@@ -735,10 +693,11 @@ class Parser {
 		$id = $this->database->addTeam($name, $countryId);
 
 		if ((array_key_exists($name, $this->teams) == FALSE) || ($this->teams[$name] == FALSE)) {
-
-			$imageUrl = $html->find('.content .logo img', 0)->src;
-			$image = file_get_contents($imageUrl);
-			file_put_contents('cache/Team-' . $id . '.png', $image);
+		    if (!file_exists('../images/Team-' . $id . '.png')) {
+			    $imageUrl = $html->find('.content .logo img', 0)->src;
+			    $image = file_get_contents($imageUrl);
+			    file_put_contents('../images/Team-' . $id . '.png', $image);
+			}
 
 			$this->parsePlayersInTeams($html, $id);
 			$this->teams[$name] = TRUE;

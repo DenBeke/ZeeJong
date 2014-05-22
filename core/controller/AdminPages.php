@@ -1,6 +1,6 @@
 <?php
 /*
-Admin Controller
+Admin Pages Controller
 
 Created February 2014
 */
@@ -24,10 +24,26 @@ require_once(dirname(__FILE__) . '/Controller.php');
 			$this->title = 'Admin - Pages - ' . Controller::siteName;
 			
 			$this->createPage();
+			$this->addAnalytics();
 			
 			global $database;
 			$this->pages = $database->getAllPages();
 		}
+		
+		
+		
+		public function GET($args) {
+			
+			if(isset($args[1])) {
+				global $database;
+				$database->deletePage($args[1]);
+				
+				//Refresh pages
+				$this->pages = $database->getAllPages();
+			}
+			
+		}
+		
 		
 		
 		private function createPage()
@@ -38,6 +54,14 @@ require_once(dirname(__FILE__) . '/Controller.php');
 		        $database->addPage($_POST['title'], $_POST['content']);
 		    }
 		}
+		
+		
+		private function addAnalytics() {
+			if( isset($_POST['analytics'])) {
+				\saveAnalytics($_POST['analytics']);
+			}
+		}
+		
 	}
 
 }
