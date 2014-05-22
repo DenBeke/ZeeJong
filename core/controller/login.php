@@ -148,19 +148,21 @@ namespace Controller {
 		        else {
 		            if(isset($_GET['oid'])) {
 		                $oid = $_GET['oid'];
+		                
+		                if ($oid != '') {
+		                    $openid->identity = $oid;
 
-		                $openid->identity = $oid;
-
-		                $openid->required = array(
-		                  'namePerson/first',
-		                  'contact/email',
-		                );
-
-		                $openid->returnUrl = SITE_URL . 'login/';
-						Header('Location:' . $openid->authUrl());
-		            }
-		        }
-		    }
+		                    $openid->required = array(
+		                      'namePerson/first',
+		                      'contact/email',
+		                    );
+		                    
+		                    $openid->returnUrl = SITE_URL . 'login/';
+						    Header('Location:' . $openid->authUrl());
+                        }
+                    }
+                }
+            }
 
 			if($this->loggedIn) {
 				header("refresh:2;url=" . SITE_URL);
