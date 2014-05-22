@@ -14,7 +14,7 @@ require(dirname(__FILE__) . '/database.php');
 
 function sendMail($subject, $to, $from, $message) {
 
-    if($from == '') {
+    if (($from == '') || ($to == '')) {
         return;
     }
 
