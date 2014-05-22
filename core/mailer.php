@@ -42,7 +42,7 @@ function matchesToString($matches) {
 
 
 
-function notifyUsers($time = 10000000000) {
+function notifyUsers($time = 604800) {
 
     $database = new Database;
 
