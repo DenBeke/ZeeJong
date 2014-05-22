@@ -11,6 +11,7 @@
            $(document).ready(function() 
     { 
         $("#users").tablesorter(); 
+        $("#betsHistory").tablesorter(); 
     } 
 ); 
 
@@ -175,7 +176,8 @@
 
             <div class="col-md-12">
                 <h2>Bets - History</h2>
-                <table class="table table-striped">
+                <table id="betsHistory" class="table table-striped"> 
+                <thead>
                 <tr>
                     <th>Made by</th>
                     <th>Team 1</th>
@@ -186,6 +188,8 @@
                     <th># Yellow Cards</th>
                     <th>Amount</th>
                 </tr>
+                </thead>
+                <tbody>
                     <?php
                     $bets = $this -> getGroup() -> getHandledbets();
                     foreach ($bets as $betId) {
@@ -198,6 +202,7 @@
                     <?php
                     }
                     ?>
+                    </tbody>
                 </table>
 
             </div>

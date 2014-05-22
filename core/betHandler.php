@@ -64,7 +64,7 @@ class BetHandler {
         foreach ($this->betList as $betId) {
             $bet = new Bet($betId);
             $match = $this -> d -> getMatchById($bet -> getMatchId());
-            if ($match -> getRefereeId() != -1) {// Referee ID is -1 as long as score etc is not added to match
+            if ($match -> getScoreId() != NULL) {// Referee ID is -1 as long as score etc is not added to match
                 // Match was played, add bet to list of betsToProcess
                 array_push($this -> betsToProcess, $bet);
             }
