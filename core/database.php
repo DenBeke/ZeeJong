@@ -3804,6 +3804,56 @@ class Database {
         throw new exception('Error while counting the matches the player has won');
     }
 
+    /**
+    Returns amount of matches in which the player played which ended up in a draw
+
+    @return amount of matches
+    */
+    public function getTotalMatchesDrawPlayer($playerId) {
+        //Query
+        $query = "
+            SELECT COUNT(*) FROM `PlaysMatchInTeam`
+            JOIN `Match` ON `Match`.id = matchId
+            JOIN `Score` ON `Score`.id = scoreId
+            WHERE playerId = ? AND
+            (teamId = `Match`.teamA OR teamId = `Match`.teamB) AND
+            Score`.teamA =`Score`.teamB;
+        ";
+
+        //Prepare statement
+        $statement = $this->getStatement($query);
+
+        //Bind parameters
+        if(!$statement->bind_param('i', $playerId)){
+            throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+        }
+
+        //Execute statement
+        if (!$statement->execute()) {
+            throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+        }
+
+        //Store the result in the buffer
+        $statement->store_result();
+
+
+        $numberOfResults = $statement->num_rows;
+
+        if($numberOfResults != 1) {
+            throw new exception('Could not count the amount of draws of the player');
+        }
+
+        $statement->bind_result($amount);
+
+        while ($statement->fetch()) {
+
+            return $amount;
+
+        }
+
+        throw new exception('Error while counting the amount of draws of the player');
+    }    
+
 
     /**
     Returns the matches without a bet for a player.
