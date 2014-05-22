@@ -49,6 +49,10 @@ table a {
 	opacity: 1;
 }
 
+.country-flag-medium {
+	border-radius: 5px;
+}
+
 
 
 /* Style for match *

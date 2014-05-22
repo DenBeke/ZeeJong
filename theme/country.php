@@ -18,6 +18,12 @@ Created: February 2014
 				<h2 id="title-country"><?php echo $this->country->getName(); ?></h2>
 			
 			
+				<div class="pull-right">
+					
+					<img src="<?php echo $this->flag; ?>" class="country-flag-medium">
+					
+				</div>
+			
 			
 			
 				<!-- Teams -->
