@@ -185,25 +185,25 @@ class Match {
             }
         }
 
-        $scoreTeamA =  0.60 * ($earlierScoreTeamA[2]['our'] + $earlierScoreTeamB[2]['opponent'] + $earlierScoreBetweenTeams[2]['A']) / 3
-                     + 0.30 * ($earlierScoreTeamA[1]['our'] + $earlierScoreTeamB[1]['opponent'] + $earlierScoreBetweenTeams[1]['A']) / 3
+        $scoreTeamA =  0.59 * ($earlierScoreTeamA[2]['our'] + $earlierScoreTeamB[2]['opponent'] + $earlierScoreBetweenTeams[2]['A']) / 3
+                     + 0.31 * ($earlierScoreTeamA[1]['our'] + $earlierScoreTeamB[1]['opponent'] + $earlierScoreBetweenTeams[1]['A']) / 3
                      + 0.10 * ($earlierScoreTeamA[0]['our'] + $earlierScoreTeamB[0]['opponent'] + $earlierScoreBetweenTeams[0]['A']) / 3;
 
-        $scoreTeamB =  0.60 * ($earlierScoreTeamB[2]['our'] + $earlierScoreTeamA[2]['opponent'] + $earlierScoreBetweenTeams[2]['B']) / 3
-                     + 0.30 * ($earlierScoreTeamB[1]['our'] + $earlierScoreTeamA[1]['opponent'] + $earlierScoreBetweenTeams[1]['B']) / 3
+        $scoreTeamB =  0.59 * ($earlierScoreTeamB[2]['our'] + $earlierScoreTeamA[2]['opponent'] + $earlierScoreBetweenTeams[2]['B']) / 3
+                     + 0.31 * ($earlierScoreTeamB[1]['our'] + $earlierScoreTeamA[1]['opponent'] + $earlierScoreBetweenTeams[1]['B']) / 3
                      + 0.10 * ($earlierScoreTeamB[0]['our'] + $earlierScoreTeamA[0]['opponent'] + $earlierScoreBetweenTeams[0]['B']) / 3;
 
-        if ($scoreTeamA < 2 && $scoreTeamA > 1.35) {
+        if ($scoreTeamA < 2 && $scoreTeamA > 1.38) {
             $scoreTeamA = 2;
         }
-        if ($scoreTeamA < 0.65) {
+        if ($scoreTeamA < 0.62) {
             $scoreTeamA = 0;
         }
 
-        if ($scoreTeamB < 2 && $scoreTeamB > 1.35) {
+        if ($scoreTeamB < 2 && $scoreTeamB > 1.38) {
             $scoreTeamB = 2;
         }
-        if ($scoreTeamB < 0.65) {
+        if ($scoreTeamB < 0.62) {
             $scoreTeamB = 0;
         }
 
