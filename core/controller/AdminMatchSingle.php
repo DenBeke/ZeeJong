@@ -222,10 +222,10 @@ require_once(dirname(__FILE__) . '/Controller.php');
 
             global $database;
 
-            if(isset($_POST['date'])) {
+            if(isset($_POST['date']) && $_POST['date'] != '') {
                 $database->changeMatchDate($this->match->getId(), strtotime($_POST['date']));
             }
-            if(isset($_POST['score'])) {
+            if(isset($_POST['score'])  && $_POST['score'] != '') {
 
                 $scoreRaw = explode('-', $_POST['score']);
                 if(count($scoreRaw) === 2) {

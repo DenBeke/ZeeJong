@@ -103,10 +103,26 @@ Created: February 2014
         </div>
 
 
+
+
         <div class="col-md-2 image-container">
 
 
-            <img src="<?php echo SITE_URL . 'images/Player-' . $this->player->getId() . '.png'; ?>">
+            <div class="panel panel-default panel-wiki">
+
+                <div class="panel-heading">
+                    <h3 class="panel-title">Image</h3>
+                </div>
+
+
+                <div class="wiki panel-body" img="<?php echo SITE_URL . 'core/ajax/wiki-player-dbpedia-img.php?player=' . $this->player->getId(); ?>">
+                    <div class="loader-container">
+                        <div class="loader"></div>
+                        loading
+                    </div>
+                </div>
+
+            </div>
 
 
         </div>
@@ -123,7 +139,7 @@ Created: February 2014
                 </div>
 
 
-                <div class="wiki panel-body" data-wiki="<?php echo SITE_URL . 'core/ajax/wiki-player.php?player=' . $this->player->getId(); ?>">
+                <div class="wiki panel-body" data-wiki="<?php echo SITE_URL . 'core/ajax/wiki-player-dbpedia.php?player=' . $this->player->getId(); ?>">
                     <div class="loader-container">
                         <div class="loader"></div>
                         loading
