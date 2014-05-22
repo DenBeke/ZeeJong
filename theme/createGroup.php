@@ -18,18 +18,30 @@
         <strong>You are not logged in.</strong>
     </div>
     <?php
-    }else{
-    if(strlen($this->getSuccessMessage())>0){
-    // at least one thing succeeded, let's display what
+	}else{
+	if(strlen($this->getSuccessMessage())>0){
+	// at least one thing succeeded, let's display what
     ?>
     <div class="alert alert-success">
         <strong> <?php
-        echo nl2br($this -> getSuccessMessage());
+		echo nl2br($this -> getSuccessMessage());
         ?></strong>
     </div>
     <?php
-    }
-    // Display 'create group' form
+	}
+
+	if(strlen($this->getErrorMessage())>0){
+	// at least one error occured, let's display what
+    ?>
+    <div class="alert alert-danger">
+        <strong> <?php
+		echo nl2br($this -> getErrorMessage());
+        ?></strong>
+    </div>
+    <?php
+	}
+
+	// Display 'create group' form
     ?>
     <div class="well">
         <form id="signup" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>create-group">
