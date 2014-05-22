@@ -30,7 +30,8 @@
     <script src="<?php echo SITE_URL ?>js/hchart/modules/funnel.js" type="text/javascript"></script>
     <script src="<?php echo SITE_URL ?>js/tinymce/js/tinymce/tinymce.min.js" type="text/javascript"></script>
     <script src="<?php echo SITE_URL ?>js/chatbox.php" type="text/javascript"></script>
-    <script src="<?php echo SITE_URL ?>js/sorttable.js"></script>
+    <script src="<?php echo SITE_URL ?>js/sorttable.js" type="text/javascript"></script>
+	<script src="<?php echo SITE_URL ?>js/jquery.tablesorter.js" type="text/javascript" ></script> 
 
     <?php
     if($controller->page == 'login' and loggedIn() == true) {
