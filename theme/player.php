@@ -173,6 +173,57 @@ Created: February 2014
 
 
 
+    <div class="col-md-6">
+        <div id="graph-matches-won"></div>
+    </div>
+    
+    
+    
+    
+    
+    
+    <script>
+    
+    
+        $(function () {
+            $('#graph-matches-won').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Users'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.y}</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.y}',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Total',
+                    data: [
+                        ['Won',       <?php echo $this->player->getTotalNumberOfWonMatches(); ?>],
+                        ['Draws',   <?php echo $this->player->getTotalNumberOfDrawMatches(); ?>],
+                        ['Lost',    <?php echo $this->player->getTotalNumberOfMatches() - $this->player->getTotalNumberOfWonMatches() - $this->player->getTotalNumberOfDrawMatches(); ?>]
+                    ]
+                }]
+            });
+        });
+
+    </script>
 
 
 </div>
