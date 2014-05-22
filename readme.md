@@ -31,8 +31,8 @@ directory with your browser.
 Navigate to `yourdomain.com/install` and fill all fields. The script
 will create the database tables and will generate a config file.
 
-You can also install preloaded data. We provide a JSON file contain an archive of competitions.  
-The preloaded data is provided in a JSON file, but you can also retrieve the archive yourself, running the *ZeeJong Parser* tool.
+You can also install preloaded data. We provide a JSON file containing an archive of competitions.  
+The preloaded data is provided in a JSON file, but you can also retrieve the archive yourself, by running the *ZeeJong Parser* tool.
 
 > ZeeJong Parser is a tool, written in GO, which collects and builds a database containing an archive of soccer information.
 
@@ -40,7 +40,7 @@ In order to install this, you must run `yourdomain.com/core/importer.php`. This 
 *Do this after the installation. Note that the script will empty all tables before loading the sample data.*
 
 To find and update new matches, you have to run the parser at `yourdomain.com/core/parser.php`.
-Doing this with a cron job every night, will make sure that your data stays up to date and that bets are processed fully automatically on a daily basis.
+Doing this with a cron job every night ensures that your data stays up to date and that bets are processed fully automatically on a daily basis.
 
 
 Authors
@@ -49,8 +49,8 @@ Authors
 - Mathias Beke
 - Timo Truyts
 - Alexander Vanhulle
-- Elias Van Langenhove
 - Bruno Van de Velde
+- Elias Van Langenhove
 
 
 Acknowledgements
