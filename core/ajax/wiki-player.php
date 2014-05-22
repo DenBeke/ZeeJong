@@ -19,29 +19,29 @@ $controller = new \Controller\Player;
 
 if(isset($_GET['player'])) {
 
-	if(intval($_GET['player'])) {
-		$controller->GET([1 => $_GET['player']]);
-		$output['wiki'] = $controller->getWiki();
-	}
-	else {
+    if(intval($_GET['player'])) {
+        $controller->GET([1 => $_GET['player']]);
+        $output['wiki'] = $controller->getWiki();
+    }
+    else {
 
-		$output['error'] = 'Player does not exist';
+        $output['error'] = 'Player does not exist';
 
-	}
+    }
 
 
 }
 else {
-	$output['error'] = 'No player id given';
+    $output['error'] = 'No player id given';
 }
 
 
 
 if(isset($_GET['debug'])) {
-	echo '<pre>' . json_encode($output, JSON_PRETTY_PRINT) . '</pre>';
+    echo '<pre>' . json_encode($output, JSON_PRETTY_PRINT) . '</pre>';
 }
 else {
-	echo json_encode($output, JSON_PRETTY_PRINT);
+    echo json_encode($output, JSON_PRETTY_PRINT);
 }
 
 

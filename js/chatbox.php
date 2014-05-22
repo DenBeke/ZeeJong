@@ -13,14 +13,14 @@ var first = true;
 
 
 $(window).bind("blur", function() {
-	focusFlag = 0;
+    focusFlag = 0;
 }).bind("focus", function() {
-	focusFlag = 1;
+    focusFlag = 1;
 });
 
 $('#submitter').click(function() {
-	send();
-	$('#text').val('');
+    send();
+    $('#text').val('');
 });
 
 $("#text").keyup(function(e) {
@@ -47,8 +47,8 @@ $.ajax({
         }
         $('#chatResults').html(chatContent);
         if (focusFlag == 0) {
-		document.title = "Update!";
-	}
+        document.title = "Update!";
+    }
         $("#chatResults").scrollTop($("#chatResults")[0].scrollHeight);
    }
  });
@@ -59,7 +59,7 @@ $.ajax({
    type: "POST",
    url: "<?php echo SITE_URL; ?>core/php-chatbox/ajax.php",
    data: {
-   	 group: $('#chat-group-id').val()
+     group: $('#chat-group-id').val()
    },
    dataType: "json",
    success: function(data){
@@ -68,25 +68,25 @@ $.ajax({
           chatContent += "<b>" + data[i].author + ": </b> [" + data[i].timestamp + "] " + data[i].text + "<br>";
         }
         $('#chatResults').html(chatContent);
-	newTime = data[0].timestamp;
-	if ((focusFlag == 0) && (lastTime != newTime)) {
-		document.title = data[0].author + " spoke! It's probably important!";
-		lastTime = newTime = data[0].timestamp;
-		$("#chatResults").scrollTop($("#chatResults")[0].scrollHeight);
-	}
-	
-	if (first) {
-		$("#chatResults").scrollTop($("#chatResults")[0].scrollHeight);
-		first = false;
-	}
-	
+    newTime = data[0].timestamp;
+    if ((focusFlag == 0) && (lastTime != newTime)) {
+        document.title = data[0].author + " spoke! It's probably important!";
+        lastTime = newTime = data[0].timestamp;
+        $("#chatResults").scrollTop($("#chatResults")[0].scrollHeight);
+    }
+
+    if (first) {
+        $("#chatResults").scrollTop($("#chatResults")[0].scrollHeight);
+        first = false;
+    }
+
    }
  });
 }
 
 var int = setInterval(function()
 {
-	reload();
+    reload();
 }
 , 2000);
 

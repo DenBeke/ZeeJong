@@ -99,32 +99,32 @@ error_reporting(4);
 
 // Begin of HTML rendering
 echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\">
-	 <html lang=\"en\">
-	 <head>
-		<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">
-		<title>DBPedia Debug Interface";
-		
+     <html lang=\"en\">
+     <head>
+        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">
+        <title>DBPedia Debug Interface";
+        
 if ( isset($_GET["resource"]) )
-	echo ": ".$_GET["resource"];
+    echo ": ".$_GET["resource"];
 
 echo "
-		</title>
-		<meta name=\"generator\" content=\"TextMate http://macromates.com/\">
-		<meta name=\"author\" content=\"Piet Hensel\">
-		<style type=\"text/css\" media=\"screen\">
-			body { 
-				font-size:12px; 
-				font-family:Arial, Helvetica, sans-serif;
-				}
-			table {
-				padding: 0px;
-				}
-		</style>
-	</head>
-	<body>
-		<h2> DBPedia Debug Interface </h2>
-		<p> This interface is designed to test new or improved extractors for DBpedia. </p>
-		<p>Enter a DBpedia resource:</p>
+        </title>
+        <meta name=\"generator\" content=\"TextMate http://macromates.com/\">
+        <meta name=\"author\" content=\"Piet Hensel\">
+        <style type=\"text/css\" media=\"screen\">
+            body { 
+                font-size:12px; 
+                font-family:Arial, Helvetica, sans-serif;
+                }
+            table {
+                padding: 0px;
+                }
+        </style>
+    </head>
+    <body>
+        <h2> DBPedia Debug Interface </h2>
+        <p> This interface is designed to test new or improved extractors for DBpedia. </p>
+        <p>Enter a DBpedia resource:</p>
 ";
 
 
@@ -139,12 +139,12 @@ else $lang = "en";
 
 // HTML-rendering of input form
 echo "
-		<form name=\"getResource\" action=\"webStart.php\" method=\"GET\">
-		Resource: <input type=\"text\" name=\"resource\" value=\"$resource\" /><br />
-		Language: <input type=\"text\" name=\"lang\" value=\"$lang\" /> <br />
-		<input type=\"submit\" name=\"sent\" value=\"Search
-		\" />
-	  </form>";
+        <form name=\"getResource\" action=\"webStart.php\" method=\"GET\">
+        Resource: <input type=\"text\" name=\"resource\" value=\"$resource\" /><br />
+        Language: <input type=\"text\" name=\"lang\" value=\"$lang\" /> <br />
+        <input type=\"submit\" name=\"sent\" value=\"Search
+        \" />
+      </form>";
 
 
 
@@ -156,12 +156,12 @@ echo "
 ///////////////////////////////////////////
 
 if ( isset($sent) ) {
-	
-	require_once 'extraction/extractTemplates.php';
-	
-	function __autoload($class_name) {
-	    require_once $class_name . '.php';
-	}
+    
+    require_once 'extraction/extractTemplates.php';
+    
+    function __autoload($class_name) {
+        require_once $class_name . '.php';
+    }
 
 
 // Resource to extract
@@ -171,8 +171,8 @@ $pageTitle = array($resource);
 $job = new ExtractionJob(
        new LiveWikipedia($lang),
        new ArrayObject($pageTitle));
-		
-		
+        
+        
 // Create ExtractionGroups for each Extractors
 $destination = new WebDebugDestination();
 $group = new ExtractionGroup($destination);

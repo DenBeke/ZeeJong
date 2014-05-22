@@ -46,27 +46,27 @@ class ExtractionResult {
     public function getPredicateTriples() {
         $predicateTriples = new ExtractionResult($this->pageID, $this->language, $this->extractorID);
         foreach ( $this->predicates as $subject => $bool ) {
-        	// array_push( $predicateTriples, new RDFtriple($subject, "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"));
-        	$predicateTriples->addTriple(RDFtriple::URI($subject), RDFtriple::URI(RDF_TYPE,false), RDFtriple::URI(RDF_PROPERTY, false) );
-			$predicateTriples->addTriple(RDFtriple::URI($subject), RDFtriple::URI(RDFS_LABEL, false), RDFtriple::Literal($this->getPredicateLabel($subject)) );	        
+            // array_push( $predicateTriples, new RDFtriple($subject, "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"));
+            $predicateTriples->addTriple(RDFtriple::URI($subject), RDFtriple::URI(RDF_TYPE,false), RDFtriple::URI(RDF_PROPERTY, false) );
+            $predicateTriples->addTriple(RDFtriple::URI($subject), RDFtriple::URI(RDFS_LABEL, false), RDFtriple::Literal($this->getPredicateLabel($subject)) );         
         }
         return $predicateTriples;
     }
     
-	public function addTripleObject(RDFtriple $triple) {
-		$this->_addToTripleArray( $triple);
+    public function addTripleObject(RDFtriple $triple) {
+        $this->_addToTripleArray( $triple);
     }
-	
-	public function addTriple($s, $p, $o) {
-		$this->_addToTripleArray(new RDFtriple($s, $p, $o));
+    
+    public function addTriple($s, $p, $o) {
+        $this->_addToTripleArray(new RDFtriple($s, $p, $o));
     }
-	
-	private function _addToTripleArray(RDFtriple $triple){
-		if($triple->validate()){
-				 $this->triples[] = $triple;
-			}
-	}
-	
+    
+    private function _addToTripleArray(RDFtriple $triple){
+        if($triple->validate()){
+                 $this->triples[] = $triple;
+            }
+    }
+    
     public function addMetadataTriple($s, $p, $o) {
         $this->metadataTriples = new RDFtriple($s, $p, $o);
     }
@@ -75,18 +75,18 @@ class ExtractionResult {
     }
     
     private function getPredicateLabel($p) {
-    	$p = str_replace(DB_PROPERTY_NS,"",$p);
-    	return urldecode( strtolower( preg_replace("/[A-Z]/",' \\0',$p)) );
-    	
+        $p = str_replace(DB_PROPERTY_NS,"",$p);
+        return urldecode( strtolower( preg_replace("/[A-Z]/",' \\0',$p)) );
+        
     }
 
-	public function clear() {
-		$triples = array();
-		$metadataTriples = array();
-		$predicates = array();		
-	}
-	
-	
+    public function clear() {
+        $triples = array();
+        $metadataTriples = array();
+        $predicates = array();      
+    }
+    
+    
   
 }
 

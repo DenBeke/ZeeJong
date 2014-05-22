@@ -18,15 +18,15 @@ class DateTimeTripleGenerator
         $result = array();
 
         $parseResults = $this->parser->parse($value);
-		ob_start();
-		$str = "Date parser \n";
-		$str .= "value was: $value \n";
-		print_r($parseResults);
-		$str .= ob_get_contents() ;
-		ob_end_clean();
-		
-		Logger::debug($str);
-		
+        ob_start();
+        $str = "Date parser \n";
+        $str .= "value was: $value \n";
+        print_r($parseResults);
+        $str .= ob_get_contents() ;
+        ob_end_clean();
+
+        Logger::debug($str);
+
         if(!isset($parseResults))
             return $result;
 
@@ -39,7 +39,7 @@ class DateTimeTripleGenerator
             substr($parseResults, 5, 2),
             substr($parseResults, 8, 2),
             substr($parseResults, 0, 4));
-		*/
+        */
         $isValidDate = true;
         if($isValidDate) {
             $result[] = new RDFtriple(
@@ -47,7 +47,7 @@ class DateTimeTripleGenerator
                 RDFtriple::URI(DB_ONTOLOGY_NS . $propertyName),
                 RDFtriple::Literal($parseResults[0], $parseResults[1], null));
 
-	        //print_r($result);
+            //print_r($result);
         }
         else {
             $result[] = new RDFtriple(

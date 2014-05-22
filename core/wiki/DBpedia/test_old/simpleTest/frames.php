@@ -1,13 +1,13 @@
 <?php
 /**
- *	Base include file for SimpleTest
- *	@package	SimpleTest
- *	@subpackage	WebTester
- *	@version	$Id: frames.php,v 1.42 2007/07/16 22:28:39 lastcraft Exp $
+ *  Base include file for SimpleTest
+ *  @package    SimpleTest
+ *  @subpackage WebTester
+ *  @version    $Id: frames.php,v 1.42 2007/07/16 22:28:39 lastcraft Exp $
  */
 
 /**#@+
- *	include other SimpleTest class files
+ *  include other SimpleTest class files
  */
 require_once(dirname(__FILE__) . '/page.php');
 require_once(dirname(__FILE__) . '/user_agent.php');

@@ -5,7 +5,7 @@ include("config.inc.php");
  * the DateTimeParser parse strings for Dates
  * and returns them in the YYYY-MM-DD format.
  *
- * @author	Paul Kreis <mail@paulkreis.de>
+ * @author  Paul Kreis <mail@paulkreis.de>
  *
  */
 class DateTimeParser implements Parser
@@ -52,14 +52,14 @@ class DateTimeParser implements Parser
 
 
    /**
-	* Returns Year,Month and Day of provided Date Literal
-	*
-	* Provided Data might be a Date like: {{birth date and age|1973|2|18}} or {{death date and age|1966|7|19|1887|5|21}}
-	* Returns a normalized Date value (eg: 1984-01-29) if a Date is found in the string, NULL otherwise.
-	*
-	* @param	string	$input	Literaltext, that matched to be a Date
-	* @return 	string	Date or NULL
-	*/
+    * Returns Year,Month and Day of provided Date Literal
+    *
+    * Provided Data might be a Date like: {{birth date and age|1973|2|18}} or {{death date and age|1966|7|19|1887|5|21}}
+    * Returns a normalized Date value (eg: 1984-01-29) if a Date is found in the string, NULL otherwise.
+    *
+    * @param    string  $input  Literaltext, that matched to be a Date
+    * @return   string  Date or NULL
+    */
     private static function parseDateTemplates($pageID, $input, $language, $propName, $unitType, $unitExactType, $targetUnit, $originalInput)
     {
         // clean up the input string
@@ -125,15 +125,15 @@ class DateTimeParser implements Parser
     }
 
     /**
-	* Returns Year,Month and Day of provided Date Literal
-	*
-	* Provided Data might be a Date like: [[January 20]] [[2001]], [[1991-10-25]] or 3 June 1981
-	* Returns a normalized Date value (eg: 1984-01-29) if a Date is found in the string, NULL otherwise.
-	*
-	* @param	string	$input	Literaltext, that matched to be a Date
-	* 			string	$language language of Literaltext, eg: 'en' or 'de'
-	* @return 	string	Date or NULL
-	*/
+    * Returns Year,Month and Day of provided Date Literal
+    *
+    * Provided Data might be a Date like: [[January 20]] [[2001]], [[1991-10-25]] or 3 June 1981
+    * Returns a normalized Date value (eg: 1984-01-29) if a Date is found in the string, NULL otherwise.
+    *
+    * @param    string  $input  Literaltext, that matched to be a Date
+    *           string  $language language of Literaltext, eg: 'en' or 'de'
+    * @return   string  Date or NULL
+    */
     private static function catchDate($pageID, $input, $language, $propName, $unitType, $unitExactType, $targetUnit, $originalInput)
     {
         global $month;
@@ -169,15 +169,15 @@ class DateTimeParser implements Parser
     }
 
     /**
-	* Returns Year and Month of provided Date Literal
-	*
-	* Provided Data might be a Date like: "August 2007" or "May 250 AD"
-	* Returns a normalized Date value (eg: 1984-01) if a Date is found in the string, NULL otherwise.
-	*
-	* @param	string	$input	Literaltext, that matched to be a Date
-	* 			string	$language language of Literaltext, eg: 'en' or 'de'
-	* @return 	string	Date or NULL
-	*/
+    * Returns Year and Month of provided Date Literal
+    *
+    * Provided Data might be a Date like: "August 2007" or "May 250 AD"
+    * Returns a normalized Date value (eg: 1984-01) if a Date is found in the string, NULL otherwise.
+    *
+    * @param    string  $input  Literaltext, that matched to be a Date
+    *           string  $language language of Literaltext, eg: 'en' or 'de'
+    * @return   string  Date or NULL
+    */
     private static function catchMonthYear($pageID, $input, $language, $propName, $unitType, $unitExactType, $targetUnit, $originalInput) {
         global $month;
         if ( preg_match('~\[?\[?('.implode('|',array_keys($month[$language])).')\]?\]?,?\s*\[?\[?([0-9]{1,4})\s*(BCE|BC|CE|AD|AC|CE)?\]?\]?~i', $input, $matches) ) {
@@ -191,9 +191,9 @@ class DateTimeParser implements Parser
 
     /**
      * Returns Month and Day of provided Date Literal
-	 *
-	 * Provided Data might be a Date like: "August 31" or "5 May" or "4th of July"
-	 * Returns a normalized Date value (eg: --08-31) if a Date is found in the string, NULL otherwise.
+     *
+     * Provided Data might be a Date like: "August 31" or "5 May" or "4th of July"
+     * Returns a normalized Date value (eg: --08-31) if a Date is found in the string, NULL otherwise.
      *
      * @param unknown_type $pageID
      * @param unknown_type $input
@@ -217,14 +217,14 @@ class DateTimeParser implements Parser
     }
 
     /**
-	* Returns Year of provided Date Literal
-	*
-	* Provided Data might be a string like: "2007" or "[[250 AD]]"
-	* Returns a normalized Date value (eg: 1984) if a Year is found in the string, NULL otherwise.
-	*
-	* @param	string	$input	Literaltext, that matched to be a Year
-	* @return 	string	Year or NULL
-	*/
+    * Returns Year of provided Date Literal
+    *
+    * Provided Data might be a string like: "2007" or "[[250 AD]]"
+    * Returns a normalized Date value (eg: 1984) if a Year is found in the string, NULL otherwise.
+    *
+    * @param    string  $input  Literaltext, that matched to be a Year
+    * @return   string  Year or NULL
+    */
     private static function catchYear($pageID, $input, $language, $propName, $unitType, $unitExactType, $targetUnit, $originalInput) {
         if (preg_match('~(?<!\d)\[?\[?([0-9]{1,4})\s*(BCE|BC|CE|AD|AC|CE)?(?!\d)\]?\]?~',$input,$matches)) {
             if (!isset($matches[2]) && $matches[1] > 31) {

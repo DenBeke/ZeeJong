@@ -7,21 +7,21 @@
  * @author: Paul Kreis <mail@paulkreis.de>
  */
 class PropertyExtractor extends  Extractor {
-	private $DumpFile = "";
-	private $FileName = "";
-	
+    private $DumpFile = "";
+    private $FileName = "";
+    
     public function start($language) {
         $this->language = $language;
         $this->counter = 0;
-		$this->FileName = "TEIL 2 properties_$language.sql";
-		$this->DumpFile = fOpen($this->FileName,"w");
-	}
-	
+        $this->FileName = "TEIL 2 properties_$language.sql";
+        $this->DumpFile = fOpen($this->FileName,"w");
+    }
+    
     public function extractPage($pageID, $pageTitle,  $pageSource) {
         include ("databaseconfig.php");
 
         $this->counter++;
-		echo $this->counter . "\n";
+        echo $this->counter . "\n";
 
         $result = new ExtractionResult($pageID, $this->language, $this->getExtractorID());
         if($this->decode_title($pageTitle)==NULL) return $result;
@@ -82,13 +82,13 @@ class PropertyExtractor extends  Extractor {
                 $p = "http://dbpedia.org/property/" . $this->propertyToCamelCase($propkey);
                 $o = $propvalue;
                 $line = "INSERT INTO propertietriples (resourceURI, propertiyURI, propertyValue) VALUES ('$s','".mysql_escape_string($p)."','".mysql_escape_string($o)."')";
-				fWrite($this->DumpFile, $line."\n");
+                fWrite($this->DumpFile, $line."\n");
             }
             // add wikiPageUsesTemplate
             $p = "http://dbpedia.org/property/wikiPageUsesTemplate";
             $o = "http://dbpedia.org/resource/Template:".$this->encodeLocalName($templateName);
             $line = "INSERT INTO propertietriples (resourceURI, propertiyURI, propertyValue) VALUES ('$s','".mysql_escape_string($p)."','".mysql_escape_string($o)."')";
-			fWrite($this->DumpFile, $line."\n");
+            fWrite($this->DumpFile, $line."\n");
         }
         return $result;
     }
@@ -98,8 +98,8 @@ class PropertyExtractor extends  Extractor {
     *
     * Forbidden Ascii symbols in a String are replaced by -
     *
-    * @param	string	$string	any text
-    * @return	string	$string	Text mit valid Ascii symbols
+    * @param    string  $string any text
+    * @return   string  $string Text mit valid Ascii symbols
     */
     function encodeLocalName($string) {
         //  return urlencode(str_replace(" ","_",trim($string)));
@@ -138,7 +138,7 @@ class PropertyExtractor extends  Extractor {
      * @return $predicate
      */
     private function propertyToCamelCase($predicate) {
-        //	Start Consistent Property Names (CamelCase)
+        //  Start Consistent Property Names (CamelCase)
         $predicate = strtolower($predicate);
         $pSingleWords = preg_split("/_+|\s+|\-|:+/",$predicate);
         $predicate = $pSingleWords[0];

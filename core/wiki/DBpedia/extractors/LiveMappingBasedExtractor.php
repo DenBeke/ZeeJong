@@ -8,7 +8,7 @@ function require_once_recursive($path) {
             new RecursiveDirectoryIterator($path),
             RecursiveIteratorIterator::SELF_FIRST);
 
-    foreach($objects as $name => $object) {        
+    foreach($objects as $name => $object) {
         if(strpos($name, "svn"))
             continue;
 
@@ -149,17 +149,17 @@ class LiveMappingBasedExtractor
         //$this->defaultTripleGenerator = new DefaultTripleGenerator($language);
 
         // Initialize database connection
-		if(false == Options::getOption('LiveMappingBased.useTemplateDb'))
-		{
-        	$this->templateDb = new DummyTemplateDb();
-		}
-		else {
-        	$odbc = ODBC::getDefaultConnection();
+        if(false == Options::getOption('LiveMappingBased.useTemplateDb'))
+        {
+            $this->templateDb = new DummyTemplateDb();
+        }
+        else {
+            $odbc = ODBC::getDefaultConnection();
 
-			//$odbc = new ODBC("VOS", "dbpedia", "dbpedia");
-        	
-			$this->templateDb = new TemplateDb($odbc);			
-		}
+            //$odbc = new ODBC("VOS", "dbpedia", "dbpedia");
+
+            $this->templateDb = new TemplateDb($odbc);
+        }
 
         // Initialize the template name filter
         $this->templateNameFilter =
@@ -187,13 +187,13 @@ class LiveMappingBasedExtractor
 
     public function extractPage($pageId, $pageTitle, $pageSource)
     {
-    	$this->setPageURI($pageTitle);
-    	
+        $this->setPageURI($pageTitle);
+
         // Set up the result object
         $result = new ExtractionResult(
-			$pageId,
-			$this->language,
-			$this->getExtractorID());
+            $pageId,
+            $this->language,
+            $this->getExtractorID());
 
         // Return empty result if there is no title
         if($this->decode_title($pageTitle) == NULL)
@@ -203,79 +203,79 @@ class LiveMappingBasedExtractor
             $breadCrumb = new Breadcrumb($pageId);
 
             //echo "\n\n\n\n\nPAGE = $pageId --- $pageTitle\n\n";
-            
+
             $triples =
                 $this->rootTripleGenerator->generate($breadCrumb, $pageSource);
 
             //print_r($triples);
-                
+
             // Add annotation to all triples
-			
+
             //$rootSubject = $this->getPageURI();//RDFTriple::page($pageId);
             //$rootSubject = RDFTriple::page($pageId);
-			//$this->log(DEBUG, "diff root to getPageURI: $rootSubject | {$this->getPageURI()}");
+            //$this->log(DEBUG, "diff root to getPageURI: $rootSubject | {$this->getPageURI()}");
             $this->log(TRACE, "generated triples:");
-			$logmsg = "";
-			foreach($triples as $triple) {
+            $logmsg = "";
+            foreach($triples as $triple) {
                 $triple->addOnDeleteCascadeAnnotation($this->getPageURI());
                 $result->addTripleObject($triple);
-				$logmsg .= $triple->toNTriples();
+                $logmsg .= $triple->toNTriples();
             }
-			$this->log(TRACE, "\n".$logmsg);
+            $this->log(TRACE, "\n".$logmsg);
         } catch(Exception $e) {
             $this->log(WARN, "Caught exception: ".$e->getMessage());
         }
 
-        
+
         //$this->log('info','LiveMappingBasedExtractor: Count of generated triples ' + sizeof($result));
-        
-        
+
+
         return $result;
     }
 
 
 
 
-	function encode_title($s, $namespace = null) {
-		$result = urlencode(str_replace(' ', '_', $s));
-		if ($namespace) {
-			$result = $namespace . ":" . $result;
-		}
-		return $result;
-	}
+    function encode_title($s, $namespace = null) {
+        $result = urlencode(str_replace(' ', '_', $s));
+        if ($namespace) {
+            $result = $namespace . ":" . $result;
+        }
+        return $result;
+    }
 
-	function decode_title($s) {
-		if (!isset($s)) return null;
-		$label = preg_replace("/^(Category|Template):/", "", str_replace('_', ' ', $s));
-		// take care of "(" ")" "&"
-		$label = str_replace('%28','(',$label);
-		$label = str_replace('%29',')',$label);
-		$label = str_replace('%26','&',$label);
-		return $label;
-	}
+    function decode_title($s) {
+        if (!isset($s)) return null;
+        $label = preg_replace("/^(Category|Template):/", "", str_replace('_', ' ', $s));
+        // take care of "(" ")" "&"
+        $label = str_replace('%28','(',$label);
+        $label = str_replace('%29',')',$label);
+        $label = str_replace('%26','&',$label);
+        return $label;
+    }
 
-	public function getLinkForLabeledLink($text2) {
-		return preg_replace("/\|.*/", "", $text2) ;
-	}
+    public function getLinkForLabeledLink($text2) {
+        return preg_replace("/\|.*/", "", $text2) ;
+    }
 
-	// Helpfunction for preg_replace_callback, to replace "|" with #### inside subtemplates
-	public static function replaceBarInSubTemplate($stringArray) {
-		return str_replace("|","####",$stringArray[0]);
-	}
+    // Helpfunction for preg_replace_callback, to replace "|" with #### inside subtemplates
+    public static function replaceBarInSubTemplate($stringArray) {
+        return str_replace("|","####",$stringArray[0]);
+    }
 
 
-	function encodeLocalName($string) {
-		//$string = strtolower(trim($string));
-		//  return urlencode(str_replace(" ","_",trim($string)));
-		$string = urlencode(str_replace(" ","_",trim($string)));
-		// Decode slash "/", colon ":", as wikimedia does not encode these
-		$string = str_replace("%2F","/",$string);
-		$string = str_replace("%3A",":",$string);
+    function encodeLocalName($string) {
+        //$string = strtolower(trim($string));
+        //  return urlencode(str_replace(" ","_",trim($string)));
+        $string = urlencode(str_replace(" ","_",trim($string)));
+        // Decode slash "/", colon ":", as wikimedia does not encode these
+        $string = str_replace("%2F","/",$string);
+        $string = str_replace("%3A",":",$string);
 
-		return $string;
-	}
+        return $string;
+    }
 
-  
+
     /*
     private function processExternalProperty($pageId, $uri, $key, $value, $result)
     {

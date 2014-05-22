@@ -105,10 +105,10 @@ class HomepageExtractor extends Extractor
                             // {{official|bad=bad|1=http://good.good}}
                             // {{official|http://bad.bad|1=http://good.good}}
                             
-							$url = $pieces[1];
-							if(URI::validate($url)) {
-								return $url;
-								}
+                            $url = $pieces[1];
+                            if(URI::validate($url)) {
+                                return $url;
+                                }
 
                         } else if (preg_match($linkDesignationsPattern, $link)) {
                             $found = $this->parseLink($link);
@@ -138,7 +138,7 @@ class HomepageExtractor extends Extractor
      */
     private function getInfoboxes($pageSource)
     {
-    	// FIXME: [^\{\}] is wrong - single curly braces are allowed within templates
+        // FIXME: [^\{\}] is wrong - single curly braces are allowed within templates
         preg_match_all('/\{{2}((?>[^\{\}]+)|(?R))*\}{2}/x', $pageSource, $infoboxes);
         return $infoboxes;
     }

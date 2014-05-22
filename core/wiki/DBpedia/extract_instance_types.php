@@ -13,7 +13,7 @@ $job = new ExtractionJob(
        new DatabaseWikipediaCollection($language),
        //new LiveWikipediaCollection($language),
        $pageTitles);
-		
+        
 $destination = new NTripleDumpDestination("c:/dbpedia34/en/instancetypes_".$language.".nt");
 $extractor = new InstanceTypeExtractor();
 

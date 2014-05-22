@@ -26,7 +26,7 @@ class MediaWikiUtil
 
         $result = new MediawikiUtil($baseWikiUri);
         self::$baseUriToInstance[$baseWikiUri] = $result;
-        
+
         return $result;
     }
 

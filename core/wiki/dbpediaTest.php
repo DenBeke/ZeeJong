@@ -15,5 +15,5 @@ require_once(dirname(__FILE__) . '/newWiki.php');
    echo "<br><br><br><br><br>";
    getWiki("Luis Arturo Montes Jiménez");
    echo "<br><br><br><br><br>";
-      
+
 ?>

@@ -11,23 +11,23 @@ namespace Controller {
 require_once(dirname(__FILE__) . '/Controller.php');
 
 
-	class AdminMatches extends Controller {
+    class AdminMatches extends Controller {
 
-		public $page = 'admin-matches';
-		public $coach;
-		public $title;
-		public $competitions;
+        public $page = 'admin-matches';
+        public $coach;
+        public $title;
+        public $competitions;
 
 
-		public function __construct() {
-			$this->theme = 'admin-matches.php';
-			$this->title = 'Admin - Matches - ' . Controller::siteName;
-			
-			global $database;
-			$this->competitions = $database->getAllCompetitions();
-		}
+        public function __construct() {
+            $this->theme = 'admin-matches.php';
+            $this->title = 'Admin - Matches - ' . Controller::siteName;
 
-	}
+            global $database;
+            $this->competitions = $database->getAllCompetitions();
+        }
+
+    }
 
 }
 

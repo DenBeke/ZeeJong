@@ -13,7 +13,7 @@ $pageTitles = new AllTemplatesSqlIterator($language);
 $job = new ExtractionJob(
        new DatabaseWikipediaCollection($language),
        $pageTitles);
-		
+        
 
 $groupInfoboxes = new ExtractionGroup(new NullDestination());
 $groupInfoboxes->addExtractor(new TemplateRedirectExtractor());

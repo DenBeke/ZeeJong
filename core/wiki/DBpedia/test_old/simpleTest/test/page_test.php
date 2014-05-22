@@ -315,7 +315,7 @@ class TestOfHtmlPage extends UnitTestCase {
         $response = &new MockSimpleHttpResponse();
         $response->setReturnValue('getUrl', new SimpleUrl('http://host/'));
         $page = &new SimplePage($response);
-        $page->AcceptTag($link);        
+        $page->AcceptTag($link);
         $base = &new SimpleBaseTag(array('href' => 'www.lastcraft.com/stuff/'));
         $page->AcceptTag($base);
         $this->assertEqual(
@@ -329,7 +329,7 @@ class TestOfHtmlPage extends UnitTestCase {
         $response = &new MockSimpleHttpResponse();
         $response->setReturnValue('getUrl', new SimpleUrl('http://host/'));
         $page = &new SimplePage($response);
-        $page->AcceptTag($link);        
+        $page->AcceptTag($link);
         $base = &new SimpleBaseTag(array('href' => 'www.lastcraft.com/stuff/'));
         $page->AcceptTag($base);
         $this->assertEqual(
@@ -448,7 +448,7 @@ class TestOfHtmlPage extends UnitTestCase {
                 'B' => new SimpleUrl('http://here/3.html'),
                 4 => new SimpleUrl('http://here/4.html')));
     }
-    
+
     function testRelativeFramesRespectBaseTag() {
         $response = &new MockSimpleHttpResponse();
         $response->setReturnValue('getUrl', new SimpleUrl('http://here.com/'));

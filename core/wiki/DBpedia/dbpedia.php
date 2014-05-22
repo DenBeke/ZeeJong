@@ -52,20 +52,20 @@ $usage ='
 ';
 
 $unaryAllowed = array(
-	'-dry'=>"set dry run, i.e. don't execute queries, but print them",
-	'-noglob'=>"deactivate article queue, needs a long time to count, when full",
-	'-showconfig'=>"shows the configuration and waits 5 seconds"
+    '-dry'=>"set dry run, i.e. don't execute queries, but print them",
+    '-noglob'=>"deactivate article queue, needs a long time to count, when full",
+    '-showconfig'=>"shows the configuration and waits 5 seconds"
 
 );
 $unaryGiven = array();
 $binaryAllowed = array(
-	'-c'=> "config/dbpedia.ini  for custom ini file",
-	'-id'=> " 1234 to set the process id ",
-	'-clear'=> " VALUE  whereas VALUE can be: \n  'hashtable' to delete table dbpedia_hash",
-	'-strategy'=>" primary : set strategy to 'primary' or 'secondary'",
-	'-logdest' => " stderr : set log to stderr ",
-	'-debug'=> " l1ti:  set debug options:\n  l fordebug_loop, 1 for debug_die_after_one, t for debug_run_tests, i for debug_turn_off_insert"
-	);
+    '-c'=> "config/dbpedia.ini  for custom ini file",
+    '-id'=> " 1234 to set the process id ",
+    '-clear'=> " VALUE  whereas VALUE can be: \n  'hashtable' to delete table dbpedia_hash",
+    '-strategy'=>" primary : set strategy to 'primary' or 'secondary'",
+    '-logdest' => " stderr : set log to stderr ",
+    '-debug'=> " l1ti:  set debug options:\n  l fordebug_loop, 1 for debug_die_after_one, t for debug_run_tests, i for debug_turn_off_insert"
+    );
 $binaryGiven = array();
 $clearhashtable = false;
 $defaultini = 'config/dbpedia_default.ini';
@@ -74,130 +74,130 @@ $helparray = array('-help', '-?', 'help', '-h');
 
 //transform
 if(!empty($unaryAllowed)){
-	$usage .= "unary options***********\n";
-	foreach($unaryAllowed as $key => $value){
-		$usage .="* $key : $value \n";
-		}
-	$unaryAllowed = array_keys($unaryAllowed);
+    $usage .= "unary options***********\n";
+    foreach($unaryAllowed as $key => $value){
+        $usage .="* $key : $value \n";
+        }
+    $unaryAllowed = array_keys($unaryAllowed);
 }
 if(!empty($binaryAllowed)){
-	$usage .= "binary options***********\n";
-	foreach($binaryAllowed as $key => $value){
-		$usage .="* $key $value \n";
-		}
-	$binaryAllowed = array_keys($binaryAllowed);
+    $usage .= "binary options***********\n";
+    foreach($binaryAllowed as $key => $value){
+        $usage .="* $key $value \n";
+        }
+    $binaryAllowed = array_keys($binaryAllowed);
 }
 
 
 for($x = 1; $x < count($argv);$x++){
-		$current = trim(strtolower($argv[$x]));
-		if(in_array($current, $helparray)){
-			die($usage);
-		}else if(in_array($current, $unaryAllowed)){
-			$unaryGiven[] = $current;
-		}else if(in_array($current, $binaryAllowed)) {
-			//special handling of -c
-			if($current == '-c'){
-				$customini = $current;
+        $current = trim(strtolower($argv[$x]));
+        if(in_array($current, $helparray)){
+            die($usage);
+        }else if(in_array($current, $unaryAllowed)){
+            $unaryGiven[] = $current;
+        }else if(in_array($current, $binaryAllowed)) {
+            //special handling of -c
+            if($current == '-c'){
+                $customini = $current;
                 $x++;
-			}else if(isset($argv[$x+1])){
-				$binaryGiven[$current] = trim(strtolower($argv[++$x]));
-			}else{
-				die	("binary option needs second parameter:  $current ".$usage);
-				}
-		}else {
-			//die	("unknown option $current ".$usage);
-			file_put_contents('php://stderr', "Warning: Ignoring unknown option '$current'\n");
-		}
+            }else if(isset($argv[$x+1])){
+                $binaryGiven[$current] = trim(strtolower($argv[++$x]));
+            }else{
+                die ("binary option needs second parameter:  $current ".$usage);
+                }
+        }else {
+            //die   ("unknown option $current ".$usage);
+            file_put_contents('php://stderr', "Warning: Ignoring unknown option '$current'\n");
+        }
 
-	}
+    }
 
 /*
 INIT LOGGING
 */
 Logger::configureLogger('config/logger_default.ini');
 if(file_exists('config/logger.ini')) {
-	Logger::configureLogger('config/logger.ini');
+    Logger::configureLogger('config/logger.ini');
 }
 /*
  * Override default ini
  * */
 Options::configureOptions($defaultini);
 if(file_exists($customini)) {
-	Options::configureOptions($customini);
+    Options::configureOptions($customini);
 }
 /*
  * Unary options
  * */
 if(!empty($unaryGiven)){
-	foreach ($unaryGiven as $opt){
-		switch ($opt){
-			case '-dry' : {
-				Options::setOption('dryRun', true);
-				break;
-				}
-			case '-noglob' : {
-				Options::setOption('noglob', true);
-				break;
-				}
-			case '-showconfig' : {
-				Options::setOption('showconfig', true);
-				break;
-				}
-			default:{
-				die('unknown option: '+$opt.$usage);
-				}
+    foreach ($unaryGiven as $opt){
+        switch ($opt){
+            case '-dry' : {
+                Options::setOption('dryRun', true);
+                break;
+                }
+            case '-noglob' : {
+                Options::setOption('noglob', true);
+                break;
+                }
+            case '-showconfig' : {
+                Options::setOption('showconfig', true);
+                break;
+                }
+            default:{
+                die('unknown option: '+$opt.$usage);
+                }
 
-		}
-	}
+        }
+    }
 }
 /*
  * Binary options
  * */
 if(!empty($binaryGiven)){
-	foreach ($binaryGiven as $opt=>$val){
+    foreach ($binaryGiven as $opt=>$val){
 
-		switch ($opt){
-			case '-id' : {
-				Options::setProcessID($val);
-				break;
-				}
-			case '-debug' : {
-				if($val[0] == '-'){die('- encountered should be -debug l1ti'.$usage);}
-				else{
-						Options::setOption('debug_loop', false !== strpos($val, 'l'));
-						Options::setOption('debug_die_after_one', false !==  strpos($val, '1'));
-						Options::setOption('debug_run_tests',false !==  strpos($val, 't'));
-						Options::setOption('debug_turn_off_insert', false !==  strpos($val, 'i'));
-					}
-				break;
-				}
-			case '-strategy' : {
-				if($val == 'primary' or $val =='secondary' ){
-					Options::setOption('LiveUpdateDestination.strategy', $val);
-					Options::setOption('LiveUpdateDestination.useHashForOptimization', false);
-				}
-				else{
-					die('either primary or secondary'.$usage);
-					}
-				break;
-				}
-			case '-logdest' : {
+        switch ($opt){
+            case '-id' : {
+                Options::setProcessID($val);
+                break;
+                }
+            case '-debug' : {
+                if($val[0] == '-'){die('- encountered should be -debug l1ti'.$usage);}
+                else{
+                        Options::setOption('debug_loop', false !== strpos($val, 'l'));
+                        Options::setOption('debug_die_after_one', false !==  strpos($val, '1'));
+                        Options::setOption('debug_run_tests',false !==  strpos($val, 't'));
+                        Options::setOption('debug_turn_off_insert', false !==  strpos($val, 'i'));
+                    }
+                break;
+                }
+            case '-strategy' : {
+                if($val == 'primary' or $val =='secondary' ){
+                    Options::setOption('LiveUpdateDestination.strategy', $val);
+                    Options::setOption('LiveUpdateDestination.useHashForOptimization', false);
+                }
+                else{
+                    die('either primary or secondary'.$usage);
+                    }
+                break;
+                }
+            case '-logdest' : {
                     Logger::setDestination($val);
-				break;
-				}
-			case '-clear' : {
-				if($val == 'hashtable'){
-					$clearhashtable = true;
-					Logger::info('deleting hashtable');
-					}
-				break;
-				}
-		default:{
-				die('unknown option: '+$opt.$usage);
-				}
-		}//switch
-	}//for
+                break;
+                }
+            case '-clear' : {
+                if($val == 'hashtable'){
+                    $clearhashtable = true;
+                    Logger::info('deleting hashtable');
+                    }
+                break;
+                }
+        default:{
+                die('unknown option: '+$opt.$usage);
+                }
+        }//switch
+    }//for
 }//if
 
 date_default_timezone_set(Options::getOption('timezone'));

@@ -1,5 +1,5 @@
 
-<?php 
+<?php
 //header('Content-Type: text/html; charset=UTF-8');
 require_once(dirname(__FILE__) . '/wikidrain/api.php');
 require_once(dirname(__FILE__) . '/../simple_html_dom.php');
@@ -13,15 +13,15 @@ function getInfoboxJsonUrl($term)
    //echo "<br>", $term, "<br>";
    $format = 'json';
 
-   $query = 
+   $query =
    "PREFIX dbpedia: <http://dbpedia.org/resource/>
-	PREFIX dbpprop: <http://dbpedia.org/property/>
+    PREFIX dbpprop: <http://dbpedia.org/property/>
 
-	SELECT ?property ?value 
-	WHERE {
-  	dbpedia:".$term." ?property ?value
-  	filter( strstarts(str(?property),str(dbpprop:)) )
-	}";
+    SELECT ?property ?value
+    WHERE {
+    dbpedia:".$term." ?property ?value
+    filter( strstarts(str(?property),str(dbpprop:)) )
+    }";
 
    $searchUrl = 'http://dbpedia.org/sparql?'
       .'query='.urlencode($query)
@@ -39,7 +39,7 @@ function getImgAndAbstract($term) {
    $query =
    "PREFIX dbp: <http://dbpedia.org/resource/>
    PREFIX dbp2: <http://dbpedia.org/ontology/>
- 
+
    SELECT *
    WHERE {
       dbp:".$term." dbp2:abstract ?abstract .
@@ -51,16 +51,16 @@ function getImgAndAbstract($term) {
       .'query='.urlencode($query)
       .'&format='.$format;
 
-   return $searchUrl;   
+   return $searchUrl;
 }
 
 function request($url){
- 
+
    // is curl installed?
    if (!function_exists('curl_init')){
       die('CURL is not installed!');
    }
-   
+
    // get curl handle
    $ch= curl_init();
 
@@ -72,21 +72,21 @@ function request($url){
    // return response, don't print/echo
    curl_setopt($ch,
       CURLOPT_RETURNTRANSFER,
-      true); 
+      true);
 
    $response = curl_exec($ch);
-   
+
    curl_close($ch);
-   
+
    return $response;
 }
 
 
 function printArray($array, $spaces = "") {
    $retValue = "";
-   
+
    if(is_array($array))
-   { 
+   {
       $spaces = $spaces
          ."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
@@ -98,12 +98,12 @@ function printArray($array, $spaces = "") {
             ."<strong>".$key."</strong>"
             .printArray($array[$key],
                $spaces);
-      }    
+      }
       $spaces = substr($spaces, 0, -30);
    }
    else $retValue =
       $retValue." - ".$array."<br/>";
-   
+
    return $retValue;
 }
 
@@ -144,7 +144,7 @@ function getReducedArrayProp($array) {
 
          $newArray[$propName] = [removeLink($propValue)];
       }
-      
+
    }
 
    return $newArray;
@@ -177,29 +177,29 @@ function removeLink($link) {
 
 function searchCorrectArticleName($article) {
 
-	$searchLocation = "http://en.wikipedia.org/w/index.php?search=";
-	for($i = 0; $i < strlen($article); $i++) {
+    $searchLocation = "http://en.wikipedia.org/w/index.php?search=";
+    for($i = 0; $i < strlen($article); $i++) {
 
-		if($article[$i] == '_') {
+        if($article[$i] == '_') {
 
-			$searchLocation = $searchLocation . "+";
-		} 
+            $searchLocation = $searchLocation . "+";
+        }
 
-		else {
+        else {
 
-			$searchLocation = $searchLocation . $article[$i];
-		}
-	}
+            $searchLocation = $searchLocation . $article[$i];
+        }
+    }
    $redirectUrl = get_final_url($searchLocation);
 
    $wikiUrl = "";
 
    if($redirectUrl == $searchLocation) {
 
-   	$html = loadPage($searchLocation);
-   	$searchResults = $html->find('.mw-search-results' , 0);
+    $html = loadPage($searchLocation);
+    $searchResults = $html->find('.mw-search-results' , 0);
 
-   	$searchResultElement = $searchResults->first_child()->first_child()->first_child();
+    $searchResultElement = $searchResults->first_child()->first_child()->first_child();
 
       $newArticleName = $searchResultElement->getAttribute('title');
 
@@ -208,7 +208,7 @@ function searchCorrectArticleName($article) {
          if($newArticleName[$i] == ' ') {
 
             $wikiUrl = $wikiUrl . "_";
-         } 
+         }
 
          else {
 
@@ -236,14 +236,14 @@ function searchCorrectArticleName($article) {
       if($title[$i] == ' ') {
 
          $correctArticle = $correctArticle . "_";
-      } 
+      }
 
       else {
 
          $correctArticle = $correctArticle . $title[$i];
       }
-   }       
-         
+   }
+
    $correctArticle = searchCorrectDBPediaArticle($correctArticle);
    return $correctArticle;
 
@@ -262,13 +262,13 @@ function searchCorrectDBPediaArticle($article) {
       if($tempArticle[$i] == ' ') {
 
          $correctDBPediaArticle = $correctDBPediaArticle . "_";
-      } 
+      }
 
       else {
 
          $correctDBPediaArticle = $correctDBPediaArticle . $tempArticle[$i];
       }
-   }    
+   }
    return $correctDBPediaArticle;
 }
 
@@ -294,10 +294,10 @@ function get_redirect_url($url){
     if (!$url_parts) return false;
     if (!isset($url_parts['host'])) return false; //can't process relative URLs
     if (!isset($url_parts['path'])) $url_parts['path'] = '/';
-      
+
     $sock = fsockopen($url_parts['host'], (isset($url_parts['port']) ? (int)$url_parts['port'] : 80), $errno, $errstr, 30);
     if (!$sock) return false;
-      
+
     $request = "HEAD " . $url_parts['path'] . (isset($url_parts['query']) ? '?'.$url_parts['query'] : '') . " HTTP/1.1\r\n";
     $request .= 'Host: ' . $url_parts['host'] . "\r\n";
     $request .= "Connection: Close\r\n\r\n";
@@ -305,18 +305,18 @@ function get_redirect_url($url){
     $response = '';
     while(!feof($sock)) $response .= fread($sock, 8192);
     fclose($sock);
-      //We lose UTF8 here 
+      //We lose UTF8 here
 
     if (preg_match('/^Location: (.+?)$/m', $response, $matches)){
         if ( substr($matches[1], 0, 1) == "/" )
             return $url_parts['scheme'] . "://" . $url_parts['host'] . trim($matches[1]);
         else
             return trim($matches[1]);
-  
+
     } else {
         return false;
     }
-     
+
 }
 
 //This code was written by: http://w-shadow.com/blog/2008/07/05/how-to-get-redirect-url-in-php/
@@ -339,7 +339,7 @@ function get_all_redirects($url){
     return $redirects;
 }
 
-//This code was written by: http://w-shadow.com/blog/2008/07/05/how-to-get-redirect-url-in-php/ 
+//This code was written by: http://w-shadow.com/blog/2008/07/05/how-to-get-redirect-url-in-php/
 /**
  * get_final_url()
  * Gets the address that the URL ultimately leads to.
@@ -353,7 +353,7 @@ function get_final_url($url){
     if (count($redirects)>0){
         return array_pop($redirects);
     } else {
-    
+
         return $url;
     }
 }
@@ -410,12 +410,12 @@ function articleExists($article) {
    }
    else {
       return false;;
-   }   
+   }
 }*/
 
 /**
 * Gets the wiki page of a player
-* 
+*
 * @param $player The full name of a player
 *
 * @return Returns an array, with every key being the name of the dbpprop, the img key giving the image url, and abstract key giving the introduction of the player
@@ -427,7 +427,7 @@ function getWiki($player) {
    $article = searchCorrectArticleName($article);
 
 
-   $result = getReducedArrayProp(json_decode(request(getInfoboxJsonUrl($article)), true)) + 
+   $result = getReducedArrayProp(json_decode(request(getInfoboxJsonUrl($article)), true)) +
    getReducedArrayImgAndAbstract(json_decode(request(getImgAndAbstract($article)), true));
    /*foreach ($result as $key => $propList) {
       echo $key, " => ";
@@ -436,7 +436,7 @@ function getWiki($player) {
          echo " ".$prop." ";
       }
       echo "<br>";
-   } */  
+   } */
    return $result;
 }
 

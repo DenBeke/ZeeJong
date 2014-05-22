@@ -9,7 +9,7 @@
  interface Parser {
 
     public static function getParserID();
-	
-	public static function parseValue($input, $language, $restrictions);
+    
+    public static function parseValue($input, $language, $restrictions);
 }
 

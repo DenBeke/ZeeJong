@@ -14,7 +14,7 @@ $job = new ExtractionJob(
        new DatabaseWikipediaCollection($language),
        //new LiveWikipediaCollection($language),
        $pageTitles);
-		
+        
 $destination = new NTripleDumpDestination("c:/dbpedia34/en/mappingbased_new_strict_".$language.".nt");
 $extractor = new MappingBasedExtractor();
 $extractor->setFlagForNewSchemaExport(true);

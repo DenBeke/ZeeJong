@@ -254,13 +254,13 @@ class wikidrain
     * @return string
     */
     private function removeLink($string) {
-        
+
         //Links are written as such: [[link|word]], we need to get the word
         $startpos = strpos($string, '[[', 0); //Start off by looking for [[
         while($startpos != false) { //Keep going as long as we can find links
             $startpos += 2;
             $endpos = strpos($string, '|', $startpos)+1; //Look for the end of the link
-            $endposChecker = strpos($string, ']]', $startpos)+1; //Check if the | really is from this link by checking if ]] doesn't occur before it            
+            $endposChecker = strpos($string, ']]', $startpos)+1; //Check if the | really is from this link by checking if ]] doesn't occur before it
 
             //If we can find no more ]], we are done
             if($endposChecker == false) {
@@ -279,7 +279,7 @@ class wikidrain
 
                 $link = substr($string, $startpos, $endpos - $startpos);
                 $string = str_replace($link, '', $string);
-                $startpos = strpos($string, '[[', $startpos);                
+                $startpos = strpos($string, '[[', $startpos);
             }
         }
         return $string;

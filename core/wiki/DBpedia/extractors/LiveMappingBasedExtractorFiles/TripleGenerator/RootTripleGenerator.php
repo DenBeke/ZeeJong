@@ -17,10 +17,10 @@ class RootTripleGenerator
     //private $defaultTripleGenerator;
 
     private $mediaWikiUtil;
-    
-    
+
+
     private $allowUnmappedProperties;
-    
+
     private static $wikiPageUsesTemplateUri;
 
     private function log($lvl, $message)
@@ -43,7 +43,7 @@ class RootTripleGenerator
         $this->parseHintToTripleGenerator = $parseHintToTripleGenerator;
         $this->mediaWikiUtil = $mediaWikiUtil;
         //$this->defaultTripleGenerator = new DefaultTripleGenerator($language);
-        
+
         $this->allowUnmappedProperties = Options::getOption('allowUnmappedProperties');
     }
 
@@ -95,7 +95,7 @@ class RootTripleGenerator
     public function generate($breadCrumb, $value)
     {
         $result = $this->myGenerate($breadCrumb, $value);
-        
+
         $allTriples = array_merge($result[0], $result[1]);
 
         $n = count($allTriples);
@@ -159,17 +159,17 @@ class RootTripleGenerator
             // Get annotations for the template - if there are any
             $lookupName = "Template:$templateName/doc";
              if($breadCrumb->getDepth() == 0) {
-				$ta = $this->templateDb->getTemplateAnnotation($lookupName);
+                $ta = $this->templateDb->getTemplateAnnotation($lookupName);
 
             // Create the triples for "relatesToClass"
             // But only for the page itself (not for sub templates)
             // if no related class exists, default to rdf:type owl:Thing
-           
+
                 if(isset($ta)) {
                     foreach($ta->getRelatedClasses() as $item){
                         $relatedClasses[$item] = 1;
-					}
-				}
+                    }
+                }
             }
 
             foreach($templates as $templateIndex => $template) {
@@ -197,21 +197,21 @@ class RootTripleGenerator
                     }
                     //print_r($ta);
 //echo "PROPERTY NS : $lookupName - $argumentName = $propertyNs\n";
-                    
+
                     // Fake a property mapping if there was none in the db
                     // This maps argumentName back to iteself
                     if(!isset($pa)) {
-                    	// If there was no mapping we might ignore it
-                    	// depending on an option (We can prevent this extractor
-                    	// to generate triples with properties in the
-                    	// dbp:property namespace
-                    	// We allow such triples on subResources though.
-                    	if($this->allowUnmappedProperties != true &&
-                    		$breadCrumb->getDepth() == 0) {
-	                    		continue;
-	                    }
+                        // If there was no mapping we might ignore it
+                        // depending on an option (We can prevent this extractor
+                        // to generate triples with properties in the
+                        // dbp:property namespace
+                        // We allow such triples on subResources though.
+                        if($this->allowUnmappedProperties != true &&
+                            $breadCrumb->getDepth() == 0) {
+                                continue;
+                        }
 
-                    	// If there was no mapping, also rename numeric
+                        // If there was no mapping, also rename numeric
                         // argument names (e.g. 1 becomes property1)
                         // this is just cosmetic for the result
                         if(is_numeric($argumentName))
@@ -225,16 +225,16 @@ class RootTripleGenerator
 
                         $parseHint = $pm->getParseHint();
 
-	//echo "Mapping $argumentName : {$pm->getRenamedValue()}\n\n";
+    //echo "Mapping $argumentName : {$pm->getRenamedValue()}\n\n";
                         // if the renamed value is not set, use the original
                         // name
                         // otherwise use the mapped value
                         if(!isEmptyString($pm->getRenamedValue()))
-                        	$argumentName = $pm->getRenamedValue();
-                        
+                            $argumentName = $pm->getRenamedValue();
+
                         $argumentName = trim($argumentName);
-	//echo "Mapping $argumentName : {$pm->getRenamedValue()}\n\n";
-                        
+    //echo "Mapping $argumentName : {$pm->getRenamedValue()}\n\n";
+
                         // Skip empty properties
                         // FIXME does that even happen?
                         if(strlen($argumentName) < 1)
@@ -272,14 +272,14 @@ class RootTripleGenerator
                                 }
 
                                 //echo "PROCESSING $templateChildName - $argumentName $value\n";
-                                    
+
                                 $tmp = $tripleGenerator->generate(
                                     $templateChildName,
                                     $argumentName,
                                     $value);
 
-                                $localResult[0] = array_merge($localResult[0], $tmp);  
-                                      
+                                $localResult[0] = array_merge($localResult[0], $tmp);
+
                                 //echo "LOCALRESULT\n";
                                 //print_r($localResult[0]);
 //print_r($triples);
@@ -325,9 +325,9 @@ class RootTripleGenerator
                                     $value);
 
                                 for($i = 0; $i < 3; ++$i) {
-                                	$localResult[$i] = array_merge($localResult[$i], $subResources[$i]);
+                                    $localResult[$i] = array_merge($localResult[$i], $subResources[$i]);
                                 }
- 
+
                                 //$result = array_merge($result, $triples);
         //echo "GOT OBJECT $value\n";
 
@@ -358,9 +358,9 @@ class RootTripleGenerator
                             //for($i = 0; $i < 3; ++$i)
                             //    $result[$i] = array_merge($result[$i], $localResult[$i]);
                         //}
-                    	
+
                         for($i = 0; $i < 3; ++$i)
-	                    	$result[$i] = array_merge($result[$i], $localResult[$i]);
+                            $result[$i] = array_merge($result[$i], $localResult[$i]);
                     }
                 }
 
@@ -423,10 +423,10 @@ class RootTripleGenerator
 
 function isEmptyString($str)
 {
-	if(isset($str))
-		return false;
-		
-	return strlen(trim($str)) == 0;
+    if(isset($str))
+        return false;
+
+    return strlen(trim($str)) == 0;
 }
 
 /**
@@ -447,7 +447,7 @@ function parseAttributeValueWrapper($value, $templateChildName, $propertyName, $
     global $parseResult;
 
     $parseResult = null;
-    
+
     $localResult = parseAttributeValue(
         $value,
         $templateChildName,
@@ -465,7 +465,7 @@ function parseAttributeValueWrapper($value, $templateChildName, $propertyName, $
     }
 
     $parseResult = null;
-    
+
     if(isset($localResult)) {
         list($o, $ot, $dt, $ol) = $localResult;
         $items[] = array($o, $ot, $dt, $ol);

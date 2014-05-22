@@ -1,9 +1,9 @@
 <?php
     /**
-     *	base include file for SimpleTest
-     *	@package	SimpleTest
-     *	@subpackage	MockObjects
-     *	@version	$Id: socket.php,v 1.26 2005/08/29 00:57:48 lastcraft Exp $
+     *  base include file for SimpleTest
+     *  @package    SimpleTest
+     *  @subpackage MockObjects
+     *  @version    $Id: socket.php,v 1.26 2005/08/29 00:57:48 lastcraft Exp $
      */
 
     /**#@+
@@ -15,8 +15,8 @@
     /**
      *    Stashes an error for later. Useful for constructors
      *    until PHP gets exceptions.
-	 *    @package SimpleTest
-	 *    @subpackage WebTester
+     *    @package SimpleTest
+     *    @subpackage WebTester
      */
     class SimpleStickyError {
         var $_error = 'Constructor not chained';
@@ -184,8 +184,8 @@
 
     /**
      *    Wrapper for TCP/IP socket over TLS.
-	 *    @package SimpleTest
-	 *    @subpackage WebTester
+     *    @package SimpleTest
+     *    @subpackage WebTester
      */
     class SimpleSecureSocket extends SimpleSocket {
 

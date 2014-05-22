@@ -5,54 +5,54 @@
 @brief Class containing the score
 
 The class contains the following information:
-	-id
-	-match date
-	-team A
-	-team B
-	-the id of the corresponding match
+    -id
+    -match date
+    -team A
+    -team B
+    -the id of the corresponding match
 */
 
 class Score {
 
 
-	private $id;
-	private $teamA;
-	private $teamB;
+    private $id;
+    private $teamA;
+    private $teamB;
 
-	/**
-	Constructor
+    /**
+    Constructor
 
-	@param id The ID of the score
-	*/
-	public function __construct($id, $teamA, $teamB) {
+    @param id The ID of the score
+    */
+    public function __construct($id, $teamA, $teamB) {
 
-		$this->id = $id;
-		$this->teamA = $teamA;
-		$this->teamB = $teamB;
-	}
+        $this->id = $id;
+        $this->teamA = $teamA;
+        $this->teamB = $teamB;
+    }
 
-	/**
-	Returns the id
+    /**
+    Returns the id
 
-	@return id
-	*/
-	public function getId() {
+    @return id
+    */
+    public function getId() {
 
-		return $this->id;
-	}		
-
-
-
-	public function getScoreA() {
-
-		return $this->teamA;
-	}
+        return $this->id;
+    }
 
 
-	public function getScoreB() {
-	
-		return $this->teamB;
-	}
+
+    public function getScoreA() {
+
+        return $this->teamA;
+    }
+
+
+    public function getScoreB() {
+
+        return $this->teamB;
+    }
 
 
     /**

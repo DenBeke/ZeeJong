@@ -20,7 +20,7 @@ class LiveHttpTestCase extends UnitTestCase {
         $this->assertFalse($socket->isOpen());
         $this->assertFalse($socket->write('A message'));
     }
-    
+
     function testSocketClosure() {
         $socket = &new SimpleSocket('www.lastcraft.com', 80, 15, 8);
         $this->assertTrue($socket->isOpen());
@@ -31,7 +31,7 @@ class LiveHttpTestCase extends UnitTestCase {
         $socket->close();
         $this->assertIdentical($socket->read(), false);
     }
-    
+
     function testRecordOfSentCharacters() {
         $socket = &new SimpleSocket('www.lastcraft.com', 80, 15);
         $this->assertTrue($socket->write("GET /test/network_confirm.php HTTP/1.0\r\n"));

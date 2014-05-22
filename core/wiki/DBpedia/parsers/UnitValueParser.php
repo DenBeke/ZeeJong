@@ -5,7 +5,7 @@ include("config.inc.php");
  * the UnitValueParser parse strings for units
  * and returns the number and the unit in a array.
  *
- * @author	Paul Kreis <mail@paulkreis.de>
+ * @author  Paul Kreis <mail@paulkreis.de>
  *
  */
 class UnitValueParser implements Parser
@@ -29,7 +29,7 @@ class UnitValueParser implements Parser
      * @return array
      */
     public static function parseValue($input, $language='en', $restrictions) {
-    	$pageID = $restrictions[PAGEID];
+        $pageID = $restrictions[PAGEID];
         $propName = $restrictions[PROPERTYNAME];
         $unitType = $restrictions[UNITTYPE];
         $unitExactType = $restrictions[UNITEXACTTYPE];
@@ -64,11 +64,11 @@ class UnitValueParser implements Parser
     {
         if(false === function_exists('lcfirst')) {
             /**
-		    * Make a string's first character lowercase
-		    *
-		    * @param string $str
-		    * @return string the resulting string.
-		    */
+            * Make a string's first character lowercase
+            *
+            * @param string $str
+            * @return string the resulting string.
+            */
             function lcfirst( $str ) {
                 $str[0] = strtolower($str[0]);
                 return (string)$str;
@@ -134,7 +134,7 @@ class UnitValueParser implements Parser
             return $output = array($value, $fromUnit);
         }
         elseif ($toUnit != null && $unitType!=  null) {
-        	// WARNING - supressing warnings 
+            // WARNING - supressing warnings 
             @$unitTypeStandard = $GLOBALS[$unitType]['STANDARD_UNIT'];
             //if ($conversionFactor[$fromUnit][$unitTypeStandard] == null) {
             if (!isset($conversionFactor[$fromUnit][$unitTypeStandard])) {
@@ -193,7 +193,7 @@ class UnitValueParser implements Parser
     }
 
     /**
-	* escapes characters that would otherwise be interpreted as a meta-character in the regexp
+    * escapes characters that would otherwise be interpreted as a meta-character in the regexp
     *
     * @param string $regex
     * @return string
@@ -206,15 +206,15 @@ class UnitValueParser implements Parser
     }
 
     /**
-	* Convert shortened Numbers
-	*
-	* The value for Literaltext will be returned
-	* eg. $12.53 million => $12530000
-	* 	  25,123.5 mio => 25123500000
-	*
-	* @param	string	$input	the String with the shortened Number
-	* @return 	string	$input	the String with the lengthened Number
-	*/
+    * Convert shortened Numbers
+    *
+    * The value for Literaltext will be returned
+    * eg. $12.53 million => $12530000
+    *     25,123.5 mio => 25123500000
+    *
+    * @param    string  $input  the String with the shortened Number
+    * @return   string  $input  the String with the lengthened Number
+    */
     private static function catchLargeNumbers(&$input) {
         global $scale;
         if(preg_match('~^([\D]*)([0-9]+(\,[0-9]{3})*(\.[0-9]+)?)\s?\[?\[?('.implode('|',array_keys($scale)).')\]?\]?(.*)$~i',$input,$matches)) {
@@ -232,16 +232,16 @@ class UnitValueParser implements Parser
     }
 
     /**
-	* Returns unit and value for an Object
-	* string with feet and inches will be converted in centimetre
-	* 1 in = 2.54 cm
-	* 1 ft = 30.48 cm
-	*
-	* The value and Unit of the passed value will be returned in an Array
-	*
-	* @param	string	$input	Literaltext
-	* @return 	array	the value at offset[0], the Unit at offset[1] and the abbreviation at offset[2]
-	*/
+    * Returns unit and value for an Object
+    * string with feet and inches will be converted in centimetre
+    * 1 in = 2.54 cm
+    * 1 ft = 30.48 cm
+    *
+    * The value and Unit of the passed value will be returned in an Array
+    *
+    * @param    string  $input  Literaltext
+    * @return   array   the value at offset[0], the Unit at offset[1] and the abbreviation at offset[2]
+    */
     private static function catchUnited($pageID, $input, $language, $unitType, $unitExactType, $targetUnit, $ignoreUnit) {
         if ($unitType != 'Time' && $unitType != 'Currency')
         {
@@ -366,13 +366,13 @@ class UnitValueParser implements Parser
     }
 
     /**
-	* Returns percent value
-	*
-	* The value of the passed String that is an percent value will be returned
-	*
-	* @param	string	$input	Literaltext, that matched a to be a percent value
-	* @return 	float	the percent value
-	*/
+    * Returns percent value
+    *
+    * The value of the passed String that is an percent value will be returned
+    *
+    * @param    string  $input  Literaltext, that matched a to be a percent value
+    * @return   float   the percent value
+    */
     private static function catchPercent($pageID, $input, $language, $unitType, $unitExactType, $targetUnit, $ignoreUnit)
     {
         if ($unitType != 'Currency' && $unitType != 'Time')
@@ -394,11 +394,11 @@ class UnitValueParser implements Parser
     }
 
     /**
-	* Returns duration in the PnYnMnDTnHnMnS format
-	*
-	* @param	string	$input	Literaltext, that matched a to be a time
-	* @return 	array	time at offset[0] and unit at offset[1] and the abbreviation at offset[2]
-	*/
+    * Returns duration in the PnYnMnDTnHnMnS format
+    *
+    * @param    string  $input  Literaltext, that matched a to be a time
+    * @return   array   time at offset[0] and unit at offset[1] and the abbreviation at offset[2]
+    */
     private static function catchTime($pageID, $input, $language, $propName, $unitType, $unitExactType, $targetUnit, $ignoreUnit, $originalInput)
     {
         if ($unitType == "Time" || $unitType == null)
@@ -453,12 +453,12 @@ class UnitValueParser implements Parser
 
                 $matches5 = "";
                 if(isset($matches[5]))
-                	$matches5 = $matches[5];
+                    $matches5 = $matches[5];
                 
                 if ($unitExactType != null || $Time[strtolower($matches5)] != null) {
 
                     if (isset($Time[strtolower($matches5)]))
-                    	$unit = $Time[strtolower($matches5)];
+                        $unit = $Time[strtolower($matches5)];
                     
                     if ($unitExactType != null) {
                         if (!in_array($unitExactType, array_values($Time))) {
@@ -517,15 +517,15 @@ class UnitValueParser implements Parser
 
 
     /**
-	* Returns currency and value
-	*
-	* The currency and value for Literaltext will be returned
-	* eg. $12.99 => [0]12.99 [1]Dollar
-	*     12,000$ => [0]12000 [1]Dollar
-	*
-	* @param	string	$input	Literaltext, that matched to be a currency value
-	* @return 	array	the value at offset[0], the currency at Offset[1] and the abbreviation at offset[2]
-	*/
+    * Returns currency and value
+    *
+    * The currency and value for Literaltext will be returned
+    * eg. $12.99 => [0]12.99 [1]Dollar
+    *     12,000$ => [0]12000 [1]Dollar
+    *
+    * @param    string  $input  Literaltext, that matched to be a currency value
+    * @return   array   the value at offset[0], the currency at Offset[1] and the abbreviation at offset[2]
+    */
     private static function catchMoney($pageID, $input, $language, $unitType, $unitExactType, $targetUnit, $ignoreUnit)
     {
         if ($unitType == "Currency" || $unitType == null)
@@ -600,15 +600,15 @@ class UnitValueParser implements Parser
         }
     }
     /**
-	* catch a single number
-	*
-	* Removes the thousand separator
-	* eg. 12.999 => 12999 $language: 'de'
-	*     12,000 => 12000 $language: 'en'
-	*
-	* @param	string
-	* @return 	string
-	*/
+    * catch a single number
+    *
+    * Removes the thousand separator
+    * eg. 12.999 => 12999 $language: 'de'
+    *     12,000 => 12000 $language: 'en'
+    *
+    * @param    string
+    * @return   string
+    */
     private static function catchNumber($pageID, $input, $language, $propName, $unitType, $unitExactType, $targetUnit, $ignoreUnit, $originalInput)
     {
         global $units;

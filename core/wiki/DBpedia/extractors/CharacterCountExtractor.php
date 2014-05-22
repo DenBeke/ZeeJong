@@ -10,7 +10,7 @@ class CharacterCountExtractor extends Extractor {
         $result = new ExtractionResult(
                 $pageID, $this->language, $this->getExtractorID());
         $result->addTriple(
-				$this->getPageURI(),
+                $this->getPageURI(),
                 RDFtriple::URI(DB_CHARACTERCOUNT,false),
                 RDFtriple::literal("".strlen($pageSource)."",XS_INTEGER));
         return $result;

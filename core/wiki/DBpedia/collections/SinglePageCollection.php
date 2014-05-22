@@ -7,7 +7,7 @@
  */
 
 class SinglePageCollection implements PageCollection {
-		
+        
     private /* final */ /* string */ $language;
     
     private /* final */ /* string */ $pageSource;
@@ -32,10 +32,10 @@ class SinglePageCollection implements PageCollection {
     }
     
     public function getSource($pageID) {
-		if(isset($this->pageID) && $this->pageID === $pageID)
-			return $this->pageSource;
-		else
-			return '';
+        if(isset($this->pageID) && $this->pageID === $pageID)
+            return $this->pageSource;
+        else
+            return '';
     }
 }
 

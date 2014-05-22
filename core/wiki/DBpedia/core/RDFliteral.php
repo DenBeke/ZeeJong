@@ -11,14 +11,14 @@ class RDFliteral implements RDFnode {
     private $lexicalForm;
     private $datatypeURI;
     private $language;
-	private $ntriple = null;
-	private $SPARULpattern = null;
-	
+    private $ntriple = null;
+    private $SPARULpattern = null;
+    
     public function __construct($lexicalForm, $datatypeURI = null, $language = null) {
-       	//trigger_error("Not a string: \"$lexicalForm\" (".gettype($lexicalForm).")", E_USER_ERROR);
+        //trigger_error("Not a string: \"$lexicalForm\" (".gettype($lexicalForm).")", E_USER_ERROR);
         $this->lexicalForm = $lexicalForm;
         $this->datatypeURI = $datatypeURI;
-		// make sure that the language code uses '-', RDF requires it (see RFC 3066)
+        // make sure that the language code uses '-', RDF requires it (see RFC 3066)
         if (isset($language)) $this->language = str_replace('_', '-', $language);
     }
     public function isURI() { return false; }
@@ -30,27 +30,27 @@ class RDFliteral implements RDFnode {
     public function getLanguage() { return $this->language; }
     public function getDatatype() { return $this->datatypeURI; }
 
-	public function myValidate() {
-			if ( !is_string($this->lexicalForm) ) {
-          	  throw new Exception("RDFliteral: Not a string: \"".$this->lexicalForm."\" (".gettype($this->lexicalForm).")", E_USER_ERROR);
-			}
-			return true;
-		}
+    public function myValidate() {
+            if ( !is_string($this->lexicalForm) ) {
+              throw new Exception("RDFliteral: Not a string: \"".$this->lexicalForm."\" (".gettype($this->lexicalForm).")", E_USER_ERROR);
+            }
+            return true;
+        }
 
 /*
- * 
+ *
  * name: equals
  * @param
  * @return
  */
-	public function equals($literal){
-			if(!($literal instanceOf RDFliteral)){
-				return false;
-				}
-			
-			return 	($this->toNTriples() == $literal->toNTriples());
-		
-		}
+    public function equals($literal){
+            if(!($literal instanceOf RDFliteral)){
+                return false;
+                }
+            
+            return  ($this->toNTriples() == $literal->toNTriples());
+        
+        }
 
 
 /*
@@ -61,59 +61,59 @@ class RDFliteral implements RDFnode {
  * @return
  */
     public function toNTriples() {
-		if(is_null($this->ntriple)){
-    	
-			if (is_null($this->datatypeURI) && is_null($this->language)) {
-				$this->ntriple =  "\"" . RDFliteral::escape($this->lexicalForm) . "\"";
-			}
-			else if (is_null($this->datatypeURI)) {	
-				$this->ntriple =  "\"" . RDFliteral::escape($this->lexicalForm) . "\"@$this->language";
-			}
-			else {
-				$this->ntriple =  "\"" . RDFliteral::escape($this->lexicalForm) . 
-				"\"^^<{$this->datatypeURI}>";
-			}
-		}
-		return $this->ntriple;
-    	
+        if(is_null($this->ntriple)){
+        
+            if (is_null($this->datatypeURI) && is_null($this->language)) {
+                $this->ntriple =  "\"" . RDFliteral::escape($this->lexicalForm) . "\"";
+            }
+            else if (is_null($this->datatypeURI)) { 
+                $this->ntriple =  "\"" . RDFliteral::escape($this->lexicalForm) . "\"@$this->language";
+            }
+            else {
+                $this->ntriple =  "\"" . RDFliteral::escape($this->lexicalForm) . 
+                "\"^^<{$this->datatypeURI}>";
+            }
+        }
+        return $this->ntriple;
+        
     }
-	
-	
-	 public function toSPARULPattern() {
-		Timer::start('RDFliteral::toSPARULPattern');
-		if(is_null($this->SPARULpattern)){
-			$storespecific = Options::getOption('Store.SPARULdialect');
-			$quotes = ($storespecific== VIRTUOSO)?'"""':'"';
+    
+    
+     public function toSPARULPattern() {
+        Timer::start('RDFliteral::toSPARULPattern');
+        if(is_null($this->SPARULpattern)){
+            $storespecific = Options::getOption('Store.SPARULdialect');
+            $quotes = ($storespecific== VIRTUOSO)?'"""':'"';
 
-			if (is_null($this->datatypeURI) && is_null($this->language)) {
-				$this->SPARULpattern = $quotes . RDFliteral::escape($this->lexicalForm) . $quotes;
-			}
-			else if (is_null($this->datatypeURI)) {	
-				$this->SPARULpattern = $quotes . RDFliteral::escape($this->lexicalForm) . $quotes."@$this->language";
-			}
-			else {
-				$this->SPARULpattern = $quotes . RDFliteral::escape($this->lexicalForm) . 
-				$quotes."^^<{$this->datatypeURI}>";
-			}
-			
-    	}
-		Timer::stop('RDFliteral::toSPARULPattern');
-		return $this->SPARULpattern;
+            if (is_null($this->datatypeURI) && is_null($this->language)) {
+                $this->SPARULpattern = $quotes . RDFliteral::escape($this->lexicalForm) . $quotes;
+            }
+            else if (is_null($this->datatypeURI)) { 
+                $this->SPARULpattern = $quotes . RDFliteral::escape($this->lexicalForm) . $quotes."@$this->language";
+            }
+            else {
+                $this->SPARULpattern = $quotes . RDFliteral::escape($this->lexicalForm) . 
+                $quotes."^^<{$this->datatypeURI}>";
+            }
+            
+        }
+        Timer::stop('RDFliteral::toSPARULPattern');
+        return $this->SPARULpattern;
     }
-	
+    
     public function toCSV() {
-    	
-    	if (is_null($this->datatypeURI) && is_null($this->language)) {
-       		return RDFliteral::$this->lexicalForm . "\"";
-    	}
-    	else if (is_null($this->datatypeURI)) {	
-    		return RDFliteral::$this->lexicalForm . "\"@$this->language";
-    	}
-    	else {
-    		return RDFliteral::$this->lexicalForm . 
+        
+        if (is_null($this->datatypeURI) && is_null($this->language)) {
+            return RDFliteral::$this->lexicalForm . "\"";
+        }
+        else if (is_null($this->datatypeURI)) { 
+            return RDFliteral::$this->lexicalForm . "\"@$this->language";
+        }
+        else {
+            return RDFliteral::$this->lexicalForm . 
             "\"^^<{$this->datatypeURI}>";
-    	}
-    	
+        }
+        
     }
     public function toString() { return $this->toNTriples(); }
     

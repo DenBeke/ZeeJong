@@ -9,60 +9,60 @@
 
 class ExternalLinksExtractor extends Extractor
 {
-	 private $allPredicates;
+     private $allPredicates;
 
 
-	/*
-	 * Overrides superclass method
-	 * */
+    /*
+     * Overrides superclass method
+     * */
     public function start($language) {
         $this->language = $language;
-		$this->allPredicates = new ExtractionResult("PredicateCollection", $this->language, $this->getExtractorID());
+        $this->allPredicates = new ExtractionResult("PredicateCollection", $this->language, $this->getExtractorID());
     }
     public function extractPage($pageID, $pageTitle, $pageSource) {
         $result = new ExtractionResult(
                 $pageID, $this->language, $this->getExtractorID());
 
 
-				$extlinks = $this->extract_external_links($pageSource, $this->language);
-				   while(list($ExtURL,$ExtName) = each($extlinks))
-					{
+                $extlinks = $this->extract_external_links($pageSource, $this->language);
+                   while(list($ExtURL,$ExtName) = each($extlinks))
+                    {
 
                         // Replace single quotes with %27
                         $ExtURL = str_replace("'", "%27", $ExtURL);
                         $ExtURL = str_replace("\\", "\\\\", $ExtURL);
 
-						if (!URI::validate($ExtURL)) continue;
-						$result->addTriple(
-							$this->getPageURI(),
-		                	RDFtriple::URI(DB_REFERENCE,false),
-		                	RDFtriple::URI($ExtURL)
-						);
+                        if (!URI::validate($ExtURL)) continue;
+                        $result->addTriple(
+                            $this->getPageURI(),
+                            RDFtriple::URI(DB_REFERENCE,false),
+                            RDFtriple::URI($ExtURL)
+                        );
 
-					}
+                    }
 
         return $result;
     }
 
-	private function getPredicates() {
-	   $this->allPredicates->addPredicate(DB_REFERENCE);
-    	return $this->allPredicates->getPredicateTriples();
+    private function getPredicates() {
+       $this->allPredicates->addPredicate(DB_REFERENCE);
+        return $this->allPredicates->getPredicateTriples();
     }
     public function finish() {
        return $this->getPredicates();
     }
 
-	 function extract_external_links($text, $Language) {
+     function extract_external_links($text, $Language) {
 
-		if ($Language == "en"){
-			$i = preg_match("/(==+ *External links *==+.*)?$/s", $text, $match);
-			//preg_match("/^(.*?)([\n\r] *==+ *External links *==+.*)?$/s", $text, $match);
-			// note that we get warnings here when not explicitly checking whether $match has at least two entries
-			if (($i!=0) && (count($match) >= 2)) {
-				// echo "$text\n";
-				$text = $match[1];
-			}
-		}
+        if ($Language == "en"){
+            $i = preg_match("/(==+ *External links *==+.*)?$/s", $text, $match);
+            //preg_match("/^(.*?)([\n\r] *==+ *External links *==+.*)?$/s", $text, $match);
+            // note that we get warnings here when not explicitly checking whether $match has at least two entries
+            if (($i!=0) && (count($match) >= 2)) {
+                // echo "$text\n";
+                $text = $match[1];
+            }
+        }
 
 
         $result = array();
@@ -100,7 +100,7 @@ class ExternalLinksExtractor extends Extractor
         return $result;
     }
 
-	function encode_title($s, $namespace = null) {
+    function encode_title($s, $namespace = null) {
         $result = urlencode(str_replace(' ', '_', $s));
         if ($namespace) {
             $result = $namespace . ":" . $result;
@@ -109,7 +109,7 @@ class ExternalLinksExtractor extends Extractor
     }
 
     function decode_title($s) {
-		if (is_null($s)) return null;
+        if (is_null($s)) return null;
         return preg_replace("/^.*:/", "", str_replace('_', ' ', $s));
     }
 

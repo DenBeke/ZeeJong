@@ -97,23 +97,23 @@ class Test2Exception extends Exception {}
 class TestOfCallingTearDownWithExceptions extends UnitTestCase {
     public function setUp() {
         $GLOBALS['setUp'] = true;
-	}
+    }
 
     public function tearDown() {
         $GLOBALS['tearDown'] = true;
     }
 
-    public function test1() { 
+    public function test1() {
         $this->assertTrue($GLOBALS['setUp']);
         $this->assertNull($GLOBALS['tearDown']);
         $this->expectException('Test1Exception');
         throw new Test1Exception(__FUNCTION__);
     }
 
-	public function test2() {
+    public function test2() {
         $this->assertTrue($GLOBALS['setUp']);
         $this->assertTrue($GLOBALS['tearDown']);
-		$this->expectException('Test2Exception');
-		throw new Test2Exception(__FUNCTION__);
-	}
+        $this->expectException('Test2Exception');
+        throw new Test2Exception(__FUNCTION__);
+    }
 }

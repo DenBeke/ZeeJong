@@ -6,7 +6,7 @@
  * This is the main test file.
  * Uncomment the tests you want to run and start this script.
  *
- * @author	Paul Kreis <mail@paulkreis.de>
+ * @author  Paul Kreis <mail@paulkreis.de>
  *
  */
 
@@ -17,7 +17,7 @@
 $outputFormat = 'line';
 
 if (! defined('SIMPLE_TEST')) {
-	define('SIMPLE_TEST', 'test/simpletest/');
+    define('SIMPLE_TEST', 'test/simpletest/');
 }
 
 require_once(SIMPLE_TEST . 'unit_tester.php');
@@ -66,15 +66,15 @@ $test->addTestCase(new UnitValueParserTest());
 //$test->addTestCase(new UtilTest());
 
 switch ($outputFormat) {
-	case 'html':
-	$test->run(new ShowPasses());
-	break;
+    case 'html':
+    $test->run(new ShowPasses());
+    break;
 
-	case 'lesshtml':
-	$test->run(new HtmlReporter());
-	break;
+    case 'lesshtml':
+    $test->run(new HtmlReporter());
+    break;
 
-	case 'line':
-	$test->run(new TextReporter());
-	break;
+    case 'line':
+    $test->run(new TextReporter());
+    break;
 }

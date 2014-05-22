@@ -11,16 +11,16 @@
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
  *
- * 	* Redistributions of source code must retain the above copyright notice, this list of
- * 	  conditions and the following disclaimer.
+ *  * Redistributions of source code must retain the above copyright notice, this list of
+ *    conditions and the following disclaimer.
  *
- * 	* Redistributions in binary form must reproduce the above copyright notice, this list
- * 	  of conditions and the following disclaimer in the documentation and/or other materials
- * 	  provided with the distribution.
+ *  * Redistributions in binary form must reproduce the above copyright notice, this list
+ *    of conditions and the following disclaimer in the documentation and/or other materials
+ *    provided with the distribution.
  *
- * 	* Neither the name of the SimplePie Team nor the names of its contributors may be used
- * 	  to endorse or promote products derived from this software without specific prior
- * 	  written permission.
+ *  * Neither the name of the SimplePie Team nor the names of its contributors may be used
+ *    to endorse or promote products derived from this software without specific prior
+ *    written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
  * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
@@ -53,62 +53,62 @@
  */
 interface SimplePie_Cache_Base
 {
-	/**
-	 * Feed cache type
-	 *
-	 * @var string
-	 */
-	const TYPE_FEED = 'spc';
+    /**
+     * Feed cache type
+     *
+     * @var string
+     */
+    const TYPE_FEED = 'spc';
 
-	/**
-	 * Image cache type
-	 *
-	 * @var string
-	 */
-	const TYPE_IMAGE = 'spi';
+    /**
+     * Image cache type
+     *
+     * @var string
+     */
+    const TYPE_IMAGE = 'spi';
 
-	/**
-	 * Create a new cache object
-	 *
-	 * @param string $location Location string (from SimplePie::$cache_location)
-	 * @param string $name Unique ID for the cache
-	 * @param string $type Either TYPE_FEED for SimplePie data, or TYPE_IMAGE for image data
-	 */
-	public function __construct($location, $name, $type);
+    /**
+     * Create a new cache object
+     *
+     * @param string $location Location string (from SimplePie::$cache_location)
+     * @param string $name Unique ID for the cache
+     * @param string $type Either TYPE_FEED for SimplePie data, or TYPE_IMAGE for image data
+     */
+    public function __construct($location, $name, $type);
 
-	/**
-	 * Save data to the cache
-	 *
-	 * @param array|SimplePie $data Data to store in the cache. If passed a SimplePie object, only cache the $data property
-	 * @return bool Successfulness
-	 */
-	public function save($data);
+    /**
+     * Save data to the cache
+     *
+     * @param array|SimplePie $data Data to store in the cache. If passed a SimplePie object, only cache the $data property
+     * @return bool Successfulness
+     */
+    public function save($data);
 
-	/**
-	 * Retrieve the data saved to the cache
-	 *
-	 * @return array Data for SimplePie::$data
-	 */
-	public function load();
+    /**
+     * Retrieve the data saved to the cache
+     *
+     * @return array Data for SimplePie::$data
+     */
+    public function load();
 
-	/**
-	 * Retrieve the last modified time for the cache
-	 *
-	 * @return int Timestamp
-	 */
-	public function mtime();
+    /**
+     * Retrieve the last modified time for the cache
+     *
+     * @return int Timestamp
+     */
+    public function mtime();
 
-	/**
-	 * Set the last modified time to the current time
-	 *
-	 * @return bool Success status
-	 */
-	public function touch();
+    /**
+     * Set the last modified time to the current time
+     *
+     * @return bool Success status
+     */
+    public function touch();
 
-	/**
-	 * Remove the cache
-	 *
-	 * @return bool Success status
-	 */
-	public function unlink();
+    /**
+     * Remove the cache
+     *
+     * @return bool Success status
+     */
+    public function unlink();
 }

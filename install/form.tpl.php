@@ -1,27 +1,27 @@
 <form method="post" class="pure-form">
-	
-	<fieldset class="pure-group">
-		
-		<input type="text" name="host" class="pure-input-1-2" placeholder="host">
-		<input type="text" name="port" class="pure-input-1-2" placeholder="port">
-		<input type="text" name="database" class="pure-input-1-2" placeholder="database name" required="required">
-		
-	</fieldset>
-		
-	<fieldset class="pure-group">
-		
-		<input type="text" name="username" class="pure-input-1-2" placeholder="username" required="required">
-		<input type="password" name="password" class="pure-input-1-2" placeholder="password" required="required">
-		
-	</fieldset>
-	
-	<fieldset class="pure-group">
-		
-		<input type="text" name="adminUsername" class="pure-input-1-2" placeholder="Admin Username" required="required">
-		<input type="email" name="adminEmail" class="pure-input-1-2" placeholder="Admin Email" required="required">
-		<input type="password" name="adminPassword" class="pure-input-1-2" placeholder="Admin Password" required="required">
-		
-	</fieldset>
-	
-	<input type="submit" name="submit" value="Submit" class="pure-button pure-input-1-2 pure-button-primary">
+
+    <fieldset class="pure-group">
+
+        <input type="text" name="host" class="pure-input-1-2" placeholder="host">
+        <input type="text" name="port" class="pure-input-1-2" placeholder="port">
+        <input type="text" name="database" class="pure-input-1-2" placeholder="database name" required="required">
+
+    </fieldset>
+
+    <fieldset class="pure-group">
+
+        <input type="text" name="username" class="pure-input-1-2" placeholder="username" required="required">
+        <input type="password" name="password" class="pure-input-1-2" placeholder="password" required="required">
+
+    </fieldset>
+
+    <fieldset class="pure-group">
+
+        <input type="text" name="adminUsername" class="pure-input-1-2" placeholder="Admin Username" required="required">
+        <input type="email" name="adminEmail" class="pure-input-1-2" placeholder="Admin Email" required="required">
+        <input type="password" name="adminPassword" class="pure-input-1-2" placeholder="Admin Password" required="required">
+
+    </fieldset>
+
+    <input type="submit" name="submit" value="Submit" class="pure-button pure-input-1-2 pure-button-primary">
 </form>

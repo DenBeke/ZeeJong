@@ -2,8 +2,8 @@
 
 /**
  * Gets the Wikipedia PageSource directly from Wikipedia over Http.
- * 
- * 
+ *
+ *
  */
 
 class LiveWikipediaCollection implements PageCollection {
@@ -16,16 +16,16 @@ class LiveWikipediaCollection implements PageCollection {
     }
     public function getSource($pageID) {
         $url = "http://{$this->language}.wikipedia.org/wiki/Special:Export/$pageID";
-		//echo $url; die;
-		$context = stream_context_create(
+        //echo $url; die;
+        $context = stream_context_create(
                 array(
                         "http" => array(
                                 "user_agent" => "DBpedia"
                         )
                 ));
-		//echo $context;die;
+        //echo $context;die;
         $xml = simplexml_load_string(file_get_contents($url, false, $context));
-		//echo  $xml->page->revision->text;die;
+        //echo  $xml->page->revision->text;die;
         return $xml->page->revision->text;
     }
 }

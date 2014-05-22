@@ -5,7 +5,7 @@
  * 
  */
 interface RDFnode {
-	public function myValidate();
+    public function myValidate();
     public function isURI();
     public function isBlank();
     public function isLiteral();
@@ -15,7 +15,7 @@ interface RDFnode {
     public function getLanguage();
     public function getDatatype();
     public function toNTriples();
-	public function toCSV();
+    public function toCSV();
 }
 
 

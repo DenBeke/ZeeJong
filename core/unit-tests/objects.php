@@ -14,9 +14,9 @@ namespace UnitTest;
 @brief Datastructure for a scenario of tests
 */
 class Scenario {
-	public $numberOfTest = 0;
-	public $numberOfFailures = 0;
-	public $tests = array();
+    public $numberOfTest = 0;
+    public $numberOfFailures = 0;
+    public $tests = array();
 }
 
 
@@ -26,8 +26,8 @@ class Scenario {
 */
 class TestCase {
 
-	public $name;
-	public $sections = array();
+    public $name;
+    public $sections = array();
 
 }
 
@@ -37,9 +37,9 @@ class TestCase {
 */
 class TestSection {
 
-	public $name;
-	public $tests = array();
-	public $success = true;
+    public $name;
+    public $tests = array();
+    public $success = true;
 
 }
 

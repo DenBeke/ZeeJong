@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once(dirname(__FILE__) . '/wiki.php');
 
 error_reporting(E_ALL);

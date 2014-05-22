@@ -14,52 +14,52 @@ The class contains the following information:
 - date
 */
 class Coaches {
-	private $id;
-	private $teamId;
-	private $coachId;
+    private $id;
+    private $teamId;
+    private $coachId;
 
-	/**
-	Constructor
-	@param id
-	*/
-	public function __construct($id, $teamId, $coachId) {
-		$this->id = $id;
-		$this->teamId = $teamId;
-		$this->coachId = $coachId;
-	}
+    /**
+    Constructor
+    @param id
+    */
+    public function __construct($id, $teamId, $coachId) {
+        $this->id = $id;
+        $this->teamId = $teamId;
+        $this->coachId = $coachId;
+    }
 
-	/**
-	Get the ID of the coaches relation
-	@return id
-	*/
-	public function getId() {
-		return $this->id;
-	}
+    /**
+    Get the ID of the coaches relation
+    @return id
+    */
+    public function getId() {
+        return $this->id;
+    }
 
-	/**
-	Get the ID of the coach
-	@return coachId
-	*/
-	public function getCoach() {
-		return $this->coachId;
-	}
+    /**
+    Get the ID of the coach
+    @return coachId
+    */
+    public function getCoach() {
+        return $this->coachId;
+    }
 
-	/**
-	Get the ID of the team
-	@return teamId
-	*/
-	public function getTeam() {
-		return $this->teamId;
-	}
+    /**
+    Get the ID of the team
+    @return teamId
+    */
+    public function getTeam() {
+        return $this->teamId;
+    }
 
 
-	/**
-	String function
-	@return string
-	*/
-	public function __toString() {
-		return "ID: $this->id";
-	}
+    /**
+    String function
+    @return string
+    */
+    public function __toString() {
+        return "ID: $this->id";
+    }
 
 }
 ?>

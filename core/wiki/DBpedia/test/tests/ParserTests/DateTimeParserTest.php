@@ -8,7 +8,7 @@
  * output from the DateTimeParser class with the expected results in
  * the testDates.xml
  *
- * @author	Paul Kreis <mail@paulkreis.de>
+ * @author  Paul Kreis <mail@paulkreis.de>
  *
  */
 require_once('parsers/Parser.php');

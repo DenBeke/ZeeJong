@@ -6,9 +6,9 @@ SimpleTest::ignore('MockTestSuite');
 Mock::generate('TestSuite');
 
 class PathEqualExpectation extends EqualExpectation {
-	function PathEqualExpectation($value, $message = '%s') {
-    	$this->EqualExpectation(str_replace("\\", '/', $value), $message);
-	}
+    function PathEqualExpectation($value, $message = '%s') {
+        $this->EqualExpectation(str_replace("\\", '/', $value), $message);
+    }
 
     function test($compare) {
         return parent::test(str_replace("\\", '/', $compare));
@@ -43,7 +43,7 @@ class TestOfPatternCollector extends UnitTestCase {
     function testOnlyMatchedFilesAreAddedToGroup() {
         $suite = &new MockTestSuite();
         $suite->expectOnce('addTestFile', array(new PathEqualExpectation(
-        		dirname(__FILE__) . '/support/collector/collectable.1')));
+                dirname(__FILE__) . '/support/collector/collectable.1')));
         $collector = &new SimplePatternCollector('/1$/');
         $collector->collect($suite, dirname(__FILE__) . '/support/collector/');
     }

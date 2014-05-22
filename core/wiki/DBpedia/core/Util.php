@@ -12,28 +12,28 @@ class Util {
     const replacePatternSubTemplates = "***---***---***---***---";
 
 
-	public static function getOaiIDfromIdentifier($language, $oaiidentifier){
-			//oai:en.wikipedia.org:enwiki:1717878
-			$prefix = "oai:".$language.".wikipedia.org:".$language."wiki:";
-			return str_replace($prefix,"", $oaiidentifier);
-	 }
+    public static function getOaiIDfromIdentifier($language, $oaiidentifier){
+            //oai:en.wikipedia.org:enwiki:1717878
+            $prefix = "oai:".$language.".wikipedia.org:".$language."wiki:";
+            return str_replace($prefix,"", $oaiidentifier);
+     }
 
-	 //md5 until somebody finds a better one
-	 //maybe md5 is good, I tested it on the whole dbpedia ntriple set
-	 // and it produces 0 collisions
-	 public static function defaultHashFunction($str){
-		 	return md5(trim($str));
-		 }
+     //md5 until somebody finds a better one
+     //maybe md5 is good, I tested it on the whole dbpedia ntriple set
+     // and it produces 0 collisions
+     public static function defaultHashFunction($str){
+            return md5(trim($str));
+         }
 
-	/**
-	 * Get templates from given text
-	 *
-	 * @param string $text
-	 * @return array templates
-	 */
-	public static function getTemplates($text) {
+    /**
+     * Get templates from given text
+     *
+     * @param string $text
+     * @return array templates
+     */
+    public static function getTemplates($text) {
         $result_templates = array();
-		preg_match_all('/\{{2}(((?>[^\{\}]+)|(?R))*)\}{2}/x', $text, $templates); // search {{....}}
+        preg_match_all('/\{{2}(((?>[^\{\}]+)|(?R))*)\}{2}/x', $text, $templates); // search {{....}}
         foreach($templates[1] as $template) {
             $template = Util::removeComments($template);
 
@@ -43,11 +43,11 @@ class Util {
 
             $result_templates[]["content"] = $template;
             if (strlen($template_name) > 0) {
-	            $result_templates[sizeof($result_templates)-1]["name"] = $template_name;
+                $result_templates[sizeof($result_templates)-1]["name"] = $template_name;
             }
         }
         return $result_templates;
-	}
+    }
 
         public function encodeLocalName($string) {
             $string = strtolower(trim($string));
@@ -61,13 +61,13 @@ class Util {
         }
 
 
-	/**
-	 * Get properties from template
-	 *
-	 * @param string $template
-	 * @return array properties
-	 */
-	public static function getTemplateProperties($template) {
+    /**
+     * Get properties from template
+     *
+     * @param string $template
+     * @return array properties
+     */
+    public static function getTemplateProperties($template) {
         //Replace "|" inside labeled links with  to avoid splitting them like triples
         $template = preg_replace('/\[\[([^\]]+)\|([^\]]*)\]\]/','[[\1'.Util::replacePatternLinks.'\2]]', $template);
         // Replace "|" inside subtemplates with "\\" to avoid splitting them like triples
@@ -83,18 +83,18 @@ class Util {
             $properties[$id][2] = trim($keyvalue[2]);
         }
         return $properties;
-	}
+    }
 
     public static function replaceBarInSubTemplate($stringArray) {
         return str_replace("|", Util::replacePatternSubTemplates, $stringArray[0]);
     }
 
     /**
-	 * Replace Template Code with compiled Template
-	 *
-	 * @param string $text
-	 * @return text
-	 */
+     * Replace Template Code with compiled Template
+     *
+     * @param string $text
+     * @return text
+     */
     public static function replaceTemplates($text) {
         //$url = "http://160.45.137.78:88/wikipedia_tpl/index.php/Albert_Einstein?tpl=".urlencode($text);
         //$text = file_get_contents($url);
@@ -102,46 +102,46 @@ class Util {
     }
 
     /**
-	 * Replace Wiki Links with their labels
-	 *
-	 * @param string $text
-	 * @return text
-	 */
+     * Replace Wiki Links with their labels
+     *
+     * @param string $text
+     * @return text
+     */
     public static function replaceWikiLinks($text) {
         $text = preg_replace_callback("/\[\[([^|]*?)(\|.*?)?\]\]/",'Util::getLabelForLink', $text);
         return $text;
     }
 
     /**
-	 * Remove comment sections
-	 *
-	 * @param string $text
-	 * @return text
-	 */
+     * Remove comment sections
+     *
+     * @param string $text
+     * @return text
+     */
     public static function removeComments($text) {
         $text = preg_replace("/\s*<!--.*?-->\s*/s", "", $text);
         return $text;
     }
 
     /**
-	 * Remove templates
-	 *
-	 * @param string $text
-	 * @return text
-	 */
+     * Remove templates
+     *
+     * @param string $text
+     * @return text
+     */
     public static function removeTemplates($text) {
         $text = preg_replace('/\{{2}((?>[^\{\}]+)|(?R))*\}{2}/x', "", $text);
         return $text;
     }
 
     /**
-	 * Remove HTML tags
-	 *
-	 * @param string $text
-	 * @param array $tags_to_remove
-	 * @param array $tags_to_keep
-	 * @return text
-	 */
+     * Remove HTML tags
+     *
+     * @param string $text
+     * @param array $tags_to_remove
+     * @param array $tags_to_keep
+     * @return text
+     */
     public static function removeHtmlTags($text, $tags_to_remove = null, $tags_to_keep = null) {
         if ($tags_to_remove) {
             if ($tags_to_keep) {
@@ -187,22 +187,22 @@ class Util {
     }
 
     /**
-	 * Remove HTML comments
-	 *
-	 * @param string $text
-	 * @return text
-	 */
+     * Remove HTML comments
+     *
+     * @param string $text
+     * @return text
+     */
     public static function removeHtmlComments($text) {
         $text = preg_replace("/<!--(.*?)-->/s", "$1", $text);
         return $text;
     }
 
     /**
-	 * Remove Wiki emphasis
-	 *
-	 * @param string $text
-	 * @return text
-	 */
+     * Remove Wiki emphasis
+     *
+     * @param string $text
+     * @return text
+     */
     public static function removeWikiEmphasis($text) {
         $text = preg_replace("/'''''(.*?)'''''/s", "$1", $text);
         $text = preg_replace("/'''(.*?)'''/s", "$1", $text);
@@ -211,43 +211,43 @@ class Util {
     }
 
 
-	private static function _getMediaWikiNamespace($language, $what){
-			global $MEDIAWIKI_NAMESPACES;
-			//echo $language.$what;die;
-			if(!in_array($what, $MEDIAWIKI_NAMESPACES['legal'])){
-				Logger::error('no namespace for '.$what.' illegal use, does not exist');
-				};
-			if(!isset($MEDIAWIKI_NAMESPACES[$language])){
-				Logger::warn('namespaces not set in core/language_namespaces for: '.$language);
-				$MEDIAWIKI_NAMESPACES[$language] = array();
-			 }
-			if(!isset($MEDIAWIKI_NAMESPACES[$language][$what])){
-				Logger::warn('no namespace for '.$what.' in language: '.$language.' in core/language_namespaces using english instead of: '.$language);
-				$MEDIAWIKI_NAMESPACES[$language][$what] = $MEDIAWIKI_NAMESPACES['en'][$what];
-			}
-			return $MEDIAWIKI_NAMESPACES[$language][$what];
-		}
+    private static function _getMediaWikiNamespace($language, $what){
+            global $MEDIAWIKI_NAMESPACES;
+            //echo $language.$what;die;
+            if(!in_array($what, $MEDIAWIKI_NAMESPACES['legal'])){
+                Logger::error('no namespace for '.$what.' illegal use, does not exist');
+                };
+            if(!isset($MEDIAWIKI_NAMESPACES[$language])){
+                Logger::warn('namespaces not set in core/language_namespaces for: '.$language);
+                $MEDIAWIKI_NAMESPACES[$language] = array();
+             }
+            if(!isset($MEDIAWIKI_NAMESPACES[$language][$what])){
+                Logger::warn('no namespace for '.$what.' in language: '.$language.' in core/language_namespaces using english instead of: '.$language);
+                $MEDIAWIKI_NAMESPACES[$language][$what] = $MEDIAWIKI_NAMESPACES['en'][$what];
+            }
+            return $MEDIAWIKI_NAMESPACES[$language][$what];
+        }
 
-	public static function getDBpediaCategoryPrefix($language){
-			return DB_RESOURCE_NS . urlencode(self::_getMediaWikiNamespace($language, MW_CATEGORY_NAMESPACE)).':';
-		}
+    public static function getDBpediaCategoryPrefix($language){
+            return DB_RESOURCE_NS . urlencode(self::_getMediaWikiNamespace($language, MW_CATEGORY_NAMESPACE)).':';
+        }
 
-	public static function getMediaWikiCategoryNamespace($language){
-			return self::_getMediaWikiNamespace($language, MW_CATEGORY_NAMESPACE);
-		}
+    public static function getMediaWikiCategoryNamespace($language){
+            return self::_getMediaWikiNamespace($language, MW_CATEGORY_NAMESPACE);
+        }
 
-	public static function getMediaWikiNamespace($language, $what){
-			//global $MEDIAWIKI_NAMESPACES;
-			return self::_getMediaWikiNamespace($language, $what);
-		}
+    public static function getMediaWikiNamespace($language, $what){
+            //global $MEDIAWIKI_NAMESPACES;
+            return self::_getMediaWikiNamespace($language, $what);
+        }
 
     /**
-	 * Determines whether an article is a redirect.
-	 *
-	 * @param string $pageSource
-	 * @param string $language
-	 * @return boolean
-	 */
+     * Determines whether an article is a redirect.
+     *
+     * @param string $pageSource
+     * @param string $language
+     * @return boolean
+     */
     public static function isRedirect($pageSource, $language) {
 
         // dbpedia.php requires the redirects.php with creates the MEDIAWIKI_REDIRECTS array
@@ -265,23 +265,23 @@ class Util {
     }
 
     /**
-	 * Determines whether an article is a disambiguation.
-	 *
-	 * @param string $pageSource
-	 * @param string $language
-	 * @return boolean
-	 */
+     * Determines whether an article is a disambiguation.
+     *
+     * @param string $pageSource
+     * @param string $language
+     * @return boolean
+     */
     public static function isDisambiguation($pageSource, $language) {
 
         // dbpedia.php requires the disambig.php with creates the MEDIAWIKI_DISAMBIGUATIONS array
         global $MEDIAWIKI_DISAMBIGUATIONS;
-		if (isset($MEDIAWIKI_DISAMBIGUATIONS[$language])) {
-			foreach ($MEDIAWIKI_DISAMBIGUATIONS[$language] as $disambig) {
-				if (strpos($pageSource, '{{'.$disambig.'}}') !== false) {
-					return true;
-				}
-			}
-		}
+        if (isset($MEDIAWIKI_DISAMBIGUATIONS[$language])) {
+            foreach ($MEDIAWIKI_DISAMBIGUATIONS[$language] as $disambig) {
+                if (strpos($pageSource, '{{'.$disambig.'}}') !== false) {
+                    return true;
+                }
+            }
+        }
 
         switch ($language) {
             case 'en' :
@@ -482,22 +482,22 @@ class Util {
     }
 
     /**
-	 * Writes a log message
-	 *
-	 * @param string $pageID
-	 * @param string $extractorID
-	 * @param string $language
-	 * @param string $propValue
-	 * @param string $propName
-	 * @param string $msg
-	 */
+     * Writes a log message
+     *
+     * @param string $pageID
+     * @param string $extractorID
+     * @param string $language
+     * @param string $propValue
+     * @param string $propName
+     * @param string $msg
+     */
     public static function writeLogMsg($pageID, $extractorID, $language , $propName, $propValue, $msg = "(none)") {
         $message = $extractorID." has caused a error:
-            pageID: 		".$pageID."
-            language: 		".$language."
-            proberty name: 	".$propName."
+            pageID:         ".$pageID."
+            language:       ".$language."
+            proberty name:  ".$propName."
             property value: ".$propValue."
-            message: 		".$msg;
+            message:        ".$msg;
         Logger::error($message);
     }
 
