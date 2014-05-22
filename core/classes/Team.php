@@ -79,6 +79,11 @@ class Team implements JsonSerializable {
         return $this->db->getTotalMatchesWonByTeam($this->id);
     }
 
+    public function getTotalNumberOfDrawMatches() {
+        return $this->db->getTotalMatchesDrawPlayer($this->id);
+    }
+
+
     public function getTotalPlayedMatches() {
         return $this->db->getTotalMatchesPlayedByTeam($this->id);
     }
