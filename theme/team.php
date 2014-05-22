@@ -135,7 +135,7 @@ Created: February 2014
 
     <?php if($this->team->getTotalPlayedMatches() != 0) { ?>
 
-    <div class="col-md-12">
+    <div class="col-md-8">
 
         <h3>Overall Stats</h3>
 
@@ -173,7 +173,7 @@ Created: February 2014
                         cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
-                            format: '<b>{point.name}</b>: {point.y}',
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                             style: {
                                 color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                             }
@@ -184,9 +184,9 @@ Created: February 2014
                     type: 'pie',
                     name: 'Total',
                     data: [
-                        ['Won',       <?php echo $this->team->getTotalNumberOfWonMatches(); ?>],
+                        ['Won',       <?php echo $this->team->getTotalWonMatches(); ?>],
                         ['Draws',   <?php echo $this->team->getTotalNumberOfDrawMatches(); ?>],
-                        ['Lost',    <?php echo $this->team->getTotalNumberOfMatches() - $this->player->getTotalNumberOfWonMatches() - $this->player->getTotalNumberOfDrawMatches(); ?>]
+                        ['Lost',    <?php echo $this->team->getTotalPlayedMatches() - $this->team->getTotalWonMatches() - $this->team->getTotalNumberOfDrawMatches(); ?>]
                     ]
                 }]
             });
