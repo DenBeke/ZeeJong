@@ -142,6 +142,10 @@ class Player implements JsonSerializable {
         return $this->db->getTotalMatchesWonByPlayer($this->id);
     }
 
+    public function getTotalNumberOfDrawMatches() {
+        return $this->db->getTotalMatchesDrawPlayer($this->id);
+    }
+
 
     public function getPlayedMatchesStats() {
 
