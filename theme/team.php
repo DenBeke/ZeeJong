@@ -133,5 +133,17 @@ Created: February 2014
 		
 	</div>
 
+	<?php if($this->team->getTotalPlayedMatches() != 0) { ?>
+
+	<div class="col-md-12">
+	
+		<h3>Overall Stats</h3>	
+		
+		<?php generateChart($this->team->getOverallStats(), 1, 'column'); ?>
+		
+	</div>	
+
+	<?php } ?>	
+
 
 </div>

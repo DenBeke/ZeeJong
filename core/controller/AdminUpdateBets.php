@@ -1,6 +1,6 @@
 <?php
 /*
- Admin Controller
+ Admin Bet Updater Controller
 
  Created May 2014
  */

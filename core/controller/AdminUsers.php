@@ -1,6 +1,6 @@
 <?php
 /*
- Admin Controller
+ Admin Users Controller
 
  Created May 2014
  */
