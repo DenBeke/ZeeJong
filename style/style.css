@@ -469,3 +469,8 @@ h3 .btn {
 
 
 
+/* Pijltjes voor de sortable table*/
+table.table-striped .header {
+	cursor: pointer;
+}
+
