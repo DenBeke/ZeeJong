@@ -5,7 +5,17 @@
  Created March 2014
  */
  ?>
+<SCRIPT LANGUAGE="JavaScript">
+                <!--   
+           
+           $(document).ready(function() 
+    { 
+        $("#users").tablesorter(); 
+    } 
+); 
 
+  //-->
+            </SCRIPT>
 
 
     <div class="container">
@@ -43,7 +53,7 @@
             <div class=top-left><div class=badge><h1><?php echo $this->getGroup()->getName() ?></h1></div></div>
             <div class="col-md-5">
                 <h2>Members</h2>
-                <table class="sortable">
+                <table id="users" class="table table-striped"> 
                 	<thead>
                     <tr>
                         <th>Name</th>
@@ -72,9 +82,6 @@
                                     <button type="submit" class="btn btn-warning" >Remove</button>
                                 </td>
                                 </form>
-
-
-
                             <?php
                             }
                             if($this->mayGroupBeDeleted()){
@@ -97,17 +104,14 @@
                                     <button type="submit" class="btn btn-warning" >Leave</button>
                                 </td>
                                 </form>
-
-
-
                             <?php
                             }
                         ?>
                 </tr>
-                </tbody>
-
+                
                 <?php } ?>
-                </table>
+                </tbody>
+                </table>  
             </div>
 
 
@@ -183,7 +187,6 @@
                     <th>Amount</th>
                 </tr>
                     <?php
-                    // Heel dit zal opnieuw gemaakt worden, dus heeft geen zin om nu $database weg te doen
                     $bets = $this -> getGroup() -> getHandledbets();
                     foreach ($bets as $betId) {
                         $bet = new Bet($betId);
