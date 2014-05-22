@@ -3,9 +3,12 @@ include (dirname(__FILE__) . '/admin.php');
 $this -> update();
 ?>
 <div class="container">
-<div class=col-md-10>
+    
+    <p></p>
+    
+<div class=col-md-12>
 <div class="alert alert-success">
-    <h2>Successfully processed bets</h2>
+    Successfully processed bets
 </div>
 
 <table class="table table-striped">
