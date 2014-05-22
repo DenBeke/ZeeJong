@@ -123,6 +123,10 @@ namespace Controller {
                 $this->openidName = $_GET['first'];
                 $this->openidEmail = $_GET['email'];
 
+                if ($this->openidEmail == 'undefined') {
+                    $this->openidEmail = '';
+                }
+
                 $this->alternativeLogin();
             }
             else {
