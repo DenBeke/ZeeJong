@@ -139,7 +139,7 @@ Created: February 2014
     </div>
 
 
-    <div class="col-md-12">
+    <div class="col-md-8">
 
         <h3>Matches Played Last Year</h3>
 
@@ -147,6 +147,11 @@ Created: February 2014
         generateChart(['Matches' => $this->player->getPlayedMatchesStats(), 'Matches won' => $this->player->getWonMatchesStats()], $this->player->getId()+1, 'column');
         ?>
 
+    </div>
+    
+    
+    <div class="col-md-4">
+        <div id="graph-matches-won"></div>
     </div>
 
 
@@ -168,11 +173,6 @@ Created: February 2014
 
     <?php } ?>
     
-    
-    
-    <div class="col-md-6">
-        <div id="graph-matches-won"></div>
-    </div>
     
     
     
