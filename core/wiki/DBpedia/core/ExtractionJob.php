@@ -1,16 +1,16 @@
 <?php
 
 /**
- * An ExtractionJob connects a pageCollection (data source) with 
+ * An ExtractionJob connects a pageCollection (data source) with
  * ExtractionGroups (Extractors + Destinations)
- * 
+ *
  */
 
 class ExtractionJob {
     private $pageCollection;
     private $pageTitleIterator;
     private $extractionGroups = array();
-   
+
     public function __construct($pageCollection, $pageTitleIterator) {
         $this->pageCollection = $pageCollection;
         $this->pageTitleIterator = $pageTitleIterator;

@@ -666,7 +666,7 @@ class TestOfMockingClassesWithStaticMethods extends UnitTestCase {
     function skip() {
         $this->skipUnless(version_compare(phpversion(), '5', '>='));
     }
-    
+
     function testStaticMethodIsMockedAsStatic() {
         $mock = new WithStaticMethod();
         $reflection = new ReflectionClass($mock);

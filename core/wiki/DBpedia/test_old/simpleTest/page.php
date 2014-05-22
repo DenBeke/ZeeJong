@@ -1,13 +1,13 @@
 <?php
 /**
- *	Base include file for SimpleTest
- *	@package	SimpleTest
- *	@subpackage	WebTester
- *	@version	$Id: page.php,v 1.136 2007/07/16 22:28:39 lastcraft Exp $
+ *  Base include file for SimpleTest
+ *  @package    SimpleTest
+ *  @subpackage WebTester
+ *  @version    $Id: page.php,v 1.136 2007/07/16 22:28:39 lastcraft Exp $
  */
 
 /**#@+
-    *	include other SimpleTest class files
+    *   include other SimpleTest class files
     */
 require_once(dirname(__FILE__) . '/http.php');
 require_once(dirname(__FILE__) . '/parser.php');
@@ -129,7 +129,7 @@ class SimplePageBuilder extends SimpleSaxListener {
     function SimplePageBuilder() {
         $this->SimpleSaxListener();
     }
-    
+
     /**
      *    Frees up any references so as to allow the PHP garbage
      *    collection from unset() to work.
@@ -178,7 +178,7 @@ class SimplePageBuilder extends SimpleSaxListener {
         $parser = &new SimpleHtmlSaxParser($listener);
         return $parser;
     }
-    
+
     /**
      *    Start of element event. Opens a new tag.
      *    @param string $name         Element name.

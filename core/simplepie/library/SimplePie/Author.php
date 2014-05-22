@@ -11,16 +11,16 @@
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
  *
- * 	* Redistributions of source code must retain the above copyright notice, this list of
- * 	  conditions and the following disclaimer.
+ *  * Redistributions of source code must retain the above copyright notice, this list of
+ *    conditions and the following disclaimer.
  *
- * 	* Redistributions in binary form must reproduce the above copyright notice, this list
- * 	  of conditions and the following disclaimer in the documentation and/or other materials
- * 	  provided with the distribution.
+ *  * Redistributions in binary form must reproduce the above copyright notice, this list
+ *    of conditions and the following disclaimer in the documentation and/or other materials
+ *    provided with the distribution.
  *
- * 	* Neither the name of the SimplePie Team nor the names of its contributors may be used
- * 	  to endorse or promote products derived from this software without specific prior
- * 	  written permission.
+ *  * Neither the name of the SimplePie Team nor the names of its contributors may be used
+ *    to endorse or promote products derived from this software without specific prior
+ *    written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
  * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
@@ -54,104 +54,104 @@
  */
 class SimplePie_Author
 {
-	/**
-	 * Author's name
-	 *
-	 * @var string
-	 * @see get_name()
-	 */
-	var $name;
+    /**
+     * Author's name
+     *
+     * @var string
+     * @see get_name()
+     */
+    var $name;
 
-	/**
-	 * Author's link
-	 *
-	 * @var string
-	 * @see get_link()
-	 */
-	var $link;
+    /**
+     * Author's link
+     *
+     * @var string
+     * @see get_link()
+     */
+    var $link;
 
-	/**
-	 * Author's email address
-	 *
-	 * @var string
-	 * @see get_email()
-	 */
-	var $email;
+    /**
+     * Author's email address
+     *
+     * @var string
+     * @see get_email()
+     */
+    var $email;
 
-	/**
-	 * Constructor, used to input the data
-	 *
-	 * @param string $name
-	 * @param string $link
-	 * @param string $email
-	 */
-	public function __construct($name = null, $link = null, $email = null)
-	{
-		$this->name = $name;
-		$this->link = $link;
-		$this->email = $email;
-	}
+    /**
+     * Constructor, used to input the data
+     *
+     * @param string $name
+     * @param string $link
+     * @param string $email
+     */
+    public function __construct($name = null, $link = null, $email = null)
+    {
+        $this->name = $name;
+        $this->link = $link;
+        $this->email = $email;
+    }
 
-	/**
-	 * String-ified version
-	 *
-	 * @return string
-	 */
-	public function __toString()
-	{
-		// There is no $this->data here
-		return md5(serialize($this));
-	}
+    /**
+     * String-ified version
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        // There is no $this->data here
+        return md5(serialize($this));
+    }
 
-	/**
-	 * Author's name
-	 *
-	 * @return string|null
-	 */
-	public function get_name()
-	{
-		if ($this->name !== null)
-		{
-			return $this->name;
-		}
-		else
-		{
-			return null;
-		}
-	}
+    /**
+     * Author's name
+     *
+     * @return string|null
+     */
+    public function get_name()
+    {
+        if ($this->name !== null)
+        {
+            return $this->name;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	/**
-	 * Author's link
-	 *
-	 * @return string|null
-	 */
-	public function get_link()
-	{
-		if ($this->link !== null)
-		{
-			return $this->link;
-		}
-		else
-		{
-			return null;
-		}
-	}
+    /**
+     * Author's link
+     *
+     * @return string|null
+     */
+    public function get_link()
+    {
+        if ($this->link !== null)
+        {
+            return $this->link;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	/**
-	 * Author's email address
-	 *
-	 * @return string|null
-	 */
-	public function get_email()
-	{
-		if ($this->email !== null)
-		{
-			return $this->email;
-		}
-		else
-		{
-			return null;
-		}
-	}
+    /**
+     * Author's email address
+     *
+     * @return string|null
+     */
+    public function get_email()
+    {
+        if ($this->email !== null)
+        {
+            return $this->email;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
 

@@ -5,7 +5,7 @@ require_once(dirname(__FILE__) . '/../socket.php');
 Mock::generate('SimpleSocket');
 
 class TestOfSimpleStickyError extends UnitTestCase {
-    
+
     function testSettingError() {
         $error = new SimpleStickyError();
         $this->assertFalse($error->isError());
@@ -13,7 +13,7 @@ class TestOfSimpleStickyError extends UnitTestCase {
         $this->assertTrue($error->isError());
         $this->assertEqual($error->getError(), 'Ouch');
     }
-    
+
     function testClearingError() {
         $error = new SimpleStickyError();
         $error->_setError('Ouch');

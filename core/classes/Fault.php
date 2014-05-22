@@ -12,38 +12,38 @@ The class contains the following information:
 - time
 */
 class Fault {
-	private $id;
-	private $time;
+    private $id;
+    private $time;
 
-	/**
-	Constructor
-	@param id
-	*/
-	public function __construct($id) {
-		$this->id = $id;
-	}
+    /**
+    Constructor
+    @param id
+    */
+    public function __construct($id) {
+        $this->id = $id;
+    }
 
-	/**
-	Get the ID of the fault
-	@return id
-	*/
-	public function getId() {
-		return $this->id;
-	}
-	
-	
-	public function getTime() {
-		
-	}
-	
+    /**
+    Get the ID of the fault
+    @return id
+    */
+    public function getId() {
+        return $this->id;
+    }
 
-	/**
-	String function
-	@return string
-	*/
-	public function __toString() {
-		return "ID: $this->id";
-	}
+
+    public function getTime() {
+
+    }
+
+
+    /**
+    String function
+    @return string
+    */
+    public function __toString() {
+        return "ID: $this->id";
+    }
 
 }
 ?>

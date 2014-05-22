@@ -1,13 +1,13 @@
 <?php
     /**
-     *	base include file for SimpleTest
-     *	@package	SimpleTest
-     *	@subpackage	UnitTester
-     *	@version	$Id: reporter.php,v 1.44 2007/05/28 18:34:58 lastcraft Exp $
+     *  base include file for SimpleTest
+     *  @package    SimpleTest
+     *  @subpackage UnitTester
+     *  @version    $Id: reporter.php,v 1.44 2007/05/28 18:34:58 lastcraft Exp $
      */
 
     /**#@+
-     *	include other SimpleTest class files
+     *  include other SimpleTest class files
      */
     require_once(dirname(__FILE__) . '/scorer.php');
     /**#@-*/
@@ -15,8 +15,8 @@
     /**
      *    Sample minimal test displayer. Generates only
      *    failure messages and a pass count.
-	 *	  @package SimpleTest
-	 *	  @subpackage UnitTester
+     *    @package SimpleTest
+     *    @subpackage UnitTester
      */
     class HtmlReporter extends SimpleReporter {
         var $_character_set;
@@ -149,20 +149,20 @@
                     ' line ' . $exception->getLine() . ']';
             print " -&gt; <strong>" . $this->_htmlEntities($message) . "</strong><br />\n";
         }
-		
-		/**
-		 *    Prints the message for skipping tests.
+
+        /**
+         *    Prints the message for skipping tests.
          *    @param string $message    Text of skip condition.
          *    @access public
          */
-		function paintSkip($message) {
+        function paintSkip($message) {
             parent::paintSkip($message);
             print "<span class=\"pass\">Skipped</span>: ";
             $breadcrumb = $this->getTestList();
             array_shift($breadcrumb);
             print implode(" -&gt; ", $breadcrumb);
             print " -&gt; " . $this->_htmlEntities($message) . "<br />\n";
-		}
+        }
 
         /**
          *    Paints formatted text such as dumped variables.
@@ -190,8 +190,8 @@
      *    line use. I've tried to make it look like JUnit,
      *    but I wanted to output the errors as they arrived
      *    which meant dropping the dots.
-	 *	  @package SimpleTest
-	 *	  @subpackage UnitTester
+     *    @package SimpleTest
+     *    @subpackage UnitTester
      */
     class TextReporter extends SimpleReporter {
 
@@ -284,16 +284,16 @@
             print "\tin " . implode("\n\tin ", array_reverse($breadcrumb));
             print "\n";
         }
-		
-		/**
-		 *    Prints the message for skipping tests.
+
+        /**
+         *    Prints the message for skipping tests.
          *    @param string $message    Text of skip condition.
          *    @access public
          */
-		function paintSkip($message) {
+        function paintSkip($message) {
             parent::paintSkip($message);
             print "Skip: $message\n";
-		}
+        }
 
         /**
          *    Paints formatted text such as dumped variables.
@@ -309,14 +309,14 @@
     /**
      *    Runs just a single test group, a single case or
      *    even a single test within that case.
-	 *	  @package SimpleTest
-	 *	  @subpackage UnitTester
+     *    @package SimpleTest
+     *    @subpackage UnitTester
      */
     class SelectiveReporter extends SimpleReporterDecorator {
         var $_just_this_case = false;
         var $_just_this_test = false;
         var $_on;
-        
+
         /**
          *    Selects the test case or group to be run,
          *    and optionally a specific test.
@@ -365,7 +365,7 @@
             }
             return false;
         }
-        
+
         /**
          *    Switch on testing for the group or subgroup.
          *    @access private
@@ -373,7 +373,7 @@
         function _on() {
             $this->_on = true;
         }
-        
+
         /**
          *    Switch off testing for the group or subgroup.
          *    @access private
@@ -381,7 +381,7 @@
         function _off() {
             $this->_on = false;
         }
-        
+
         /**
          *    Is this group actually being tested?
          *    @return boolean     True if the current test group is active.

@@ -34,11 +34,11 @@ class MappingBasedExtractor extends Extractor {
         // $text=preg_replace('~{\|.*\|}~s','',$pageSource); // remove Prettytables
         $text = $pageSource;
 
-		$templates = Util::getTemplates($text);
+        $templates = Util::getTemplates($text);
 
-		foreach ($templates as $template) {
-			$tpl = $template["content"];
-			
+        foreach ($templates as $template) {
+            $tpl = $template["content"];
+            
             //TODO: HIER NICHT "TEMPLATE" HARDCODE, SONDERN SPRACHABHAENGIG
             $dbpedia_uri = "http://dbpedia.org/resource/Template:" . Util::encodeLocalName($template["name"]);
             //var_dump($dbpedia_uri);
@@ -52,7 +52,7 @@ class MappingBasedExtractor extends Extractor {
             if(!isset($template_id)) {
                 continue;
             }
-			
+            
             $props = Util::getTemplateProperties($tpl);
             
             //TODO: INNER JOIN VERWENDEN STATT NORMALEM JOIN
@@ -91,8 +91,8 @@ class MappingBasedExtractor extends Extractor {
             
             foreach ($props as $keyvalue) {
                 $propkey = mysql_escape_string($keyvalue[1]);
-				$propvalue = $keyvalue[2];
-				
+                $propvalue = $keyvalue[2];
+                
                 if ((trim($propvalue) == "") || ($propvalue == null)) {
                     continue;
                 }
@@ -402,7 +402,7 @@ class MappingBasedExtractor extends Extractor {
                                                     }
                                                 } else {
                                                     if (!$this->flagStrictExport) {
-														$propvalue = Util::removeTemplates($propvalue);
+                                                        $propvalue = Util::removeTemplates($propvalue);
                                                         $this->addLiteral($result,$pageID,$ontclass, $property_name,$propvalue);
                                                     }
                                                 }

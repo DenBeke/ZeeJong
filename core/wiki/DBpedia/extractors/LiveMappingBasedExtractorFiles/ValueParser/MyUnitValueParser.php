@@ -19,7 +19,7 @@ class MyUnitValueParser
         "F"       => "Temperature",         // degree fahrenheit
         "m"       => "Length",              // meters
         "mi"      => "Length",              // miles
-    	"ft"      => "Length",              // foot
+        "ft"      => "Length",              // foot
         "in"      => "Length",              // inch
         "PD/sqkm" => "PopulationDensity",  // pop-density/square miles
         "PD/sqmi" => "PopulationDensity",  // pop-density/square kilometers
@@ -31,10 +31,10 @@ class MyUnitValueParser
 
     public static function getUnitToQuantityMap()
     {
-    	return self::$unitToQuantity;
+        return self::$unitToQuantity;
     }
 
-    
+
     private function getQuantityByUnit($unit)
     {
         if(!array_key_exists($unit, self::$unitToQuantity))
@@ -49,7 +49,7 @@ class MyUnitValueParser
         $this->unit     = $unit;
     }
 
-    
+
     /**
      * Returns: (0 => value, 1 => unit (datatype))
      *
@@ -64,40 +64,40 @@ class MyUnitValueParser
         echo "$quantity\n";
         echo $this->unit."\n";
         echo $GLOBALS[$quantity][$this->unit]."\n";
-		*/
+        */
 
-		// 	$GLOBALS['Length']['m']
-		/*
-		echo "Calling with settings:
-					PAGEID => 'http://dummy.org',
-					PROPERTYNAME => 'http://dummy.org',
-					UNITTYPE=>{$quantity},
-					UNITEXACTTYPE=>{$this->unit},
-					TARGETUNIT=>{$GLOBALS[$quantity][$this->unit]},
-					IGNOREUNIT => false)
-		";*/
+        //  $GLOBALS['Length']['m']
+        /*
+        echo "Calling with settings:
+                    PAGEID => 'http://dummy.org',
+                    PROPERTYNAME => 'http://dummy.org',
+                    UNITTYPE=>{$quantity},
+                    UNITEXACTTYPE=>{$this->unit},
+                    TARGETUNIT=>{$GLOBALS[$quantity][$this->unit]},
+                    IGNOREUNIT => false)
+        ";*/
         $er = error_reporting();
         error_reporting(E_ALL ^ E_NOTICE) ;
         try {
-		$result =
-			UnitValueParser::parseValue(
-				$value,
-				$this->language,
-				array(
-					PAGEID => "http://dummy.org",
-					PROPERTYNAME => "http://dummy.org",
-					UNITTYPE=>$quantity,
-					UNITEXACTTYPE=>$this->unit,
-					TARGETUNIT=>$GLOBALS[$quantity][$this->unit],
-					IGNOREUNIT => false));
+        $result =
+            UnitValueParser::parseValue(
+                $value,
+                $this->language,
+                array(
+                    PAGEID => "http://dummy.org",
+                    PROPERTYNAME => "http://dummy.org",
+                    UNITTYPE=>$quantity,
+                    UNITEXACTTYPE=>$this->unit,
+                    TARGETUNIT=>$GLOBALS[$quantity][$this->unit],
+                    IGNOREUNIT => false));
         }
         catch(Exception $e) {
         }
-        
+
         error_reporting($er);
-        
+
         return $result;
-	/*
+    /*
         return UnitValueParser::parseValue(
             $value,
             $this->language,
@@ -105,7 +105,7 @@ class MyUnitValueParser
 
             // Note on Dummy key:
             // This argument is used solely for logging purposes
-	*/
+    */
     }
 
 }

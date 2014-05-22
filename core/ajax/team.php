@@ -6,78 +6,78 @@ require_once(dirname(__FILE__) . '/../Selector.php');
 require_once(dirname(__FILE__) . '/../controller/Controller.php');
 
 function addWildcards($s) {
-	return '%' . $s . '%';
+    return '%' . $s . '%';
 }
 
 class Handler extends Controller\Controller {
-	private $result = [];
+    private $result = [];
 
-	public function __construct() {
-	}
-	
-	public function GET($args) {
-		global $database;
+    public function __construct() {
+    }
 
-		$sel = new \Selector('Team');
+    public function GET($args) {
+        global $database;
 
-		$sort = false;
-		$sortColumn = '';
-		$sortOrder = '';
+        $sel = new \Selector('Team');
 
-		foreach($_GET as $column => $value) {
-			switch($column) {
-			case 'id':
-				$sel->filter([['Team.id', '=', $value]]);
-				break;
-			case 'name':
-				if(strlen($value) < 3) {
-					$this->result = [];
-					return;
-				}
+        $sort = false;
+        $sortColumn = '';
+        $sortOrder = '';
 
-				$value = str_replace('%', '\%', $value);
-				$value = str_replace('[', '\[', $value);
-				$value = str_replace(']', '\]', $value);
-				$value = str_replace('_', '\_', $value);
-				$value = '%' . $value . '%';
-				$sel->filter([['Team.' . $column, 'LIKE', $value]]);
+        foreach($_GET as $column => $value) {
+            switch($column) {
+            case 'id':
+                $sel->filter([['Team.id', '=', $value]]);
+                break;
+            case 'name':
+                if(strlen($value) < 3) {
+                    $this->result = [];
+                    return;
+                }
 
-				break;
+                $value = str_replace('%', '\%', $value);
+                $value = str_replace('[', '\[', $value);
+                $value = str_replace(']', '\]', $value);
+                $value = str_replace('_', '\_', $value);
+                $value = '%' . $value . '%';
+                $sel->filter([['Team.' . $column, 'LIKE', $value]]);
 
-			case 'sort':
-				if($value == 'name') {
-					$sort = true;
-					$sortColumn = 'name';
-				} elseif($value == 'id') {
-					$sort = true;
-					$sortColumn = 'id';
-				}
-				break;
+                break;
 
-			case 'order':
-				$sortOrder = $value;
-				break;
-			}
-		}
+            case 'sort':
+                if($value == 'name') {
+                    $sort = true;
+                    $sortColumn = 'name';
+                } elseif($value == 'id') {
+                    $sort = true;
+                    $sortColumn = 'id';
+                }
+                break;
 
-		if($sort) {
-			if($sortOrder === '') {
-				$sel->order($sortColumn, 'DESC');
-			}
-			else {
-				$sel->order($sortColumn, $sortOrder);
-			}
-		}
-		
-		$sel->limit(0, 10);
+            case 'order':
+                $sortOrder = $value;
+                break;
+            }
+        }
 
-		$result = $database->select($sel);
-		$this->result = $database->resultToTeams($result);
-	}
+        if($sort) {
+            if($sortOrder === '') {
+                $sel->order($sortColumn, 'DESC');
+            }
+            else {
+                $sel->order($sortColumn, $sortOrder);
+            }
+        }
 
-	public function template() {
-		echo json_encode($this->result);
-	}
+        $sel->limit(0, 10);
+
+        $result = $database->select($sel);
+        $this->result = $database->resultToTeams($result);
+    }
+
+    public function template() {
+        echo json_encode($this->result);
+    }
 
 }
 

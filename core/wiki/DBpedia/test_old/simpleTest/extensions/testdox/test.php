@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . '/../../extensions/testdox.php';
 //SimpleTest::prefer(new TestDoxReporter());
 
 class TestOfTestDoxReporter extends UnitTestCase {
-    
+
     function testIsAnInstanceOfSimpleScorerAndReporter() {
         $dox = new TestDoxReporter();
         $this->assertIsA($dox, 'SimpleScorer');

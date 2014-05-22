@@ -210,6 +210,6 @@ $GLOBALS['MEDIAWIKI_DISAMBIGUATIONS'] = array(
 );
 
  $GLOBALS['MEDIAWIKI_DISAMBIGUATIONS_EXTENSION'] = array(
-	'en' => array('disambiguation'),
-	'ko' => array('동음이의')
+    'en' => array('disambiguation'),
+    'ko' => array('동음이의')
 );

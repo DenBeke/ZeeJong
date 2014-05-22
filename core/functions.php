@@ -14,7 +14,7 @@ require_once(dirname(__FILE__) . '/database.php');
 Hash a password with a given salt
 */
 function hashPassword($password,$salt) {
-	return hash('sha256', $password . $salt);
+    return hash('sha256', $password . $salt);
 }
 
 
@@ -24,165 +24,165 @@ function hashPassword($password,$salt) {
 Check if logged in
 */
 function loggedIn() {
-	//Check for active session
-	global $database;
-	
-	if( isset($_SESSION['userID']) and $database->doesUserExist($_SESSION['userID'])) {
-		return true;
-	}
-	else {
-		return false;
-	}
+    //Check for active session
+    global $database;
+
+    if( isset($_SESSION['userID']) and $database->doesUserExist($_SESSION['userID'])) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 /**
  Check if admin
  */
  function isAdmin() {
- 	global $database;
- 	if(!isset($_SESSION['userID'])){
-		return false;
-	}
-	if(!$database->isAdmin($_SESSION['userID'])){
-		return false;
-	}
-	return true;
+    global $database;
+    if(!isset($_SESSION['userID'])){
+        return false;
+    }
+    if(!$database->isAdmin($_SESSION['userID'])){
+        return false;
+    }
+    return true;
  }
 
 
 
 function user() {
 
-	//Check for active session
-	global $database;
-	
-	if( isset($_SESSION['userID']) and $database->doesUserExist($_SESSION['userID'])) {
-		$user = new User($_SESSION['userID']);
-		return $user;
-	}
-	else {
-		throw new exception('User is not logged in, or the user does not exist');
-	}
+    //Check for active session
+    global $database;
+
+    if( isset($_SESSION['userID']) and $database->doesUserExist($_SESSION['userID'])) {
+        $user = new User($_SESSION['userID']);
+        return $user;
+    }
+    else {
+        throw new exception('User is not logged in, or the user does not exist');
+    }
 }
 
 function requireMinCount($array, $min) {
-	if(count($array) < $min) {
-		throw new exception('Array does not have the required minimum length of ' . $min);
-	}
+    if(count($array) < $min) {
+        throw new exception('Array does not have the required minimum length of ' . $min);
+    }
 }
 
 function requireMaxCount($array, $max) {
-	if(count($array) > $max) {
-		throw new exception('Array length is bigger than the maximum ' . $max);
-	}
+    if(count($array) > $max) {
+        throw new exception('Array length is bigger than the maximum ' . $max);
+    }
 }
 
 function requireEqCount($array, $eq) {
-	if(count($array) != $eq) {
-		throw new exception('Array length is not ' . $eq);
-	}
+    if(count($array) != $eq) {
+        throw new exception('Array length is not ' . $eq);
+    }
 }
 
 
 
 
 function getLatestYear() {
-	
-	$months = array();
-	
-	for($i = 0; $i < 13; $i++) {
-	
-		$month = date("Y-m-1", strtotime("-$i months"));
-		$months[] = array(
-		
-			'name' => date("M Y", strtotime("-$i months")),
-			'timestamp' => strtotime(date("Y-m-1", strtotime("-$i months")))
-		
-		);
-		
-	}
-	
-	return array_reverse($months);
-	
-			
+
+    $months = array();
+
+    for($i = 0; $i < 13; $i++) {
+
+        $month = date("Y-m-1", strtotime("-$i months"));
+        $months[] = array(
+
+            'name' => date("M Y", strtotime("-$i months")),
+            'timestamp' => strtotime(date("Y-m-1", strtotime("-$i months")))
+
+        );
+
+    }
+
+    return array_reverse($months);
+
+
 }
 
 
 
 function generateChart($input, $id = 0, $type = 'column') {
-	?>
+    ?>
 
-	<div id="<?php echo $id; ?>" style="width: 100%; height: 300px;">
+    <div id="<?php echo $id; ?>" style="width: 100%; height: 300px;">
 
-	</div>
+    </div>
 
-	<script>
-		var series = [];
-		var yValues = [];
+    <script>
+        var series = [];
+        var yValues = [];
 
-		<?php
-			$smallestX = 0;
-			$smallestY = 0;
-			$largestX = 0;
-			$largestY = 0;
-			foreach($input as $label => $data) {
-		?>
-				var serie = {};
-				serie.name = '<?php echo $label; ?>';
+        <?php
+            $smallestX = 0;
+            $smallestY = 0;
+            $largestX = 0;
+            $largestY = 0;
+            foreach($input as $label => $data) {
+        ?>
+                var serie = {};
+                serie.name = '<?php echo $label; ?>';
 
-				serie.data = [
-					<?php
-						$i = 0;
-						foreach($data as $x => $y) {
-							echo "[$x * 1000,$y]";
+                serie.data = [
+                    <?php
+                        $i = 0;
+                        foreach($data as $x => $y) {
+                            echo "[$x * 1000,$y]";
 
-							if(next($data) !== false) {
-								echo ',';
-							}
+                            if(next($data) !== false) {
+                                echo ',';
+                            }
 
-							$i++;
-						}
-					?>
-				];
+                            $i++;
+                        }
+                    ?>
+                ];
 
-				series.push(serie);
+                series.push(serie);
 
-		<?php
-			}
-		?>
-	 
-	$('#<?php echo $id; ?>').highcharts({
-		chart: {
-			type: <?php echo '"' . $type . '"' ?>,
-			zoomType: 'x',
-		},
+        <?php
+            }
+        ?>
 
-		title: {
-			text: '',
-		},
+    $('#<?php echo $id; ?>').highcharts({
+        chart: {
+            type: <?php echo '"' . $type . '"' ?>,
+            zoomType: 'x',
+        },
 
-		xAxis: {
-			type: 'datetime',
-	
-		},
+        title: {
+            text: '',
+        },
 
-		yAxis: {
-			min: 0,
-		},
+        xAxis: {
+            type: 'datetime',
 
-		plotOptions: {
-			column: {
-				pointPadding: 0.2,
-				borderWidth: 0,
-			},
-		},
+        },
 
-		series: series,
-	});
+        yAxis: {
+            min: 0,
+        },
 
-	</script>
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0,
+            },
+        },
 
-	<?php
+        series: series,
+    });
+
+    </script>
+
+    <?php
 }
 
 
@@ -190,20 +190,20 @@ function generateChart($input, $id = 0, $type = 'column') {
 
 
 function getAllMonths($begin, $end = NULL) {
-	
-	
-	if($end == NULL) {
-		$end = time();
-	}
-	
-	$month = strtotime(date('Y-m-1',strtotime("-1 month", $begin)));
-	$months = array();
-	
-	while($month <= $end) {
-		 $months[date('M Y', strtotime("+1 month", $month))] = $month = strtotime(date('Y-m-1',strtotime("+1 month", $month)));
-	}
-	
-	return $months;
+
+
+    if($end == NULL) {
+        $end = time();
+    }
+
+    $month = strtotime(date('Y-m-1',strtotime("-1 month", $begin)));
+    $months = array();
+
+    while($month <= $end) {
+         $months[date('M Y', strtotime("+1 month", $month))] = $month = strtotime(date('Y-m-1',strtotime("+1 month", $month)));
+    }
+
+    return $months;
 }
 
 
@@ -211,17 +211,17 @@ function getAllMonths($begin, $end = NULL) {
 function getDaysOfWeek() {
 
 
-	$begin = strtotime(date('d M Y', time()) . " - 1 week");
-	$end = time();
+    $begin = strtotime(date('d M Y', time()) . " - 1 week");
+    $end = time();
 
-	$month = strtotime(date('Y-m-d',strtotime("-1 day", $begin)));
-	$months = array();
+    $month = strtotime(date('Y-m-d',strtotime("-1 day", $begin)));
+    $months = array();
 
-	while($month <= $end) {
-		 $months[date('d M Y', strtotime("+1 day", $month))] = $month = strtotime(date('Y-m-d',strtotime("+1 day", $month)));
-	}
+    while($month <= $end) {
+         $months[date('d M Y', strtotime("+1 day", $month))] = $month = strtotime(date('Y-m-d',strtotime("+1 day", $month)));
+    }
 
-	return $months;
+    return $months;
 }
 
 
@@ -230,33 +230,33 @@ function getDaysOfWeek() {
 
 
 function generateLikeButton($url) {
-	?>
-	
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v2.0";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));</script>
-	
-	
-	<div class="fb-like" data-href="<?php echo $url; ?>" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
-	
-	<?php
-	
+    ?>
+
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v2.0";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+
+    <div class="fb-like" data-href="<?php echo $url; ?>" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+
+    <?php
+
 }
 
 
 
 function generateTweetButton() {
-	?>
-	
-	<a href="https://twitter.com/share" class="twitter-share-button" data-via="twitterapi" data-lang="en">Tweet</a>
-	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-	
-	<?php
+    ?>
+
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="twitterapi" data-lang="en">Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+    <?php
 }
 
 
@@ -264,15 +264,15 @@ function getCountryFlag($country) {
 
     $country = explode(' ', $country);
     $country = implode('_', $country);
-    
+
     $country = str_replace('\'', '', $country);
     $country = str_replace('&#39;', '', $country);
-    
+
     $src = 'img/Flags/Small/' . $country . '.png';
     if (!file_exists($src)) {
-    		$src = 'img/Flags/Small/Unknown.png';
+            $src = 'img/Flags/Small/Unknown.png';
     }
-    
+
     return '<span class="country-flag" style="background-image: url(' . SITE_URL . $src . ');"></span>';
 
 }
@@ -283,13 +283,13 @@ function saveAnalytics($string) {
 }
 
 function getAnalytics() {
-	
-	if(file_exists(dirname(__FILE__) . '/analytics.html')) {
-		return file_get_contents( dirname(__FILE__) . '/analytics.html');	
-	}
-	else {
-		return '';
-	}
+
+    if(file_exists(dirname(__FILE__) . '/analytics.html')) {
+        return file_get_contents( dirname(__FILE__) . '/analytics.html');
+    }
+    else {
+        return '';
+    }
 }
 
 

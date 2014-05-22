@@ -2,7 +2,7 @@
 /**
 */
 class NullDestination implements Destination{
-	public function start() {}
-	public function accept($extractionResult) {}
-	public function finish() {}
+    public function start() {}
+    public function accept($extractionResult) {}
+    public function finish() {}
 }

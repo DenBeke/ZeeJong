@@ -21,7 +21,7 @@ class SmartLinkValueParser
     public static function _parse($value)
     {
         $result = array();
-	preg_match_all("/(\[{2})([^\]]+)(\]{2})/", $value, $matches);
+    preg_match_all("/(\[{2})([^\]]+)(\]{2})/", $value, $matches);
 
         foreach($matches[0] as $match) {
             // remove [[ ]] from the match

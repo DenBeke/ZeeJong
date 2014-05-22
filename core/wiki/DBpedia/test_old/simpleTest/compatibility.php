@@ -1,39 +1,39 @@
 <?php
     /**
-     *	base include file for SimpleTest
-     *	@package	SimpleTest
-     *	@version	$Id: compatibility.php,v 1.11 2006/11/08 16:15:06 lastcraft Exp $
+     *  base include file for SimpleTest
+     *  @package    SimpleTest
+     *  @version    $Id: compatibility.php,v 1.11 2006/11/08 16:15:06 lastcraft Exp $
      */
-    
+
     /**
      *  Static methods for compatibility between different
      *  PHP versions.
-     *  @package	SimpleTest
+     *  @package    SimpleTest
      */
     class SimpleTestCompatibility {
-    	
-    	/**
-    	 *	  Creates a copy whether in PHP5 or PHP4.
-    	 *	  @param object $object		Thing to copy.
-    	 *	  @return object			A copy.
-    	 *	  @access public
-    	 *	  @static
-    	 */
-    	function copy($object) {
+
+        /**
+         *    Creates a copy whether in PHP5 or PHP4.
+         *    @param object $object     Thing to copy.
+         *    @return object            A copy.
+         *    @access public
+         *    @static
+         */
+        function copy($object) {
             if (version_compare(phpversion(), '5') >= 0) {
-            	eval('$copy = clone $object;');
-            	return $copy;
+                eval('$copy = clone $object;');
+                return $copy;
             }
             return $object;
-    	}
-        
+        }
+
         /**
          *    Identity test. Drops back to equality + types for PHP5
          *    objects as the === operator counts as the
          *    stronger reference constraint.
          *    @param mixed $first    Test subject.
          *    @param mixed $second   Comparison object.
-         *	  @return boolean		 True if identical.
+         *    @return boolean        True if identical.
          *    @access public
          *    @static
          */
@@ -46,12 +46,12 @@
             }
             return ($first === $second);
         }
-        
+
         /**
          *    Recursive type test.
          *    @param mixed $first    Test subject.
          *    @param mixed $second   Comparison object.
-         *	  @return boolean		 True if same type.
+         *    @return boolean        True if same type.
          *    @access private
          *    @static
          */
@@ -75,12 +75,12 @@
             }
             return true;
         }
-        
+
         /**
          *    Recursive type test for each element of an array.
          *    @param mixed $first    Test subject.
          *    @param mixed $second   Comparison object.
-         *	  @return boolean		 True if identical.
+         *    @return boolean        True if identical.
          *    @access private
          *    @static
          */
@@ -98,39 +98,39 @@
             }
             return true;
         }
-        
+
         /**
          *    Test for two variables being aliases.
          *    @param mixed $first    Test subject.
          *    @param mixed $second   Comparison object.
-         *	  @return boolean		 True if same.
+         *    @return boolean        True if same.
          *    @access public
          *    @static
          */
         function isReference(&$first, &$second) {
             if (version_compare(phpversion(), '5', '>=') && is_object($first)) {
-	    	    return ($first === $second);
-	        }
-	        if (is_object($first) && is_object($second)) {
+                return ($first === $second);
+            }
+            if (is_object($first) && is_object($second)) {
                 $id = uniqid("test");
                 $first->$id = true;
                 $is_ref = isset($second->$id);
                 unset($first->$id);
                 return $is_ref;
-	        }
-	        $temp = $first;
+            }
+            $temp = $first;
             $first = uniqid("test");
             $is_ref = ($first === $second);
             $first = $temp;
             return $is_ref;
         }
-        
+
         /**
          *    Test to see if an object is a member of a
          *    class hiearchy.
          *    @param object $object    Object to test.
          *    @param string $class     Root name of hiearchy.
-         *    @return boolean		  True if class in hiearchy.
+         *    @return boolean         True if class in hiearchy.
          *    @access public
          *    @static
          */
@@ -152,7 +152,7 @@
             return ((strtolower($class) == get_class($object))
                     or (is_subclass_of($object, $class)));
         }
-        
+
         /**
          *    Sets a socket timeout for each chunk.
          *    @param resource $handle    Socket handle.

@@ -3,10 +3,10 @@
  * Created on 27.08.2007
  *
  * Author: piethensel
- * 
+ *
  * Subject: Runs all Tests for the DBpedia Extraction Framework
  */
-// Define DBpedia root folder 
+// Define DBpedia root folder
 define('DBPEDIA_PATH', dirname(__FILE__) . '/../');
 
 // Filename of the file including the class ExtractorTest
@@ -27,9 +27,9 @@ require_once(DBPEDIA_PATH.'extraction/ExtractTemplates.php');
 // Load classes dynamically
 function __autoload($class_name) {
     if ( file_exists(DBPEDIA_PATH . $class_name . '.php'))
-    	require_once (DBPEDIA_PATH . $class_name . '.php');
+        require_once (DBPEDIA_PATH . $class_name . '.php');
     else
-    	require_once (dirname(__FILE__) . '/ExtractorTests/' . $class_name . '.php');
+        require_once (dirname(__FILE__) . '/ExtractorTests/' . $class_name . '.php');
 }
 
 // Ignore Notices for Testing

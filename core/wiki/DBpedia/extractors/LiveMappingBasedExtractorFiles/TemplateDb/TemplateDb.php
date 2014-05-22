@@ -118,7 +118,7 @@ class DummyTemplateDb
 {
     public function getTemplateAnnotation($templateName)
     {
-    	return;
+        return;
     }
 }
 
@@ -132,7 +132,7 @@ class TemplateDb
      * Tablename mappings
      *
      */
-    
+
     //private static $tblProperty             = "TemplateAnnotation";
 
     private $odbc;
@@ -173,14 +173,14 @@ class TemplateDb
 
     private function getTemplateId($templateName)
     {
-		Timer::start('LiveMappingBasedExtractor::getTemplateId');
-        $query = 'Select id, isIgnored 
-From '.TBLTEMPLATE.' 
+        Timer::start('LiveMappingBasedExtractor::getTemplateId');
+        $query = 'Select id, isIgnored
+From '.TBLTEMPLATE.'
 WHERE name = ?';
-		
-		$this->log(DEBUG, str_replace('?',"'".$templateName."';",$query));
+
+        $this->log(DEBUG, str_replace('?',"'".$templateName."';",$query));
         $stmt = $this->odbc->prepare($query, get_class($this));
-	    odbc_execute($stmt, array($templateName));
+        odbc_execute($stmt, array($templateName));
 
         $id = null;
         $isIgnored = null;
@@ -189,18 +189,18 @@ WHERE name = ?';
            $isIgnored = odbc_result($stmt, "isIgnored");
         }
 
-		Timer::stop('LiveMappingBasedExtractor::getTemplateId');
+        Timer::stop('LiveMappingBasedExtractor::getTemplateId');
         return array($id, $isIgnored);
     }
 
     private function getRelatedClasses($templateId)
     {
-		Timer::start('LiveMappingBasedExtractor::getRelatedClasses');
-$query = 'Select name 
-From '.TBLTEMPLATECLASSES.' 
+        Timer::start('LiveMappingBasedExtractor::getRelatedClasses');
+$query = 'Select name
+From '.TBLTEMPLATECLASSES.'
 WHERE parent_id = ?';
-	
-		$this->log(DEBUG, str_replace('?',$templateId.";",$query));
+
+        $this->log(DEBUG, str_replace('?',$templateId.";",$query));
         $stmt = $this->odbc->prepare($query, get_class($this));
         odbc_execute($stmt, array($templateId));
 
@@ -211,7 +211,7 @@ WHERE parent_id = ?';
 
            $result[] = $name;
         }
-		Timer::stop('LiveMappingBasedExtractor::getRelatedClasses');
+        Timer::stop('LiveMappingBasedExtractor::getRelatedClasses');
         return $result;
     }
 
@@ -222,8 +222,8 @@ WHERE parent_id = ?';
      */
     private function getPropertyAnnotations($templateId)
     {
-		Timer::start('LiveMappingBasedExtractor::getPropertyAnnotations');
-		
+        Timer::start('LiveMappingBasedExtractor::getPropertyAnnotations');
+
         $query =
             "SELECT ".
                 "name, renamedValue, parseHint, isIgnored ".
@@ -232,8 +232,8 @@ WHERE parent_id = ?';
                 TBLPROPERTYMAPPING." b On (a.id = b.parent_id) ".
             "WHERE ".
                 "a.parent_id = ?";
-		
-		$this->log(DEBUG, str_replace('?',$templateId.";",$query));
+
+        $this->log(DEBUG, str_replace('?',$templateId.";",$query));
         $stmt = $this->odbc->prepare($query, get_class($this));
         odbc_execute($stmt, array($templateId));
 
@@ -256,14 +256,14 @@ WHERE parent_id = ?';
            $pm = new PropertyMapping($renamedValue, $parseHint);
            $pa->addMapping($pm);
         }
-		Timer::stop('LiveMappingBasedExtractor::getPropertyAnnotations');
-		
+        Timer::stop('LiveMappingBasedExtractor::getPropertyAnnotations');
+
         return $result;
     }
-	
-	private function log ($lvl, $message){
-			Logger::logComponent("template",get_class($this)."", $lvl ,$message);
-		}
+
+    private function log ($lvl, $message){
+            Logger::logComponent("template",get_class($this)."", $lvl ,$message);
+        }
 
 }
 

@@ -7,16 +7,16 @@
  */
 class LanguageAllArticlesSqlIterator extends AbstractMySqlIterator
 {
-	protected function catalog($dbprefix, $language) {
-		return $dbprefix.$language;
-	}
+    protected function catalog($dbprefix, $language) {
+        return $dbprefix.$language;
+    }
 
-	protected function template($language) {
-		return "select page_title from page where page_namespace = 0 LIMIT %d, %d";
-	}
+    protected function template($language) {
+        return "select page_title from page where page_namespace = 0 LIMIT %d, %d";
+    }
 
-	protected function value($row) {
-		return $row['page_title'];
-	}
+    protected function value($row) {
+        return $row['page_title'];
+    }
 }
 

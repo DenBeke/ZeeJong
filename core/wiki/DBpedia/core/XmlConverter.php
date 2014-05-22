@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Converts Virtuoso-specific SPARQL results XML format into an 
+ * Converts Virtuoso-specific SPARQL results XML format into an
  * array representation that can be further processed.
  *
- * The array structure conforms to what you would get by 
+ * The array structure conforms to what you would get by
  * applying json_decode to a JSON-encoded SPARQL result set
  * ({@link http://www.w3.org/TR/rdf-sparql-json-res/}).
  *
@@ -23,7 +23,7 @@ class XmlConverter
     protected $_namespaces = array(
         'xml' => 'http://www.w3.org/XML/1998/namespace'
     );
-    
+
     /**
      * Detects namespaces and prefixes from a DOM document
      *
@@ -32,14 +32,14 @@ class XmlConverter
     public function detectNamespacesFromDocument(DOMDocument $document)
     {
         $nodes = $document->getElementsByTagNameNS('*', '*');
-        
+
         foreach ($nodes as $node) {
             if (!isset($this->_namespaces[$node->prefix])) {
                 $this->_namespaces[$node->prefix] = $node->namespaceURI;
             }
         }
     }
-    
+
     /**
      * Converts an XML result set to an array
      */
@@ -48,49 +48,49 @@ class XmlConverter
         $document = new DOMDocument();
         $document->preserveWhiteSpace = false;
         $document->loadXml($xmlSparqlResults);
-        
+
         $this->detectNamespacesFromDocument($document);
-        
+
         $vars     = array();
         $bindings = array();
         $root     = $document->firstChild;
         $set      = $root->firstChild;
-        
+
         foreach ($set->childNodes as $node) {
             if (!$node->hasChildNodes()) {
                 continue;
             }
-            
+
             $row = array();
             foreach ($node->childNodes as $binding) {
                 // exlude text nodes etc.
                 if (!($binding instanceof DOMElement)) {
                     continue;
                 }
-                
+
                 $attrKey    = $binding->getAttributeNodeNS($this->_namespaces['rs'], 'name');
                 $nodeValue  = $binding->firstChild;
                 $dataKey    = $attrKey->value;
-                
+
                 if (!in_array($dataKey, $vars)) {
                     array_push($vars, $dataKey);
                 }
-                
+
                 $attributes = array();
                 foreach ($nodeValue->attributes as $attribute) {
                     $attributes[$attribute->name] = $attribute->value;
                 }
-                
+
                 switch (true) {
                     case array_key_exists('resource', $attributes):
                         $row[$dataKey] = array(
-                            'value'    => $nodeValue->getAttributeNodeNS($this->_namespaces['rdf'], 'resource')->value, 
+                            'value'    => $nodeValue->getAttributeNodeNS($this->_namespaces['rdf'], 'resource')->value,
                             'type'     => 'uri'
                         );
                     break;
                     case array_key_exists('nodeID', $attributes):
                         $row[$dataKey] = array(
-                            'value'    => $nodeValue->getAttributeNodeNS($this->_namespaces['rdf'], 'nodeID')->value, 
+                            'value'    => $nodeValue->getAttributeNodeNS($this->_namespaces['rdf'], 'nodeID')->value,
                             'type'     => 'bnode'
                         );
                     break;
@@ -98,32 +98,32 @@ class XmlConverter
                         // literal
                         $lang     = $nodeValue->getAttributeNodeNS($this->_namespaces['xml'], 'lang');
                         $datatype = $nodeValue->getAttributeNodeNS($this->_namespaces['rdf'], 'datatype');
-                        
+
                         $row[$dataKey] = array(
-                            'value'    => $nodeValue->textContent, 
+                            'value'    => $nodeValue->textContent,
                             'type'     => $datatype ? 'typed-literal' : 'literal'
                         );
-                        
+
                         if ($datatype) {
                             $row[$dataKey]['datatype'] = (string) $datatype->value;
                         }
-                        
+
                         if ($lang) {
                             $row[$dataKey]['xml:lang'] = (string) $lang->value;
                         }
                     break;
                 }
             }
-            
+
             // add row
             array_push($bindings, $row);
         }
-        
+
         $result = array(
-            'head'     => array('vars' => $vars), 
+            'head'     => array('vars' => $vars),
             'bindings' => $bindings
         );
-        
+
         return $result;
     }
 }

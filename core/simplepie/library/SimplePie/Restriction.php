@@ -11,16 +11,16 @@
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
  *
- * 	* Redistributions of source code must retain the above copyright notice, this list of
- * 	  conditions and the following disclaimer.
+ *  * Redistributions of source code must retain the above copyright notice, this list of
+ *    conditions and the following disclaimer.
  *
- * 	* Redistributions in binary form must reproduce the above copyright notice, this list
- * 	  of conditions and the following disclaimer in the documentation and/or other materials
- * 	  provided with the distribution.
+ *  * Redistributions in binary form must reproduce the above copyright notice, this list
+ *    of conditions and the following disclaimer in the documentation and/or other materials
+ *    provided with the distribution.
  *
- * 	* Neither the name of the SimplePie Team nor the names of its contributors may be used
- * 	  to endorse or promote products derived from this software without specific prior
- * 	  written permission.
+ *  * Neither the name of the SimplePie Team nor the names of its contributors may be used
+ *    to endorse or promote products derived from this software without specific prior
+ *    written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
  * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
@@ -54,102 +54,102 @@
  */
 class SimplePie_Restriction
 {
-	/**
-	 * Relationship ('allow'/'deny')
-	 *
-	 * @var string
-	 * @see get_relationship()
-	 */
-	var $relationship;
+    /**
+     * Relationship ('allow'/'deny')
+     *
+     * @var string
+     * @see get_relationship()
+     */
+    var $relationship;
 
-	/**
-	 * Type of restriction
-	 *
-	 * @var string
-	 * @see get_type()
-	 */
-	var $type;
+    /**
+     * Type of restriction
+     *
+     * @var string
+     * @see get_type()
+     */
+    var $type;
 
-	/**
-	 * Restricted values
-	 *
-	 * @var string
-	 * @see get_value()
-	 */
-	var $value;
+    /**
+     * Restricted values
+     *
+     * @var string
+     * @see get_value()
+     */
+    var $value;
 
-	/**
-	 * Constructor, used to input the data
-	 *
-	 * For documentation on all the parameters, see the corresponding
-	 * properties and their accessors
-	 */
-	public function __construct($relationship = null, $type = null, $value = null)
-	{
-		$this->relationship = $relationship;
-		$this->type = $type;
-		$this->value = $value;
-	}
+    /**
+     * Constructor, used to input the data
+     *
+     * For documentation on all the parameters, see the corresponding
+     * properties and their accessors
+     */
+    public function __construct($relationship = null, $type = null, $value = null)
+    {
+        $this->relationship = $relationship;
+        $this->type = $type;
+        $this->value = $value;
+    }
 
-	/**
-	 * String-ified version
-	 *
-	 * @return string
-	 */
-	public function __toString()
-	{
-		// There is no $this->data here
-		return md5(serialize($this));
-	}
+    /**
+     * String-ified version
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        // There is no $this->data here
+        return md5(serialize($this));
+    }
 
-	/**
-	 * Get the relationship
-	 *
-	 * @return string|null Either 'allow' or 'deny'
-	 */
-	public function get_relationship()
-	{
-		if ($this->relationship !== null)
-		{
-			return $this->relationship;
-		}
-		else
-		{
-			return null;
-		}
-	}
+    /**
+     * Get the relationship
+     *
+     * @return string|null Either 'allow' or 'deny'
+     */
+    public function get_relationship()
+    {
+        if ($this->relationship !== null)
+        {
+            return $this->relationship;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	/**
-	 * Get the type
-	 *
-	 * @return string|null
-	 */
-	public function get_type()
-	{
-		if ($this->type !== null)
-		{
-			return $this->type;
-		}
-		else
-		{
-			return null;
-		}
-	}
+    /**
+     * Get the type
+     *
+     * @return string|null
+     */
+    public function get_type()
+    {
+        if ($this->type !== null)
+        {
+            return $this->type;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	/**
-	 * Get the list of restricted things
-	 *
-	 * @return string|null
-	 */
-	public function get_value()
-	{
-		if ($this->value !== null)
-		{
-			return $this->value;
-		}
-		else
-		{
-			return null;
-		}
-	}
+    /**
+     * Get the list of restricted things
+     *
+     * @return string|null
+     */
+    public function get_value()
+    {
+        if ($this->value !== null)
+        {
+            return $this->value;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

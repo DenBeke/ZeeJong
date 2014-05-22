@@ -1,13 +1,13 @@
 <?php
     /**
-     *	Base include file for SimpleTest
-     *	@package	SimpleTest
-     *	@subpackage	WebTester
-     *	@version	$Id: browser.php,v 1.165 2007/07/16 18:13:23 lastcraft Exp $
+     *  Base include file for SimpleTest
+     *  @package    SimpleTest
+     *  @subpackage WebTester
+     *  @version    $Id: browser.php,v 1.165 2007/07/16 18:13:23 lastcraft Exp $
      */
 
     /**#@+
-     *	include other SimpleTest class files
+     *  include other SimpleTest class files
      */
     require_once(dirname(__FILE__) . '/simpletest.php');
     require_once(dirname(__FILE__) . '/http.php');
@@ -24,8 +24,8 @@
 
     /**
      *    Browser history list.
-	 *    @package SimpleTest
-	 *    @subpackage WebTester
+     *    @package SimpleTest
+     *    @subpackage WebTester
      */
     class SimpleBrowserHistory {
         var $_sequence;
@@ -154,8 +154,8 @@
      *    Simulated web browser. This is an aggregate of
      *    the user agent, the HTML parsing, request history
      *    and the last header set.
-	 *    @package SimpleTest
-	 *    @subpackage WebTester
+     *    @package SimpleTest
+     *    @subpackage WebTester
      */
     class SimpleBrowser {
         var $_user_agent;
@@ -220,7 +220,7 @@
         function useFrames() {
             $this->_ignore_frames = false;
         }
-        
+
         /**
          *    Switches off cookie sending and recieving.
          *    @access public
@@ -228,7 +228,7 @@
         function ignoreCookies() {
             $this->_user_agent->ignoreCookies();
         }
-        
+
         /**
          *    Switches back on the cookie sending and recieving.
          *    @access public
@@ -257,7 +257,7 @@
             }
             return $frameset;
         }
-        
+
         /**
          *    Assembles the parsing machinery and actually parses
          *    a single page. Frees all of the builder memory and so
@@ -703,7 +703,7 @@
             $url = $this->_page->getUrl();
             return $url ? $url->asString() : false;
         }
- 
+
         /**
          *    Accessor for base URL of page if set via BASE tag
          *    @return string    base URL
@@ -894,7 +894,7 @@
                     $form->submitButton(new SimpleById($id), $additional));
             return ($success ? $this->getContent() : $success);
         }
-        
+
         /**
          *    Tests to see if a submit button exists with this
          *    label.
@@ -973,7 +973,7 @@
                     $form->submitImage(new SimpleById($id), $x, $y, $additional));
             return ($success ? $this->getContent() : $success);
         }
-        
+
         /**
          *    Tests to see if an image exists with this
          *    title or alt text.
@@ -1041,7 +1041,7 @@
             $this->_load($url, new SimpleGetEncoding());
             return $this->getContent();
         }
-        
+
         /**
          *    Finds a link by id attribute.
          *    @param string $id        ID attribute value.

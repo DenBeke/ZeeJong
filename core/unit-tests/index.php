@@ -16,7 +16,7 @@ $t = new \UnitTest\UnitTest;
 preprocess();
 
 foreach (glob(dirname(__FILE__) . '/tests/preprocessed/*.php') as $file) {
-	require_once($file);
+    require_once($file);
 }
 
 

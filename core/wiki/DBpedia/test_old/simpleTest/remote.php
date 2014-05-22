@@ -1,13 +1,13 @@
 <?php
     /**
-     *	base include file for SimpleTest
-     *	@package	SimpleTest
-     *	@subpackage	UnitTester
-     *	@version	$Id: remote.php,v 1.13 2006/11/20 23:57:16 lastcraft Exp $
+     *  base include file for SimpleTest
+     *  @package    SimpleTest
+     *  @subpackage UnitTester
+     *  @version    $Id: remote.php,v 1.13 2006/11/20 23:57:16 lastcraft Exp $
      */
 
     /**#@+
-     *	include other SimpleTest class files
+     *  include other SimpleTest class files
      */
     require_once(dirname(__FILE__) . '/browser.php');
     require_once(dirname(__FILE__) . '/xml.php');
@@ -16,14 +16,14 @@
 
     /**
      *    Runs an XML formated test on a remote server.
-	 *	  @package SimpleTest
-	 *	  @subpackage UnitTester
+     *    @package SimpleTest
+     *    @subpackage UnitTester
      */
     class RemoteTestCase {
         var $_url;
         var $_dry_url;
         var $_size;
-        
+
         /**
          *    Sets the location of the remote test.
          *    @param string $url       Test location.
@@ -35,7 +35,7 @@
             $this->_dry_url = $dry_url ? $dry_url : $url;
             $this->_size = false;
         }
-        
+
         /**
          *    Accessor for the test name for subclasses.
          *    @return string           Name of the test.
@@ -67,7 +67,7 @@
             }
             return true;
         }
-        
+
         /**
          *    Creates a new web browser object for fetching
          *    the XML report.
@@ -78,7 +78,7 @@
             $browser = &new SimpleBrowser();
             return $browser;
         }
-        
+
         /**
          *    Creates the XML parser.
          *    @param SimpleReporter $reporter    Target of test results.
@@ -89,7 +89,7 @@
             $parser = &new SimpleTestXmlParser($reporter);
             return $parser;
         }
-        
+
         /**
          *    Accessor for the number of subtests.
          *    @return integer           Number of test cases.

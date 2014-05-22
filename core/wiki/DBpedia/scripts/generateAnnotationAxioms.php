@@ -1,11 +1,11 @@
 #! /usr/bin/php
-<?php 
+<?php
 
 if(empty($argv[1]) || empty($argv[2])){
-	die('$1 = nt file, $2 =  origin URI'."\n");
-	}
-$ntfile =	$argv[1];
-$extractorURI =	'<'.$argv[2].'>';
+    die('$1 = nt file, $2 =  origin URI'."\n");
+    }
+$ntfile =   $argv[1];
+$extractorURI = '<'.$argv[2].'>';
 
 define("RDF_TYPE", '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>');
 define("OWL_AXIOM", '<http://www.w3.org/2002/07/owl#Axiom>');
@@ -32,10 +32,10 @@ while(!feof($file))
   $o = trim(substr($rest, 0, strrpos($rest, '.')));
 /*
   if(strpos($object,'"')===false){
-	  $object = remove($object);
-	  }
+      $object = remove($object);
+      }
 */
-  
+
   $bnode = '_:a'.$i;
   echo trip($bnode, RDF_TYPE , OWL_AXIOM);
   echo trip($bnode, OWL_SUBJECT , $s );
@@ -43,21 +43,21 @@ while(!feof($file))
   echo trip($bnode, OWL_OBJECT, $o );
   echo trip($bnode, DC_MODIFIED,$modified );
   echo trip($bnode, ORIGIN, $extractorURI );
-  
+
   //echo $subject."|".$predicate."|".$object."\n";
-  
+
 }
 
 
 fclose($file);
 
 function trip($s, $p, $o){
-		return $s." ".$p." ".$o." . \n";
-	}
+        return $s." ".$p." ".$o." . \n";
+    }
 
 
   function remove($str){
-	  	return   	str_replace("<","",
-  		  			str_replace(">","", $str));
-	  }
- 
+        return      str_replace("<","",
+                    str_replace(">","", $str));
+      }
+

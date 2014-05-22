@@ -91,7 +91,7 @@ class TestOfSimpleSignatureMap extends UnitTestCase {
         $ref2 = &$map->findFirstAction(array(0));
         $this->assertReference($ref2, $ref);
     }
-    
+
     function testDifferentCallSignaturesCanHaveDifferentReferences() {
         $map = new SimpleSignatureMap();
         $fred = 'Fred';
@@ -157,7 +157,7 @@ class TestOfCallSchedule extends UnitTestCase {
         $this->assertReference($schedule->respond(0, 'aMethod', array(2)), $any);
         $this->assertReference($schedule->respond(0, 'aMethod', array(1)), $one);
     }
-    
+
     function testReturnsCanBeSetOverTime() {
         $one = 'one';
         $two = 'two';
@@ -167,7 +167,7 @@ class TestOfCallSchedule extends UnitTestCase {
         $this->assertReference($schedule->respond(0, 'aMethod', array()), $one);
         $this->assertReference($schedule->respond(1, 'aMethod', array()), $two);
     }
-    
+
     function testReturnsOverTimecanBeAlteredByTheArguments() {
         $one = '1';
         $two = '2';
@@ -180,14 +180,14 @@ class TestOfCallSchedule extends UnitTestCase {
         $this->assertReference($schedule->respond(1, 'aMethod', array()), $two);
         $this->assertReference($schedule->respond(1, 'aMethod', array('a')), $two_a);
     }
-    
+
     function testCanReturnByValue() {
         $a = 5;
         $schedule = &new SimpleCallSchedule();
         $schedule->register('aMethod', false, new SimpleByValue($a));
         $this->assertClone($schedule->respond(0, 'aMethod', array()), $a);
     }
-    
+
     function testCanThrowException() {
         if (version_compare(phpversion(), '5', '>=')) {
             $schedule = &new SimpleCallSchedule();
@@ -196,7 +196,7 @@ class TestOfCallSchedule extends UnitTestCase {
             $schedule->respond(0, 'aMethod', array());
         }
     }
-    
+
     function testCanEmitError() {
         $schedule = &new SimpleCallSchedule();
         $schedule->register('aMethod', false, new SimpleErrorThrower('Ouch', E_USER_WARNING));
@@ -732,7 +732,7 @@ class TestOfMockingClassesWithStaticMethods extends UnitTestCase {
     function skip() {
         $this->skipUnless(version_compare(phpversion(), '5', '>='), 'Static methods not tested unless PHP 5+');
     }
-    
+
     function testStaticMethodIsMockedAsStatic() {
         $mock = new WithStaticMethod();
         $reflection = new ReflectionClass($mock);
@@ -763,7 +763,7 @@ class TestOfThrowingExceptionsFromMocks extends UnitTestCase {
         $this->expectException();
         $mock->aMethod();
     }
-    
+
     function testThrowsOnlyWhenCallSignatureMatches() {
         $mock = new MockDummy();
         $mock->throwOn('aMethod', new MockTestException(), array(3));
@@ -772,7 +772,7 @@ class TestOfThrowingExceptionsFromMocks extends UnitTestCase {
         $this->expectException();
         $mock->aMethod(3);
     }
-    
+
     function testCanThrowOnParticularInvocation() {
         $mock = new MockDummy();
         $mock->throwAt(2, 'aMethod', new MockTestException());
@@ -784,14 +784,14 @@ class TestOfThrowingExceptionsFromMocks extends UnitTestCase {
 }
 
 class TestOfThrowingErrorsFromMocks extends UnitTestCase {
-    
+
     function testCanGenerateErrorFromMethodCall() {
         $mock = new MockDummy();
         $mock->errorOn('aMethod', 'Ouch!');
         $this->expectError('Ouch!');
         $mock->aMethod();
     }
-    
+
     function testGeneratesErrorOnlyWhenCallSignatureMatches() {
         $mock = new MockDummy();
         $mock->errorOn('aMethod', 'Ouch!', array(3));
@@ -800,7 +800,7 @@ class TestOfThrowingErrorsFromMocks extends UnitTestCase {
         $this->expectError();
         $mock->aMethod(3);
     }
-    
+
     function testCanGenerateErrorOnParticularInvocation() {
         $mock = new MockDummy();
         $mock->errorAt(2, 'aMethod', 'Ouch!');
@@ -966,7 +966,7 @@ class TestOfPHP5AbstractMethodMocking extends UnitTestCase {
                 'anAbstractWithMultipleParameters'
             )
         );
-        
+
         Mock::generate('EvenDeeperEmptyChildClass');
         $this->assertNoErrors();
 

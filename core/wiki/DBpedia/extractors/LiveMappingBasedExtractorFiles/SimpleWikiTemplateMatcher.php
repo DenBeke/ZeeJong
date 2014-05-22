@@ -15,7 +15,7 @@ class SimpleWikiTemplateMatcher
 
 
         // Remove Prettytables
-    	$text = preg_replace('~{\|.*\|}~s','',$text);
+        $text = preg_replace('~{\|.*\|}~s','',$text);
 
         // Find all tempaltes (note: this is a recursive regex)
         // FIXME: broken - curly braces are allowed in template values. Example:
@@ -37,7 +37,7 @@ class SimpleWikiTemplateMatcher
 
 
             // Extract the name
-        	$itemName = trim(substr($item, 0, strpos($item, '|')));
+            $itemName = trim(substr($item, 0, strpos($item, '|')));
             $current->setName($itemName);
 
 
@@ -54,7 +54,7 @@ class SimpleWikiTemplateMatcher
             // Known Issue: Might merge words - a<br />b becomes ab
             $item = strip_tags($item ,$GLOBALS['W2RCFG']['allowedtags']);
 
-        	// Replace "|" inside subtemplates with "\\\\" to avoid false splits
+            // Replace "|" inside subtemplates with "\\\\" to avoid false splits
             $item = preg_replace_callback("/(\{{2})([^\}\|]+)(\|)([^\}]+)(\}{2})/",
                 'replaceBarInSubtemplate', $item);
 
@@ -66,7 +66,7 @@ class SimpleWikiTemplateMatcher
                     $item, -1, $count);
             } while($count);
 
-        	$arguments = explode('|', $item);
+            $arguments = explode('|', $item);
 
             // Remove the first entry which is the template name
             array_shift($arguments);

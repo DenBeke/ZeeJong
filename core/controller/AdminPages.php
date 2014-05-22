@@ -11,58 +11,58 @@ namespace Controller {
 require_once(dirname(__FILE__) . '/Controller.php');
 
 
-	class AdminPages extends Controller {
+    class AdminPages extends Controller {
 
-		public $page = 'admin-pages';
-		public $coach;
-		public $title;
-		public $pages;
+        public $page = 'admin-pages';
+        public $coach;
+        public $title;
+        public $pages;
 
 
-		public function __construct() {
-			$this->theme = 'admin-pages.php';
-			$this->title = 'Admin - Pages - ' . Controller::siteName;
-			
-			$this->createPage();
-			$this->addAnalytics();
-			
-			global $database;
-			$this->pages = $database->getAllPages();
-		}
-		
-		
-		
-		public function GET($args) {
-			
-			if(isset($args[1])) {
-				global $database;
-				$database->deletePage($args[1]);
-				
-				//Refresh pages
-				$this->pages = $database->getAllPages();
-			}
-			
-		}
-		
-		
-		
-		private function createPage()
-		{
-		    if ((isset($_POST['title'])) && (isset($_POST['content'])) && ($_POST['title'] != '') && ($_POST['content'] != '')) {
-		    
-		        global $database;
-		        $database->addPage($_POST['title'], $_POST['content']);
-		    }
-		}
-		
-		
-		private function addAnalytics() {
-			if( isset($_POST['analytics'])) {
-				\saveAnalytics($_POST['analytics']);
-			}
-		}
-		
-	}
+        public function __construct() {
+            $this->theme = 'admin-pages.php';
+            $this->title = 'Admin - Pages - ' . Controller::siteName;
+
+            $this->createPage();
+            $this->addAnalytics();
+
+            global $database;
+            $this->pages = $database->getAllPages();
+        }
+
+
+
+        public function GET($args) {
+
+            if(isset($args[1])) {
+                global $database;
+                $database->deletePage($args[1]);
+
+                //Refresh pages
+                $this->pages = $database->getAllPages();
+            }
+
+        }
+
+
+
+        private function createPage()
+        {
+            if ((isset($_POST['title'])) && (isset($_POST['content'])) && ($_POST['title'] != '') && ($_POST['content'] != '')) {
+
+                global $database;
+                $database->addPage($_POST['title'], $_POST['content']);
+            }
+        }
+
+
+        private function addAnalytics() {
+            if( isset($_POST['analytics'])) {
+                \saveAnalytics($_POST['analytics']);
+            }
+        }
+
+    }
 
 }
 

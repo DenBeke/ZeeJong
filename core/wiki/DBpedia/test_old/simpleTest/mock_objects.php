@@ -1,9 +1,9 @@
 <?php
 /**
- *	base include file for SimpleTest
- *	@package	SimpleTest
- *	@subpackage	MockObjects
- *	@version	$Id: mock_objects.php,v 1.108 2007/07/07 00:31:03 lastcraft Exp $
+ *  base include file for SimpleTest
+ *  @package    SimpleTest
+ *  @subpackage MockObjects
+ *  @version    $Id: mock_objects.php,v 1.108 2007/07/07 00:31:03 lastcraft Exp $
  */
 
 /**#@+
@@ -161,8 +161,8 @@ class ParametersExpectation extends SimpleExpectation {
 
 /**
  *    Confirms that the number of calls on a method is as expected.
- *	@package	SimpleTest
- *	@subpackage	MockObjects
+ *  @package    SimpleTest
+ *  @subpackage MockObjects
  */
 class CallCountExpectation extends SimpleExpectation {
     var $_method;
@@ -206,8 +206,8 @@ class CallCountExpectation extends SimpleExpectation {
 
 /**
  *    Confirms that the number of calls on a method is as expected.
- *	@package	SimpleTest
- *	@subpackage	MockObjects
+ *  @package    SimpleTest
+ *  @subpackage MockObjects
  */
 class MinimumCallCountExpectation extends SimpleExpectation {
     var $_method;
@@ -251,8 +251,8 @@ class MinimumCallCountExpectation extends SimpleExpectation {
 
 /**
  *    Confirms that the number of calls on a method is as expected.
- *	@package	SimpleTest
- *	@subpackage	MockObjects
+ *  @package    SimpleTest
+ *  @subpackage MockObjects
  */
 class MaximumCallCountExpectation extends SimpleExpectation {
     var $_method;
@@ -418,7 +418,7 @@ class SimpleMock {
         $test = &$this->_getCurrentTestCase();
         $test->tell($this);
     }
-    
+
     /**
      *    Disables a name check when setting expectations.
      *    This hack is needed for the partial mocks.
@@ -924,8 +924,8 @@ class Mock {
 }
 
 /**
- *	  @package	SimpleTest
- *	  @subpackage	MockObjects
+ *    @package  SimpleTest
+ *    @subpackage   MockObjects
  *    @deprecated
  */
 class Stub extends Mock {
@@ -979,7 +979,7 @@ class MockGenerator {
         $code = $this->_createClassCode($methods ? $methods : array());
         return eval("$code return \$code;");
     }
-    
+
     /**
      *    Subclasses a class and overrides every method with a mock one
      *    that can have return values and expectations set. Chains

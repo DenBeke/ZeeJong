@@ -7,22 +7,22 @@
  
 class PropertyMergeParser implements Parser
 {
-	const parserID = "http://dbpedia.org/parsers/PropertyMergeParser";
+    const parserID = "http://dbpedia.org/parsers/PropertyMergeParser";
 
-	public static function getParserID() {
+    public static function getParserID() {
         return self::parserID;
     }
-	
-	public static function parseValue($input, $language, $restrictions)
-	{
-		$results = array();
-		
-		//TODO: TOLLE SACHEN MACHEN
-		
-		return $results;
-	
-	}
-		
+    
+    public static function parseValue($input, $language, $restrictions)
+    {
+        $results = array();
+        
+        //TODO: TOLLE SACHEN MACHEN
+        
+        return $results;
+    
+    }
+        
 }
 
 

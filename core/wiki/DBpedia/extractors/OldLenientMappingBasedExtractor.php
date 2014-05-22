@@ -6,8 +6,8 @@
  * It matches the template properties to the DBpedia ontology ones.
  */
 class OldLenientMappingBasedExtractor extends MappingBasedExtractor {
-	public function __construct() {
-		$this->setFlagForNewSchemaExport(false);
-		$this->setFlagForStrictExport(false);
-	}
+    public function __construct() {
+        $this->setFlagForNewSchemaExport(false);
+        $this->setFlagForStrictExport(false);
+    }
 }

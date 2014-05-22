@@ -64,10 +64,10 @@ $GLOBALS['W2RCFG']=array(
 
 //////////////////////////////////////////
 //
-//	Begin legacy code.
-//	Should be excluded in the future.
-//	Though it has to be tested first, if
-//	these variables really are superfluous
+//  Begin legacy code.
+//  Should be excluded in the future.
+//  Though it has to be tested first, if
+//  these variables really are superfluous
 //
 //////////////////////////////////////////
 
