@@ -20,7 +20,7 @@ require_once(dirname(__FILE__) . '/Error.php');
 		public $teams;
 		public $referees;
 		public $coaches;
-
+		public $flag;
 
 		public function __construct() {
 			$this->theme = 'country.php';
@@ -44,6 +44,21 @@ require_once(dirname(__FILE__) . '/Error.php');
 			$this->teams = $database->getTeamsInCountry($this->country->getId());
 			$this->referees = $database->getRefereesInCountry($this->country->getId());
 			$this->coaches = $database->getCoachesInCountry($this->country->getId());
+			
+	
+			$countryName = explode(' ', $this->country->getName());
+			$countryName = implode('_', $countryName);
+			
+			$countryName = str_replace('\'', '', $countryName);
+			$countryName = str_replace('&#39;', '', $countryName);
+			
+			$src = 'img/Flags/Medium/' . $countryName . '.png';
+			if (!file_exists($src)) {
+					$src = 'img/Flags/Medium/Unknown.png';
+			}
+			
+			$this->flag = SITE_URL . $src;
+			
 
 			$this->title = 'Country - ' . $this->country->getName() . ' - ' . Controller::siteName;
 		}

@@ -12,7 +12,7 @@ The class contains the following information:
 - name
 - country
 */
-class Referee {
+class Referee implements JsonSerializable {
 	private $id;
 	private $firstName;
 	private $lastName;
@@ -80,9 +80,32 @@ class Referee {
 		return $this->countryId;
 	}
 	
-	
+	public function getOverallStats() {
+		
+		$months = getAllMonths($this->db->getMatchDateBorderReferee($this->getId(), true), $this->db->getMatchDateBorderReferee($this->getId(), false));
+		$matches = [];
+		$cardsDealt = [];
+		
+		$count = 1;
+		echo "Size: ",sizeof($months);
+		foreach ($months as $month => $timestamp) {
+
+			if($count < sizeof($months)) {
+				$matches[$timestamp] = $this->db->getTotalNumberOfMatchesRefereedInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
+				$cardsDealt[$timestamp] = $this->db->getTotalCardsGivenInterval($this->getId(), array_values($months)[$count-1], array_values($months)[$count]);
+
+			}
+			$count++;
+		}
+		
+		
+		return ['Matches' => $matches, 'Cards given' => $cardsDealt];
+		
+	}	
 	
 	public function getTotalMatches() {
+
+		return $this->db->getTotalNumberOfMatchesRefereed($this->id);
 	}
 	
 	
@@ -97,6 +120,15 @@ class Referee {
 	*/
 	public function __toString() {
 		return "ID: $this->id";
+	}
+
+	public function jsonSerialize() {
+		return [
+			'id' => $this->id,
+			'firstName' => $this->firstName,
+			'lastName' => $this->lastName,
+			'countryId' => $this->countryId
+		];
 	}
 
 }

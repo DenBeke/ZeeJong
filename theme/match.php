@@ -10,6 +10,15 @@ Created: February 2014
 <div class="container">
 
 	<h2 id="title-match"><?php echo $this->match->getTeamA()->getName() ?> - <?php echo $this->match->getTeamB()->getName() ?></h2>
+
+	<?php 
+	if(isAdmin()) {
+	?>
+	<a href="<?php echo SITE_URL . 'admin/match/' . $this->match->getId() . '/edit'; ?>" class="btn-xs btn btn-primary title-btn">Edit</a>
+	<?php
+	}
+	?>
+
 	
 	
 	

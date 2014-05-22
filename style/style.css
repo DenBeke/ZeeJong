@@ -49,6 +49,10 @@ table a {
 	opacity: 1;
 }
 
+.country-flag-medium {
+	border-radius: 5px;
+}
+
 
 
 /* Style for match *
@@ -387,6 +391,17 @@ div.panel-wiki:hover .wiki {
 .admin-page-edit {
 	text-align: right !important;
 	padding-right: 0 !important;
+}
+
+/* Admin match *
+***************/
+#title-match {
+	display: inline-block;
+}
+
+.title-btn {
+	margin-bottom: 12px !important;
+	margin-left: 20px !important;
 }
 
 
