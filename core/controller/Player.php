@@ -12,6 +12,8 @@ require_once(dirname(__FILE__) . '/Controller.php');
 require_once(dirname(__FILE__) . '/../classes/Player.php');
 require_once(dirname(__FILE__) . '/Error.php');
 require_once(dirname(__FILE__) . '/../wiki/wiki.php');
+require_once(dirname(__FILE__) . '/../wiki/newWiki.php');
+
 
     class Player extends Controller {
 
@@ -50,7 +52,16 @@ require_once(dirname(__FILE__) . '/../wiki/wiki.php');
             return $wiki->getPlayerWiki($this->player->getName());
         }
 
+        public function getWikiDBpedia() {
+            if(strpos($this->player->getName(), "%") === false) {
 
+                return getWikiDBP($this->player->getName());
+            }
+            else {
+
+                return false;
+            }
+        }
     }
 
 }

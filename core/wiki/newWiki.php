@@ -421,7 +421,7 @@ function articleExists($article) {
 * @return Returns an array, with every key being the name of the dbpprop, the img key giving the image url, and abstract key giving the introduction of the player
 *
 */
-function getWiki($player) {
+function getWikiDBP($player) {
 
    $article = getPlayerArticle($player);
    $article = searchCorrectArticleName($article);
