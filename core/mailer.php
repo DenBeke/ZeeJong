@@ -9,7 +9,12 @@ require(dirname(__FILE__) . '/database.php');
 
 function sendMail($subject, $to, $from, $message) {
 
-    echo "From: $from<br>To: $to<br>Subject: $subject<br>Message: $message";
+    if( mail("$to",$subject,$message,"From: $from\n") ) {
+        echo "From: $from<br>To: $to<br>Subject: $subject<br>Message: $message";   
+    }
+    else {
+        echo "Could not send email";
+    }
 
 }
 
