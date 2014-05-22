@@ -3817,7 +3817,7 @@ class Database {
             JOIN `Score` ON `Score`.id = scoreId
             WHERE playerId = ? AND
             (teamId = `Match`.teamA OR teamId = `Match`.teamB) AND
-            Score`.teamA =`Score`.teamB;
+            `Score`.teamA =`Score`.teamB;
         ";
 
         //Prepare statement

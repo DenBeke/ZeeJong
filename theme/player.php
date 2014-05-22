@@ -167,17 +167,12 @@ Created: February 2014
 
 
     <?php } ?>
-
-
-
-
-
-
+    
+    
+    
     <div class="col-md-6">
         <div id="graph-matches-won"></div>
     </div>
-    
-    
     
     
     
@@ -193,7 +188,7 @@ Created: February 2014
                     plotShadow: false
                 },
                 title: {
-                    text: 'Users'
+                    text: 'Matches won'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.y}</b>'
