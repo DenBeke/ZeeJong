@@ -80,7 +80,7 @@ class Team implements JsonSerializable {
     }
 
     public function getTotalNumberOfDrawMatches() {
-        return $this->db->getTotalMatchesDrawPlayer($this->id);
+        return $this->db->getTotalMatchesDrawTeam($this->id);
     }
 
 
