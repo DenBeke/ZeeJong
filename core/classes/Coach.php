@@ -82,7 +82,7 @@ class Coach implements JsonSerializable {
 
 	public function getOverallStats() {
 		
-		$months = getAllMonths($this->db->getMatchDateBorder($this->getId(), true), $this->db->getMatchDateBorderCoach($this->getId(), false));
+		$months = getAllMonths($this->db->getMatchDateBorderCoach($this->getId(), true), $this->db->getMatchDateBorderCoach($this->getId(), false));
 		$matches = [];
 		$matches_won = [];
 		
