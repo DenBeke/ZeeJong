@@ -2886,7 +2886,7 @@ class Database {
 
 		//Prepare statement
 		$statement = $this->getStatement($query);
-
+ 
 		//Bind parameters
 		if (!$statement -> bind_param('iii', $coachId, $min, $max)) {
 			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
@@ -2959,6 +2959,102 @@ class Database {
 
 		return $amount;
 	}
+
+
+////////////////////////////////////
+
+	public function getTotalNumberOfTeamMatchesInterval($teamId, $min, $max) {
+
+		$query = 
+		'
+		SELECT COUNT(*)
+		FROM `Match`
+		WHERE 
+		(teamA = ?
+		OR teamB = ?)
+		AND date > ?
+		AND date < ?;
+		';
+
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if (!$statement -> bind_param('iiii', $teamId, $teamId, $min, $max)) {
+			throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+		//Execute statement
+		if (!$statement -> execute()) {
+			throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+		}
+
+
+		$statement->bind_result($amount);
+
+		while ($statement->fetch()) {
+
+
+		}
+
+		$statement->reset();
+
+		return $amount;
+
+	}
+
+
+
+	public function getTotalMatchesWonByTeamInterval($teamId, $min, $max) {
+		//Query
+		$query = "
+			SELECT COUNT(*) FROM `Match`
+			JOIN `Score` ON `Score`.id = scoreId
+			WHERE
+			`Match`.date > ? AND
+			`Match`.date < ? AND
+			((? = `Match`.teamA AND `Score`.teamA > `Score`.teamB) OR
+			 (? = `Match`.teamB AND `Score`.teamB > `Score`.teamA))
+		";
+
+		//Prepare statement
+		$statement = $this->getStatement($query);
+
+		//Bind parameters
+		if(!$statement->bind_param('iiii', $min, $max, $teamId, $teamId)){
+			throw new exception('Binding parameters failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+
+		//Execute statement
+		if (!$statement->execute()) {
+			throw new exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
+		}
+
+		//Store the result in the buffer
+		$statement->store_result();
+
+
+		$numberOfResults = $statement->num_rows;
+
+		if($numberOfResults != 1) {
+			throw new exception('Could not count the matches the player has won');
+		}
+
+		$statement->bind_result($amount);
+
+		while ($statement->fetch()) {
+
+
+		}
+
+		$statement->reset();
+
+		return $amount;
+	}
+
+////////////////////////////////////////////////
+
 
 
 	public function getTotalNumberOfMatchesRefereedInterval($refereeId, $min, $max) {
@@ -3862,6 +3958,24 @@ class Database {
 			return NULL;
 		}
 	}		
+
+	public function getMatchDateBorderTeam($teamId, $first) {
+		$order = ($first ? 'ASC' : 'DESC');		
+
+		$sel = new \Selector('Match');
+		$sel->filter([['teamA', '=', $teamId],['teamB', '=', $teamId]]);
+		$sel->order('date', $order);
+		$sel->select('date');
+		
+		$result = $this->select($sel);
+		
+		if(count($result) >= 1) {
+			return $result[0]['date'];
+		}
+		else {
+			return NULL;
+		}
+	}
 			
 	public function getFirstMatchDate() {
 
