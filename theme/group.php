@@ -43,13 +43,16 @@
             <div class=top-left><div class=badge><h1><?php echo $this->getGroup()->getName() ?></h1></div></div>
             <div class="col-md-5">
                 <h2>Members</h2>
-                <table class="table table-striped">
+                <table class="sortable">
+                	<thead>
                     <tr>
                         <th>Name</th>
                         <th>Score</th>
                         <th>Money</th>
                         <th>Action</th>
                     </tr>
+                    </thead>
+                    <tbody>
                 <?php
                 $members = $this->getGroup()->getMembers();
                 foreach($members as $memberId) {
@@ -101,6 +104,7 @@
                             }
                         ?>
                 </tr>
+                </tbody>
 
                 <?php } ?>
                 </table>
