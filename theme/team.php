@@ -135,7 +135,7 @@ Created: February 2014
 
     <?php if($this->team->getTotalPlayedMatches() != 0) { ?>
 
-    <div class="col-md-12">
+    <div class="col-md-8">
 
         <h3>Overall Stats</h3>
 
@@ -144,6 +144,57 @@ Created: February 2014
     </div>
 
     <?php } ?>
+    
+    
+    <div class="col-md-4">
+        <div id="graph-matches-won"></div>
+    </div>
+    
+    
+    <script>
+    
+    
+        $(function () {
+            $('#graph-matches-won').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Matches won'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.y}</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Total',
+                    data: [
+                        ['Won',       <?php echo $this->team->getTotalWonMatches(); ?>],
+                        ['Draws',   <?php echo $this->team->getTotalNumberOfDrawMatches(); ?>],
+                        ['Lost',    <?php echo $this->team->getTotalPlayedMatches() - $this->team->getTotalWonMatches() - $this->team->getTotalNumberOfDrawMatches(); ?>]
+                    ]
+                }]
+            });
+        });
+    
+    </script>
+    
+    
 
 
 </div>

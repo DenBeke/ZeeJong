@@ -3,13 +3,23 @@
 Functions for mailing notifications to users
 */
 
+
+//Set default time zone
+date_default_timezone_set('Europe/Brussels');
+
+
 require(dirname(__FILE__) . '/config.php');
 require(dirname(__FILE__) . '/database.php');
 
 
 function sendMail($subject, $to, $from, $message) {
 
-    echo "From: $from<br>To: $to<br>Subject: $subject<br>Message: $message";
+    if( mail("$to",$subject,$message,"From: $from\n") ) {
+        echo "From: $from<br>To: $to<br>Subject: $subject<br>Message: $message";   
+    }
+    else {
+        echo "Could not send email";
+    }
 
 }
 
@@ -32,7 +42,7 @@ function matchesToString($matches) {
 
 
 
-function notifyUsers($time = 10000000000) {
+function notifyUsers($time = 604800) {
 
     $database = new Database;
 
