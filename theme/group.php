@@ -11,6 +11,8 @@
            $(document).ready(function() 
     { 
         $("#users").tablesorter(); 
+        $("#betsHistory").tablesorter(); 
+        $("#betsCurrent").tablesorter(); 
     } 
 ); 
 
@@ -95,7 +97,7 @@
                         <?php
 
                         }else if($memberId == $_SESSION['userID']&&!$this->getGroup()->isUserOwner($memberId))  {
-                            ?>
+                            ?></tbody>
 
                                 <form id="removeUser" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>group/<?php echo $this->getGroup()->getName()?>">
                                 <input type="hidden" name="userToRemove" id="userToRemove" value=<?php echo $memberId?> />
@@ -145,7 +147,8 @@
 
             <div class="col-md-12">
                 <h2>Bets</h2>
-                <table class="table table-striped">
+                <table id="betsCurrent" class="table table-striped"> 
+                	<thead>
                 <tr>
                     <th>Made by</th>
                     <th>Team 1</th>
@@ -156,6 +159,8 @@
                     <th># Yellow Cards</th>
                     <th>Amount</th>
                 </tr>
+                </thead>
+                <tbody>
                     <?php
                     $bets = $this -> getGroup() -> getUnhandledBets();
                     foreach ($bets as $betId) {
@@ -168,6 +173,7 @@
 
                     <?php }
                     ?>
+                    </tbody>
                 </table>
 
             </div>
@@ -175,7 +181,8 @@
 
             <div class="col-md-12">
                 <h2>Bets - History</h2>
-                <table class="table table-striped">
+                <table id="betsHistory" class="table table-striped"> 
+                <thead>
                 <tr>
                     <th>Made by</th>
                     <th>Team 1</th>
@@ -186,6 +193,8 @@
                     <th># Yellow Cards</th>
                     <th>Amount</th>
                 </tr>
+                </thead>
+                <tbody>
                     <?php
                     $bets = $this -> getGroup() -> getHandledbets();
                     foreach ($bets as $betId) {
@@ -198,6 +207,7 @@
                     <?php
                     }
                     ?>
+                    </tbody>
                 </table>
 
             </div>
