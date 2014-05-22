@@ -12,7 +12,7 @@ Created: February 2014
 <div class="jumbotron">
       <div class="container">
         <h1>ZeeJong</h1>
-        <p>ZeeJong is the ultimate betting website! With over 25000 players, 5000 matches and 7 competitions in the database, ZeeJong covers most of the matches in the world of soccer!</p>
+        <p>ZeeJong is the ultimate betting website! With over 50 000 players, 20 000 matches and 20 competitions in the database, ZeeJong covers most of the matches in the world of soccer!</p>
         <p><a class="btn btn-primary btn-lg" role="button" href="<?php echo SITE_URL ?>register">Register now »</a></p>
       </div>
 </div>
