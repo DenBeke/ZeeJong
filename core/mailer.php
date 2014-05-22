@@ -3,6 +3,11 @@
 Functions for mailing notifications to users
 */
 
+
+//Set default time zone
+date_default_timezone_set('Europe/Brussels');
+
+
 require(dirname(__FILE__) . '/config.php');
 require(dirname(__FILE__) . '/database.php');
 
