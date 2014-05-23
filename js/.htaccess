@@ -1,0 +1,4 @@
+#Url rewriting
+#This turns of the rewrite rules for this subdir
+
+RewriteEngine Off
