@@ -18,11 +18,11 @@ function sendMail($subject, $to, $from, $message) {
         return;
     }
 
-    if( mail(utf8_decode($to), utf8_decode($subject), utf8_decode($message), utf8_decode($from)."\nContent-Type: text/html; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n") ) {
-        echo "From: $from<br>To: $to<br>Subject: $subject<br>Message: $message";   
+    if( mail(($to), ($subject), ($message), 'From: ' . ($from)."\nContent-Type: text/html; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n") ) {
+        echo "<p>Sent a message to: $to</p>";   
     }
     else {
-        echo "Could not send email";
+        echo "<p>Could not send email</p>";
     }
     
 
