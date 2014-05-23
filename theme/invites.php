@@ -66,7 +66,7 @@ if(!loggedIn()){
             <input type="hidden" name="inviteId" id="inviteId" value=<?php echo $inviteId?> />
             <input type="hidden" name="withdraw" id="withdraw" value="True" />
             <td>
-                <button type="submit" class="btn btn-success" >Withraw</button>
+                <button type="submit" class="btn btn-success" >Withdraw</button>
             </td>
             </form>
         </tr>
