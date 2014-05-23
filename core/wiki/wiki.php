@@ -70,8 +70,15 @@ class Wiki {
         $html = $this->loadPage($searchLocation);
 
         $searchResults = $html->find('.mw-search-results' , 0);
-        $searchResultElement = $searchResults->first_child()->first_child()->first_child();
-        $this->article = $searchResultElement->getAttribute('title');
+        if($searchResults == 0) {
+
+            $this->article = false;
+        }
+
+        else {
+            $searchResultElement = $searchResults->first_child()->first_child()->first_child();
+            $this->article = $searchResultElement->getAttribute('title');
+        }
     }
 
 
@@ -122,6 +129,10 @@ class Wiki {
         if($wiki == false) {
 
             $this->searchCorrectArticleName();
+            if($this->article === false) {
+
+                return false;
+            }
             $wiki = $this->run();
             if($wiki != false) {
 
