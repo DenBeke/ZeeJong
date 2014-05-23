@@ -10,7 +10,7 @@ date_default_timezone_set('Europe/Brussels');
 
 require(dirname(__FILE__) . '/config.php');
 require(dirname(__FILE__) . '/database.php');
-
+iconv_set_encoding("internal_encoding", "UTF-8");
 
 function sendMail($subject, $to, $from, $message) {
 
@@ -18,12 +18,13 @@ function sendMail($subject, $to, $from, $message) {
         return;
     }
 
-    if( mail("$to",$subject,$message,"From: $from\r\nContent-Type: text/html; charset=ISO-8859-1\r\n") ) {
+    if( mail(utf8_decode($to), utf8_decode($subject), utf8_decode($message), utf8_decode($from)."\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n") ) {
         echo "From: $from<br>To: $to<br>Subject: $subject<br>Message: $message";   
     }
     else {
         echo "Could not send email";
     }
+    
 
 }
 
