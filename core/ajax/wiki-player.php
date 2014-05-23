@@ -22,6 +22,11 @@ if(isset($_GET['player'])) {
 	if(intval($_GET['player'])) {
 		$controller->GET([1 => $_GET['player']]);
 		$output['wiki'] = $controller->getWiki();
+		
+		if($output['wiki'] == false) {
+			$output['error'] = 'No wiki information found';
+		}
+		
 	}
 	else {
 
