@@ -97,7 +97,7 @@
                         <?php
 
                         }else if($memberId == $_SESSION['userID']&&!$this->getGroup()->isUserOwner($memberId))  {
-                            ?></tbody>
+                            ?>
 
                                 <form id="removeUser" class="form-horizontal" role="form" method="post" action="<?php echo SITE_URL ?>group/<?php echo $this->getGroup()->getName()?>">
                                 <input type="hidden" name="userToRemove" id="userToRemove" value=<?php echo $memberId?> />
