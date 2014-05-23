@@ -683,7 +683,7 @@ if(isAdmin()){
                 <select name="player-list" class="form-control">
                     <optgroup label="<?php echo $this->match->getTeamA()->getName() ?>">
                         <?php
-                        foreach($this->match->getTeamA()->getPlayers() as $player) {
+                        foreach($this->match->getPlayersTeamA() as $player) {
                         ?>
                         <option value="<?php echo $player->getId(); ?>"><?php echo $player->getName(); ?></option>
                         <?php } ?>
@@ -691,7 +691,7 @@ if(isAdmin()){
 
                     <optgroup label="<?php echo $this->match->getTeamB()->getName() ?>">
                         <?php
-                        foreach($this->match->getTeamB()->getPlayers() as $player) {
+                        foreach($this->match->getPlayersTeamB() as $player) {
                         ?>
                         <option value="<?php echo $player->getId(); ?>"><?php echo $player->getName(); ?></option>
                         <?php } ?>
