@@ -26,7 +26,7 @@ $(document).ready(function(){
 			}
 			else {
 				
-				$(this).html('Could not load wiki');
+				$(element).html('Could not load wiki');
 				
 			}
 		
