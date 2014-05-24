@@ -198,9 +198,9 @@ namespace Controller {
                 return True;
             }
             $match = $database -> getMatchById($id);
-            if ($match -> getDate() < strtotime(date('d M Y', time())))
+            if ($match -> getDate() < time())
                 $this -> betErrorMessage = $this -> betErrorMessage . "You cannot place a bet for a match which is already played." . "\r\n";
-            return $match -> getDate() < strtotime(date('d M Y', time()));
+            return $match -> getDate() < time();
         }
 
         /**
