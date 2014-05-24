@@ -193,18 +193,42 @@ class Match {
                      + 0.31 * ($earlierScoreTeamB[1]['our'] + $earlierScoreTeamA[1]['opponent'] + $earlierScoreBetweenTeams[1]['B']) / 3
                      + 0.10 * ($earlierScoreTeamB[0]['our'] + $earlierScoreTeamA[0]['opponent'] + $earlierScoreBetweenTeams[0]['B']) / 3;
 
-        if ($scoreTeamA < 2 && $scoreTeamA > 1.38) {
-            $scoreTeamA = 2;
-        }
-        if ($scoreTeamA < 0.62) {
-            $scoreTeamA = 0;
-        }
+        if (round($scoreTeamA) == round($scoreTeamB)) {
+            if (abs($scoreTeamA - $scoreTeamB) > 0.6) {
+                if (abs($scoreTeamA - round($scoreTeamA)) >= abs($scoreTeamB - round($scoreTeamB))) {
+                    if ($scoreTeamA >= round($scoreTeamA)) {
+                        $scoreTeamA = round($scoreTeamA) + 1;
+                    }
+                    else {
+                        $scoreTeamA = round($scoreTeamA) - 1;
+                    }
+                    $scoreTeamB = round($scoreTeamB);
+                }
+                else {
+                    if ($scoreTeamB >= round($scoreTeamB)) {
+                        $scoreTeamB = round($scoreTeamB) + 1;
+                    }
+                    else {
+                        $scoreTeamB = round($scoreTeamB) - 1;
+                    }
+                    $scoreTeamA = round($scoreTeamA);
+                }
+            }
+            else if ($scoreTeamA == 1 && $scoreTeamB == 1) {
+                if ($scoreTeamA < 2 && $scoreTeamA > 1.38) {
+                    $scoreTeamA = 2;
+                }
+                else if ($scoreTeamA < 0.62) {
+                    $scoreTeamA = 0;
+                }
 
-        if ($scoreTeamB < 2 && $scoreTeamB > 1.38) {
-            $scoreTeamB = 2;
-        }
-        if ($scoreTeamB < 0.62) {
-            $scoreTeamB = 0;
+                if ($scoreTeamB < 2 && $scoreTeamB > 1.38) {
+                    $scoreTeamB = 2;
+                }
+                else if ($scoreTeamB < 0.62) {
+                    $scoreTeamB = 0;
+                }
+            }
         }
 
         $prognose = array(round($scoreTeamA), round($scoreTeamB));
