@@ -178,7 +178,6 @@ class Parser {
 
             $this->competition = $competition['name'];
 
-            echo '<em>Parsing: ' . $competition['name'] . '</em><br>';
             $this->parseNewMatches($competition['url']);
         }
     }
@@ -260,15 +259,15 @@ class Parser {
             $teamA = $html->find('.content-column .content .left a', 0);
             $teamB = $html->find('.content-column .content .right a', 0);
 
+            $date = $html->find('.middle .details .timestamp', 1)->getAttribute('data-value');
+            echo '    ' . trim($teamA->plaintext) . ' vs ' . trim($teamB->plaintext) . ' on ' . date('d-m-Y', $date) . ' with score ' . $scoreA . ' - ' . $scoreB . "\n";
+
             //Parse the team pages
             $teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
             $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
 
             //Add the match to the database
-            $date = $html->find('.middle .details .timestamp', 1)->getAttribute('data-value');
             $matchId = $this->database->addMatch($teamIdA, $teamIdB, $scoreA, $scoreB, $refereeId, $date, $tournamentId, $type);
-
-            echo "match: $matchId<br>";
 
             $teams = array(
                 'teamA' => array(
@@ -380,7 +379,7 @@ class Parser {
         }
 
         catch (exception $e) {
-            echo 'Exception in parseMatch: ' . $e->getMessage() . '<br>';
+            echo 'Exception in parseMatch: ' . $e->getMessage() . "\n";
             $html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
         }
     }
@@ -399,6 +398,8 @@ class Parser {
 
         $this->tournament = $html->find('.level-1 a', 0)->plaintext;
         $tournamentId = $this->database->addTournament($this->tournament, $competitionId);
+
+        echo 'Parsing: ' . $this->competition . ' (' . $this->tournament . ')' . "\n";
 
         $urls = array();
         $parts = $html->find('.level-1', 0)->find('.leaf a');
@@ -431,7 +432,7 @@ class Parser {
                 $html = $this->loadPage($url);
             }
             catch (Exception $e) {
-                echo 'Exception: Failed to load ' . $url . '<br>';
+                echo 'Exception: Failed to load ' . $url . "\n";
             }
 
             //Loop over all matches
@@ -489,6 +490,7 @@ class Parser {
                                     $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId);
                                 }
                                 catch (Exception $e) {
+                                    echo '    ' . trim($teamA->plaintext) . ' vs ' . trim($teamB->plaintext) . ' on ' . date('d-m-Y', $date) . "\n";
                                     $teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
                                     $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
 
@@ -522,6 +524,8 @@ class Parser {
 
             $html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
         }
+
+        echo "\n";
     }
 
 
