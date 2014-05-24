@@ -55,7 +55,7 @@ function notifyUsers($time = 604800) {
 
         $matches = $database->getUnbetMatches($user->getId(), $time);
 
-        $message = '<p>Dear ' . $user->getUserName() . ', you haven\'t yet placed any bets for the follow upcoming events. Don\'t forget to take your chance!</p>' . matchesToString($matches) . '<p>Greatings, the ZeeJong team.</p>';
+        $message = '<p>Dear ' . $user->getUserName() . ', you haven\'t yet placed any bets for the following upcoming events. Don\'t forget to take your chance!</p>' . matchesToString($matches) . '<p>Greetings, the ZeeJong team.</p>';
 
         sendMail('ZeeJong - Upcoming Events', $user->getMail(), 'no-reply@zeejong.eu', $message);
 
