@@ -27,7 +27,7 @@ function import($filename = 'output.json') {
 
     //Database and JSON schama
     //This links the json file to database tables and columns
-    $schama = [
+    $schema = [
 
         //Countries
         [
@@ -110,6 +110,17 @@ function import($filename = 'output.json') {
                 'CompetitionId' => 'competitionId'
             ]
         ],
+        
+        //Add score
+        [
+            'json' => 'Scores',
+            'db' => 'Score',
+            'cols' => [
+                'Id' => 'id',
+                'TeamA' => 'teamA',
+                'TeamB' => 'teamB',
+            ]
+        ],
 
         //Add matches
         [
@@ -179,18 +190,6 @@ function import($filename = 'output.json') {
         ],
 
 
-        //Add score
-        [
-            'json' => 'Scores',
-            'db' => 'Score',
-            'cols' => [
-                'Id' => 'id',
-                'TeamA' => 'teamA',
-                'TeamB' => 'teamB',
-            ]
-        ],
-
-
         //Add cards
         [
             'json' => 'Cards',
@@ -211,22 +210,37 @@ function import($filename = 'output.json') {
     $output = [];
 
 
+
     //Add all json objects to the database
-    foreach ($schama as $meta) {
+    foreach ($schema as $meta) {
 
         $table = $meta['db'];
         $json = $meta['json'];
 
 
-        //Empty table
-        $db->truncate($table);
-
         foreach ($data[$json] as $set) {
             $values = [];
             $attributes = [];
             foreach ($meta['cols'] as $key => $value) {
-                $values[] = $set[$key];
-                $attributes[] = $value;
+                
+                if($value == 'refereeID') {
+                
+                    if($set[$key] === 0) {
+                        $values[] = NULL;
+                        $attributes[] = $value;
+                    }
+                    else {
+                        $values[] = $set[$key];
+                        $attributes[] = $value;
+
+                    }
+                
+                }
+                else {
+                    $values[] = $set[$key];
+                    $attributes[] = $value;
+                }
+                
             }
             $db->insert($table, $attributes, $values);
         }
