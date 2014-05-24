@@ -193,7 +193,7 @@ class Parser {
     */
     private function loadPage($url) {
 
-        $filename = 'cache/' . md5($url) . '.cache';
+        $filename = dirname(__FILE__) . '/cache/' . md5($url) . '.cache';
 
         //Try to use the cache
         if ($this->ttl >= 0 && file_exists($filename)) {
@@ -545,7 +545,7 @@ class Parser {
         {
             $imageUrl = $html->find('.content .yui-u img', 0)->src;
             $image = file_get_contents($imageUrl);
-            file_put_contents('../images/Referee-' . $refereeId . '.png', $image);
+            file_put_contents( dirname(__FILE__) . '/../images/Referee-' . $refereeId . '.png', $image);
         }
 
         $html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
@@ -621,7 +621,7 @@ class Parser {
         {
             $imageUrl = $html->find('.content .yui-u img', 0)->src;
             $image = file_get_contents($imageUrl);
-            file_put_contents('../images/Player-' . $playerId . '.png', $image);
+            file_put_contents( dirname(__FILE__) . '/../images/Player-' . $playerId . '.png', $image);
         }
 
         $html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
@@ -650,7 +650,7 @@ class Parser {
         {
             $imageUrl = $html->find('.content .yui-u img', 0)->src;
             $image = file_get_contents($imageUrl);
-            file_put_contents('../images/Coach-' . $coachId . '.png', $image);
+            file_put_contents( dirname(__FILE__) . '/../images/Coach-' . $coachId . '.png', $image);
         }
 
         $html->clear(); //Clear DOM tree (memory leak in simple_html_dom)
@@ -696,7 +696,7 @@ class Parser {
             if (!file_exists('../images/Team-' . $id . '.png')) {
                 $imageUrl = $html->find('.content .logo img', 0)->src;
                 $image = file_get_contents($imageUrl);
-                file_put_contents('../images/Team-' . $id . '.png', $image);
+                file_put_contents(dirname(__FILE__) . '/../images/Team-' . $id . '.png', $image);
             }
 
             $this->parsePlayersInTeams($html, $id);
