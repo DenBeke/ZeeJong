@@ -231,23 +231,11 @@ class Parser {
 
     @param url of the match
     */
-    private function parseMatch($url, $type = '') {
+    private function parseMatch($url, $tournamentId, $teamIdA, $teamIdB, $type = '') {
 
         try {
 
-            //Add the competition and tournament to the database
-            $competitionId = $this->database->addCompetition($this->competition);
-            $tournamentId = $this->database->addTournament($this->tournament, $competitionId);
-
             $html = $this->loadPage($url);
-
-            //Find the referee
-            if(is_object($html->find('.referee', 0))) {
-                $refereeId = $this->parseReferee('http://int.soccerway.com' . $html->find('.referee', 0)->href);
-            }
-            else {
-                $refereeId = NULL;
-            }
 
             //Find the final score
             $score = $html->find('#subheading .bidi', 0)->plaintext;
@@ -260,11 +248,34 @@ class Parser {
             $teamB = $html->find('.content-column .content .right a', 0);
 
             $date = $html->find('.middle .details .timestamp', 1)->getAttribute('data-value');
+
+            try {
+                $match = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId);
+
+                //There is no need to parse the match again if it had a score already
+                if ($match->getScoreId() != null) {
+                    return;
+                }
+
+                $matchId = $match->getId();
+                $this->database->removeMatch($matchId);
+            }
+            catch (Exception $e) {
+            }
+
             echo '    ' . trim($teamA->plaintext) . ' vs ' . trim($teamB->plaintext) . ' on ' . date('d-m-Y', $date) . ' with score ' . $scoreA . ' - ' . $scoreB . "\n";
 
             //Parse the team pages
             $teamIdA = $this->parseTeam('http://int.soccerway.com' . $teamA->href);
             $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
+
+            //Find the referee
+            if(is_object($html->find('.referee', 0))) {
+                $refereeId = $this->parseReferee('http://int.soccerway.com' . $html->find('.referee', 0)->href);
+            }
+            else {
+                $refereeId = NULL;
+            }
 
             //Add the match to the database
             $matchId = $this->database->addMatch($teamIdA, $teamIdB, $scoreA, $scoreB, $refereeId, $date, $tournamentId, $type);
@@ -459,14 +470,6 @@ class Parser {
                     $date = $row->find('.date', 0);
                     if ((is_object($date)) && ($date->tag == 'td')) {
 
-                        //Convert the date in something that strtotime understands
-                        $date = $date->plaintext;
-                        $date = explode('/', $date);
-                        $date[2] = '20' . $date[2];
-                        $date = implode('-', $date);
-
-                        $date = strtotime($date);
-
                         //Read the information about the match
                         $teamA = $row->find('.team-a a', 0);
                         $teamB = $row->find('.team-b a', 0);
@@ -486,6 +489,18 @@ class Parser {
                         if ($colonPos != $minusPos) {
 
                             if ($colonPos != false) {
+
+                                //Convert the date in something that strtotime understands
+                                $date = $date->plaintext;
+                                $date = explode('/', $date);
+                                $date[2] = '20' . $date[2];
+                                $date = implode('-', $date);
+
+                                $time = trim($scoreOrTime);
+                                $time = explode(' ', $time);
+                                $time = implode('', $time);
+                                $date = strtotime($date . ' ' . $time . ':00');
+
                                 try {
                                     $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId);
                                 }
@@ -499,23 +514,9 @@ class Parser {
                             }
                             else {
 
-                                try {
-                                    $match = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId);
-
-                                    //There is no need to parse the match again if it had a score already
-                                    if ($match->getScoreId() != null) {
-                                        continue;
-                                    }
-
-                                    $matchId = $match->getId();
-                                    $this->database->removeMatch($matchId);
-                                }
-                                catch (Exception $e) {
-                                }
-
                                 //Add the match
                                 $matchUrl = $row->find('.score-time a', 0)->href;
-                                $this->parseMatch('http://int.soccerway.com' . $matchUrl, $type);
+                                $this->parseMatch('http://int.soccerway.com' . $matchUrl, $tournamentId, $teamIdA, $teamIdB, $type);
                             }
                         }
                     }
