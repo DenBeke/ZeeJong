@@ -61,11 +61,12 @@ Created: February 2014
 
 
 
-
+            <?php if($this->match->getDate() > time())  { ?>
             <div class="col-md-12 bet-button-container container">
                     <a href="<?php echo SITE_URL . 'place-bet/' . $this->match->getId(); ?>" class="btn btn-success btn-lg">Place Bet</a>
 
             </div>
+            <?php } ?>
 
 
 

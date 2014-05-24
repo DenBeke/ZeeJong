@@ -49,7 +49,7 @@ require_once(dirname(__FILE__) . '/Controller.php');
 
             $this->title = 'Match - ' . $this->match->getTeamA()->getName() . ' vs ' . $this->match->getTeamB()->getName() . ' - ' . Controller::siteName;
 
-            if($this->match->getDate() < strtotime(date('d M Y', time()))) {
+            if(strtotime(date('d-M-Y H:i', $this->match->getDate()) . ' +105 minutes') < time()) {
                 $this->theme = 'match.php';
             }
             else {
