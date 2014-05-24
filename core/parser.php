@@ -265,7 +265,7 @@ class Parser {
             $teamIdB = $this->parseTeam('http://int.soccerway.com' . $teamB->href);
 
             //Add the match to the database
-            $date = strtotime($html->find('.middle .details dd', 1)->plaintext);
+            $date = $html->find('.middle .details .timestamp', 1)->getAttribute('data-value');
             $matchId = $this->database->addMatch($teamIdA, $teamIdB, $scoreA, $scoreB, $refereeId, $date, $tournamentId, $type);
 
             echo "match: $matchId<br>";
