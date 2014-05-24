@@ -2008,7 +2008,7 @@ class Database {
 
         //Check if the player isn't already in the database
         try {
-            return $this -> getPlayer($firstName, $lastName, $countryId) -> getId();
+            return $this -> getPlayer($firstName, $lastName, $dateOfBirth) -> getId();
 
         } catch (exception $e) {
         }
@@ -2022,20 +2022,17 @@ class Database {
 
      @param first name
      @param last name
-     @param country id
      @param date of birth
-     @param height
-     @param weight
 
      @return player
 
      @exception when no player found with the given name, country and date of birth
      */
-    public function getPlayer($firstName, $lastName, $countryId) {
+    public function getPlayer($firstName, $lastName, $dateOfBirth) {
         $sel = new \Selector('Player');
         $sel->filter([['firstname', '=', $firstName]]);
         $sel->filter([['lastname', '=', $lastName]]);
-        $sel->filter([['country', '=', $countryId]]);
+        $sel->filter([['dateOfBirth', '=', $dateOfBirth]]);
 
         $result = $this->select($sel);
         $players = $this->resultToPlayers($result);
