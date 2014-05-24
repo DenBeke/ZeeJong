@@ -46,6 +46,8 @@ Created: February 2014
                         </li>
 
                         <li class="list-group-item">Date: <?php echo date('d-m-Y', $this->match->getDate()); ?></li>
+                        
+                        <li class="list-group-item">Kick-off: <?php echo date('H:i', $this->match->getDate()); ?></li>
 
                         <li class="list-group-item">Total bet: <?php echo $this->totalBet; ?></li>
 
