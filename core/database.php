@@ -2292,6 +2292,26 @@ class Database {
     }
 
 
+    public function updateMatch($matchId, $scoreA, $scoreB, $refereeId) {
+
+        $scoreId = null;
+        if (($scoreA != -1) and ($scoreB != -1))
+            $scoreId = $this->addScore($scoreA, $scoreB);
+
+        $query = "UPDATE `Match` SET scoreId = ?, refereeId = ? WHERE id = ?";
+
+        $statement = $this->getStatement($query);
+
+        if (!$statement -> bind_param('iii', $scoreId, $refereeId, $matchId)) {
+            throw new exception('Binding parameters failed: (' . $statement -> errno . ') ' . $statement -> error);
+        }
+
+        if (!$statement -> execute()) {
+            throw new exception('Execute failed: (' . $statement -> errno . ') ' . $statement -> error);
+        }
+    }
+
+
     /**
      Remove a match with the given id
 
