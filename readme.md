@@ -27,18 +27,18 @@ Installation
 - (Depending on the size of the import data, your server may need a lot of RAM)
 
 ###Uploading###
-In order to have a website your must upload the *zeejong* folder to your webserver. **But more important are the file/folder permissions on your server!**
+In order to have a website you must upload the *zeejong* folder to your webserver. **But the file/folder permissions on your server are more important!**
 
 * First of all, your webserver must have the permission to access the files.
 * In order to store the chatbox content, Apache must have write access to the `core/php-chatbox/` directory
-* When running the parser, the user running the parser must have write (and of course also read) access to the `core/cache/` and `images/` directories.
+* When running the parser, the user running the parser must have write (and of course read) access to the `core/cache/` and `images/` directories.
 * With an automatic installation, *ZeeJong* must have write access to the root folder, for creating the config file.
 * To avoid people taking down your server with DDOS attacks, you shouldn't make your webserver able to run the `core/parser.php` and `core/mailer.php`.
 
 ###Installer###
 In order to install *ZeeJong* you must navigate to the installation
 directory with your browser.  
-Navigate to `http://yourdomain.com/install/` and fill all fields. The script
+Navigate to `http://yourdomain.com/install/` and fill in all fields. The script
 will create the database tables and will generate a config file.
 
 You can also install preloaded data. We provide a JSON file containing an archive of competitions.  
@@ -51,10 +51,10 @@ In order to install this, you must run `http://yourdomain.com/core/importer.php`
 
 
 ###Maintenance###
-To find and update new matches, you have to run the parser, located at `/core/parser.php`. This script isn't meant for running in the browser, but immediately through the command line (or even better, with a cronjob).
+To find and update new matches, you have to run the parser, located at `/core/parser.php`. This script isn't meant for running in the browser, but directly through the command line (or even better, with a cronjob).
 Doing this with a cron job every night ensures that your data stays up to date and that bets are processed fully automatically on a daily basis.
 
-Another script that needs to be runned, is the `core/mailer.php` script.  This will keep users informed about upcoming events.
+Another script that needs to be ran, is the `core/mailer.php` script.  This will keep users informed about upcoming events.
 
 
 Authors
