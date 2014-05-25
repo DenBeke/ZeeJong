@@ -33,6 +33,7 @@ In order to have a website your must upload the *zeejong* folder to your webserv
 * In order to store the chatbox content, Apache must have write access to the `core/php-chatbox/` directory
 * When running the parser, the user running the parser must have write (and of course also read) access to the `core/cache/` and `images/` directories.
 * With an automatic installation, *ZeeJong* must have write access to the root folder, for creating the config file.
+* To avoid people taking down your server with DDOS attacks, you shouldn't make your webserver able to run the `core/parser.php` and `core/mailer.php`.
 
 ###Installer###
 In order to install *ZeeJong* you must navigate to the installation
@@ -48,8 +49,12 @@ The preloaded data is provided in a JSON file, but you can also retrieve the arc
 In order to install this, you must run `http://yourdomain.com/core/importer.php`. This may take some time.  
 *Do this after the installation. You need empty tables in your database.*
 
+
+###Maintenance###
 To find and update new matches, you have to run the parser, located at `/core/parser.php`. This script isn't meant for running in the browser, but immediately through the command line (or even better, with a cronjob).
 Doing this with a cron job every night ensures that your data stays up to date and that bets are processed fully automatically on a daily basis.
+
+Another script that needs to be runned, is the `core/mailer.php` script.  This will keep users informed about upcoming events.
 
 
 Authors
