@@ -10,6 +10,7 @@ Created: March 2014
 var get = {
     sort: 'match',
     order: 'desc',
+	limit: 20,
 };
 
 function toggleOrder() {
