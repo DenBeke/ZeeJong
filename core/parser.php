@@ -366,6 +366,80 @@ class Parser {
                 $this->database->addCoaches($coachId, $team['id'], $matchId);
             }
 
+
+            $teams = array(
+                'teamA' => array(
+                    'block' => $html->find('.block_match_substitutes .left tbody', 0),
+                    'id' => $teamIdA
+                ),
+
+                'teamB' => array(
+                    'block' => $html->find('.block_match_substitutes .right tbody', 0),
+                    'id' => $teamIdB
+                ),
+            );
+
+            //Find all players and add them to the database
+            foreach ($teams as $team) {
+
+                if(!is_object($team['block'])) {
+                    continue;
+                }
+
+                foreach ($team['block']->find('tr') as $row) {
+
+                    $number = 0;
+
+                    $player = $row->find('.player a', 0);
+                    if (sizeof($player) > 0) {
+
+                        $number++;
+
+                        //Add the player to the database
+                        $shirtNumber = $row->find('.shirtnumber', 0);
+
+                        if(!is_object($shirtNumber)) {
+                            $shirtNumber = $number;
+                        }
+                        else {
+                            $shirtNumber = intval($shirtNumber->plaintext);
+                        }
+
+                        $playerId = $this->parsePlayer('http://int.soccerway.com' . $player->href);
+                        $this->database->addPlayerToMatch($playerId, $matchId, $team['id'], $shirtNumber);
+
+                        //Add the yellow and red cards
+                        $bookings = $row->find('.bookings span');
+                        foreach ($bookings as $booking) {
+
+                            $time = 0;
+                            $time_parts = explode('+', $booking->plaintext);
+                            foreach ($time_parts as $part) {
+                                $time += intval($part);
+                            }
+
+                            $img = $booking->find('img', 0)->getAttribute('src');
+                            if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/YC\.png/', $img)) {
+                                $type = Card::yellow;
+                            }
+                            else if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/Y2C\.png/', $img)) {
+                                $type = Card::yellow;
+                            }
+                            else if (preg_match('/http:\/\/s1\.swimg\.net\/gsmf\/[0-9]{3}\/img\/events\/RC\.png/', $img)) {
+                                $type = Card::red;
+                            }
+                            else {
+                                //echo "<em>Parser found unknown card image: $img</em></br>";
+                                continue;
+                            }
+
+                            $this->database->addFoulCard($playerId, $matchId, $time, $type);
+                        }
+
+                    }
+                }
+            }
+
             //Find the goals
             $rawGoals = $html->find('.block_match_goals', 0);
             if(gettype($rawGoals) != 'NULL') {
