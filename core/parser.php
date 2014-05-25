@@ -257,10 +257,10 @@ class Parser {
                     return;
                 }
 
-                $matchId = $match->getId();
-                $this->database->removeMatch($matchId);
+                $update = true;
             }
             catch (Exception $e) {
+                $update = false;
             }
 
             echo '    ' . trim($teamA->plaintext) . ' vs ' . trim($teamB->plaintext) . ' on ' . date('d-m-Y', $date) . ' with score ' . $scoreA . ' - ' . $scoreB . "\n";
@@ -278,7 +278,13 @@ class Parser {
             }
 
             //Add the match to the database
-            $matchId = $this->database->addMatch($teamIdA, $teamIdB, $scoreA, $scoreB, $refereeId, $date, $tournamentId, $type);
+            if ($update) {
+                $matchId = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId)->getId();
+                $this->database->updateMatch($matchId, $scoreA, $scoreB, $refereeId);
+            }
+            else {
+                $matchId = $this->database->addMatch($teamIdA, $teamIdB, $scoreA, $scoreB, $refereeId, $date, $tournamentId, $type);
+            }
 
             $teams = array(
                 'teamA' => array(
