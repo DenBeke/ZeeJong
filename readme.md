@@ -4,7 +4,7 @@ ZeeJong - Soccer Betting System
 About
 -----
 
-*ZeeJong* is an online betting system for football matches.  
+[*ZeeJong*](http://zeejong.eu) is an online betting system for football matches.  
 The web app is designed to collect and display all relevant information about any match in the world of soccer
 and lets users place bets on upcoming events.
 
