@@ -217,7 +217,6 @@ function import($filename = 'output.json') {
         $table = $meta['db'];
         $json = $meta['json'];
 
-
         foreach ($data[$json] as $set) {
             $values = [];
             $attributes = [];
@@ -235,6 +234,10 @@ function import($filename = 'output.json') {
 
                     }
                 
+                }
+                else if($value == 'dateOfBirth') {
+                    $values[] = strtotime(date('d-M-Y', $set[$key]));
+                    $attributes[] = $value;
                 }
                 else {
                     $values[] = $set[$key];
