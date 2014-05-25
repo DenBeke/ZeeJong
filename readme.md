@@ -27,7 +27,7 @@ Installation
 - (Depending on the size of the import data, your server may need a lot of RAM)
 
 ###Uploading###
-In order to have a website your must upload the *zeejong* folder to your webserver. **But the file/folder permissions on your server are more important!**
+In order to have a website you must upload the *zeejong* folder to your webserver. **But the file/folder permissions on your server are more important!**
 
 * First of all, your webserver must have the permission to access the files.
 * In order to store the chatbox content, Apache must have write access to the `core/php-chatbox/` directory
