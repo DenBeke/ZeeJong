@@ -1,5 +1,8 @@
 <?php
 
+//Set default time zone
+date_default_timezone_set('Europe/Brussels');
+
 require_once(dirname(__FILE__) . '/../core/importer.php');
 
 function handleImport() {
