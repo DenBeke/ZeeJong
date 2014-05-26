@@ -39,7 +39,8 @@ In order to have a website you must upload the *zeejong* folder to your webserve
 In order to install *ZeeJong* you must navigate to the installation
 directory with your browser.  
 Navigate to `http://yourdomain.com/install/` and fill in all fields. The script
-will create the database tables and will generate a config file.
+will create the database tables and will generate a config file.  
+*The installer must be ran on an empty database, otherwise errors will occur.*
 
 You can also install preloaded data. We provide a JSON file containing an archive of competitions.  
 The preloaded data is provided in a JSON file, but you can also retrieve the archive yourself, by running the *ZeeJong Parser* tool.
