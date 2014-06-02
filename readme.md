@@ -61,8 +61,8 @@ Another script that needs to be ran, is the `core/mailer.php` script.  This will
 Authors
 -------
 
-- Mathias Beke
-- Timo Truyts
+- [Mathias Beke](http://denbeke.be)
+- sirius-btx
 - Alexander Vanhulle
 - Bruno Van de Velde
 - Elias Van Langenhove
