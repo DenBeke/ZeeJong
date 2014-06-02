@@ -1,6 +1,8 @@
 ZeeJong - Soccer Betting System
 ===============================
 
+![ZeeJong Logo](img/logo.png)
+
 About
 -----
 
@@ -62,7 +64,7 @@ Authors
 -------
 
 - [Mathias Beke](http://denbeke.be)
-- sirius-btx
+- siriusbtx
 - Alexander Vanhulle
 - Bruno Van de Velde
 - Elias Van Langenhove
