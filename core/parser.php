@@ -247,10 +247,11 @@ class Parser {
             $teamA = $html->find('.content-column .content .left a', 0);
             $teamB = $html->find('.content-column .content .right a', 0);
 
-            $date = $html->find('.middle .details .timestamp', 1);
-            if($date != NULL) {
-                $date = $date->getAttribute('data-value');
+            $dateObj = $html->find('.middle .details .timestamp', 1);
+            if(!is_object($dateObj)) {
+                $dateObj = $html->find('.middle .details .timestamp', 0);
             }
+            $date = $dateObj->getAttribute('data-value');
 
             try {
                 $match = $this->database->getMatch($teamIdA, $teamIdB, $date, $tournamentId);
