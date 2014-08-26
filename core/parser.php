@@ -249,7 +249,7 @@ class Parser {
 
             $date = $html->find('.middle .details .timestamp', 1);
             if($date != NULL) {
-                $date = $date->getAttribute('data-value')
+                $date = $date->getAttribute('data-value');
             }
 
             try {
