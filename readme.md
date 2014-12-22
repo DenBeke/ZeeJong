@@ -81,3 +81,23 @@ Acknowledgements
 - OpenID login: [LightOpenID](https://code.google.com/p/lightopenid/)
 - Chat: [PHP-Chatbox](https://github.com/MarcinMM/PHP-Chatbox)
 - Country flags: [Free Country Flags by Gang of the Coconuts](http://www.free-country-flags.com)
+
+
+-----------------------------
+
+This project was a university assignment for the course *Programming Project Database*.
+We are not actively developing this anymore and it will be, without doubt, full of bugs.  
+Feel free to take inspiration for this project, and even use this. But don't expect this to work flawlessly for professional use. (You may always send pull request when you fix something, but we won't fix things for you.)
+
+*Also note that crawling data from the sites, using our parser, is stealing the hard work of the organizations that filled those databases.*
+
+THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS "AS IS" AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE REGENTS AND CONTRIBUTORS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
