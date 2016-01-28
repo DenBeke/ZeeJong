@@ -64,7 +64,7 @@ Authors
 -------
 
 - [Mathias Beke](http://denbeke.be)
-- siriusbtx
+- Timo Truyts
 - Alexander Vanhulle
 - Bruno Van de Velde
 - Elias Van Langenhove
